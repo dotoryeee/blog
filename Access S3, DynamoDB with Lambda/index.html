@@ -697,47 +697,43 @@
 </li>
 <li>
 <p>아래 코드를 lambda_function에 덮어씌워줍니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>&quot;Lambda function Calculator exercise&quot;
-from __future__ import print_function
-import re
-import boto3
+<div class="highlight"><span class="filename">Lambda function Calculator exercise</span><pre><span></span><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">boto3</span>
 
-def lambda_handler(event, context):
-    &quot;Process upload event&quot;
-    bucket = event[&#39;Records&#39;][0][&quot;s3&quot;][&quot;bucket&quot;][&quot;name&quot;]
-    key = event[&#39;Records&#39;][0][&quot;s3&quot;][&quot;object&quot;][&quot;key&quot;]
-    result = &quot;No numbers found in file&quot;
-    print(&quot;Received event. Bucket: [%s], Key: [%s]&quot; % (bucket, key))
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="s2">&quot;Process upload event&quot;</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s3&quot;</span><span class="p">][</span><span class="s2">&quot;bucket&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;s3&quot;</span><span class="p">][</span><span class="s2">&quot;object&quot;</span><span class="p">][</span><span class="s2">&quot;key&quot;</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;No numbers found in file&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Received event. Bucket: [</span><span class="si">%s</span><span class="s2">], Key: [</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
 
-    # construct s3 client
-    s3 = boto3.client(&#39;s3&#39;)
-    response = s3.get_object(
-        Bucket=bucket,
-        Key=key
-    )
+    <span class="c1"># construct s3 client</span>
+    <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span>
+        <span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span>
+        <span class="n">Key</span><span class="o">=</span><span class="n">key</span>
+    <span class="p">)</span>
 
-    # get the object contents
-    file_contents = response[&#39;Body&#39;].read().decode(&quot;utf-8&quot;).strip()
-    # find matches of all positive or negative numbers
-    numbers = [int(n) for n in re.findall(r&quot;-?\d+&quot;, file_contents)]
-    if numbers:
-        # caclulate min/max/average
-        mn, mx, avg = min(numbers), max(numbers), sum(numbers)/len(numbers)
-        result = &quot;Min: %s Max: %s Average: %s&quot; % (mn, mx, avg)
+    <span class="c1"># get the object contents</span>
+    <span class="n">file_contents</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="c1"># find matches of all positive or negative numbers</span>
+    <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;-?\d+&quot;</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">numbers</span><span class="p">:</span>
+        <span class="c1"># caclulate min/max/average</span>
+        <span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">avg</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">numbers</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;Min: </span><span class="si">%s</span><span class="s2"> Max: </span><span class="si">%s</span><span class="s2"> Average: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">mx</span><span class="p">,</span> <span class="n">avg</span><span class="p">)</span>
 
-    print(&quot;Result: %s&quot; % result)
-    return result
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>⭐코드 작성 완료 후 반드시 Deploy 해줍니다</p>
 <p><img alt="Access S3, DynamoDB with Lambda/Untitled%2010.png" src="Untitled%2010.png" /></p>
 </li>
 <li>
 <p>다음과 같이 숫자데이터가 들어있는 txt파일을 준비합니다</p>
-<p><a href="numbers.txt">numbers.txt</a></p>
 <p><img alt="Access S3, DynamoDB with Lambda/Untitled%2011.png" src="Untitled%2011.png" /></p>
 </li>
 <li>
@@ -764,26 +760,23 @@ def lambda_handler(event, context):
 </li>
 <li>
 <p>다음 코드를 이용해 새로운 test event를 생성합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>{
-    &quot;Records&quot;: [
-            {
-                &quot;s3&quot;: {
-                    &quot;bucket&quot;: {
-                        &quot;name&quot;: &quot;kekekekeke&quot;
-                    },
-                    &quot;object&quot;: {
-                        &quot;key&quot;: &quot;numbers.txt&quot;
-                    }
-                }
-            }
-        ]
-}
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;s3&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;bucket&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;kekekekeke&quot;</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;numbers.txt&quot;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
-<pre><code>![Access S3, DynamoDB with Lambda/Untitled%2017.png](Access S3, DynamoDB with Lambda/Untitled%2017.png)
-</code></pre>
-<ol>
+<p><img alt="Access S3, DynamoDB with Lambda/Untitled%2017.png" src="Untitled%2017.png" /></p>
+</li>
 <li>
 <p>AWS에서 제공하는 샘플 test event도 사용해볼 수 있습니다</p>
 <p><img alt="Access S3, DynamoDB with Lambda/Untitled%2018.png" src="Untitled%2018.png" /></p>
@@ -811,69 +804,67 @@ def lambda_handler(event, context):
 </li>
 <li>
 <p>Lambda에 다음 코드를 작성합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code># Load-Inventory Lambda function
+<div class="highlight"><pre><span></span><code><span class="c1"># Load-Inventory Lambda function</span>
 
-# This function is triggered by an object being created in an Amazon S3 bucket. 
+<span class="c1"># This function is triggered by an object being created in an Amazon S3 bucket. </span>
 
-# The file is downloaded and each line is inserted into a DynamoDB table. 
-import json, urllib, boto3, csv 
+<span class="c1"># The file is downloaded and each line is inserted into a DynamoDB table. </span>
+<span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">boto3</span><span class="o">,</span> <span class="nn">csv</span> 
 
-# Connect to S3 and DynamoDB 
-s3 = boto3.resource(&#39;s3&#39;) 
-dynamodb = boto3.resource(&#39;dynamodb&#39;)
+<span class="c1"># Connect to S3 and DynamoDB </span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span> 
+<span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">)</span>
 
-# Connect to the DynamoDB tables 
-inventoryTable = dynamodb.Table(&#39;Inventory&#39;); 
+<span class="c1"># Connect to the DynamoDB tables </span>
+<span class="n">inventoryTable</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;Inventory&#39;</span><span class="p">);</span> 
 
-# This handler is executed every time the Lambda function is triggered 
-def lambda_handler(event, context): 
+<span class="c1"># This handler is executed every time the Lambda function is triggered </span>
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span> 
 
-# Show the incoming event in the debug log 
-print(&quot;Event received by Lambda function: &quot; + json.dumps(event, indent=2)) 
+<span class="c1"># Show the incoming event in the debug log </span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Event received by Lambda function: &quot;</span> <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> 
 
-# Get the bucket and object key from the event 
-bucket = event[&#39;Records&#39;][0][&#39;s3&#39;][&#39;bucket&#39;][&#39;name&#39;] 
-key = urllib.parse.unquote_plus(event[&#39;Records&#39;][0][&#39;s3&#39;][&#39;object&#39;][&#39;key&#39;]) 
-localFilename = &#39;/tmp/inventory.txt&#39; 
+<span class="c1"># Get the bucket and object key from the event </span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s3&#39;</span><span class="p">][</span><span class="s1">&#39;bucket&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> 
+<span class="n">key</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">unquote_plus</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;s3&#39;</span><span class="p">][</span><span class="s1">&#39;object&#39;</span><span class="p">][</span><span class="s1">&#39;key&#39;</span><span class="p">])</span> 
+<span class="n">localFilename</span> <span class="o">=</span> <span class="s1">&#39;/tmp/inventory.txt&#39;</span> 
 
-# Download the file from S3 to the local filesystem 
-try: 
-    s3.meta.client.download_file(bucket, key, localFilename) 
-except Exception as e: 
-    print(e) 
-    print(&#39;Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.&#39;.format(key, bucket)) 
-    raise e 
+<span class="c1"># Download the file from S3 to the local filesystem </span>
+<span class="k">try</span><span class="p">:</span> 
+    <span class="n">s3</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">localFilename</span><span class="p">)</span> 
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error getting object </span><span class="si">{}</span><span class="s1"> from bucket </span><span class="si">{}</span><span class="s1">. Make sure they exist and your bucket is in the same region as this function.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bucket</span><span class="p">))</span> 
+    <span class="k">raise</span> <span class="n">e</span> 
 
-# Read the Inventory CSV file 
-with open(localFilename) as csvfile: 
-    reader = csv.DictReader(csvfile, delimiter=&#39;,&#39;)
+<span class="c1"># Read the Inventory CSV file </span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">localFilename</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span> 
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 
-# Read each row in the file 
-rowCount = 0 
+<span class="c1"># Read each row in the file </span>
+<span class="n">rowCount</span> <span class="o">=</span> <span class="mi">0</span> 
 
-for row in reader: 
-    rowCount += 1 
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span> 
+    <span class="n">rowCount</span> <span class="o">+=</span> <span class="mi">1</span> 
 
-# Show the row in the debug log 
-print(row[&#39;store&#39;], row[&#39;item&#39;], row[&#39;count&#39;]) 
+<span class="c1"># Show the row in the debug log </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;store&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span> 
 
-try:
-    # Insert Store, Item, and Count into the Inventory table 
-    inventoryTable.put_item( 
-        Item={ 
-            &#39;Store&#39;: row[&#39;store&#39;], 
-            &#39;Item&#39;: row[&#39;item&#39;], 
-            &#39;Count&#39;: int(row[&#39;count&#39;])}) 
-except Exception as e: 
-    print(e) 
-    print(&quot;Unable to insert data into DynamoDB table&quot;.format(e)) 
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Insert Store, Item, and Count into the Inventory table </span>
+    <span class="n">inventoryTable</span><span class="o">.</span><span class="n">put_item</span><span class="p">(</span> 
+        <span class="n">Item</span><span class="o">=</span><span class="p">{</span> 
+            <span class="s1">&#39;Store&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;store&#39;</span><span class="p">],</span> 
+            <span class="s1">&#39;Item&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">],</span> 
+            <span class="s1">&#39;Count&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])})</span> 
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to insert data into DynamoDB table&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> 
 
-# Finished! 
-return &quot;%d counts inserted&quot; % rowCount
+<span class="c1"># Finished! </span>
+<span class="k">return</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> counts inserted&quot;</span> <span class="o">%</span> <span class="n">rowCount</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>코드를 Deploy 해줍니다</p>
 <p><img alt="Access S3, DynamoDB with Lambda/Untitled%2024.png" src="Untitled%2024.png" /></p>
