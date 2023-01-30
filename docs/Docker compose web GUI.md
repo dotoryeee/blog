@@ -77,9 +77,9 @@ docker –v
     
 7.  리눅스 부팅될 때 자동으로 도커가 실행될 수 있도록 서비스에 등록합니다
 
-```
-sudo systemctl enable docker && service docker start
-```
+    ```
+    sudo systemctl enable docker && service docker start
+    ```
 
 8.  리눅스에서 도커 서비스 상태를 확인합니다
 
