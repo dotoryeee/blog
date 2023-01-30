@@ -61,46 +61,43 @@
     
 5. 아래 코드를 lambda_function에 덮어씌워줍니다
     
-```
-"Lambda function Calculator exercise"
-from __future__ import print_function
-import re
-import boto3
+    ```python title="Lambda function Calculator exercise"
+    from __future__ import print_function
+    import re
+    import boto3
 
-def lambda_handler(event, context):
-    "Process upload event"
-    bucket = event['Records'][0]["s3"]["bucket"]["name"]
-    key = event['Records'][0]["s3"]["object"]["key"]
-    result = "No numbers found in file"
-    print("Received event. Bucket: [%s], Key: [%s]" % (bucket, key))
+    def lambda_handler(event, context):
+        "Process upload event"
+        bucket = event['Records'][0]["s3"]["bucket"]["name"]
+        key = event['Records'][0]["s3"]["object"]["key"]
+        result = "No numbers found in file"
+        print("Received event. Bucket: [%s], Key: [%s]" % (bucket, key))
 
-    # construct s3 client
-    s3 = boto3.client('s3')
-    response = s3.get_object(
-        Bucket=bucket,
-        Key=key
-    )
+        # construct s3 client
+        s3 = boto3.client('s3')
+        response = s3.get_object(
+            Bucket=bucket,
+            Key=key
+        )
 
-    # get the object contents
-    file_contents = response['Body'].read().decode("utf-8").strip()
-    # find matches of all positive or negative numbers
-    numbers = [int(n) for n in re.findall(r"-?\d+", file_contents)]
-    if numbers:
-        # caclulate min/max/average
-        mn, mx, avg = min(numbers), max(numbers), sum(numbers)/len(numbers)
-        result = "Min: %s Max: %s Average: %s" % (mn, mx, avg)
+        # get the object contents
+        file_contents = response['Body'].read().decode("utf-8").strip()
+        # find matches of all positive or negative numbers
+        numbers = [int(n) for n in re.findall(r"-?\d+", file_contents)]
+        if numbers:
+            # caclulate min/max/average
+            mn, mx, avg = min(numbers), max(numbers), sum(numbers)/len(numbers)
+            result = "Min: %s Max: %s Average: %s" % (mn, mx, avg)
 
-    print("Result: %s" % result)
-    return result
-```
+        print("Result: %s" % result)
+        return result
+    ```
     
 6. ⭐코드 작성 완료 후 반드시 Deploy 해줍니다
     
     ![Access S3, DynamoDB with Lambda/Untitled%2010.png](Access S3, DynamoDB with Lambda/Untitled%2010.png)
     
 7. 다음과 같이 숫자데이터가 들어있는 txt파일을 준비합니다
-    
-    [numbers.txt](Access S3, DynamoDB with Lambda/numbers.txt)
     
     ![Access S3, DynamoDB with Lambda/Untitled%2011.png](Access S3, DynamoDB with Lambda/Untitled%2011.png)
     
@@ -130,22 +127,22 @@ def lambda_handler(event, context):
     
 3. 다음 코드를 이용해 새로운 test event를 생성합니다
     
-```
-{
-    "Records": [
-            {
-                "s3": {
-                    "bucket": {
-                        "name": "kekekekeke"
-                    },
-                    "object": {
-                        "key": "numbers.txt"
+    ```json
+    {
+        "Records": [
+                {
+                    "s3": {
+                        "bucket": {
+                            "name": "kekekekeke"
+                        },
+                        "object": {
+                            "key": "numbers.txt"
+                        }
                     }
                 }
-            }
-        ]
-}
-```
+            ]
+    }
+    ```
     
     ![Access S3, DynamoDB with Lambda/Untitled%2017.png](Access S3, DynamoDB with Lambda/Untitled%2017.png)
     
@@ -178,68 +175,68 @@ def lambda_handler(event, context):
     
 3. Lambda에 다음 코드를 작성합니다
     
-```
-# Load-Inventory Lambda function
+    ```python
+    # Load-Inventory Lambda function
 
-# This function is triggered by an object being created in an Amazon S3 bucket. 
+    # This function is triggered by an object being created in an Amazon S3 bucket. 
 
-# The file is downloaded and each line is inserted into a DynamoDB table. 
-import json, urllib, boto3, csv 
+    # The file is downloaded and each line is inserted into a DynamoDB table. 
+    import json, urllib, boto3, csv 
 
-# Connect to S3 and DynamoDB 
-s3 = boto3.resource('s3') 
-dynamodb = boto3.resource('dynamodb')
-    
-# Connect to the DynamoDB tables 
-inventoryTable = dynamodb.Table('Inventory'); 
+    # Connect to S3 and DynamoDB 
+    s3 = boto3.resource('s3') 
+    dynamodb = boto3.resource('dynamodb')
+        
+    # Connect to the DynamoDB tables 
+    inventoryTable = dynamodb.Table('Inventory'); 
 
-# This handler is executed every time the Lambda function is triggered 
-def lambda_handler(event, context): 
+    # This handler is executed every time the Lambda function is triggered 
+    def lambda_handler(event, context): 
 
-# Show the incoming event in the debug log 
-print("Event received by Lambda function: " + json.dumps(event, indent=2)) 
+    # Show the incoming event in the debug log 
+    print("Event received by Lambda function: " + json.dumps(event, indent=2)) 
 
-# Get the bucket and object key from the event 
-bucket = event['Records'][0]['s3']['bucket']['name'] 
-key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key']) 
-localFilename = '/tmp/inventory.txt' 
+    # Get the bucket and object key from the event 
+    bucket = event['Records'][0]['s3']['bucket']['name'] 
+    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key']) 
+    localFilename = '/tmp/inventory.txt' 
 
-# Download the file from S3 to the local filesystem 
-try: 
-    s3.meta.client.download_file(bucket, key, localFilename) 
-except Exception as e: 
-    print(e) 
-    print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket)) 
-    raise e 
+    # Download the file from S3 to the local filesystem 
+    try: 
+        s3.meta.client.download_file(bucket, key, localFilename) 
+    except Exception as e: 
+        print(e) 
+        print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket)) 
+        raise e 
 
-# Read the Inventory CSV file 
-with open(localFilename) as csvfile: 
-    reader = csv.DictReader(csvfile, delimiter=',')
+    # Read the Inventory CSV file 
+    with open(localFilename) as csvfile: 
+        reader = csv.DictReader(csvfile, delimiter=',')
 
-# Read each row in the file 
-rowCount = 0 
+    # Read each row in the file 
+    rowCount = 0 
 
-for row in reader: 
-    rowCount += 1 
+    for row in reader: 
+        rowCount += 1 
 
-# Show the row in the debug log 
-print(row['store'], row['item'], row['count']) 
+    # Show the row in the debug log 
+    print(row['store'], row['item'], row['count']) 
 
-try:
-    # Insert Store, Item, and Count into the Inventory table 
-    inventoryTable.put_item( 
-        Item={ 
-            'Store': row['store'], 
-            'Item': row['item'], 
-            'Count': int(row['count'])}) 
-except Exception as e: 
-    print(e) 
-    print("Unable to insert data into DynamoDB table".format(e)) 
+    try:
+        # Insert Store, Item, and Count into the Inventory table 
+        inventoryTable.put_item( 
+            Item={ 
+                'Store': row['store'], 
+                'Item': row['item'], 
+                'Count': int(row['count'])}) 
+    except Exception as e: 
+        print(e) 
+        print("Unable to insert data into DynamoDB table".format(e)) 
 
-# Finished! 
-return "%d counts inserted" % rowCount
-```
-    
+    # Finished! 
+    return "%d counts inserted" % rowCount
+    ```
+        
 4. 코드를 Deploy 해줍니다
     
     ![Access S3, DynamoDB with Lambda/Untitled%2024.png](Access S3, DynamoDB with Lambda/Untitled%2024.png)

@@ -18,16 +18,16 @@
 
 1. 작업 디렉터리를 생성합니다
 
-```
-mkdir simple_app
-cd simple_app
-```
-    
+    ```bash
+    mkdir simple_app
+    cd simple_app
+    ```
+        
 2. 현재 디렉터리에 react를 설치합니다
 
-```
-npx create-react-app ./
-```
+    ```bash
+    npx create-react-app ./
+    ```
     
     ![CICD on Single container/Untitled%201.png](CICD on Single container/Untitled%201.png)
     
@@ -46,50 +46,48 @@ npx create-react-app ./
 1. 개발환경(dev)과 운영환경(prod)는 특성이 다를 수 있기 때문에 도커파일을 분리해야합니다
 2. 개발 환경의 도커파일을 생성합니다
     
-```
-code dockerfile.dev
-```
+    ```bash
+    code dockerfile.dev
+    ```
 
-```
-FROM node:alpine
+    ```dockerfile
+    FROM node:alpine
 
-WORKDIR /usr/src/app
+    WORKDIR /usr/src/app
 
-COPY package.json ./
+    COPY package.json ./
 
-RUN npm install
+    RUN npm install
 
-COPY ./ ./
+    COPY ./ ./
 
-CMD ["npm", "run", "start"]
-```
+    CMD ["npm", "run", "start"]
+    ```
 
 
 ### Deploy container
 
 1. 이미지를 빌드해봅니다
     
-    <aside>
-    💡 도커 환경에서 node를 실행할 때는 로컬에 node_module가 필요하지 않습니다
-    쓸데없이 빌드 시간만 길어지게 하는 node_module를 지우고 이미지를 빌드 합니다
-    rm -rf node_modules
+    !!! tip
+        💡 도커 환경에서 node를 실행할 때는 로컬에 node_module가 필요하지 않습니다
+        쓸데없이 빌드 시간만 길어지게 하는 node_module를 지우고 이미지를 빌드 합니다
+        rm -rf node_modules
+        
+
+    !!! warning
+        💡 현재 도커파일 이름은 dockerfile이 아니므로 -f 파라메터로 지정해줍니다
     
-    </aside>
     
-    <aside>
-    💡 현재 도커파일 이름은 dockerfile이 아니므로 -f 파라메터로 지정해줍니다
-    
-    </aside>
-    
-```
-docker build -t dotoryeee/simple-app -f dockerfile.dev ./
-```
+    ```bash
+    docker build -t dotoryeee/simple-app -f dockerfile.dev ./
+    ```
     
 2. 생성이 완료되었으면 컨테이너로 돌려봅니다
     
-```
-docker run -it -p 3000:3000 dotoryeee/simple-app
-```
+    ```bash
+    docker run -it -p 3000:3000 dotoryeee/simple-app
+    ```
     
 3. 컨테이너 서버가 잘 실행되었습니다
     
@@ -104,15 +102,15 @@ docker run -it -p 3000:3000 dotoryeee/simple-app
     
 2. 호스트에서 node_moules 폴더를 삭제했기 때문에 예외처리 해줍니다
     
-```
-docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_modules -v $(pwd):/usr/src/app dotoryeee/simple-app
-```
+    ```
+    docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_modules -v $(pwd):/usr/src/app dotoryeee/simple-app
+    ```
     
 1. 현재 WSL에서 작업 시 컨테이너 node_module 폴더 권한 에러(EACCESS)로 인해 다음과 같이 실행했습니다
- 
- ```
- docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v $(pwd):/usr/src/app dotoryeee/simple-app
-```
+    
+    ```
+    docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v $(pwd):/usr/src/app dotoryeee/simple-app
+    ```
     
 
 ### restart
@@ -135,32 +133,32 @@ docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_mod
 1. 이번에는 도커 실행 명령어 단축을 위해 compose를 사용합니다
 2. 컴포즈파일 작성을 시작합니다
     
-```
-code docker-compose.yml
-```
+    ```bash
+    code docker-compose.yml
+    ```
 
-```
-version: "3" #도커 컴포즈 버전
-services: #컴포즈에서 실행할 컨테이너들을 정의
-    react: #컨테이너 이름
-    build: #dockerfile 정보 ↓
-        context: . #현재 위치에 있다
-        dockerfile: dockerfile.dev #파일이름
-    ports: #컨테이너 포트 매핑
-        - "3000:3000"
-    volumes: #호스트와 볼륨 매핑
-        - /usr/src/app/node_modules
-        - ./:/usr/src/app
-    stdin_open: true #리액트 앱을 종료할 떄 필요한 옵션(없으면 리액트에서 버스 발생)
-    environment:
-        - CHOKIDAR_USEPOLLING=true #리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션
-```
+    ```yaml
+    version: "3" #도커 컴포즈 버전
+    services: #컴포즈에서 실행할 컨테이너들을 정의
+        react: #컨테이너 이름
+        build: #dockerfile 정보 ↓
+            context: . #현재 위치에 있다
+            dockerfile: dockerfile.dev #파일이름
+        ports: #컨테이너 포트 매핑
+            - "3000:3000"
+        volumes: #호스트와 볼륨 매핑
+            - /usr/src/app/node_modules
+            - ./:/usr/src/app
+        stdin_open: true #리액트 앱을 종료할 떄 필요한 옵션(없으면 리액트에서 버스 발생)
+        environment:
+            - CHOKIDAR_USEPOLLING=true #리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션
+    ```
     
 1. 컴포즈를 실행합니다
  
- ```
- docker-compose up
- ```
+    ```bash
+    docker-compose up
+    ```
  
 4. 리액트가 잘 시작되었습니다
     
@@ -171,30 +169,30 @@ services: #컴포즈에서 실행할 컨테이너들을 정의
 
 1. 도커에서 리액트를 테스트 하는 기본적인 명령어는 다음과 같습니다
 
-```
-docker run -it {IMAGE} npm run test
-```
+    ```bash
+    docker run -it {IMAGE} npm run test
+    ```
 
 2. 테스트도 소스코드를 핫 리로딩 할 수 있으면 매우 편리할 것입니다
     
     다음과 같이 컴포즈파일에 컨테이너를 추가해주면 됩니다
 
-```
-tests:
-    build:
-        context: .
-        dockerfile: Dockerfile.dev
-    volumes:
-        - /usr/src/app/node_modules
-        - ./:/usr/src/app
-    command: ["npm", "run", "test"]
-```
-    
+    ```yaml
+    tests:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        volumes:
+            - /usr/src/app/node_modules
+            - ./:/usr/src/app
+        command: ["npm", "run", "test"]
+    ```
+        
 3. 이번에는 재빌드 해야하니 build 명령을 추가해줍니다
 
-```
-docker-compose up --build
-```
+    ```bash
+    docker-compose up --build
+    ```
 
 
 ## 운영환경을 위한 dockerfile
@@ -204,54 +202,54 @@ docker-compose up --build
 1. 개발환경은 npm run start를 사용해 서버를 실행하지만 운영환경은 build후 Nginx를 이용합니다
 2. 도커파일 작성을 시작합니다
 
-```
-code dockerfile
-```
+    ```bash
+    code dockerfile
+    ```
 
 3. 운영환경용 dockerfile은 두 단계로 나눠집니다
     - Builder stage : 빌드 파일을 생성합니다
 
-```
-FROM node:alpine as builder
-#이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시
-WORKDIR '/usr/src/app'
-COPY package.json ./
-RUN npm install
-COPY ./ ./
-RUN npm run build
-#생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다
-```
+    ```dockerfile
+    FROM node:alpine as builder
+    #이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시
+    WORKDIR '/usr/src/app'
+    COPY package.json ./
+    RUN npm install
+    COPY ./ ./
+    RUN npm run build
+    #생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다
+    ```
         
     - Nginx stage : NginX를 가동하고 생성된 빌드 파일을 요청에 따라 제공합니다(Run stage)
         
-```
-FROM nginx
-#nginx 베이스 이미지
-EXPOSE 80
-#AWS에 배포하기 위해 80포트 오픈
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
-#--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시
-#/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사
-```
+    ```dockerfile
+    FROM nginx
+    #nginx 베이스 이미지
+    EXPOSE 80
+    #AWS에 배포하기 위해 80포트 오픈
+    COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+    #--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시
+    #/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사
+    ```
         
     - 참고 : dockerhub에서 제공하는 nginx 공식 설명
 
-```
-FROM nginx
-COPY static-html-directory /usr/share/nginx/html
-```
+    ```dockerfile
+    FROM nginx
+    COPY static-html-directory /usr/share/nginx/html
+    ```
         
 4. 작성이 완료되면 이미지 빌드를 시작합니다
 
-```
-docker build -t dotoryeee/test2 ./
-```
+    ```bash
+    docker build -t dotoryeee/test2 ./
+    ```
 
 5. 이미지 생성이 완료되면 컨테이너를 실행해봅니다. nginx의 기본 포트는 80 입니다
 
-```
-docker run -it -p 7070:80 dotoryeee/test2
-```
+    ```bash
+    docker run -it -p 7070:80 dotoryeee/test2
+    ```
 
 6. nginx에서 리액트가 잘 실행되었습니다
     
@@ -286,28 +284,28 @@ docker run -it -p 7070:80 dotoryeee/test2
     - 언어설정에 generic에 대한 설명은 [이곳](https://docs.travis-ci.com/user/languages/minimal-and-generic/)에서 확인할 수 있습니다
     - — —coverage 옵션을 이용하면 콘솔에서 자세한 로그를 확인할 수 있습니다
 
-```
-code .travis.yml
-```
-    
-```
-sudo: required
+    ```bash
+    code .travis.yml
+    ```
+            
+    ```yaml
+    sudo: required
 
-language: generic
+    language: generic
 
-services:
-    - docker
+    services:
+        - docker
 
-before_install:
-    - echo "building image with dockerfile"
-    - docker build -t dotoryeee/test2 -f dockerfile.dev ./
+    before_install:
+        - echo "building image with dockerfile"
+        - docker build -t dotoryeee/test2 -f dockerfile.dev ./
 
-script:
-    - docker run -e CI=true dotoryeee/test2 npm run test -- --coverage
+    script:
+        - docker run -e CI=true dotoryeee/test2 npm run test -- --coverage
 
-after_success:
-    - echo "TEST SUCCESS"
-```
+    after_success:
+        - echo "TEST SUCCESS"
+    ```
     
 2. 깃헙에 푸쉬하면 트레비스에서 자동으로 작업을 시작합니다
     
@@ -341,25 +339,25 @@ after_success:
     
 5. AWS에 배포를 위해 travis를 설정합니다. 당연히 yaml 파일로.
 
-```
-code .travis.yml
-```
+    ```bash
+    code .travis.yml
+    ```
     
 6. 다음 내용을 추가하고 푸시해줍니다
-    
-```
-deploy:
-    provider: elasticbeanstalk
-    region: "ap-northeast-2"
-    app: "simple-app"
-    env: "Simpleapp-env" #빈스톡 생성시 env 지정 가능
-    bucket_name: "elasticbeanstalk-ap-northeast-2-737382971423" #빈스톡 생성시 자동으로 생성된 s3 이름
-    bucket_path: "simple-app" #app 이름과 동일하게 작성
-    on:
-    branch: master #어떤 브랜치를 배포할 것 인가
-    access_key_id: $AWS_ACCESS_KEY #트래비스에 등록된 환경변수
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
-```
+        
+    ```yaml
+    deploy:
+        provider: elasticbeanstalk
+        region: "ap-northeast-2"
+        app: "simple-app"
+        env: "Simpleapp-env" #빈스톡 생성시 env 지정 가능
+        bucket_name: "elasticbeanstalk-ap-northeast-2-737382971423" #빈스톡 생성시 자동으로 생성된 s3 이름
+        bucket_path: "simple-app" #app 이름과 동일하게 작성
+        on:
+        branch: master #어떤 브랜치를 배포할 것 인가
+        access_key_id: $AWS_ACCESS_KEY #트래비스에 등록된 환경변수
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+    ```
     
 7. 빌드가 성공적으로 이뤄지면
     

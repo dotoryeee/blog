@@ -28,19 +28,19 @@
     ![API Gateway with Lambda/Untitled%203.png](API Gateway with Lambda/Untitled%203.png)
     
 4. Root Page(/)에 적용할 첫 번째 Lambda Function의 코드는 다음과 같이 입력합니다
-    
-```
-import json
+        
+    ```python
+    import json
 
-def lambda_handler(event, context):
-    myParam = event['myParam']
-    print('myFunction1 excuted')
-    return {
-        'statusCode': 200,
-        'body': json.dumps(myParam)
-    }
-```
-    
+    def lambda_handler(event, context):
+        myParam = event['myParam']
+        print('myFunction1 excuted')
+        return {
+            'statusCode': 200,
+            'body': json.dumps(myParam)
+        }
+    ```
+        
     ![API Gateway with Lambda/Untitled%204.png](API Gateway with Lambda/Untitled%204.png)
     
 5. 코드 작성을 완료하였으면 배포해줍니다
@@ -53,17 +53,17 @@ def lambda_handler(event, context):
     
 7. 두번째 Lambda Function의 코드는 다음과 같이 입력합니다
     
-```
-import json
+    ```python
+    import json
 
-def lambda_handler(event, context):
-    myParam = event['myParam']
-    print('myFunction2 excuted')
-    return {
-        'statusCode': 200,
-        'body': json.dumps(myParam)
-    }
-```
+    def lambda_handler(event, context):
+        myParam = event['myParam']
+        print('myFunction2 excuted')
+        return {
+            'statusCode': 200,
+            'body': json.dumps(myParam)
+        }
+    ```
 
     ![API Gateway with Lambda/Untitled%207.png](API Gateway with Lambda/Untitled%207.png)
     
@@ -95,11 +95,11 @@ def lambda_handler(event, context):
     
     ![API Gateway with Lambda/Untitled%2013.png](API Gateway with Lambda/Untitled%2013.png)
 
-```
-{
-    "myParam": "$input.params('myParam')"
-}
-```
+    ```json
+    {
+        "myParam": "$input.params('myParam')"
+    }
+    ```
 
 15. 통합보고 경고가 뜨면 YES를 선택합니다
     
@@ -128,10 +128,10 @@ def lambda_handler(event, context):
     
 22. 리눅스 터미널을 이용해 간편하게 API를 테스트 해봅시다
 23. curl 을 사용해 접근합니다
-    
-```
-curl -X GET '{DNS ADDRESS}'
-```
+        
+    ```bash
+    curl -X GET '{DNS ADDRESS}'
+    ```
 
 24. 접속이 가능하고 파라메터값이 없기 떄문에 리턴값도 없음을 확인할 수 있습니다
 
@@ -139,9 +139,9 @@ curl -X GET '{DNS ADDRESS}'
 
 25. curl 명령에 파라메터값도 같이 날려봅니다
 
-```
-curl -X GET '{DNS ADDRESS}?myParam=HELLO'
-```
+    ```bash
+    curl -X GET '{DNS ADDRESS}?myParam=HELLO'
+    ```
 
 26. API가 파라메터값에 정상적으로 반응하는 것을 볼 수 있습니다
 
@@ -149,7 +149,7 @@ curl -X GET '{DNS ADDRESS}?myParam=HELLO'
 
 27. /resource페이지도 정상적으로 반응하는 것을 볼 수 있습니다
 
-```
-curl -X GET '{DNS ADDRESS}/resource?myParam=HELLO'
-```
+    ```bash
+    curl -X GET '{DNS ADDRESS}/resource?myParam=HELLO'
+    ```
     

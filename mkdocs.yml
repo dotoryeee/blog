@@ -6,6 +6,7 @@ theme:
     - content.code.copy
 
 markdown_extensions:
+  - admonition
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
