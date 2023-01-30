@@ -15,7 +15,7 @@
         <link rel="next" href="../API%20Gateway%20with%20Lambda/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -743,16 +743,16 @@
 <p><img alt="3-Tier Basic Infra/Untitled.png" src="Untitled.png" /></p>
 <h2 id="todo">TODO</h2>
 <hr />
-<ul>
-<li>[x]  VPC생성</li>
-<li>[x]  서브넷생성(public X 2, private X 2)</li>
-<li>[x]  public서버에 각각 bastion host 인스턴스 생성</li>
-<li>[x]  ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
-<li>[x]  HOST → WebServer 접속 확인</li>
-<li>[x]  RDS DB생성(MySQL)</li>
-<li>[x]  HOST → Bastion Host → DB 접속 확인하기</li>
-<li>[x]  MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
-<li>[x]  Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
 </ul>
 <h2 id="vpc">VPC</h2>
 <hr />
@@ -844,7 +844,8 @@
 </li>
 <li>
 <p>터미널 열어서 키페어파일 위치로 이동 후 다음 명령을 이용하여 접속</p>
-<p><code>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)</code></p>
+<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)
+</code></pre></div>
 </li>
 <li>
 <p>SSH 최초 접속시 hash 값 확인 → yes 입력</p>
@@ -976,12 +977,14 @@
 </li>
 <li>
 <p>Bastion의 터미널에 다음과 같은 명령으로 Webserver에 접속합니다</p>
-<p><code>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93</code></p>
+<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93
+</code></pre></div>
 </li>
 <li>
 <p>다음 에러 발생시 chmod를 적용합니다</p>
 <p><img alt="3-Tier Basic Infra/Untitled%2048.png" src="Untitled%2048.png" /></p>
-<p><code>chmod 400 FINAL-KEY.pem</code></p>
+<div class="highlight"><pre><span></span><code>chmod 400 FINAL-KEY.pem
+</code></pre></div>
 </li>
 <li>
 <p>재접속 하면 정상적으로 WebServer에 연결된 것을 볼 수 있습니다</p>
@@ -1032,13 +1035,15 @@
 </li>
 <li>
 <p>다음 명령을 이용해 Bastion Host에 MySQL을 설치합니다</p>
-<p><code>sudo yum -y install mysql</code></p>
+<div class="highlight"><pre><span></span><code>sudo yum -y install mysql
+</code></pre></div>
 </li>
 <li>
 <p>서버접속을 위해 다음 명령을 이용해 MySQL 을 사용합니다</p>
-<p><code>mysql -h {DNS} -P {PORT} -u {USER} -p
+<div class="highlight"><pre><span></span><code>mysql -h {DNS} -P {PORT} -u {USER} -p
                          ↓(예시)
-mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p</code></p>
+mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p
+</code></pre></div>
 </li>
 <li>
 <p>'MySQL&gt;' 이 뜨면 접속 성공한 것입니다</p>
@@ -1134,7 +1139,7 @@ mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

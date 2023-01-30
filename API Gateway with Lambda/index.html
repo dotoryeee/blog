@@ -15,7 +15,7 @@
         <link rel="next" href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -626,16 +626,16 @@
 <p>Root Page(/)에 적용할 첫 번째 Lambda Function의 코드는 다음과 같이 입력합니다</p>
 </li>
 </ol>
-<pre><code>import json
+<div class="highlight"><pre><span></span><code>import json
 
 def lambda_handler(event, context):
-    myParam = event['myParam']
-    print('myFunction1 excuted')
+    myParam = event[&#39;myParam&#39;]
+    print(&#39;myFunction1 excuted&#39;)
     return {
-        'statusCode': 200,
-        'body': json.dumps(myParam)
+        &#39;statusCode&#39;: 200,
+        &#39;body&#39;: json.dumps(myParam)
     }
-</code></pre>
+</code></pre></div>
 <pre><code>![API Gateway with Lambda/Untitled%204.png](API Gateway with Lambda/Untitled%204.png)
 </code></pre>
 <ol>
@@ -651,16 +651,16 @@ def lambda_handler(event, context):
 <p>두번째 Lambda Function의 코드는 다음과 같이 입력합니다</p>
 </li>
 </ol>
-<pre><code>import json
+<div class="highlight"><pre><span></span><code>import json
 
 def lambda_handler(event, context):
-    myParam = event['myParam']
-    print('myFunction2 excuted')
+    myParam = event[&#39;myParam&#39;]
+    print(&#39;myFunction2 excuted&#39;)
     return {
-        'statusCode': 200,
-        'body': json.dumps(myParam)
+        &#39;statusCode&#39;: 200,
+        &#39;body&#39;: json.dumps(myParam)
     }
-</code></pre>
+</code></pre></div>
 <pre><code>![API Gateway with Lambda/Untitled%207.png](API Gateway with Lambda/Untitled%207.png)
 </code></pre>
 <ol>
@@ -693,10 +693,10 @@ def lambda_handler(event, context):
 <p><img alt="API Gateway with Lambda/Untitled%2013.png" src="Untitled%2013.png" /></p>
 </li>
 </ol>
-<pre><code>{
-    &quot;myParam&quot;: &quot;$input.params('myParam')&quot;
+<div class="highlight"><pre><span></span><code>{
+    &quot;myParam&quot;: &quot;$input.params(&#39;myParam&#39;)&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>통합보고 경고가 뜨면 YES를 선택합니다</p>
@@ -730,8 +730,8 @@ def lambda_handler(event, context):
 </li>
 <li>curl 을 사용해 접근합니다</li>
 </ol>
-<pre><code>curl -X GET '{DNS ADDRESS}'
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl -X GET &#39;{DNS ADDRESS}&#39;
+</code></pre></div>
 <ol>
 <li>접속이 가능하고 파라메터값이 없기 떄문에 리턴값도 없음을 확인할 수 있습니다</li>
 </ol>
@@ -739,8 +739,8 @@ def lambda_handler(event, context):
 <ol>
 <li>curl 명령에 파라메터값도 같이 날려봅니다</li>
 </ol>
-<pre><code>curl -X GET '{DNS ADDRESS}?myParam=HELLO'
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl -X GET &#39;{DNS ADDRESS}?myParam=HELLO&#39;
+</code></pre></div>
 <ol>
 <li>API가 파라메터값에 정상적으로 반응하는 것을 볼 수 있습니다</li>
 </ol>
@@ -748,8 +748,8 @@ def lambda_handler(event, context):
 <ol>
 <li>/resource페이지도 정상적으로 반응하는 것을 볼 수 있습니다</li>
 </ol>
-<pre><code>curl -X GET '{DNS ADDRESS}/resource?myParam=HELLO'
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl -X GET &#39;{DNS ADDRESS}/resource?myParam=HELLO&#39;
+</code></pre></div>
 
 
 
@@ -787,7 +787,7 @@ def lambda_handler(event, context):
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

@@ -15,7 +15,7 @@
         <link rel="next" href="../Failover%20for%20HA/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -667,35 +667,35 @@
 <ol>
 <li>yum util 패키지 설치</li>
 </ol>
-<pre><code>yum install -y yum-utils
-</code></pre>
+<div class="highlight"><pre><span></span><code>yum install -y yum-utils
+</code></pre></div>
 <ol>
 <li>docker를 위한 repo를 설정</li>
 </ol>
-<pre><code>yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-</code></pre>
+<div class="highlight"><pre><span></span><code>yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+</code></pre></div>
 <ol>
 <li>docker-ce 설치</li>
 </ol>
-<pre><code>yum install -y docker-ce 
-</code></pre>
+<div class="highlight"><pre><span></span><code>yum install -y docker-ce 
+</code></pre></div>
 <ol>
 <li>(이미 설치된 패키지 떄문에)설치 에러 발생시 allowerasing 옵션</li>
 </ol>
-<pre><code>yum install -y --allowerasing docker-ce
-</code></pre>
-<pre><code>dnf install --nobest --allowerasing -y docker-ce
-</code></pre>
+<div class="highlight"><pre><span></span><code>yum install -y --allowerasing docker-ce
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>dnf install --nobest --allowerasing -y docker-ce
+</code></pre></div>
 <ol>
 <li>docker를 실행</li>
 </ol>
-<pre><code>systemctl start docker
-</code></pre>
+<div class="highlight"><pre><span></span><code>systemctl start docker
+</code></pre></div>
 <ol>
 <li>docker 버전 확인</li>
 </ol>
-<pre><code>docker --version
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker --version
+</code></pre></div>
 <h2 id="mysql">MySQL 컨테이너 설치</h2>
 <hr />
 <ol>
@@ -707,8 +707,8 @@
 -d : 백그라운드에서 컨테이너 실행</p>
 </li>
 </ol>
-<pre><code>docker run -i -t --name db001 -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name db001 -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
+</code></pre></div>
 <pre><code>아래 스크린샷 처럼 우선 로컬에서 컨테이너를 찾아보고 없으면 도커허브에서 알아서 찾고 다운로드하여 컨테이너를 로드합니다
 
 ![Docker volume with MySQL/Untitled.png](Docker volume with MySQL/Untitled.png)
@@ -716,45 +716,45 @@
 <ol>
 <li>다음 명령으로 현재 실행중인 컨테이너에 MySQL이 존재하는 것을 확인할 수 있습니다</li>
 </ol>
-<pre><code>docker ps
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker ps
+</code></pre></div>
 <pre><code>![Docker volume with MySQL/Untitled%201.png](Docker volume with MySQL/Untitled%201.png)
 </code></pre>
 <ol>
 <li>db001컨테이너에 /bin/bash 셸을 통해 접속합니다</li>
 </ol>
-<pre><code>docker exec -it db001 /bin/bash
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker exec -it db001 /bin/bash
+</code></pre></div>
 <pre><code>![Docker volume with MySQL/Untitled%202.png](Docker volume with MySQL/Untitled%202.png)
 </code></pre>
 <ol>
 <li>컨테이너에 접속되었으면 MySQL에 접속하고 데이터베이스 목록을 호출합니다</li>
 </ol>
-<pre><code>mysql -uroot -p
-</code></pre>
-<pre><code>show databases;
-</code></pre>
+<div class="highlight"><pre><span></span><code>mysql -uroot -p
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>show databases;
+</code></pre></div>
 <pre><code>![Docker volume with MySQL/Untitled%203.png](Docker volume with MySQL/Untitled%203.png)
 </code></pre>
 <ol>
 <li>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</li>
 </ol>
-<pre><code>docker stop db001
+<div class="highlight"><pre><span></span><code>docker stop db001
 docker rm db001
-</code></pre>
+</code></pre></div>
 <h2 id="mysql_1">외부에서 MySQL 컨테이너 접속</h2>
 <hr />
 <ol>
 <li>호스트에 MySQL 클라이언트를 설치합니다</li>
 </ol>
-<pre><code>dnf -y install mysql
-</code></pre>
+<div class="highlight"><pre><span></span><code>dnf -y install mysql
+</code></pre></div>
 <ol>
 <li>외부에서 컨테이너를 접속하려면 접속포트와 컨테이너포트, 도커 호스트 IP가 필요합니다</li>
 <li>컨테이너를 로드할 때 포트를 매칭해줍니다</li>
 </ol>
-<pre><code>docker run -i -t --name db001 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name db001 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
+</code></pre></div>
 <ol>
 <li>
 <p>docker ps를 이용해 동작중인 컨테이너 목록을 확인하면 이번엔 포트가 연결된 것을 확인할 수 있습니다</p>
@@ -764,8 +764,8 @@ docker rm db001
 <p>도커 호스트 IP를 파라미터에 전달하여 MySQL을 실행합니다</p>
 </li>
 </ol>
-<pre><code>mysql -uroot -p -h {HOST IP}
-</code></pre>
+<div class="highlight"><pre><span></span><code>mysql -uroot -p -h {HOST IP}
+</code></pre></div>
 <ol>
 <li>
 <p>컨테이너 외부에서 DB 접속을 성공하였습니다</p>
@@ -775,34 +775,34 @@ docker rm db001
 <p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
 </li>
 </ol>
-<pre><code>docker stop db001
+<div class="highlight"><pre><span></span><code>docker stop db001
 docker rm db001
-</code></pre>
+</code></pre></div>
 <h2 id="stateful-volume">Stateful 구현을 위한 Volume 설정</h2>
 <hr />
 <ol>
 <li>도커 호스트에 데이터 저장을 위한 디렉터리 생성</li>
 </ol>
-<pre><code>mkdir -p /db/db001/data
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdir -p /db/db001/data
+</code></pre></div>
 <ol>
 <li>작업이 가능하도록 디렉터리에 권한 부여</li>
 </ol>
-<pre><code>chmod 777 /db /db/db001 /db/db001/data
-</code></pre>
+<div class="highlight"><pre><span></span><code>chmod 777 /db /db/db001 /db/db001/data
+</code></pre></div>
 <ol>
 <li>
 <p>볼륨 옵션을 추가하여 컨테이너를 로드합니다</p>
 <p>이는 데이터 저장을 위해 생성했던 디렉터리와 컨테이너의 디렉터리가 공유되도록 설정(매핑)합니다</p>
 </li>
 </ol>
-<pre><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
+</code></pre></div>
 <ol>
 <li>컨테이너 로드 후 데이터 저장용 디렉터리로 이동하면 파일이 생성된 것을 확인할 수 있습니다</li>
 </ol>
-<pre><code>cd /db/db001/data
-</code></pre>
+<div class="highlight"><pre><span></span><code>cd /db/db001/data
+</code></pre></div>
 <pre><code>![MAGIC](Docker volume with MySQL/Untitled%206.png)
 
 MAGIC
@@ -810,25 +810,25 @@ MAGIC
 <ol>
 <li>stateful 구현 테스트를 위한 데이터를 생성합니다</li>
 </ol>
-<pre><code>create database test default character set=utf8;
+<div class="highlight"><pre><span></span><code>create database test default character set=utf8;
 use test;
 create table tt(num int);
 insert into tt values(1), (2), (3);
 select * from tt;
-</code></pre>
+</code></pre></div>
 <pre><code>![Docker volume with MySQL/Untitled%207.png](Docker volume with MySQL/Untitled%207.png)
 </code></pre>
 <ol>
 <li>Stateful 테스트를 위해 컨테이너를 삭제합니다</li>
 </ol>
-<pre><code>docker stop db001
+<div class="highlight"><pre><span></span><code>docker stop db001
 docker rm db001
-</code></pre>
+</code></pre></div>
 <ol>
 <li>컨테이너를 다시 로드합니다</li>
 </ol>
-<pre><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
+</code></pre></div>
 <ol>
 <li>
 <p>구동된 컨테이너에서 아까 작성했던 테이블이 살아있는 것을 확인할 수 있습니다.</p>
@@ -843,15 +843,15 @@ docker rm db001
 </li>
 <li>다시 컨테이너를 제거합니다</li>
 </ol>
-<pre><code>docker stop db001
+<div class="highlight"><pre><span></span><code>docker stop db001
 docker rm db001
-</code></pre>
+</code></pre></div>
 <ol>
 <li>로그와 설정을 위한 디렉토리를 생성하고 권한을 부여합니다</li>
 </ol>
-<pre><code>mkdir -p /db/db001/log /db/db001/conf
+<div class="highlight"><pre><span></span><code>mkdir -p /db/db001/log /db/db001/conf
 chmod 777 /db/db001/log /db/db001/conf
-</code></pre>
+</code></pre></div>
 <ol>
 <li>/db/db001/conf 디렉터리에 644 퍼미션을 가지는 cnf 파일을 생성합니다<ul>
 <li>
@@ -861,7 +861,7 @@ chmod 777 /db/db001/log /db/db001/conf
 </ul>
 </li>
 </ol>
-<pre><code>[mysqld]
+<div class="highlight"><pre><span></span><code>[mysqld]
 log_bin                     = mysql-bin
 binlog_format               = ROW
 gtid_mode                   = ON
@@ -883,19 +883,19 @@ report_host                 = db001
 pid-file                    = /var/run/mysqld/mysqld.pid
 socket                      = /var/lib/mysql/mysql.sock
 nice                        = 0
-</code></pre>
+</code></pre></div>
 <pre><code>[my.cnf](Docker volume with MySQL/my.cnf)
 </code></pre>
 <ol>
 <li>다음 명령으로 데이터, 로그, 설정파일이 모두 매핑된 컨테이너를 실행합니다</li>
 </ol>
-<pre><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -v /db/db001/log:/var/log/mysql -v /db/db001/conf:/etc/percona-server.conf.d -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name db001 -p 3306:3306 -v /db/db001/data:/var/lib/mysql -v /db/db001/log:/var/log/mysql -v /db/db001/conf:/etc/percona-server.conf.d -e MYSQL_ROOT_PASSWORD=&quot;root&quot; -d percona:5.7.30
+</code></pre></div>
 <ol>
 <li>로그폴더에 들어가보면 로그가 정상적으로 보이는 것을 확인할 수 있습니다</li>
 </ol>
-<pre><code>cd /db/db001/log
-</code></pre>
+<div class="highlight"><pre><span></span><code>cd /db/db001/log
+</code></pre></div>
 <pre><code>![Docker volume with MySQL/Untitled%2010.png](Docker volume with MySQL/Untitled%2010.png)
 </code></pre>
 <h2 id="_2">링크</h2>
@@ -943,7 +943,7 @@ nice                        = 0
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

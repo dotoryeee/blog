@@ -15,7 +15,7 @@
         <link rel="next" href="../Multi%20container%20CICD/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -712,13 +712,13 @@
 <p>이전에 생성한 mybridge에 연결하며 호스트포트 3000에 매핑합니다</p>
 </li>
 </ol>
-<pre><code>docker run -i -t --name orchestrator -h orchestrator --net mybridge --net-alias=orchestrator -p 3000:3000 -d openarkcode/orchestrator:latest
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name orchestrator -h orchestrator --net mybridge --net-alias=orchestrator -p 3000:3000 -d openarkcode/orchestrator:latest
+</code></pre></div>
 <ol>
 <li>컨테이너가 잘 로드되었는지 확인합니다</li>
 </ol>
-<pre><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
+</code></pre></div>
 <pre><code>![Failover for HA/Untitled.png](Failover for HA/Untitled.png)
 </code></pre>
 <h3 id="db">오케스트레이터를 위한 DB 설정</h3>
@@ -729,35 +729,35 @@
 <p>컨테이너(도커 호스트)를 종료하지 않았다면 생략합니다</p>
 </li>
 </ol>
-<pre><code>docker start db001 db002 db003
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker start db001 db002 db003
+</code></pre></div>
 <ol>
 <li>db001 SQL DB에 접속합니다</li>
 </ol>
-<pre><code>docker exec -it -uroot db001 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>오케스트레이터를 위한 MySQL 유저 생성합니다</li>
 </ol>
-<pre><code>CREATE USER orc_client_user@'172.%' IDENTIFIED BY 'orc_client_password';
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE USER orc_client_user@&#39;172.%&#39; IDENTIFIED BY &#39;orc_client_password&#39;;
+</code></pre></div>
 <ol>
 <li>필요한 권한을 부여합니다 1</li>
 </ol>
-<pre><code>GRANT SUPER, PROCESS, REPLICATION SLAVE, RELOAD ON *.* TO orc_client_user@'172.%';
-</code></pre>
+<div class="highlight"><pre><span></span><code>GRANT SUPER, PROCESS, REPLICATION SLAVE, RELOAD ON *.* TO orc_client_user@&#39;172.%&#39;;
+</code></pre></div>
 <ol>
 <li>필요한 권한을 부여합니다 2</li>
 </ol>
-<pre><code>GRANT SELECT ON mysql.slave_master_info TO orc_client_user@'172.%';
-</code></pre>
+<div class="highlight"><pre><span></span><code>GRANT SELECT ON mysql.slave_master_info TO orc_client_user@&#39;172.%&#39;;
+</code></pre></div>
 <ol>
 <li>웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다</li>
 </ol>
-<pre><code>http://{DOCKER HOST IP}:3000
+<div class="highlight"><pre><span></span><code>http://{DOCKER HOST IP}:3000
 //EC2 인스턴스를 사용하는 경우 네트워크 인바운드에 3000번 포트를 열어줘야합니다
-</code></pre>
+</code></pre></div>
 <h3 id="_4">오케스트레이터 설정</h3>
 <hr />
 <ol>
@@ -791,7 +791,8 @@ mysql -uroot -p
 <ol>
 <li>
 <p>장애상황을 만들기 위해 마스터DB 컨테이너(db001)을 정지합니다</p>
-<p><code>docker stop db001</code></p>
+<div class="highlight"><pre><span></span><code>docker stop db001
+</code></pre></div>
 </li>
 <li>
 <p>컨테이너가 정지되었습니다</p>
@@ -822,14 +823,14 @@ mysql -uroot -p
 <p>db002 SQL DB에 접속합니다</p>
 </li>
 </ol>
-<pre><code>docker exec -it -uroot db002 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>slave 상태조회 명령을 실행합니다</li>
 </ol>
-<pre><code>show slave status \G
-</code></pre>
+<div class="highlight"><pre><span></span><code>show slave status \G
+</code></pre></div>
 <ol>
 <li>
 <p>현재 Slave 상태가 아니기 때문에 empty set을 리턴합니다</p>
@@ -841,8 +842,8 @@ mysql -uroot -p
 <ol>
 <li>기존에 Master였던 db001 컨테이너를 다시 구동합니다</li>
 </ol>
-<pre><code>docker start db001
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker start db001
+</code></pre></div>
 <ol>
 <li>
 <p>컨테이너가 접속 가능한 상태이지만 여전히 클러스터에서 분리되어 있습니다</p>
@@ -852,29 +853,29 @@ mysql -uroot -p
 <p>db001 컨테이너의 MySQL에 접속합니다</p>
 </li>
 </ol>
-<pre><code>docker exec -it -uroot db001 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>db001을 slave로 동작시키기 위해 read_only로 설정합니다</li>
 </ol>
-<pre><code>set global read_only=1;
-</code></pre>
+<div class="highlight"><pre><span></span><code>set global read_only=1;
+</code></pre></div>
 <ol>
 <li>db002 MASTER를 바라보도록 설정합니다</li>
 </ol>
-<pre><code>CHANGE MASTER TO MASTER_HOST='db002', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
-</code></pre>
+<div class="highlight"><pre><span></span><code>CHANGE MASTER TO MASTER_HOST=&#39;db002&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
+</code></pre></div>
 <ol>
 <li>slave로써의 동작을 시작합니다</li>
 </ol>
-<pre><code>start slave;
-</code></pre>
+<div class="highlight"><pre><span></span><code>start slave;
+</code></pre></div>
 <ol>
 <li>slave 상태를 확인합니다</li>
 </ol>
-<pre><code>show slave status \G
-</code></pre>
+<div class="highlight"><pre><span></span><code>show slave status \G
+</code></pre></div>
 <ol>
 <li>
 <p>db001이 db002를 마스터로 바라보고 있습니다</p>
@@ -895,31 +896,31 @@ mysql -uroot -p
 <ol>
 <li>오케스트레이터 컨테이너에 접속합니다</li>
 </ol>
-<pre><code>docker exec -it orchestrator /bin/bash
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker exec -it orchestrator /bin/bash
+</code></pre></div>
 <ol>
 <li>오케스트레이터 설정 파일을 수정합니다</li>
 </ol>
-<pre><code>vi /etc/orchestrator.conf.json
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi /etc/orchestrator.conf.json
+</code></pre></div>
 <ol>
 <li>
 <p>JSON에 다음 값을 수정 합니다. db001, db002간의 Failover만 테스트 하기 위해 db003이 마스터로 승격되는 일이 발생하지 않도록 제외해둡니다.</p>
 <p>이대로 구현되면 db001 ↔ db002 간에 장애 발생시 번갈아가며 Master로 승격됩니다</p>
 </li>
 </ol>
-<pre><code>&quot;RecoverMasterClusterFilters&quot;:[
+<div class="highlight"><pre><span></span><code>&quot;RecoverMasterClusterFilters&quot;:[
 &quot;*&quot;
 ],
 &quot;PromotionIgnoreHostnameFilters&quot;:[
 &quot;db003&quot;
 ]
-</code></pre>
+</code></pre></div>
 <ol>
 <li>오케스트레이터 컨테이너를 재시작 합니다</li>
 </ol>
-<pre><code>docker restart orchestrator
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker restart orchestrator
+</code></pre></div>
 <ol>
 <li>
 <p>Auto Failover가 잘 설정되면 하트 표시에 불이 들어옵니다</p>
@@ -929,8 +930,8 @@ mysql -uroot -p
 <p>db002 컨테이너를 중지하여 Fail-Over를 테스트합니다</p>
 </li>
 </ol>
-<pre><code>docker stop db002
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker stop db002
+</code></pre></div>
 <ol>
 <li>
 <p>별 다른 작업을 하지 않아도 db002가 클러스터에서 분리되었습니다</p>
@@ -944,20 +945,20 @@ mysql -uroot -p
 <p>페일오버가 잘 실행되었으면 복구를 위해 db002를 다시 로드합니다</p>
 </li>
 </ol>
-<pre><code>docker start db002
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker start db002
+</code></pre></div>
 <ol>
 <li>db002의 MySQL서버에 접속합니다</li>
 </ol>
-<pre><code>docker exec -it -uroot db002 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>db001을 마스터로 바라보도록 db002를 slave로 설정합니다</li>
 </ol>
-<pre><code>CHANGE MASTER TO MASTER_HOST='db001', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
+<div class="highlight"><pre><span></span><code>CHANGE MASTER TO MASTER_HOST=&#39;db001&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
 START SLAVE;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>이처럼 GUI 콘솔을 이용하면 변화를 쉽게 알 수 있습니다</p>
@@ -1001,7 +1002,7 @@ START SLAVE;
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

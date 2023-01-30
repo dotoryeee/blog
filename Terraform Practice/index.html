@@ -15,7 +15,7 @@
         <link rel="next" href="../Terraform%20deploy%20VPC%20and%20Subnet/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -623,16 +623,16 @@
 </ol>
 </li>
 </ul>
-<pre><code>ssh-keygen -t rsa -b 2048 -f ~/dotoryeee.pem -q -P 
-</code></pre>
+<div class="highlight"><pre><span></span><code>ssh-keygen -t rsa -b 2048 -f ~/dotoryeee.pem -q -P 
+</code></pre></div>
 <pre><code>2. pem을 사용하려면 권한을 수정해야 합니다
 </code></pre>
-<pre><code>chmod 400 ~/dotoryeee.pem
-</code></pre>
+<div class="highlight"><pre><span></span><code>chmod 400 ~/dotoryeee.pem
+</code></pre></div>
 <pre><code>3. AWS에 넘겨줄 공개키를 생성합니다
 </code></pre>
-<pre><code>ssh-keygen -y -f ~/dotoryeee.pem &gt; ~/dotoryeee.pub
-</code></pre>
+<div class="highlight"><pre><span></span><code>ssh-keygen -y -f ~/dotoryeee.pem &gt; ~/dotoryeee.pub
+</code></pre></div>
 <ul>
 <li>
 <p>Terraform Docs</p>
@@ -648,16 +648,16 @@
 </ol>
 </li>
 </ul>
-<pre><code>Error: Error creating DB Instance: InvalidParameterCombination: The DB instance and EC2 security group are in different VPCs. The DB instance is in vpc-7ae25b11 and the EC2 security group is in vpc-07d48e73dba07404a
+<div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidParameterCombination: The DB instance and EC2 security group are in different VPCs. The DB instance is in vpc-7ae25b11 and the EC2 security group is in vpc-07d48e73dba07404a
 status code: 400, request id: 25f97e75-89d9-4323-9cd3-b09e83675d4e on [rds.tf](http://rds.tf/) line 16, in resource &quot;aws_db_instance&quot; &quot;rds&quot;:
 16: resource &quot;aws_db_instance&quot; &quot;rds&quot; {
-</code></pre>
+</code></pre></div>
 <pre><code>5. RDS는 반드시 서브넷 2개 이상을 묶어서 구성
 6. 베스천 호스트 사용하는 RDS는 당연시 퍼블릭 엑세스 제한
 </code></pre>
-<pre><code>Error: Error creating DB Instance: InvalidVPCNetworkStateFault: Cannot create a publicly accessible DBInstance.  The specified VPC does not support DNS resolution, DNS hostnames, or both. Update the VPC and then try again
+<div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidVPCNetworkStateFault: Cannot create a publicly accessible DBInstance.  The specified VPC does not support DNS resolution, DNS hostnames, or both. Update the VPC and then try again
 status code: 400, request id: d26672f9-7f0a-40ac-9e17-6fd0b9fa2558
-</code></pre>
+</code></pre></div>
 <pre><code>7. ssh 접속을 위한 map_public_ip_on_launch (서브넷) 당연히 true
 8. RDS는 생성에 오랜 시간이 걸리는 점 유의
 
@@ -666,8 +666,8 @@ status code: 400, request id: d26672f9-7f0a-40ac-9e17-6fd0b9fa2558
 9. 보안그룸 이름은 소문자 sg로 시작할 수 없음
 10. RDS 보안그룹은 security_group_names 대신 vpc_security_group_ids 사용
 </code></pre>
-<pre><code>Error: Error creating DB Instance: InvalidParameterCombination: DB Security Groups can only be associated with VPC DB Instances using API versions 2012-01-15 through 2012-09-17.
-</code></pre>
+<div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidParameterCombination: DB Security Groups can only be associated with VPC DB Instances using API versions 2012-01-15 through 2012-09-17.
+</code></pre></div>
 <h2 id="1-vpc-subnets-ec2-igw">연습1 (VPC, Subnets, EC2, IGW)</h2>
 <hr />
 <ul>
@@ -679,7 +679,7 @@ status code: 400, request id: d26672f9-7f0a-40ac-9e17-6fd0b9fa2558
 <p>코드</p>
 </li>
 </ul>
-<pre><code>#---------------VPC-----------------
+<div class="highlight"><pre><span></span><code>#---------------VPC-----------------
 resource &quot;aws_vpc&quot; &quot;main&quot; {
     cidr_block = &quot;10.0.0.0/16&quot;
     instance_tenancy = &quot;default&quot; #전용인스턴스 사용, default는 사용 하지 않음을 의미
@@ -805,11 +805,11 @@ resource &quot;aws_instance&quot; &quot;dotoryeee-EC2-02&quot; {
         Name = &quot;doto_EC2_02&quot;
     }
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>terraform apply</li>
 </ul>
-<pre><code>An execution plan has been generated and is shown below.
+<div class="highlight"><pre><span></span><code>An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
 
@@ -1196,7 +1196,7 @@ Terraform will perform the following actions:
     }
 
 Plan: 14 to add, 0 to change, 0 to destroy.
-</code></pre>
+</code></pre></div>
 <ul>
 <li>
 <p>결과</p>
@@ -1220,7 +1220,7 @@ Plan: 14 to add, 0 to change, 0 to destroy.
 </ul>
 </li>
 </ul>
-<pre><code>variable &quot;aws_region&quot; {
+<div class="highlight"><pre><span></span><code>variable &quot;aws_region&quot; {
   description = &quot;region for AWS&quot;
 }
 
@@ -1247,10 +1247,10 @@ variable &quot;ami_id_maps&quot; {
 
 variable &quot;instance_type&quot; {
 }
-</code></pre>
+</code></pre></div>
 <pre><code>- terraform.tfvars
 </code></pre>
-<pre><code>aws_region = &quot;ap-northeast-2&quot;
+<div class="highlight"><pre><span></span><code>aws_region = &quot;ap-northeast-2&quot;
 
 vpc_name = &quot;vpc_practice_02&quot;
 
@@ -1272,18 +1272,18 @@ ami_id_maps = {
 }
 
 instance_type = &quot;t2.micro&quot;
-</code></pre>
+</code></pre></div>
 <ul>
 <li>provider.tf</li>
 </ul>
-<pre><code>provider &quot;aws&quot; {
+<div class="highlight"><pre><span></span><code>provider &quot;aws&quot; {
   region = var.aws_region
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>vpc.tf</li>
 </ul>
-<pre><code>#------------VPC-------------
+<div class="highlight"><pre><span></span><code>#------------VPC-------------
 resource &quot;aws_vpc&quot; &quot;main&quot; {
   cidr_block       = &quot;10.0.0.0/16&quot;
   instance_tenancy = &quot;default&quot;
@@ -1351,11 +1351,11 @@ resource &quot;aws_subnet&quot; &quot;private2&quot; {
 
   cidr_block = &quot;10.0.2.0/24&quot;
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>ec2.tf</li>
 </ul>
-<pre><code>#----------------SG---------------------
+<div class="highlight"><pre><span></span><code>#----------------SG---------------------
 resource &quot;aws_security_group&quot; &quot;public_ec2&quot; {
   vpc_id = aws_vpc.main.id
 
@@ -1415,11 +1415,11 @@ resource &quot;aws_instance&quot; &quot;public_02&quot; {
     Name = var.instance_names[1]
   }
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>rds.tf</li>
 </ul>
-<pre><code>#--------------Security Group----------------
+<div class="highlight"><pre><span></span><code>#--------------Security Group----------------
 resource &quot;aws_security_group&quot; &quot;rds&quot; {
   vpc_id = aws_vpc.main.id
   name   = &quot;SG-for-RDS&quot;
@@ -1458,11 +1458,11 @@ resource &quot;aws_db_instance&quot; &quot;_&quot; {
 
   vpc_security_group_ids = [aws_security_group.rds.id]
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>terraform apply</li>
 </ul>
-<pre><code>An execution plan has been generated and is shown below.
+<div class="highlight"><pre><span></span><code>An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
   + create
 
@@ -1890,7 +1890,7 @@ Terraform will perform the following actions:
     }
 
 Plan: 14 to add, 0 to change, 0 to destroy.
-</code></pre>
+</code></pre></div>
 <ul>
 <li>
 <p>결과</p>
@@ -1933,14 +1933,14 @@ Plan: 14 to add, 0 to change, 0 to destroy.
 <p>코드</p>
 </li>
 </ul>
-<pre><code>
-</code></pre>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
 <ul>
 <li>구성</li>
 <li>코드</li>
 </ul>
-<pre><code>
-</code></pre>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
 
 
 
@@ -1978,7 +1978,7 @@ Plan: 14 to add, 0 to change, 0 to destroy.
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

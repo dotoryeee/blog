@@ -15,7 +15,7 @@
         <link rel="next" href="../Docker%20compose%20web%20GUI/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -640,42 +640,37 @@
 <ol>
 <li>node를 초기화 합니다</li>
 </ol>
-<pre><code>npm init
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm init
+</code></pre></div>
 <pre><code>![Docker basics/Untitled.png](Docker basics/Untitled.png)
 </code></pre>
 <ol>
 <li>express 사용을 위해 package.json에 dependency를 추가합니다</li>
 </ol>
-<pre><code>&quot;dependencies&quot;: {
+<p><div class="highlight"><pre><span></span><code>&quot;dependencies&quot;: {
     &quot;express&quot;: &quot;4.17.1&quot;
     },
     ```
 
 3. 간단한 Node앱을 준비해줍니다
-
-</code></pre>
-<p>code server.js</p>
-<pre><code>
-</code></pre>
-<p>const express = require('express');</p>
+</code></pre></div>
+code server.js
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+const express = require('express');</p>
 <p>const PORT = 8080;</p>
 <p>const app = express();
 app.get('/', (req, res) =&gt; {
     res.send("!docker with node test!")
 });</p>
 <p>app.listen(PORT);</p>
-<p>console.log('Server START')</p>
-<pre><code>
-
-### Dockerfile
+<p>console.log('Server START')
+<div class="highlight"><pre><span></span><code>### Dockerfile
 
 1. 도커파일 작성을 시작합니다
-
-</code></pre>
-<p>code Dockerfile</p>
-<pre><code>
-2. 기본적인 dockerfile틀은 다음과 같습니다
+</code></pre></div>
+code Dockerfile
+<div class="highlight"><pre><span></span><code>2. 기본적인 dockerfile틀은 다음과 같습니다
     - node 10버전 사용
 
         alpine 이미지는 경량화된 이미지(5MB)이기 때문에 npm실행을 위한 환경이 갖추어져있지 않으므로 node 베이스 이미지를 사용합니다
@@ -685,45 +680,36 @@ app.get('/', (req, res) =&gt; {
         package.json에 적혀있는 종속성들을 자동으로 설치해 향후 server.js가 원활하게 동작할 수 있는 환경을 만들어줍니다
 
     - 이미지 로드 후 node server.js 명령 실행
-
-</code></pre>
-<p>FROM node:10</p>
+</code></pre></div>
+FROM node:10</p>
 <p>RUN npm install</p>
-<p>CMD ["node", "server.js"]</p>
-<pre><code>
-3. 하지만 이렇게 하면 package.json, server.js 파일이 컨테이너에 포함될 수 없기 떄문에 copy 명령을 추가합니다. 아래 두 개는 같은 명령입니다
-
-</code></pre>
-<p>FROM node:10</p>
+<p>CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>3. 하지만 이렇게 하면 package.json, server.js 파일이 컨테이너에 포함될 수 없기 떄문에 copy 명령을 추가합니다. 아래 두 개는 같은 명령입니다
+</code></pre></div>
+FROM node:10</p>
 <p>COPY ./ ./</p>
 <p>RUN npm install
-CMD ["node", "server.js"]</p>
-<pre><code>
-</code></pre>
-<p>FROM node:10</p>
+CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+FROM node:10</p>
 <p>COPY package.json ./
 COPY server.js ./</p>
 <p>RUN npm install
-CMD ["node", "server.js"]</p>
-<pre><code>
-
-## Build Image
+CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>## Build Image
 
 ---
 
 1. (dotoryeee의 first_image)이름으로 이미지 빌드를 실행합니다
-
-</code></pre>
-<p>docker build -t dotoryeee/first_image ./</p>
-<pre><code>
-    ![Docker basics/Untitled%201.png](Docker basics/Untitled%201.png)
+</code></pre></div>
+docker build -t dotoryeee/first_image ./
+<div class="highlight"><pre><span></span><code>    ![Docker basics/Untitled%201.png](Docker basics/Untitled%201.png)
 
 2. 이미지가 잘 생성되었습니다
-
-</code></pre>
-<p>docker images</p>
-<pre><code>
-    ![Docker basics/Untitled%202.png](Docker basics/Untitled%202.png)
+</code></pre></div>
+docker images
+<div class="highlight"><pre><span></span><code>    ![Docker basics/Untitled%202.png](Docker basics/Untitled%202.png)
 
 
 ## Load Container
@@ -733,11 +719,9 @@ CMD ["node", "server.js"]</p>
 1. 생성된 이미지로 컨테이너를 실행해봅니다
 
     호스트포트 5000과 컨테이너포트 8080을 매핑합니다
-
-</code></pre>
-<p>docker run -p 5000:8080 dotoryeee/first_image</p>
-<pre><code>
-2. {DOCKER HOST IP}:8080에 접속하면 서버를 확인할 수 있습니다
+</code></pre></div>
+docker run -p 5000:8080 dotoryeee/first_image
+<div class="highlight"><pre><span></span><code>2. {DOCKER HOST IP}:8080에 접속하면 서버를 확인할 수 있습니다
 
     ![Docker basics/Untitled%203.png](Docker basics/Untitled%203.png)
 
@@ -751,18 +735,16 @@ CMD ["node", "server.js"]</p>
     ![Docker basics/Untitled%204.png](Docker basics/Untitled%204.png)
 
 2. 때문에 작업 디렉토리를 별도로 분리하고 이미지를 새로 빌드합니다
-
-</code></pre>
-<p>FROM node:10</p>
+</code></pre></div>
+FROM node:10</p>
 <p>WORKDIR /usr/src/app</p>
 <p>COPY ./ ./</p>
 <p>RUN npm install
-CMD ["node", "server.js"]</p>
-<pre><code>
-</code></pre>
-<p>docker build -t dotoryeee/first_image ./</p>
-<pre><code>
-3. 이제 작업디렉토리가 변경되어 깔끔해졌습니다.
+CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+docker build -t dotoryeee/first_image ./
+<div class="highlight"><pre><span></span><code>3. 이제 작업디렉토리가 변경되어 깔끔해졌습니다.
 
     ![Docker basics/Untitled%205.png](Docker basics/Untitled%205.png)
 
@@ -775,16 +757,14 @@ CMD ["node", "server.js"]</p>
 2. 단순히 코드만 업데이트 할 떄, 종속성은 바뀌지 않았음에도 불구하고 npm을 이용해 처음부터 빌드하고 있는 상황입니다
 3. 때문에 package.json만 따로 먼저 copy 해서 cache화 작업 후 npm install을 수행합니다
 4. 이를 구현하기 위해 dockerfile을 아래와 같이 수정하면 됩니다
-
-</code></pre>
-<p>FROM node:10
+</code></pre></div>
+FROM node:10
 WORKDIR /usr/src/app</p>
 <p>COPY package.json ./</p>
 <p>RUN npm install
 COPY ./ ./
-CMD ["node", "server.js"]</p>
-<pre><code>
-5. dockerfile 작업 후 최초빌드시 6.7초가 소요되었습니다
+CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>5. dockerfile 작업 후 최초빌드시 6.7초가 소요되었습니다
 
     ![Docker basics/Untitled%206.png](Docker basics/Untitled%206.png)
 
@@ -804,14 +784,12 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
 &lt;/aside&gt;
 
 1. 볼륨 매핑시 컨테이너 로드 명령은 다음과 같습니다
-
-</code></pre>
-<p>docker run -p 5000:8080 \
+</code></pre></div>
+docker run -p 5000:8080 \
 -v /usr/src/app/node_module \
 -v $(pwd):/use/src/app \
--d dotoryeee/first_image</p>
-<pre><code>
-2. 볼륨 매핑(참조) 부분에서 두 줄은 각각 특성이 다릅니다
+-d dotoryeee/first_image
+<div class="highlight"><pre><span></span><code>2. 볼륨 매핑(참조) 부분에서 두 줄은 각각 특성이 다릅니다
 3. 3번 행은 환경변수에서 pwd(현재 작업중인 디렉터리) 위치를 가져와 컨테이너의 /src/app 폴더에 매핑하지만
 4. 2번 행의 node_module폴더는 호스트에 존재하지 않기 때문에 예외로 처리하지 말라는 명령입니다
 
@@ -824,38 +802,33 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
 ---
 
 1. 작업용 디렉터리를 생성하고 노드를 초기화합니다
-
-</code></pre>
-<p>mkdir compose
+</code></pre></div>
+mkdir compose
 cd compose
-npm init</p>
-<pre><code>
-    ![Docker basics/Untitled%209.png](Docker basics/Untitled%209.png)
+npm init
+<div class="highlight"><pre><span></span><code>    ![Docker basics/Untitled%209.png](Docker basics/Untitled%209.png)
 
 2. 종속성에 express와 redis를 추가합니다
-
-</code></pre>
-<p>code package.json</p>
-<pre><code>
-</code></pre>
-<p>"dependencies": {
+</code></pre></div>
+code package.json
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+"dependencies": {
     "express": "4.17.1"
     "redis" : "3.0.2"
-    },</p>
-<pre><code>
-3. 다음과 같이 서버를 작성해줍니다
-
-</code></pre>
-<p>code server.js</p>
-<pre><code>
-</code></pre>
-<p>const express = require("express");
+    },
+<div class="highlight"><pre><span></span><code>3. 다음과 같이 서버를 작성해줍니다
+</code></pre></div>
+code server.js
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+const express = require("express");
 const redis = require("redis");</p>
 <p>const EXPRESS_PORT = 7070;
 const REDIS_PORT = 6379;</p>
 <p>//redis
 const client = redis.createClient({
-    //host값에 도커가 아닌 일반 환경에서는 https://redis-server.com 을 입력
+    //host값에 도커가 아닌 일반 환경에서는 <a href="https://redis-server.com">https://redis-server.com</a> 을 입력
     //compose를 사용할 경우 docker-compose.yml에 명시한 컨테이너 이름을 입력
     host: "redis-server";<br />
     port: REDIS_PORT;
@@ -871,19 +844,15 @@ app.get('/', (req, res) =&gt; {
 })</p>
 <p>const app = express();
 app.listen(EXPRESS_PORT);
-console.log('server is running');</p>
-<pre><code>
-4. 현재는 compose를 위한 디렉터리를 따로 만들어 둔 상태이니 전체 파일을 패키징 합니다
-
-</code></pre>
-<p>FROM node:10</p>
+console.log('server is running');
+<div class="highlight"><pre><span></span><code>4. 현재는 compose를 위한 디렉터리를 따로 만들어 둔 상태이니 전체 파일을 패키징 합니다
+</code></pre></div>
+FROM node:10</p>
 <p>WORKDIR /usr/src/app</p>
 <p>COPY ./ ./</p>
 <p>RUN npm install</p>
-<p>CMD ["node", "server.js"]</p>
-<pre><code>
-
-## Docker compose YAML
+<p>CMD ["node", "server.js"]
+<div class="highlight"><pre><span></span><code>## Docker compose YAML
 
 ---
 
@@ -895,28 +864,22 @@ console.log('server is running');</p>
     ![Docker basics/Untitled%2010.png](Docker basics/Untitled%2010.png)
 
 3. yaml 파일 작업을 시작합니다
-
-</code></pre>
-<p>vi docker-compose.yml</p>
-<pre><code>
-4. 내용은 다음과 같습니다
-
-</code></pre>
-<p>version: "3"       #docker compose의 버전
+</code></pre></div>
+vi docker-compose.yml
+<div class="highlight"><pre><span></span><code>4. 내용은 다음과 같습니다
+</code></pre></div>
+version: "3"       #docker compose의 버전
 services:          #실행하려는 컨테이너 정의
     redis-server:    #컨테이너 이름
     image: "redis" #컨테이너가 사용하는 이미지
     node-app:        #컨테이너 이름
     build: .       #현재 위치에 있는 dockerfile 사용
     ports:         #포트매핑
-    - "5000:7070"</p>
-<pre><code>
-5. 컴포즈를 시작합니다
-
-</code></pre>
-<p>docker-compose up</p>
-<pre><code>
-6. 컨테이너 두 대가 모두 로드되었습니다
+    - "5000:7070"
+<div class="highlight"><pre><span></span><code>5. 컴포즈를 시작합니다
+</code></pre></div>
+docker-compose up
+<div class="highlight"><pre><span></span><code>6. 컨테이너 두 대가 모두 로드되었습니다
 
     ![Docker basics/Untitled%2011.png](Docker basics/Untitled%2011.png)
 
@@ -925,9 +888,8 @@ services:          #실행하려는 컨테이너 정의
     ![Docker basics/Untitled%2012.png](Docker basics/Untitled%2012.png)
 
 8. 오타로 인해 에러가 발생했다던가 등의 이유로 인해 이미지를 강재로 재빌드 후 컴포즈를 실행하려면 다음과 같이 입력합니다
-
-</code></pre>
-<p>docker-compose up --build
+</code></pre></div>
+docker-compose up --build
 ```</p>
 <ol>
 <li>컨테이너 종료는 Ctrl + C를 입력하면 됩니다</li>
@@ -969,7 +931,7 @@ services:          #실행하려는 컨테이너 정의
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

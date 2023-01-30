@@ -15,7 +15,7 @@
         <link rel="next" href="../Terraform%20Backend/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -659,43 +659,43 @@
 <ol>
 <li>IAM 작업 디렉터리를 생성합니다</li>
 </ol>
-<pre><code>mkdir iam
+<div class="highlight"><pre><span></span><code>mkdir iam
 cd iam
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>이제 자연스럽게 provider를 먼저 생성합니다</p>
 <p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
 </li>
 </ol>
-<pre><code>vi provider.tf
-</code></pre>
-<pre><code>provider &quot;aws&quot;{
+<div class="highlight"><pre><span></span><code>vi provider.tf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>provider &quot;aws&quot;{
         region = &quot;ap-northeast-2&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>IAM을 코딩하기 위한 파일을 생성합니다</li>
 </ol>
-<pre><code>vi iam.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi iam.tf
+</code></pre></div>
 <ol>
 <li>gildong.hong 유저를 생성하는 코드를 작성했습니다</li>
 </ol>
-<pre><code>resource &quot;aws_iam_user&quot; &quot;gildong_hong&quot; {
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_user&quot; &quot;gildong_hong&quot; {
         name = &quot;gildong.hong&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>테라폼 사용을 선언합니다</li>
 </ol>
-<pre><code>terraform init
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform init
+</code></pre></div>
 <ol>
 <li>plan을 실행하면 문제가 없음을 확인할 수 있습니다</li>
 </ol>
-<pre><code>terraform plan
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform plan
+</code></pre></div>
 <pre><code>![Terraform AWS IAM/Untitled.png](Terraform AWS IAM/Untitled.png)
 </code></pre>
 <ol>
@@ -720,24 +720,24 @@ cd iam
 <li>순서는 그룹 생성 → 멤버십 생성 → '멤버십을 그룹에 연결' 입니다</li>
 <li>그룹 생성 코드 작성을 시작합니다</li>
 </ol>
-<pre><code>vi user_group.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi user_group.tf
+</code></pre></div>
 <ol>
 <li>코드 내용을 다음처럼 필수요소만 넣어줍니다</li>
 </ol>
-<pre><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
         name = &quot;terra_group&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>plan해보고 문제 없으면 바로 apply 합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%203.png" src="Untitled%203.png" /></p>
 </li>
 </ol>
-<pre><code>terraform plan
+<div class="highlight"><pre><span></span><code>terraform plan
 terraform apply
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>에러없이 잘 생성되었습니다</p>
@@ -751,12 +751,12 @@ terraform apply
 <p>이번엔 그룹에 유저를 추가해봅니다</p>
 </li>
 </ol>
-<pre><code>vi user_group.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi user_group.tf
+</code></pre></div>
 <ol>
 <li>코드는 다음과 같은 형태가 됩니다</li>
 </ol>
-<pre><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
         name = &quot;terra_group&quot;
 }
 
@@ -769,7 +769,7 @@ resource &quot;aws_iam_group_membership&quot; &quot;terra_group&quot;{
 
         group = aws_iam_group.test_group.name
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>plan에 문제가 없으니 바로 apply 합니다</p>
@@ -794,12 +794,12 @@ resource &quot;aws_iam_group_membership&quot; &quot;terra_group&quot;{
 </li>
 <li>'hello' 이름을 가지는 역할생성을 시작합니다</li>
 </ol>
-<pre><code>vi iam_role_hello.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi iam_role_hello.tf
+</code></pre></div>
 <ol>
 <li>역할 설정 코드는 권한 정책이 포함됩니다</li>
 </ol>
-<pre><code>resource &quot;aws_iam_role&quot; &quot;hello&quot; {
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_role&quot; &quot;hello&quot; {
         name                    = &quot;hello-iam-role&quot;
         path                    = &quot;/&quot;
         assume_role_policy      = &lt;&lt;EOF
@@ -818,7 +818,7 @@ resource &quot;aws_iam_group_membership&quot; &quot;terra_group&quot;{
 }
 EOF
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>plan은 성공적으로 마쳤습니다</p>
@@ -828,8 +828,8 @@ EOF
 <p>바로 apply 진행합니다</p>
 </li>
 </ol>
-<pre><code>terraform apply
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform apply
+</code></pre></div>
 <ol>
 <li>
 <p>역할이 잘 생성되었습니다</p>
@@ -847,15 +847,15 @@ EOF
 <p>이번에는 Permission을 추가해봅니다</p>
 </li>
 </ol>
-<pre><code>vi iam_role_hello.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi iam_role_hello.tf
+</code></pre></div>
 <ol>
 <li>
 <p>다음 내용을 추가합니다</p>
 <p>정책을 만든 후 Role에 매핑하는 구조가 됩니다</p>
 </li>
 </ol>
-<pre><code>resource &quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;{
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;{
     name   = &quot;hello-s3-download&quot;
     role   = aws_iam_role.hello.id
     policy = &lt;&lt;EOF
@@ -880,7 +880,7 @@ resource &quot;aws_iam_instance_profile&quot; &quot;hello&quot;{
         name = &quot;hello-profile&quot;
         role = aws_iam_role.hello.name
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>plan에서 정책이 잘 추가되면 apply 진행합니다</p>
@@ -904,15 +904,15 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 <li>AWS가 제공하는 Policy가 매우 많지만, 그래도 Customer가 직접 컨트롤 하는 것이 타이트한 권한 관리가 가능하기 때문에 이를 권장합니다</li>
 <li>따라서 이번엔 홍길동 유저에게 Customer Managed 권한을 부여해봅니다</li>
 </ol>
-<pre><code>vi iam.tf
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi iam.tf
+</code></pre></div>
 <ol>
 <li>
 <p>다음 코드를 추가합니다</p>
 <p>IAM user에 할당할 super-admin이라는 policy를 추가했습니다</p>
 </li>
 </ol>
-<pre><code>resource &quot;aws_iam_user_policy&quot; &quot;art_devops_black&quot; {
+<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_user_policy&quot; &quot;art_devops_black&quot; {
     name  = &quot;super-admin&quot;
     user  = aws_iam_user.gildong_hong.name
 
@@ -933,7 +933,7 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 }
 EOF
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>테라폼에서 plan은 좋은 습관입니다</p>
@@ -943,7 +943,8 @@ EOF
 <p>이상 없으면 바로 적용해봅니다</p>
 </li>
 </ol>
-<p><code>terraform apply</code></p>
+<div class="highlight"><pre><span></span><code>terraform apply
+</code></pre></div>
 <ol>
 <li>
 <p>홍길동에게 super-admin 정책이 잘 붙었습니다</p>
@@ -953,20 +954,21 @@ EOF
 <p>그룹정책을 설정할 때는 aws iam user policy 대신 aws_iam_group_policy를 설정합니다</p>
 </li>
 </ol>
-<p><code>aws_iam_group_policy</code></p>
+<div class="highlight"><pre><span></span><code>aws_iam_group_policy
+</code></pre></div>
 <h2 id="ec2-role">EC2-Role</h2>
 <hr />
 <ol>
 <li>EC2에 키를 직접 보관하는것을 보안상 좋지 않기 때문에 EC2에 역할을 할당해 쓰는것이 권장됩니다</li>
 <li>다음 명령을 쓰면 AK, SK가 그대로 노출되는것을 볼 수 있습니다</li>
 </ol>
-<pre><code>cat ~/.aws/credentials
-</code></pre>
+<div class="highlight"><pre><span></span><code>cat ~/.aws/credentials
+</code></pre></div>
 <ol>
 <li>따라서 이 값을 모두 삭제하고</li>
 </ol>
-<pre><code>rm -rf ~/.aws/credentials
-</code></pre>
+<div class="highlight"><pre><span></span><code>rm -rf ~/.aws/credentials
+</code></pre></div>
 <ol>
 <li>
 <p>권한이 잘 제거되었습니다</p>
@@ -988,8 +990,8 @@ EOF
 <p>디렉터리 내 현재까지 작성된 모든 리소스를 보고 싶으면 다음 명령으로 조회할 수 있습니다</p>
 </li>
 </ol>
-<pre><code>terraform state list
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform state list
+</code></pre></div>
 <p><img alt="Terraform AWS IAM/Untitled%2021.png" src="Untitled%2021.png" /></p>
 <h2 id="link">Link</h2>
 <hr />
@@ -1034,7 +1036,7 @@ EOF
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

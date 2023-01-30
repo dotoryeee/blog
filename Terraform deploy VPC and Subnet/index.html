@@ -15,7 +15,7 @@
         <link rel="next" href="../Terraform%20deploy%20VPC/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -628,29 +628,29 @@
 <ol>
 <li>provider 설정을 분리하여 따로 작성합니다</li>
 </ol>
-<pre><code>vi provider.tf
-</code></pre>
-<pre><code>provider &quot;aws&quot; {
+<div class="highlight"><pre><span></span><code>vi provider.tf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>provider &quot;aws&quot; {
     region = &quot;ap-northeast-2&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>vpc용 테라폼 코드를 작성합니다</li>
 </ol>
-<pre><code>vi vpc.tf
-</code></pre>
-<pre><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
+<div class="highlight"><pre><span></span><code>vi vpc.tf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
         cidr_block = &quot;10.0.0.0/16&quot;
         tags = {
                 Name = &quot;Terraform TEST1&quot;
         }
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>테라폼 플랜을 실행합니다</li>
 </ol>
-<pre><code>terraform plan
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform plan
+</code></pre></div>
 <ol>
 <li>
 <p>당연히 init을 하지 않으면 진행할 수 없습니다</p>
@@ -660,8 +660,8 @@
 <p>테라폼 시작을 선언합니다</p>
 </li>
 </ol>
-<pre><code>terraform init
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform init
+</code></pre></div>
 <ol>
 <li>
 <p>테라폼이 AWS를 컨트롤 할 수 있는 플러그인을 다운로드 합니다</p>
@@ -671,8 +671,8 @@
 <p>다시 plan을 시작합니다</p>
 </li>
 </ol>
-<pre><code>terraform plan
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform plan
+</code></pre></div>
 <ol>
 <li>
 <p>현재 작성된 테라폼 코드에 따르면 아래와 같이 인프라가 생성된다는 예상 결과를 보여줍니다</p>
@@ -682,8 +682,8 @@
 <p>본격적으로 AWS에 인프라 생성을 시작합니다</p>
 </li>
 </ol>
-<pre><code>terraform apply
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform apply
+</code></pre></div>
 <ol>
 <li>
 <p>경고창이 뜨면 yes를 입력합니다</p>
@@ -710,9 +710,9 @@
 </ul>
 </li>
 </ol>
-<pre><code>vi vpc.tf
-</code></pre>
-<pre><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
+<div class="highlight"><pre><span></span><code>vi vpc.tf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
         cidr_block = &quot;10.0.0.0/16&quot;
 
         tags = {
@@ -738,11 +738,12 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
                 Name = &quot;terra-private-01-subnet&quot;
         }
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>테라폼 플랜을 이용해 잘 작성했는지 체크합니다</li>
 </ol>
-<p><code>terraform plan</code></p>
+<div class="highlight"><pre><span></span><code>terraform plan
+</code></pre></div>
 <ol>
 <li>
 <p>현재 코드에 3개의 리소스(VPC, public subnet, private subnet)이 작성되어있지만</p>
@@ -754,8 +755,8 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
 <p>AWS 인프라에 적용해봅니다</p>
 </li>
 </ol>
-<pre><code>terraform apply
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform apply
+</code></pre></div>
 <ol>
 <li>
 <p>금방 생성됩니다</p>
@@ -769,8 +770,8 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
 <p>다음 명령을 이용하면 현재 생성된 리스트를 볼 수 있습니다</p>
 </li>
 </ol>
-<pre><code>terraform state list
-</code></pre>
+<div class="highlight"><pre><span></span><code>terraform state list
+</code></pre></div>
 <pre><code>![Terraform deploy VPC and Subnet/Untitled%209.png](Terraform deploy VPC and Subnet/Untitled%209.png)
 </code></pre>
 
@@ -810,7 +811,7 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

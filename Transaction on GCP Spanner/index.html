@@ -15,7 +15,7 @@
         <link rel="next" href="../VPC%20Endpoint%20with%20Role/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -652,8 +652,8 @@
 <p>google cloud SDK(이하 SDK)에서 접속하기 위해 다음 명령을 실행합니다</p>
 </li>
 </ol>
-<pre><code>gcloud auth application-default login {Project ID}
-</code></pre>
+<div class="highlight"><pre><span></span><code>gcloud auth application-default login {Project ID}
+</code></pre></div>
 <ol>
 <li>6.3 코드를 이용해 테이블에 값을 추가합니다.
 이때 6.3 코드는 JSON을 이용해 데이터를 삽입합니다<a href="https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js">https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js</a></li>
@@ -705,20 +705,20 @@ SDK코드에 SQL구문을 삽입하여 실행하는 6.6코드를 실행해봅니
 <p>② SDK에 SQL구문 직접 실어보내기</p>
 </li>
 </ol>
-<pre><code>gcloud spanner databases ddl update test-database --instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>gcloud spanner databases ddl update test-database --instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;
+</code></pre></div>
 <ol>
 <li>색인을 사용하기 위해 색인테이블을 생성합니다</li>
 </ol>
-<pre><code>CREATE INDEX employees_by_name ON employees (name)
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE INDEX employees_by_name ON employees (name)
+</code></pre></div>
 <pre><code>![Transaction on GCP Spanner/Untitled%2014.png](Transaction on GCP Spanner/Untitled%2014.png)
 </code></pre>
 <ol>
 <li>색인 후 다시 데이터로 돌아가 추가 데이터를 가져오는 것을 비효율적이기 때문에 애초에 색인테이블에 다른 데이터도 추가로 삽입해둘 수 있습니다</li>
 </ol>
-<pre><code>CREATE INDEX employees_by_name ON employees (name) STORING (start_date)
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE INDEX employees_by_name ON employees (name) STORING (start_date)
+</code></pre></div>
 <ol>
 <li>
 <p>색인테이블에 다른데이터 열이 추가로 지정된 모습입니다</p>
@@ -773,7 +773,7 @@ SDK코드에 SQL구문을 삽입하여 실행하는 6.6코드를 실행해봅니
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

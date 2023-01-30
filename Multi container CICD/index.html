@@ -15,7 +15,7 @@
         <link rel="next" href="../Project-1/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -1009,29 +1009,29 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
 <ol>
 <li>메인 작업 디렉터리를 생성합니다</li>
 </ol>
-<pre><code>mkdir docker_multicon_app
+<div class="highlight"><pre><span></span><code>mkdir docker_multicon_app
 cd docker_multicon_app
-</code></pre>
+</code></pre></div>
 <ol>
 <li>nodeJS로 백앤드를 구성합니다. 백앤드 작업용 폴더를 생성합니다</li>
 </ol>
-<pre><code>mkdir backend
+<div class="highlight"><pre><span></span><code>mkdir backend
 cd backend
-</code></pre>
+</code></pre></div>
 <ol>
 <li>노드 세팅을 시작합니다. 모두 기본값으로 진행합니다</li>
 </ol>
-<pre><code>npm init
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm init
+</code></pre></div>
 <ol>
 <li>
 <p>종속성을 수정합니다</p>
 <p>body-parser는 클라이언트에서 오는 요청의 본문을 해석해주는 미들웨어입니다</p>
 </li>
 </ol>
-<pre><code>code package.json
-</code></pre>
-<pre><code>&quot;scripts&quot;: {
+<div class="highlight"><pre><span></span><code>code package.json
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>&quot;scripts&quot;: {
 &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;,
 &quot;start&quot;: &quot;node server.js&quot;,
 &quot;dev&quot;: &quot;nodemon server.js&quot;
@@ -1042,16 +1042,16 @@ cd backend
 &quot;nodemon&quot;: &quot;^2.0.7&quot;,
 &quot;body-parser&quot;:&quot;^1.19.0&quot;
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>mysql연결을 위한 db.js를 작성합니다</p>
 <p>데이터베이스를 이용하려면  connection을 연결한 후 다 사용하고 나면 그 connection을 반납해야합니다. 하지만 너무 많은 요청이 오면 이 과정에서 부하가 생길 수 있기 때문에 연결된 Connection을 Pool에 보관한 후 필요할 때 Pool에 있는 Connection을 가져다가 쓸 수 있습니다.</p>
 </li>
 </ol>
-<pre><code>code db.js
-</code></pre>
-<pre><code>const mysql = require(&quot;mysql&quot;);
+<div class="highlight"><pre><span></span><code>code db.js
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>const mysql = require(&quot;mysql&quot;);
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: &quot;mysql&quot;,
@@ -1060,13 +1060,13 @@ const pool = mysql.createPool({
     database: &quot;myapp&quot;
 });
 exports.pool = pool; //다른 앱에서 쓸 수 있도록 export
-</code></pre>
+</code></pre></div>
 <ol>
 <li>app의 시작점인 server.js를 작성합니다</li>
 </ol>
-<pre><code>code server.js
-</code></pre>
-<pre><code>const express = require(&quot;express&quot;);
+<div class="highlight"><pre><span></span><code>code server.js
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>const express = require(&quot;express&quot;);
 const bodyParser = require(&quot;body-parser&quot;);
 //앞에서 export된 pool의 시작점인 db.js를 불러오기
 const db = require(&quot;./db&quot;);
@@ -1090,7 +1090,7 @@ db.pool.query(`CREATE TABLE lists(
 */   
 //--------------! API !--------------------/
 //DB 테이블에 있는 모든 데이터를 프론트로 보내기
-app.get('/api/values'), function (req, res, next) { //핸들러 생성
+app.get(&#39;/api/values&#39;), function (req, res, next) { //핸들러 생성
     db.pool.query(&quot;SELECT * FROM lists;&quot;, //DB에서 모든 데이터 가져오기
         (err, results, fields) =&gt; {
             if (err)
@@ -1101,7 +1101,7 @@ app.get('/api/values'), function (req, res, next) { //핸들러 생성
 })
 
 //프론트에서 입력한 값을 DB 테이블에 입력
-app.post('/api/values', function (res, req, next) {
+app.post(&#39;/api/values&#39;, function (res, req, next) {
     db.pool.query(`INSERT INTO lists (values) VALUES(&quot;${req.body.value}&quot;);`, //bodyParser 사용
         (err, results, fields) =&gt; {
             if (err)
@@ -1116,14 +1116,14 @@ app.post('/api/values', function (res, req, next) {
 app.listen(EXPRESS_PORT, ()) =&gt; {
     console.log(&quot;app running on PORT 5000&quot;)
 }
-</code></pre>
+</code></pre></div>
 <h2 id="frontendreactjs">Frontend(reactJS)</h2>
 <hr />
 <ol>
 <li>메인 작업 디렉터리에 리액트를 설치합니다. </li>
 </ol>
-<pre><code>npx create-react-app frontend
-</code></pre>
+<div class="highlight"><pre><span></span><code>npx create-react-app frontend
+</code></pre></div>
 <ol>
 <li>
 <p>다음과 같은 구조가 되겠습니다</p>
@@ -1133,7 +1133,7 @@ app.listen(EXPRESS_PORT, ()) =&gt; {
 <p>데이터 입력을 위해 리액트 /src/app.js에 인풋과 버튼을 생성합니다</p>
 </li>
 </ol>
-<pre><code>&lt;div className=&quot;container&quot;&gt;
+<div class="highlight"><pre><span></span><code>&lt;div className=&quot;container&quot;&gt;
   &lt;form className=&quot;example&quot;&gt;
     &lt;input
       type=&quot;text&quot;
@@ -1142,35 +1142,35 @@ app.listen(EXPRESS_PORT, ()) =&gt; {
     &lt;button type=&quot;submit&quot;&gt;GO&lt;/button&gt;
   &lt;/form&gt;
 &lt;/div&gt;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>데이터 전달에 useState, useEffect, axios를 사용합니다<ul>
 <li>package.json - depencencise</li>
 </ul>
 </li>
 </ol>
-<pre><code>&quot;axios&quot; : &quot;^0.21.1&quot; 
+<div class="highlight"><pre><span></span><code>&quot;axios&quot; : &quot;^0.21.1&quot; 
 -&gt; 종속성 업데이트 후 npm install
-</code></pre>
+</code></pre></div>
 <pre><code>- import
 </code></pre>
-<pre><code>import React, { useState, useEffect } from 'react';
+<div class="highlight"><pre><span></span><code>import React, { useState, useEffect } from &#39;react&#39;;
 //useState, useEffect를 사용하기 위해 react라이브러리에서 가져옵니다
-import axios from 'axios';
-</code></pre>
+import axios from &#39;axios&#39;;
+</code></pre></div>
 <ul>
 <li>useState</li>
 </ul>
-<pre><code>const [lists, setLists] = useState([]) //기본state는 빈 배열
+<div class="highlight"><pre><span></span><code>const [lists, setLists] = useState([]) //기본state는 빈 배열
 // 데이터베이스에 저장된 값을 가져와서 화면에 보여주기전 이 State에 넣어둡니다
 const [value, setValue] = useState(&quot;&quot;) //기본state에 빈 스트링
 //Input박스에 입력한 값이 이 state에 들어갑니다
-</code></pre>
+</code></pre></div>
 <ul>
 <li>axios, useEffect</li>
 </ul>
-<pre><code>useEffect(() =&gt; { //이곳에서 데이터베이스에 있는 값을 요청
-    axios.get('/api/values') //데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로
+<div class="highlight"><pre><span></span><code>useEffect(() =&gt; { //이곳에서 데이터베이스에 있는 값을 요청
+    axios.get(&#39;/api/values&#39;) //데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로
       .then(response =&gt; { //백엔드(Node)가 처리 후 송신한 데이터가 이곳(respose 파라미터)로 수신
         console.log(`response ${response.data}`) //어떤 값이 왔는지 콘솔로 확인
         setLists(response.data) //수신한 데이터를 이곳(setLists(38행))에 넣어줌
@@ -1185,7 +1185,7 @@ const [value, setValue] = useState(&quot;&quot;) //기본state에 빈 스트링
   //submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장
   const submitHandler = (event) =&gt; { //이벤트를 받아옵니다
     event.preventDefault(); //오동작 방지를 위해 기본 동작을 제거합니다
-    axios.post('/api/value', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
+    axios.post(&#39;/api/value&#39;, //데이터 전달을 위해 백엔드에 POST request를 보냅니다
       { value: value }) //키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value
       .then(response =&gt; { //백엔드에서 처리 후 회신받은 데이터를 response에 받아옴
         if (response.data.success) { //response가 성공했다면 &lt;- server.js 42행 참고
@@ -1197,11 +1197,11 @@ const [value, setValue] = useState(&quot;&quot;) //기본state에 빈 스트링
       }
     })
   }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>이벤트핸들러 호출을 위한 부분(onSubmit, onChange)과 렌더링 보강(아래 코드조각의 3~5행)을 위해 html 코드를 수정합니다. 이는 화면에 표시되는 리스트의 개수가 다를 떄 렌더링 오류가 발생하는 것을 수정합니다</li>
 </ul>
-<pre><code>&lt;div className=&quot;container&quot;&gt;
+<div class="highlight"><pre><span></span><code>&lt;div className=&quot;container&quot;&gt;
 
   {lists &amp;&amp; lists.map((list, index) =&gt; ( 
     &lt;li key={index}&gt;{list.value}&lt;/li&gt;
@@ -1217,23 +1217,23 @@ const [value, setValue] = useState(&quot;&quot;) //기본state에 빈 스트링
     &lt;button type=&quot;submit&quot;&gt;GO&lt;/button&gt;
   &lt;/form&gt;
 &lt;/div&gt;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>고로 최종적인 코드는 다음과 같습니다<ul>
 <li>App.js</li>
 </ul>
 </li>
 </ol>
-<pre><code>import logo from './logo.svg';
-import './App.css';
-import React, { useState, useEffect } from 'react';
+<div class="highlight"><pre><span></span><code>import logo from &#39;./logo.svg&#39;;
+import &#39;./App.css&#39;;
+import React, { useState, useEffect } from &#39;react&#39;;
 //useState, useEffect를 사용하기 위해 react라이브러리에서 가져옵니다
-import axios from 'axios'; 
+import axios from &#39;axios&#39;; 
 
 function App() {
 
   useEffect(() =&gt; { //이곳에서 데이터베이스에 있는 값을 요청
-    axios.get('/api/values') //데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로
+    axios.get(&#39;/api/values&#39;) //데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로
       .then(response =&gt; { //백엔드(Node)가 처리 후 송신한 데이터가 이곳(respose 파라미터)로 수신
         console.log(`response ${response.data}`) //어떤 값이 왔는지 콘솔로 확인
         setLists(response.data) //수신한 데이터를 이곳(setLists(38행))에 넣어줌
@@ -1248,7 +1248,7 @@ function App() {
   //submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장
   const submitHandler = (event) =&gt; { //이벤트를 받아옵니다
     event.preventDefault(); //오동작 방지를 위해 기본 동작을 제거합니다
-    axios.post('/api/value', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
+    axios.post(&#39;/api/value&#39;, //데이터 전달을 위해 백엔드에 POST request를 보냅니다
       { value: value }) //키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value
       .then(response =&gt; { //백엔드에서 처리 후 회신받은 데이터를 response에 받아옴
         if (response.data.success) { //response가 성공했다면 &lt;- server.js 42행 참고
@@ -1292,47 +1292,47 @@ function App() {
 }
 
 export default App;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>디자인을 위해 app.css도 추가합니다</li>
 </ol>
-<pre><code>code App.css
-</code></pre>
-<pre><code class="language-css">.container {
-  width: 375px;
-}
+<div class="highlight"><pre><span></span><code>code App.css
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">375</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
 
-form.example input {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 74%;
-  background: #f1f1f1;
-}
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">input</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="kc">grey</span><span class="p">;</span>
+<span class="w">  </span><span class="k">float</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#f1f1f1</span><span class="p">;</span>
+<span class="p">}</span>
 
-form.example button {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">button</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">float</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#2196F3</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">white</span><span class="p">;</span>
+<span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="kc">grey</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border-left</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">  </span><span class="k">cursor</span><span class="p">:</span><span class="w"> </span><span class="kc">pointer</span><span class="p">;</span>
+<span class="p">}</span>
 
-form.example button:hover {
-  background: #0b7dda;
-}
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">button</span><span class="p">:</span><span class="nd">hover</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#0b7dda</span><span class="p">;</span>
+<span class="p">}</span>
 
-form.example::after {
-  content: &quot;&quot;;
-  clear: both;
-  display: table;
-}
-</code></pre>
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="k">clear</span><span class="p">:</span><span class="w"> </span><span class="kc">both</span><span class="p">;</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">table</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 <ol>
 <li>
 <p>프론트에서 백엔드로 데이터를 밀어넣을 준비가 되었습니다</p>
@@ -1348,9 +1348,9 @@ form.example::after {
 </li>
 </ul>
 <h3 id="dockerfiledev">개발 환경용 Dockerfile.dev</h3>
-<pre><code>code Dockerfile.dev
-</code></pre>
-<pre><code>FROM node:alpine 
+<div class="highlight"><pre><span></span><code>code Dockerfile.dev
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM node:alpine 
 #도커허브에서 베이스 이미지를 가져옵니다
 WORKDIR /app
 #해당 어플의 소스코드들이 /app에 들어가게 됩니다
@@ -1362,11 +1362,11 @@ COPY ./ ./
 #모든 소스코드를 WORKDIR로 복사합니다
 CMD [&quot;npm&quot;, &quot;run&quot;, &quot;start&quot;]
 #컨테이너를 로드할 때 실행할 명령어를 지정합니다
-</code></pre>
+</code></pre></div>
 <h3 id="dockerfile">운영 환경용 Dockerfile</h3>
-<pre><code>code Dockerfile
-</code></pre>
-<pre><code>FROM node:alpine as builder
+<div class="highlight"><pre><span></span><code>code Dockerfile
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM node:alpine as builder
 WORKDIR /app
 COPY ./package.json ./
 RUN npm install
@@ -1382,19 +1382,19 @@ COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 #default.conf설정파일 미리 만들고 nginx컨테이너 안에 적용하도록 복사합니다
 COPY --from=builder /app/build /usr/share/nginx/html
 #빌드가 완료된 파일을 Nginx 루트 폴더에 복사합니다
-</code></pre>
+</code></pre></div>
 <h3 id="nginx">라우팅용 Nginx 설정(정적파일 제공을 위한)</h3>
 <ul>
 <li>frontend 디렉토리에 nginx폴더 생성</li>
 </ul>
-<pre><code>mkdir nginx
+<div class="highlight"><pre><span></span><code>mkdir nginx
 cd nginx
 code default.conf
-</code></pre>
+</code></pre></div>
 <ul>
 <li>default.conf</li>
 </ul>
-<pre><code>server {
+<div class="highlight"><pre><span></span><code>server {
   listen 3000;
 
   location / {
@@ -1404,7 +1404,7 @@ code default.conf
     try_files $uri $uri/ /index.html;
   }
 }
-</code></pre>
+</code></pre></div>
 <pre><code>- listen 3000 : nginx 서버가 사용할 포트를 오픈합니다
 - location / : 만약 루트로 요청이 들어온다면
 - root /usr/share/nginx/html : HTML파일(빌드파일)이 위치한 루트폴더를 설정합니다
@@ -1429,10 +1429,10 @@ code default.conf
 
 </aside>
 
-<pre><code>cd backend
+<div class="highlight"><pre><span></span><code>cd backend
 code Dockerfile.dev
-</code></pre>
-<pre><code>FROM node:alpine
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM node:alpine
 
 WORKDIR /app
 
@@ -1444,11 +1444,11 @@ COPY ./ ./
 
 CMD [&quot;npm&quot;, &quot;run&quot;, &quot;dev&quot;]
 #npm run start가 아닌 npm run dev를 사용해서 nodemon모듈을 이용해 시작합니다
-</code></pre>
+</code></pre></div>
 <h3 id="dockerfile_1">운영 환경용 Dockerfile</h3>
-<pre><code>code Dockerfile
-</code></pre>
-<pre><code>FROM node:alpine
+<div class="highlight"><pre><span></span><code>code Dockerfile
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM node:alpine
 
 WORKDIR /app
 
@@ -1459,7 +1459,7 @@ RUN npm install
 COPY ./ ./
 
 CMD [&quot;npm&quot;, &quot;run&quot;, &quot;start&quot;]
-</code></pre>
+</code></pre></div>
 <h2 id="db">DB 세팅</h2>
 <hr />
 <aside>
@@ -1473,11 +1473,11 @@ CMD [&quot;npm&quot;, &quot;run&quot;, &quot;start&quot;]
 <li>한글이 깨지는 것을 막기 위해 MySQL 인코딩을 UTF-8로 설정합니다.
 MySQL용 conf 파일을 이용해 설정할 수 있습니다</li>
 </ol>
-<pre><code>mkdir mysql
+<div class="highlight"><pre><span></span><code>mkdir mysql
 cd mysql
 code my.cnf
-</code></pre>
-<pre><code>[mysqld]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[mysqld]
 character-set-server=utf8
 
 [mysql]
@@ -1485,25 +1485,25 @@ default-character-set=utf8
 
 [client]
 default-character-set=utf8
-</code></pre>
+</code></pre></div>
 <ol>
 <li>mysql 디렉터리를 생성하고 도커파일을 생성합니다</li>
 </ol>
-<pre><code>code Dockerfile
-</code></pre>
-<pre><code>FROM mysql:5.7
+<div class="highlight"><pre><span></span><code>code Dockerfile
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM mysql:5.7
 
 COPY ./my.cnf /etc/mysql/conf.d/my.cnf
-</code></pre>
+</code></pre></div>
 <ol>
 <li>MySQL DB를 로드한 후 초기 db와 테이블 사용을 위한 초기 환경을 제작합니다</li>
 <li>디렉터리를 새로 만들고 sql문을 작성합니다</li>
 </ol>
-<pre><code>mkdir sqls
+<div class="highlight"><pre><span></span><code>mkdir sqls
 cd sqls
 code init.sql
-</code></pre>
-<pre><code>DTOP DATABASE IF EXISTS myapp;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>DTOP DATABASE IF EXISTS myapp;
 -- 이전에 생성된 myapp DB가 존재할 경우 삭제
 CREATE DATABASE myapp;
 USE myapp;
@@ -1513,31 +1513,31 @@ CREATE TABLE lists(
     value TEXT,
     PRIMARY KEY (id)
 );
-</code></pre>
+</code></pre></div>
 <h2 id="proxy-layer-nginx">Proxy Layer용 Nginx 설정</h2>
 <hr />
 <ol>
 <li>루트폴더에 Nginx를 위한 디렉터리를 생성합니다</li>
 </ol>
-<pre><code>mkdir nginx
+<div class="highlight"><pre><span></span><code>mkdir nginx
 cd nginx
-</code></pre>
+</code></pre></div>
 <ol>
 <li>도커파일을 생성합니다(개발, 운영 환경 설정이 같기 때문에 .dev를 따로 생성하지 않습니다</li>
 </ol>
-<pre><code>code Dockerfile
-</code></pre>
-<pre><code>FROM nginx
+<div class="highlight"><pre><span></span><code>code Dockerfile
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM nginx
 #Nginx베이스 이미지 가져오기
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 #작성된 conf 파일을 Nginx컨테이너에 복사하여 설정 적용하기
-</code></pre>
+</code></pre></div>
 <ol>
 <li>Nginx 설정파일 생성을 시작합니다</li>
 </ol>
-<pre><code>code default.conf
-</code></pre>
-<pre><code>upstream frontend {
+<div class="highlight"><pre><span></span><code>code default.conf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>upstream frontend {
     server frontend:3000;
 }
 
@@ -1563,7 +1563,7 @@ server {
         proxy_set_header Connection &quot;Upgrade&quot;;
     }
 }
-</code></pre>
+</code></pre></div>
 <pre><code>- 아래 'frontend', 'backend'는 docker-compose 파일에서 명시합니다
 - upstream frontend : 3000번 포트에서 frontend가 동작중인 것을 명시합니다
 - upstream backend : 5000번 포트에서 backend가 동작중인 것을 명시합니다
@@ -1585,9 +1585,9 @@ server {
 <p>루트 폴더에서 컴포즈 파일을 작성합니다</p>
 </li>
 </ul>
-<pre><code>code docker-compose.yml
-</code></pre>
-<pre><code>version: &quot;3&quot;
+<div class="highlight"><pre><span></span><code>code docker-compose.yml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>version: &quot;3&quot;
 services:
 frontend:
   build: #개발환경의 Dockerfile이 어디있는지 알려줍니다
@@ -1631,12 +1631,12 @@ volumes:
 environment: #환경변수
   MYSQL_ROOT_PASSWORD: password
   MYSQL_DATABASE: myapp
-</code></pre>
+</code></pre></div>
 <ol>
 <li>작성이 완료되었으면 컴포즈를 실행해봅니다</li>
 </ol>
-<pre><code>docker-compose up
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker-compose up
+</code></pre></div>
 <ol>
 <li>ERROR : -initialize specified but the data directory has files in it. Aborting. 발생시
 볼륨으로 연결된 mysql 데이터 디렉터리를 날려줍니다</li>
@@ -1655,9 +1655,9 @@ environment: #환경변수
 <ol>
 <li>루트 폴더에 트레비스 설정 파일을 작성합니다</li>
 </ol>
-<pre><code>code .travis.yml
-</code></pre>
-<pre><code>language: generic
+<div class="highlight"><pre><span></span><code>code .travis.yml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>language: generic
 
 sudo: required
 
@@ -1680,7 +1680,7 @@ after_success: #테스트가 성공하면 본격적으로 운영버전을 빌드
   - docker push dotoryeee/docker-frontend
   - docker push dotoryeee/docker-backend
   - docker push dotoryeee/docker-nginx
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>계정 정보는 Travis CI 환경변수에 입력합니다</p>
@@ -1723,9 +1723,9 @@ after_success: #테스트가 성공하면 본격적으로 운영버전을 빌드
 <ol>
 <li>루트 폴더에 JSON 파일을 생성합니다</li>
 </ol>
-<pre><code>code Dockerrun.aws.json
-</code></pre>
-<pre><code>{
+<div class="highlight"><pre><span></span><code>code Dockerrun.aws.json
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>{
     &quot;AWSEBDockerrunVersion&quot;: 2,
     &quot;containerDefinitions&quot;: [
         {
@@ -1758,7 +1758,7 @@ after_success: #테스트가 성공하면 본격적으로 운영버전을 빌드
         }
     ]
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>컨테이너 정의 간단 설명<ul>
 <li>name : 컨테이너 이름</li>
@@ -1784,17 +1784,17 @@ after_success: #테스트가 성공하면 본격적으로 운영버전을 빌드
 <ol>
 <li>RDS접속을 위해 Docker-compose 파일에 다음과 같이 환경변수를 추가합니다</li>
 </ol>
-<pre><code>environment: 
+<div class="highlight"><pre><span></span><code>environment: 
   MYSQL_HOST: mysql
   MYSQL_USER: root
   MYSQL_ROOT_PASSWORD: password
   MYSQL_DATABASE: myapp
   MYSQL_PORT: 3306
-</code></pre>
+</code></pre></div>
 <ol>
 <li>RDS접속을 위해 /backend/db.js 파일에서 환경변수를 불러옵니다</li>
 </ol>
-<pre><code>const pool = mysql.createPool({
+<div class="highlight"><pre><span></span><code>const pool = mysql.createPool({
     connectionLimit: 10,
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
@@ -1802,7 +1802,7 @@ after_success: #테스트가 성공하면 본격적으로 운영버전을 빌드
     database: process.env.MYSQL_DATABASE,
     port: process.env.MYSQL_PORT
 });
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>AWS RDS에 접속해서 인스턴스를 생성합니다</p>
@@ -1866,7 +1866,7 @@ Beanstalk의 동작환경(env) → Configuration → Instance의 Edit 메뉴에 
 <ol>
 <li>.travis.yml에 다음 코드를 추가합니다</li>
 </ol>
-<pre><code>deploy:
+<div class="highlight"><pre><span></span><code>deploy:
   provider: elasticbeanstalk
   region: &quot;ap-northeast-2&quot;
   app: &quot;dotoryeee_FIRST_ECS_APP&quot;
@@ -1878,7 +1878,7 @@ Beanstalk의 동작환경(env) → Configuration → Instance의 Edit 메뉴에 
 
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>travis 환경변수에 AWS API KEY정보를 추가해줍니다</p>
@@ -1934,7 +1934,7 @@ Beanstalk의 동작환경(env) → Configuration → Instance의 Edit 메뉴에 
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

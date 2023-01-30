@@ -15,7 +15,7 @@
         <link rel="next" href="../Docker%20basics/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -746,19 +746,19 @@
 <ol>
 <li>ProxySQL 컨테이너에 매핑할 디렉터리를 생성합니다</li>
 </ol>
-<pre><code>mkdir -p /db/proxysql/data /db/proxysql/conf
-</code></pre>
+<div class="highlight"><pre><span></span><code>mkdir -p /db/proxysql/data /db/proxysql/conf
+</code></pre></div>
 <ol>
 <li>생성한 디렉터리에 접근 가능하도록 권한을 설정합니다</li>
 </ol>
-<pre><code>chmod 777 /db/proxysql /db/proxysql/data /db/proxysql/conf
-</code></pre>
+<div class="highlight"><pre><span></span><code>chmod 777 /db/proxysql /db/proxysql/data /db/proxysql/conf
+</code></pre></div>
 <ol>
 <li>conf 디렉터리에 다음과 같은 내용으로 설정파일(proxysql.cnf)을 생성합니다</li>
 </ol>
-<pre><code>vi /db/proxysql/conf/proxysql.cnf
-</code></pre>
-<pre><code>datadir=&quot;/var/lib/proxysql&quot;
+<div class="highlight"><pre><span></span><code>vi /db/proxysql/conf/proxysql.cnf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>datadir=&quot;/var/lib/proxysql&quot;
 admin_variables=
 {
     admin_credentials=&quot;admin:admin;radmin:radmin&quot;
@@ -790,23 +790,23 @@ mysql_variables=
     sessions_sort=true
     connect_retries_on_failure=10
 }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>설정파일의 권한을 설정합니다</li>
 </ol>
-<pre><code>chmod 644 /db/proxysql/conf/proxysql.cnf
-</code></pre>
+<div class="highlight"><pre><span></span><code>chmod 644 /db/proxysql/conf/proxysql.cnf
+</code></pre></div>
 <ol>
 <li>mybridge 네트워크에서 proxySQL 컨테이너를 실행합니다.</li>
 </ol>
 <p>16032:6032 포트와 16033:6033 포트를 사용합니다</p>
-<pre><code>docker run -i -t --name proxysql -h proxysql --net mybridge --net-alias=proxysql -p 16032:6032 -p 16033:6033 -v /db/proxysql/data:/var/lib/proxysql -v /db/proxysql/conf/proxysql.cnf:/etc/proxysql.cnf -d proxysql/proxysql
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -i -t --name proxysql -h proxysql --net mybridge --net-alias=proxysql -p 16032:6032 -p 16033:6033 -v /db/proxysql/data:/var/lib/proxysql -v /db/proxysql/conf/proxysql.cnf:/etc/proxysql.cnf -d proxysql/proxysql
+</code></pre></div>
 <ol>
 <li>컨테이너가 잘 실행되었는지 확인해봅니다</li>
 </ol>
-<pre><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
+</code></pre></div>
 <ol>
 <li>
 <p>컨테이너가 잘 실행되었습니다</p>
@@ -816,13 +816,13 @@ mysql_variables=
 <p>MySQL을 이용해 proxySQL에 접근을 시도합니다</p>
 </li>
 </ol>
-<pre><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
+</code></pre></div>
 <ol>
 <li>MySQL 클라이언트가 없다면 설치 후 재시도 합니다</li>
 </ol>
-<pre><code>dnf install -y mysql
-</code></pre>
+<div class="highlight"><pre><span></span><code>dnf install -y mysql
+</code></pre></div>
 <ol>
 <li>
 <p>ProxySQL Admin에 잘 접속되었습니다</p>
@@ -835,55 +835,55 @@ mysql_variables=
 <ol>
 <li>db001 컨테이너의 MySQL 서버에 접속합니다</li>
 </ol>
-<pre><code>docker exec -it -uroot db001 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>testdb 데이터베이스를 생성합니다</li>
 </ol>
-<pre><code>CREATE DATABASE testdb DEFAULT CHARACTER SET utf8;
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE DATABASE testdb DEFAULT CHARACTER SET utf8;
+</code></pre></div>
 <ol>
 <li>어플리케이션용 user를 생성하고 db접근 권한을 부여합니다</li>
 </ol>
-<pre><code>CREATE USER appuser@'%' IDENTIFIED BY 'apppass';
-GRANT SELECT, INSERT, UPDATE, DELETE ON testdb.* TO appuser@'%';
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE USER appuser@&#39;%&#39; IDENTIFIED BY &#39;apppass&#39;;
+GRANT SELECT, INSERT, UPDATE, DELETE ON testdb.* TO appuser@&#39;%&#39;;
+</code></pre></div>
 <ol>
 <li>ProxySQL모니터용 user를 생성하고 권한을 부여합니다</li>
 </ol>
-<pre><code>CREATE USER monitor@'%' IDENTIFIED BY 'monitor';
-GRANT REPLICATION CLIENT ON *.* TO monitor@'%';
-</code></pre>
+<div class="highlight"><pre><span></span><code>CREATE USER monitor@&#39;%&#39; IDENTIFIED BY &#39;monitor&#39;;
+GRANT REPLICATION CLIENT ON *.* TO monitor@&#39;%&#39;;
+</code></pre></div>
 <ol>
 <li>권한을 적용합니다</li>
 </ol>
-<pre><code>flush privileges;
-</code></pre>
+<div class="highlight"><pre><span></span><code>flush privileges;
+</code></pre></div>
 <h3 id="proxysql_2">ProxySQL 설정(서버정보)</h3>
 <hr />
 <ol>
 <li>sql을 이용해 ProxySQL 컨테이너 접속</li>
 </ol>
-<pre><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
+</code></pre></div>
 <ol>
 <li>hostgroup 10(쓰기 쿼리 그룹) 에 db001을 등록합니다</li>
 </ol>
-<pre><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (10, 'db001', 3306);
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (10, &#39;db001&#39;, 3306);
+</code></pre></div>
 <ol>
 <li>hostgroup 20(읽기 쿼리 그룹)에 모든 db를 등록합니다</li>
 </ol>
-<pre><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, 'db001', 3306);
-INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, 'db002', 3306);
-INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, 'db003', 3306);
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db001&#39;, 3306);
+INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db002&#39;, 3306);
+INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db003&#39;, 3306);
+</code></pre></div>
 <ol>
 <li>SQL구문으로 설정 상태를 확인해볼 수 있습니다</li>
 </ol>
-<pre><code>SELECT * FROM mysql-servers;
-</code></pre>
+<div class="highlight"><pre><span></span><code>SELECT * FROM mysql-servers;
+</code></pre></div>
 <pre><code>![Docker Proxy Layer for MySQL/Untitled%204.png](Docker Proxy Layer for MySQL/Untitled%204.png)
 </code></pre>
 <ol>
@@ -892,39 +892,39 @@ INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, 'db003', 330
 <p>값은 WRITE GROUP, READ GROUP, WRITE와 READ그룹을 구별하는 기준,'' 입니다</p>
 </li>
 </ol>
-<pre><code>INSERT INTO mysql_replication_hostgroups VALUES (10, 20, 'read_only', '');
-//(WRITE GROUP, READ GROUP, WRITE와 READ그룹을 구별하는 기준,'')
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_replication_hostgroups VALUES (10, 20, &#39;read_only&#39;, &#39;&#39;);
+//(WRITE GROUP, READ GROUP, WRITE와 READ그룹을 구별하는 기준,&#39;&#39;)
+</code></pre></div>
 <ol>
 <li>마찬가지로 SQL로 설정을 확인할 수 있습니다</li>
 </ol>
-<pre><code>SELECT * FROM mysql_replication_hostgroups;
-</code></pre>
+<div class="highlight"><pre><span></span><code>SELECT * FROM mysql_replication_hostgroups;
+</code></pre></div>
 <pre><code>![Docker Proxy Layer for MySQL/Untitled%205.png](Docker Proxy Layer for MySQL/Untitled%205.png)
 </code></pre>
 <ol>
 <li>설정을 적용하고 저장합니다</li>
 </ol>
-<pre><code>LOAD MYSQL SERVERS TO RUNTIME;
+<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
 //설정된 정보를 반영
 //설정을 영구적으로 저장(디스크에 기록)
-</code></pre>
+</code></pre></div>
 <h3 id="proxysql-user">ProxySQL 설정(USER 정보)</h3>
 <hr />
 <ol>
 <li>어플리케이션은 DB서버가 아닌 ProxySQL에 접속하기 때문에 ProxySQL에서 세팅합니다</li>
 <li>어플리케이션용 USER 정보를 ProxySQL에 등록합니다</li>
 </ol>
-<pre><code>INSERT INTO mysql_users(username, password, default_hostgroup, transaction_persistent)
-VALUES ('appuser', 'apppass', 10, 0);
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_users(username, password, default_hostgroup, transaction_persistent)
+VALUES (&#39;appuser&#39;, &#39;apppass&#39;, 10, 0);
+</code></pre></div>
 <ol>
 <li>마찬가지로 설정을 적용하고 저장합니다</li>
 </ol>
-<pre><code>LOAD MYSQL SERVERS TO RUNTIME;
+<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
-</code></pre>
+</code></pre></div>
 <h3 id="proxysql_3">ProxySQL 설정(쿼리 룰)</h3>
 <hr />
 <aside>
@@ -935,21 +935,21 @@ SAVE MYSQL SERVERS TO DISK;
 <ol>
 <li>SELECT FOR UPDATE(쓰기) 구문 요청이 들어오면 10번 그룹으로 보냅니다 //쓰기 쿼리 룰</li>
 </ol>
-<pre><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
-VALUES (1, 1, '^SELECT.*FOR UPDATE$', 10);
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
+VALUES (1, 1, &#39;^SELECT.*FOR UPDATE$&#39;, 10);
+</code></pre></div>
 <ol>
 <li>SELECT 쿼리는 20번 호스트 그룹으로 보냅니다 //읽기 쿼리 룰</li>
 </ol>
-<pre><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
-VALUES (2, 1, '^SELECT', 20);
-</code></pre>
+<div class="highlight"><pre><span></span><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
+VALUES (2, 1, &#39;^SELECT&#39;, 20);
+</code></pre></div>
 <ol>
 <li>저장합니다</li>
 </ol>
-<pre><code>LOAD MYSQL SERVERS TO RUNTIME;
+<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
 SAVE MYSQL SERVERS TO DISK;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>ProxySQL컨테이너에서 빠져나옵니다</li>
 </ol>
@@ -959,28 +959,28 @@ SAVE MYSQL SERVERS TO DISK;
 <li>테스트용 스크립트를 생성합니다</li>
 <li>proxySQL 서버의 IP를 확인합니다</li>
 </ol>
-<pre><code>docker inspect --format &quot;{{.NetworkSettings.Networks.mybridge.IPAddress}}&quot; proxysql
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker inspect --format &quot;{{.NetworkSettings.Networks.mybridge.IPAddress}}&quot; proxysql
+</code></pre></div>
 <ol>
 <li>16033포트로 접속해 select 구문을 실행하는</li>
 </ol>
-<pre><code>vi app_test_conn.sh
-</code></pre>
+<div class="highlight"><pre><span></span><code>vi app_test_conn.sh
+</code></pre></div>
 <ul>
 <li>app_test_conn.sh</li>
 </ul>
-<pre><code>#!/bin/bash
+<div class="highlight"><pre><span></span><code>#!/bin/bash
 while true;
 do
     mysql -uappuser -papppass -h127.0.0.1 -P16033 -N -e &quot;select @@hostname,now()&quot; 2&gt;&amp;1| grep -v &quot;Warning&quot;
     sleep 1
 done
-</code></pre>
+</code></pre></div>
 <ol>
 <li>select 구문 스크립트를 실행합니다</li>
 </ol>
-<pre><code>sh app_test_conn.sh
-</code></pre>
+<div class="highlight"><pre><span></span><code>sh app_test_conn.sh
+</code></pre></div>
 <ol>
 <li>
 <p>읽기 쿼리는 이쪽 저쪽 DB를 모두 쑤시고 다닙니다</p>
@@ -990,36 +990,37 @@ done
 <p>다음으로 db001컨테이너 SQL 서버에 접속합니다</p>
 </li>
 </ol>
-<pre><code>docker exec -it -uroot db001 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>Insert 구문 테스트를 위해 기록용 테이블을 만들어줍니다</li>
 </ol>
-<pre><code>USE testdb;
+<div class="highlight"><pre><span></span><code>USE testdb;
 CREATE TABLE insert_test(hostname varchar(15), insert_time datetime);
-</code></pre>
+</code></pre></div>
 <ol>
 <li>db001 컨테이너에서 빠져나옵니다</li>
 <li>16033포트로 접속해  insert 구문을 실행하는</li>
 </ol>
-<p><code>vi app_test_insert.sh</code></p>
+<div class="highlight"><pre><span></span><code>vi app_test_insert.sh
+</code></pre></div>
 <ul>
 <li>app_test_insert.sh</li>
 </ul>
-<p>```
- #!/bin/bash</p>
-<p>while true;
- do
-   mysql -uappuser -papppass -h127.0.0.1 -P16033 -N -e "insert into testdb.insert_test select @@hostname,now()" 2&gt;&amp;1| grep -v "Warning"
-   sleep 1
- done
- ```</p>
+<div class="highlight"><pre><span></span><code>#!/bin/bash
+
+while true;
+do
+  mysql -uappuser -papppass -h127.0.0.1 -P16033 -N -e &quot;insert into testdb.insert_test select @@hostname,now()&quot; 2&gt;&amp;1| grep -v &quot;Warning&quot;
+  sleep 1
+done
+</code></pre></div>
 <ol>
 <li>insert 구문 스크립트를 실행합니다</li>
 </ol>
-<pre><code>sh app_test_insert.sh
-</code></pre>
+<div class="highlight"><pre><span></span><code>sh app_test_insert.sh
+</code></pre></div>
 <ol>
 <li>이 스크립트는 동작하고 있지만 화면에 실시간으로 표시되지 않습니다</li>
 <li>
@@ -1033,9 +1034,11 @@ CREATE TABLE insert_test(hostname varchar(15), insert_time datetime);
 <li>장애 상황에서 의도한대로 동작하는지 테스트 합니다</li>
 <li>db001에 접속해 테이블 내용을 날려줍니다</li>
 </ol>
-<p><code>docker exec -it -uroot db001 /bin/bash
- mysql -uroot -p</code></p>
-<p><code>TRUNCATE TABLE testdb.insert_test;</code></p>
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
+mysql -uroot -p
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>TRUNCATE TABLE testdb.insert_test;
+</code></pre></div>
 <ol>
 <li>
 <p>다음 사진 처럼 두 개의 터미널을 준비하고 insert 스크립트 실행 도중 MasterDB에 장애를 일으킵니다</p>
@@ -1053,9 +1056,9 @@ CREATE TABLE insert_test(hostname varchar(15), insert_time datetime);
 <p>Master로 전환된 db002의 SQL 서버에 접속합니다</p>
 </li>
 </ol>
-<pre><code>docker exec -it -uroot db002 /bin/bash
+<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
 mysql -uroot -p
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>db001이 중지하고 14초 이후에 db002에 쓰기 트랜잭션이 박히는 모습을 확인할 수 있습니다!</p>
@@ -1069,14 +1072,14 @@ mysql -uroot -p
 <p>원상 복구를 위해 db001을 다시 SLAVE로 가동합니다</p>
 </li>
 </ol>
-<pre><code>docker start db001
+<div class="highlight"><pre><span></span><code>docker start db001
 docker exec -it -uroot db001 /bin/bash
 mysql -uroot -p
-</code></pre>
-<pre><code>set global read_only=1;
-CHANGE MASTER TO MASTER_HOST='db002', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>set global read_only=1;
+CHANGE MASTER TO MASTER_HOST=&#39;db002&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
 START SLAVE;
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>db001이 SLAVE로써 다시 클러스터로 복귀했습니다</p>
@@ -1120,7 +1123,7 @@ START SLAVE;
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

@@ -15,7 +15,7 @@
         <link rel="next" href="../Docker%20Proxy%20Layer%20for%20MySQL/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -638,10 +638,8 @@
 <p><code>.circleci/config.yml</code></p>
 </li>
 <li>
-<p>config.yml내용은 다음과 같습니다</p>
-</li>
-</ol>
-<pre><code>version: 2.1
+<p>config.yml내용은 다음과 같습니다
+<div class="highlight"><pre><span></span><code>version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@1.3.1
@@ -677,8 +675,9 @@ workflows:
         filters:
           branches:
             only: main
-
-</code></pre>
+</code></pre></div></p>
+</li>
+</ol>
 <h2 id="aws-codedeploy-for-ec2">AWS CodeDeploy for EC2</h2>
 <ol>
 <li>
@@ -713,17 +712,17 @@ workflows:
 <p>EC2 인스턴스에 CodeDeploy 에이전트를 설치합니다</p>
 </li>
 </ol>
-<pre><code>aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
+<div class="highlight"><pre><span></span><code>aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
 sudo yum install -y ruby wget
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent start
 sudo service codedeploy-agent status
-</code></pre>
+</code></pre></div>
 <ol>
 <li>CircleCI config.yml을 다음과 같이 적당하게 작성합니다</li>
 </ol>
-<pre><code>version: &quot;2.1&quot;
+<div class="highlight"><pre><span></span><code>version: &quot;2.1&quot;
 orbs:
   aws-code-deploy: circleci/aws-code-deploy@2.0.0
   aws-s3: circleci/aws-s3@2.0
@@ -762,7 +761,7 @@ workflows:
           filters:
             branches:
               only: main
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>CircleCI에서 작업이 완료되면</p>
@@ -776,14 +775,14 @@ workflows:
 <p>인스턴스 초기에 python3 정지하는 스크립트 에러가 발생할 경우 다음과 같이 스크립트를 작성하면 됩니다.</p>
 </li>
 </ol>
-<pre><code>#!/bin/bash
+<div class="highlight"><pre><span></span><code>#!/bin/bash
 if pgrep -x python3 &gt;/dev/null
 then
   sudo kill $(pgrep -f python3)
 else
   exit 0
 fi
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>배포 후 flask가 종료되버리는 경우 다음과 같이 명령 마지막에 &amp; 을 삽입해 백그라운드에 동작을 유도하면 됩니다</p>
@@ -827,7 +826,7 @@ fi
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

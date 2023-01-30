@@ -15,7 +15,7 @@
         <link rel="next" href="../CICD%20on%20Single%20container/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -699,27 +699,27 @@
 <p>아래 코드를 lambda_function에 덮어씌워줍니다</p>
 </li>
 </ol>
-<pre><code>&quot;Lambda function Calculator exercise&quot;
+<div class="highlight"><pre><span></span><code>&quot;Lambda function Calculator exercise&quot;
 from __future__ import print_function
 import re
 import boto3
 
 def lambda_handler(event, context):
     &quot;Process upload event&quot;
-    bucket = event['Records'][0][&quot;s3&quot;][&quot;bucket&quot;][&quot;name&quot;]
-    key = event['Records'][0][&quot;s3&quot;][&quot;object&quot;][&quot;key&quot;]
+    bucket = event[&#39;Records&#39;][0][&quot;s3&quot;][&quot;bucket&quot;][&quot;name&quot;]
+    key = event[&#39;Records&#39;][0][&quot;s3&quot;][&quot;object&quot;][&quot;key&quot;]
     result = &quot;No numbers found in file&quot;
     print(&quot;Received event. Bucket: [%s], Key: [%s]&quot; % (bucket, key))
 
     # construct s3 client
-    s3 = boto3.client('s3')
+    s3 = boto3.client(&#39;s3&#39;)
     response = s3.get_object(
         Bucket=bucket,
         Key=key
     )
 
     # get the object contents
-    file_contents = response['Body'].read().decode(&quot;utf-8&quot;).strip()
+    file_contents = response[&#39;Body&#39;].read().decode(&quot;utf-8&quot;).strip()
     # find matches of all positive or negative numbers
     numbers = [int(n) for n in re.findall(r&quot;-?\d+&quot;, file_contents)]
     if numbers:
@@ -729,7 +729,7 @@ def lambda_handler(event, context):
 
     print(&quot;Result: %s&quot; % result)
     return result
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>⭐코드 작성 완료 후 반드시 Deploy 해줍니다</p>
@@ -766,7 +766,7 @@ def lambda_handler(event, context):
 <p>다음 코드를 이용해 새로운 test event를 생성합니다</p>
 </li>
 </ol>
-<pre><code>{
+<div class="highlight"><pre><span></span><code>{
     &quot;Records&quot;: [
             {
                 &quot;s3&quot;: {
@@ -780,7 +780,7 @@ def lambda_handler(event, context):
             }
         ]
 }
-</code></pre>
+</code></pre></div>
 <pre><code>![Access S3, DynamoDB with Lambda/Untitled%2017.png](Access S3, DynamoDB with Lambda/Untitled%2017.png)
 </code></pre>
 <ol>
@@ -813,7 +813,7 @@ def lambda_handler(event, context):
 <p>Lambda에 다음 코드를 작성합니다</p>
 </li>
 </ol>
-<pre><code># Load-Inventory Lambda function
+<div class="highlight"><pre><span></span><code># Load-Inventory Lambda function
 
 # This function is triggered by an object being created in an Amazon S3 bucket. 
 
@@ -821,11 +821,11 @@ def lambda_handler(event, context):
 import json, urllib, boto3, csv 
 
 # Connect to S3 and DynamoDB 
-s3 = boto3.resource('s3') 
-dynamodb = boto3.resource('dynamodb')
+s3 = boto3.resource(&#39;s3&#39;) 
+dynamodb = boto3.resource(&#39;dynamodb&#39;)
 
 # Connect to the DynamoDB tables 
-inventoryTable = dynamodb.Table('Inventory'); 
+inventoryTable = dynamodb.Table(&#39;Inventory&#39;); 
 
 # This handler is executed every time the Lambda function is triggered 
 def lambda_handler(event, context): 
@@ -834,21 +834,21 @@ def lambda_handler(event, context):
 print(&quot;Event received by Lambda function: &quot; + json.dumps(event, indent=2)) 
 
 # Get the bucket and object key from the event 
-bucket = event['Records'][0]['s3']['bucket']['name'] 
-key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key']) 
-localFilename = '/tmp/inventory.txt' 
+bucket = event[&#39;Records&#39;][0][&#39;s3&#39;][&#39;bucket&#39;][&#39;name&#39;] 
+key = urllib.parse.unquote_plus(event[&#39;Records&#39;][0][&#39;s3&#39;][&#39;object&#39;][&#39;key&#39;]) 
+localFilename = &#39;/tmp/inventory.txt&#39; 
 
 # Download the file from S3 to the local filesystem 
 try: 
     s3.meta.client.download_file(bucket, key, localFilename) 
 except Exception as e: 
     print(e) 
-    print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket)) 
+    print(&#39;Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.&#39;.format(key, bucket)) 
     raise e 
 
 # Read the Inventory CSV file 
 with open(localFilename) as csvfile: 
-    reader = csv.DictReader(csvfile, delimiter=',')
+    reader = csv.DictReader(csvfile, delimiter=&#39;,&#39;)
 
 # Read each row in the file 
 rowCount = 0 
@@ -857,22 +857,22 @@ for row in reader:
     rowCount += 1 
 
 # Show the row in the debug log 
-print(row['store'], row['item'], row['count']) 
+print(row[&#39;store&#39;], row[&#39;item&#39;], row[&#39;count&#39;]) 
 
 try:
     # Insert Store, Item, and Count into the Inventory table 
     inventoryTable.put_item( 
         Item={ 
-            'Store': row['store'], 
-            'Item': row['item'], 
-            'Count': int(row['count'])}) 
+            &#39;Store&#39;: row[&#39;store&#39;], 
+            &#39;Item&#39;: row[&#39;item&#39;], 
+            &#39;Count&#39;: int(row[&#39;count&#39;])}) 
 except Exception as e: 
     print(e) 
     print(&quot;Unable to insert data into DynamoDB table&quot;.format(e)) 
 
 # Finished! 
 return &quot;%d counts inserted&quot; % rowCount
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>코드를 Deploy 해줍니다</p>
@@ -920,7 +920,7 @@ return &quot;%d counts inserted&quot; % rowCount
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

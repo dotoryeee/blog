@@ -15,7 +15,7 @@
         <link rel="next" href="../Docker%20volume%20with%20MySQL/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -735,25 +735,25 @@
 <ol>
 <li>원활한 작업을 위해 Ubuntu 시스템을 업데이트합니다</li>
 </ol>
-<pre><code>sudo apt update &amp;&amp; sudo apt upgrade
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo apt update &amp;&amp; sudo apt upgrade
+</code></pre></div>
 <ol>
 <li>트러블슈팅 혹은 작업시 필요한 net-tools와 ssh, vim을 설치합니다</li>
 </ol>
-<pre><code>sudo apt install net-tools ssh vim
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo apt install net-tools ssh vim
+</code></pre></div>
 <ol>
 <li>https를 이용하여 프로그램에 접근 / ca서명 / http를 이용한 통신 / GPG키 관리자 / PPA액세스를 위한 프로그램을 각각 설치합니다</li>
 </ol>
-<pre><code>sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+</code></pre></div>
 <h2 id="docker">Docker 설치 및 확인</h2>
 <hr />
 <ol>
 <li>도커의 GPG PublicKey를 다운로드한 후 apt-key에 추가합니다</li>
 </ol>
-<pre><code>curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+</code></pre></div>
 <ol>
 <li>
 <p>OK를 확인하여 정상적으로 완료된 것을 알 수 있습니다</p>
@@ -763,9 +763,9 @@
 <p>ppa저장소를 추가하고 업데이트 합니다</p>
 </li>
 </ol>
-<pre><code>sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
 sudo apt update
-</code></pre>
+</code></pre></div>
 <ol>
 <li>
 <p>도커를 설치합니다</p>
@@ -774,13 +774,13 @@ sudo apt update
 <p>containerd.io : 컨테이너 데몬입니다</p>
 </li>
 </ol>
-<pre><code>sudo apt install docker-ce docker-cli containerd.io
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo apt install docker-ce docker-cli containerd.io
+</code></pre></div>
 <ol>
 <li>도커의 명령을 실행해봅니다</li>
 </ol>
-<pre><code>docker –v
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker –v
+</code></pre></div>
 <ol>
 <li>
 <p>정상적으로 설치가 완료되었습니다</p>
@@ -788,15 +788,15 @@ sudo apt update
 </li>
 <li>
 <p>리눅스 부팅될 때 자동으로 도커가 실행될 수 있도록 서비스에 등록합니다</p>
+<div class="highlight"><pre><span></span><code>sudo systemctl enable docker &amp;&amp; service docker start
+</code></pre></div>
+</li>
+<li>
+<p>리눅스에서 도커 서비스 상태를 확인합니다</p>
 </li>
 </ol>
-<pre><code>sudo systemctl enable docker &amp;&amp; service docker start
-</code></pre>
-<ol>
-<li>리눅스에서 도커 서비스 상태를 확인합니다</li>
-</ol>
-<pre><code>service docker status
-</code></pre>
+<div class="highlight"><pre><span></span><code>service docker status
+</code></pre></div>
 <ol>
 <li>
 <p>정상적으로 동작하고 있는 것을 확인할 수 있습니다</p>
@@ -849,8 +849,8 @@ sudo apt update
 <li>docker를 쉽게 관리할 수 있는 GUI 도구인 portainer를 설치합니다</li>
 <li>portainer를 설치할 디렉토리를 생성합니다</li>
 </ol>
-<pre><code>sudo mkdir -p /data/portainer
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo mkdir -p /data/portainer
+</code></pre></div>
 <ol>
 <li>
 <p>portainer를 실행할 수 있도록 docker에 컨테이너 형태로 추가합니다</p>
@@ -862,8 +862,8 @@ sudo apt update
 <p>portainer/portainer ← 이미지 사용</p>
 </li>
 </ol>
-<pre><code>sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/portainer:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/portainer:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer
+</code></pre></div>
 <ol>
 <li>
 <p>명령에 대한 진행사항을 확인할 수 있습니다</p>
@@ -899,8 +899,8 @@ sudo apt update
 <p>도커는 항상 root 권한이 필요하니 sudo를 붙여서 명령해줍니다</p>
 </li>
 </ol>
-<pre><code>sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
+</code></pre></div>
 <ol>
 <li>
 <p>로컬 시스템에서 컨테이너를 찾아보고 없으면 알아서 다운로드 → 컨테이너로드 까지 한 번에 실행됩니다</p>
@@ -924,22 +924,22 @@ sudo apt update
 <ol>
 <li>root 권한으로 docker-compose를 설치합니다</li>
 </ol>
-<pre><code>sudo apt install docker-compose
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo apt install docker-compose
+</code></pre></div>
 <ol>
 <li>YAML파일 작성을 위해 홈 디렉토리로 이동합니다</li>
 </ol>
-<pre><code>cd /home/{USER}
-</code></pre>
+<div class="highlight"><pre><span></span><code>cd /home/{USER}
+</code></pre></div>
 <ol>
 <li>컴포즈를 위한 YAML파일을 생성(수정)합니다</li>
 </ol>
-<pre><code>sudo vi docker-compose.yml
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo vi docker-compose.yml
+</code></pre></div>
 <ol>
 <li>다음과 같이 작성합니다. wordpress와 mysql5.7 이미지를 다운받고 컨테이너를 로드할 때 설정값도 같이 넣어줍니다</li>
 </ol>
-<pre><code>version: '3.1'
+<div class="highlight"><pre><span></span><code>version: &#39;3.1&#39;
 services:
         wordpress:
                 image: wordpress
@@ -960,23 +960,23 @@ services:
                         MYSQL_DATABASE: wordpress
                         MYSQL_USER: admin
                         MYSQL_PASSWORD: password
-                        MYSQL_RANDOM_ROOT_PASSWORD: '1'
+                        MYSQL_RANDOM_ROOT_PASSWORD: &#39;1&#39;
                 volumes:
                         - db:/var/lib/mysql
 volumes:
     wordpress:
     db:
-</code></pre>
+</code></pre></div>
 <ol>
 <li>docker-compose를 백그라운드에서 실행합니다</li>
 </ol>
-<pre><code>sudo docker-compose up -d
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo docker-compose up -d
+</code></pre></div>
 <ol>
 <li>웹 브라우저를 열고 다음 주소로 이동합니다</li>
 </ol>
-<pre><code>localhost:8080
-</code></pre>
+<div class="highlight"><pre><span></span><code>localhost:8080
+</code></pre></div>
 <ol>
 <li>
 <p>Wordpress와 MySQL이 잘 동작하는 것을 확인할 수 있습니다</p>
@@ -1037,7 +1037,7 @@ volumes:
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

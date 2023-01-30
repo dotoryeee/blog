@@ -15,7 +15,7 @@
         <link rel="next" href="../Circle-CI%20basic/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -322,8 +322,83 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#restart" class="md-nav__link">
+    restart
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose 사용
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker compose 사용">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    compose 설정
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-test-container" class="md-nav__link">
+    react test container 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile_1" class="md-nav__link">
+    운영환경을 위한 dockerfile
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#travis-ci" class="md-nav__link">
+    Travis CI 세팅
+  </a>
+  
+    <nav class="md-nav" aria-label="Travis CI 세팅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    연결
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#travis-ci-yaml" class="md-nav__link">
+    Travis CI yaml 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cd-aws" class="md-nav__link">
+    CD : AWS에 배포하기
+  </a>
   
 </li>
       
@@ -644,8 +719,83 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#restart" class="md-nav__link">
+    restart
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose 사용
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker compose 사용">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compose" class="md-nav__link">
+    compose 설정
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-test-container" class="md-nav__link">
+    react test container 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile_1" class="md-nav__link">
+    운영환경을 위한 dockerfile
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#travis-ci" class="md-nav__link">
+    Travis CI 세팅
+  </a>
+  
+    <nav class="md-nav" aria-label="Travis CI 세팅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    연결
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#travis-ci-yaml" class="md-nav__link">
+    Travis CI yaml 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cd-aws" class="md-nav__link">
+    CD : AWS에 배포하기
+  </a>
   
 </li>
       
@@ -680,14 +830,14 @@
 <ol>
 <li>작업 디렉터리를 생성합니다</li>
 </ol>
-<pre><code>mkdir simple_app
+<div class="highlight"><pre><span></span><code>mkdir simple_app
 cd simple_app
-</code></pre>
+</code></pre></div>
 <ol>
 <li>현재 디렉터리에 react를 설치합니다</li>
 </ol>
-<pre><code>npx create-react-app ./
-</code></pre>
+<div class="highlight"><pre><span></span><code>npx create-react-app ./
+</code></pre></div>
 <pre><code>![CICD on Single container/Untitled%201.png](CICD on Single container/Untitled%201.png)
 </code></pre>
 <ol>
@@ -710,9 +860,9 @@ cd simple_app
 <li>개발환경(dev)과 운영환경(prod)는 특성이 다를 수 있기 때문에 도커파일을 분리해야합니다</li>
 <li>개발 환경의 도커파일을 생성합니다</li>
 </ol>
-<pre><code>code dockerfile.dev
-</code></pre>
-<pre><code>FROM node:alpine
+<div class="highlight"><pre><span></span><code>code dockerfile.dev
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>FROM node:alpine
 
 WORKDIR /usr/src/app
 
@@ -723,7 +873,7 @@ RUN npm install
 COPY ./ ./
 
 CMD [&quot;npm&quot;, &quot;run&quot;, &quot;start&quot;]
-</code></pre>
+</code></pre></div>
 <h3 id="deploy-container">Deploy container</h3>
 <ol>
 <li>
@@ -738,13 +888,13 @@ rm -rf node_modules</p>
 </aside>
 </li>
 </ol>
-<pre><code>docker build -t dotoryeee/simple-app -f dockerfile.dev ./
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker build -t dotoryeee/simple-app -f dockerfile.dev ./
+</code></pre></div>
 <ol>
 <li>생성이 완료되었으면 컨테이너로 돌려봅니다</li>
 </ol>
-<pre><code>docker run -it -p 3000:3000 dotoryeee/simple-app
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -it -p 3000:3000 dotoryeee/simple-app
+</code></pre></div>
 <ol>
 <li>
 <p>컨테이너 서버가 잘 실행되었습니다</p>
@@ -761,241 +911,238 @@ rm -rf node_modules</p>
 <p>호스트에서 node_moules 폴더를 삭제했기 때문에 예외처리 해줍니다</p>
 </li>
 </ol>
-<pre><code>docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_modules -v $(pwd):/usr/src/app dotoryeee/simple-app
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_modules -v $(pwd):/usr/src/app dotoryeee/simple-app
+</code></pre></div>
 <ol>
 <li>현재 WSL에서 작업 시 컨테이너 node_module 폴더 권한 에러(EACCESS)로 인해 다음과 같이 실행했습니다</li>
 </ol>
-<p>```
- docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v $(pwd):/usr/src/app dotoryeee/simple-app</p>
-<pre><code>
-
-### restart
-
-1. 코드 변경이 잘 적용되었습니다
-
-    ![CICD on Single container/Untitled%206.png](CICD on Single container/Untitled%206.png)
-
-2. 코드 편집 후 저장하면 새로고침조차 할 필요 없이 실시간으로 리액트에 적용됩니다
-
-    ![CICD on Single container/Untitled%207.png](CICD on Single container/Untitled%207.png)
-
-
-## Docker compose 사용
-
----
-
-### compose 설정
-
-1. 이번에는 도커 실행 명령어 단축을 위해 compose를 사용합니다
-2. 컴포즈파일 작성을 시작합니다
-
-</code></pre>
-<p>code docker-compose.yml</p>
-<pre><code>
-</code></pre>
-<p>version: "3" #도커 컴포즈 버전
+<p><code>docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v $(pwd):/usr/src/app dotoryeee/simple-app</code></p>
+<h3 id="restart">restart</h3>
+<ol>
+<li>
+<p>코드 변경이 잘 적용되었습니다</p>
+<p><img alt="CICD on Single container/Untitled%206.png" src="Untitled%206.png" /></p>
+</li>
+<li>
+<p>코드 편집 후 저장하면 새로고침조차 할 필요 없이 실시간으로 리액트에 적용됩니다</p>
+<p><img alt="CICD on Single container/Untitled%207.png" src="Untitled%207.png" /></p>
+</li>
+</ol>
+<h2 id="docker-compose">Docker compose 사용</h2>
+<hr />
+<h3 id="compose">compose 설정</h3>
+<ol>
+<li>이번에는 도커 실행 명령어 단축을 위해 compose를 사용합니다</li>
+<li>컴포즈파일 작성을 시작합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>code docker-compose.yml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>version: &quot;3&quot; #도커 컴포즈 버전
 services: #컴포즈에서 실행할 컨테이너들을 정의
     react: #컨테이너 이름
     build: #dockerfile 정보 ↓
         context: . #현재 위치에 있다
         dockerfile: dockerfile.dev #파일이름
     ports: #컨테이너 포트 매핑
-        - "3000:3000"
+        - &quot;3000:3000&quot;
     volumes: #호스트와 볼륨 매핑
         - /usr/src/app/node_modules
         - ./:/usr/src/app
     stdin_open: true #리액트 앱을 종료할 떄 필요한 옵션(없으면 리액트에서 버스 발생)
     environment:
-        - CHOKIDAR_USEPOLLING=true #리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션</p>
-<pre><code>
-1. 컴포즈를 실행합니다
-
- ```
- docker-compose up
- ```
-
-4. 리액트가 잘 시작되었습니다
-
-    ![CICD on Single container/Untitled%208.png](CICD on Single container/Untitled%208.png)
-
-
-### react test container 설정
-
-1. 도커에서 리액트를 테스트 하는 기본적인 명령어는 다음과 같습니다
-
-</code></pre>
-<p>docker run -it {IMAGE} npm run test</p>
-<pre><code>
-2. 테스트도 소스코드를 핫 리로딩 할 수 있으면 매우 편리할 것입니다
-
-    다음과 같이 컴포즈파일에 컨테이너를 추가해주면 됩니다
-
-</code></pre>
-<p>tests:
+        - CHOKIDAR_USEPOLLING=true #리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션
+</code></pre></div>
+<ol>
+<li>컴포즈를 실행합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker-compose up
+</code></pre></div>
+<ol>
+<li>
+<p>리액트가 잘 시작되었습니다</p>
+<p><img alt="CICD on Single container/Untitled%208.png" src="Untitled%208.png" /></p>
+</li>
+</ol>
+<h3 id="react-test-container">react test container 설정</h3>
+<ol>
+<li>도커에서 리액트를 테스트 하는 기본적인 명령어는 다음과 같습니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker run -it {IMAGE} npm run test
+</code></pre></div>
+<ol>
+<li>
+<p>테스트도 소스코드를 핫 리로딩 할 수 있으면 매우 편리할 것입니다</p>
+<p>다음과 같이 컴포즈파일에 컨테이너를 추가해주면 됩니다</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>tests:
     build:
         context: .
         dockerfile: Dockerfile.dev
     volumes:
         - /usr/src/app/node_modules
         - ./:/usr/src/app
-    command: ["npm", "run", "test"]</p>
-<pre><code>
-3. 이번에는 재빌드 해야하니 build 명령을 추가해줍니다
-
-</code></pre>
-<p>docker-compose up --build</p>
-<pre><code>
-
-## 운영환경을 위한 dockerfile
-
----
-
-1. 개발환경은 npm run start를 사용해 서버를 실행하지만 운영환경은 build후 Nginx를 이용합니다
-2. 도커파일 작성을 시작합니다
-
-</code></pre>
-<p>code dockerfile</p>
-<pre><code>
-3. 운영환경용 dockerfile은 두 단계로 나눠집니다
-    - Builder stage : 빌드 파일을 생성합니다
-
-</code></pre>
-<p>FROM node:alpine as builder</p>
-<h1 id="as-from-builder-stage">이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시</h1>
-<p>WORKDIR '/usr/src/app'
+    command: [&quot;npm&quot;, &quot;run&quot;, &quot;test&quot;]
+</code></pre></div>
+<ol>
+<li>이번에는 재빌드 해야하니 build 명령을 추가해줍니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker-compose up --build
+</code></pre></div>
+<h2 id="dockerfile_1">운영환경을 위한 dockerfile</h2>
+<hr />
+<ol>
+<li>개발환경은 npm run start를 사용해 서버를 실행하지만 운영환경은 build후 Nginx를 이용합니다</li>
+<li>도커파일 작성을 시작합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>code dockerfile
+</code></pre></div>
+<ol>
+<li>운영환경용 dockerfile은 두 단계로 나눠집니다<ul>
+<li>Builder stage : 빌드 파일을 생성합니다</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>FROM node:alpine as builder
+#이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시
+WORKDIR &#39;/usr/src/app&#39;
 COPY package.json ./
 RUN npm install
 COPY ./ ./
-RUN npm run build</p>
-<h1 id="usrsrcappbuild">생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다</h1>
-<pre><code>
-    - Nginx stage : NginX를 가동하고 생성된 빌드 파일을 요청에 따라 제공합니다(Run stage)
-
+RUN npm run build
+#생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다
+</code></pre></div>
+<pre><code>- Nginx stage : NginX를 가동하고 생성된 빌드 파일을 요청에 따라 제공합니다(Run stage)
 </code></pre>
-<p>FROM nginx</p>
-<h1 id="nginx">nginx 베이스 이미지</h1>
-<p>EXPOSE 80</p>
-<h1 id="aws-80">AWS에 배포하기 위해 80포트 오픈</h1>
-<p>COPY --from=builder /usr/src/app/build /usr/share/nginx/html</p>
-<h1 id="-frombuilder-stage-stage">--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시</h1>
-<h1 id="usrsrcappbuild-usrsharenginxhtml-builder-stage-nginx">/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사</h1>
-<pre><code>
-    - 참고 : dockerhub에서 제공하는 nginx 공식 설명
-
+<div class="highlight"><pre><span></span><code>FROM nginx
+#nginx 베이스 이미지
+EXPOSE 80
+#AWS에 배포하기 위해 80포트 오픈
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+#--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시
+#/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사
+</code></pre></div>
+<pre><code>- 참고 : dockerhub에서 제공하는 nginx 공식 설명
 </code></pre>
-<p>FROM nginx
-COPY static-html-directory /usr/share/nginx/html</p>
-<pre><code>
-4. 작성이 완료되면 이미지 빌드를 시작합니다
+<div class="highlight"><pre><span></span><code>FROM nginx
+COPY static-html-directory /usr/share/nginx/html
+</code></pre></div>
+<ol>
+<li>작성이 완료되면 이미지 빌드를 시작합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker build -t dotoryeee/test2 ./
+</code></pre></div>
+<ol>
+<li>이미지 생성이 완료되면 컨테이너를 실행해봅니다. nginx의 기본 포트는 80 입니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>docker run -it -p 7070:80 dotoryeee/test2
+</code></pre></div>
+<ol>
+<li>
+<p>nginx에서 리액트가 잘 실행되었습니다</p>
+<p><img alt="CICD on Single container/Untitled%209.png" src="Untitled%209.png" /></p>
+</li>
+</ol>
+<h2 id="travis-ci">Travis CI 세팅</h2>
+<hr />
+<h3 id="_2">연결</h3>
+<ol>
+<li>
+<p>트레비스CI를 사용하려면 github과 연동되어야 합니다. 사이트에 접속해 연동해줍니다</p>
+<p><a href="https://travis-ci.com/">Travis CI - Test and Deploy with Confidence</a></p>
+</li>
+<li>
+<p>로그인 후 깃헙에서 repository 접근 권한을 허용합니다</p>
+<p><img alt="CICD on Single container/Untitled%2010.png" src="Untitled%2010.png" /></p>
+</li>
+<li>
+<p>트레비스에 repository가 연결된 것을 확인합니다</p>
+<p><img alt="CICD on Single container/Untitled%2011.png" src="Untitled%2011.png" /></p>
+</li>
+</ol>
+<h3 id="travis-ci-yaml">Travis CI yaml 설정</h3>
+<ol>
+<li>
+<p>트레비스도 yaml파일로 설정하게 됩니다. 작성을 시작합니다</p>
+<p>yaml파일은 매우 직관적이기 때문에 설명이 필요 없습니다</p>
+<ul>
+<li>언어설정에 generic에 대한 설명은 <a href="https://docs.travis-ci.com/user/languages/minimal-and-generic/">이곳</a>에서 확인할 수 있습니다</li>
+<li>— —coverage 옵션을 이용하면 콘솔에서 자세한 로그를 확인할 수 있습니다</li>
+</ul>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>code .travis.yml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>sudo: required
 
-</code></pre>
-<p>docker build -t dotoryeee/test2 ./</p>
-<pre><code>
-5. 이미지 생성이 완료되면 컨테이너를 실행해봅니다. nginx의 기본 포트는 80 입니다
+language: generic
 
-</code></pre>
-<p>docker run -it -p 7070:80 dotoryeee/test2</p>
-<pre><code>
-6. nginx에서 리액트가 잘 실행되었습니다
+services:
+    - docker
 
-    ![CICD on Single container/Untitled%209.png](CICD on Single container/Untitled%209.png)
+before_install:
+    - echo &quot;building image with dockerfile&quot;
+    - docker build -t dotoryeee/test2 -f dockerfile.dev ./
 
+script:
+    - docker run -e CI=true dotoryeee/test2 npm run test -- --coverage
 
-## Travis CI 세팅
-
----
-
-### 연결
-
-1. 트레비스CI를 사용하려면 github과 연동되어야 합니다. 사이트에 접속해 연동해줍니다
-
-    [Travis CI - Test and Deploy with Confidence](https://travis-ci.com/)
-
-2. 로그인 후 깃헙에서 repository 접근 권한을 허용합니다
-
-    ![CICD on Single container/Untitled%2010.png](CICD on Single container/Untitled%2010.png)
-
-3. 트레비스에 repository가 연결된 것을 확인합니다
-
-    ![CICD on Single container/Untitled%2011.png](CICD on Single container/Untitled%2011.png)
-
-
-### Travis CI yaml 설정
-
-1. 트레비스도 yaml파일로 설정하게 됩니다. 작성을 시작합니다
-
-    yaml파일은 매우 직관적이기 때문에 설명이 필요 없습니다
-
-    - 언어설정에 generic에 대한 설명은 [이곳](https://docs.travis-ci.com/user/languages/minimal-and-generic/)에서 확인할 수 있습니다
-    - — —coverage 옵션을 이용하면 콘솔에서 자세한 로그를 확인할 수 있습니다
-
-</code></pre>
-<p>code .travis.yml</p>
-<pre><code>
-</code></pre>
-<p>sudo: required</p>
-<p>language: generic</p>
-<p>services:
-    - docker</p>
-<p>before_install:
-    - echo "building image with dockerfile"
-    - docker build -t dotoryeee/test2 -f dockerfile.dev ./</p>
-<p>script:
-    - docker run -e CI=true dotoryeee/test2 npm run test -- --coverage</p>
-<p>after_success:
-    - echo "TEST SUCCESS"</p>
-<pre><code>
-2. 깃헙에 푸쉬하면 트레비스에서 자동으로 작업을 시작합니다
-
-    ![CICD on Single container/Untitled%2012.png](CICD on Single container/Untitled%2012.png)
-
-3. 첫 CI는 에러입니다. 바로 이메일도 날라와서 편리합니다
-
-    ![CICD on Single container/Untitled%2013.png](CICD on Single container/Untitled%2013.png)
-
-4. 이후 코드를 수정하고 다시 커밋 → 푸시 해주면 travis ci가 자동으로 pull 하고 build합니다
-
-    ![CICD on Single container/Untitled%2014.png](CICD on Single container/Untitled%2014.png)
-
-
-## CD : AWS에 배포하기
-
----
-
-1. AWS Beanstalk 에서 docker - amazon linux 플랫폼으로 생성을 시작합니다
-
-    ![CICD on Single container/Untitled%2015.png](CICD on Single container/Untitled%2015.png)
-
-2. Travis → AWS 접근을 위해 IAM AK, SK를 생성합니다. 이때 트래비스yaml파일에 직접 기입하면 보안상 위험하기 떄문에 트래비스 환경변수에 AK, SK를 넣어주고 배포시에 값을 가져오도록 설정합니다
-3. 트래비스에서 more option → setting으로 진입합니다
-
-    ![CICD on Single container/Untitled%2016.png](CICD on Single container/Untitled%2016.png)
-
-4. 트래비스 환경변수에 AWS_ACCESS_KEY / AWS_SECRET_ACCESS_KEY를 추가합니다
-
-    ![CICD on Single container/Untitled%2017.png](CICD on Single container/Untitled%2017.png)
-
-5. AWS에 배포를 위해 travis를 설정합니다. 당연히 yaml 파일로.
-
-</code></pre>
-<p>code .travis.yml</p>
-<pre><code>
-6. 다음 내용을 추가하고 푸시해줍니다
-
-</code></pre>
-<p>deploy:
+after_success:
+    - echo &quot;TEST SUCCESS&quot;
+</code></pre></div>
+<ol>
+<li>
+<p>깃헙에 푸쉬하면 트레비스에서 자동으로 작업을 시작합니다</p>
+<p><img alt="CICD on Single container/Untitled%2012.png" src="Untitled%2012.png" /></p>
+</li>
+<li>
+<p>첫 CI는 에러입니다. 바로 이메일도 날라와서 편리합니다</p>
+<p><img alt="CICD on Single container/Untitled%2013.png" src="Untitled%2013.png" /></p>
+</li>
+<li>
+<p>이후 코드를 수정하고 다시 커밋 → 푸시 해주면 travis ci가 자동으로 pull 하고 build합니다</p>
+<p><img alt="CICD on Single container/Untitled%2014.png" src="Untitled%2014.png" /></p>
+</li>
+</ol>
+<h2 id="cd-aws">CD : AWS에 배포하기</h2>
+<hr />
+<ol>
+<li>
+<p>AWS Beanstalk 에서 docker - amazon linux 플랫폼으로 생성을 시작합니다</p>
+<p><img alt="CICD on Single container/Untitled%2015.png" src="Untitled%2015.png" /></p>
+</li>
+<li>
+<p>Travis → AWS 접근을 위해 IAM AK, SK를 생성합니다. 이때 트래비스yaml파일에 직접 기입하면 보안상 위험하기 떄문에 트래비스 환경변수에 AK, SK를 넣어주고 배포시에 값을 가져오도록 설정합니다</p>
+</li>
+<li>
+<p>트래비스에서 more option → setting으로 진입합니다</p>
+<p><img alt="CICD on Single container/Untitled%2016.png" src="Untitled%2016.png" /></p>
+</li>
+<li>
+<p>트래비스 환경변수에 AWS_ACCESS_KEY / AWS_SECRET_ACCESS_KEY를 추가합니다</p>
+<p><img alt="CICD on Single container/Untitled%2017.png" src="Untitled%2017.png" /></p>
+</li>
+<li>
+<p>AWS에 배포를 위해 travis를 설정합니다. 당연히 yaml 파일로.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>code .travis.yml
+</code></pre></div>
+<ol>
+<li>다음 내용을 추가하고 푸시해줍니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code>deploy:
     provider: elasticbeanstalk
-    region: "ap-northeast-2"
-    app: "simple-app"
-    env: "Simpleapp-env" #빈스톡 생성시 env 지정 가능
-    bucket_name: "elasticbeanstalk-ap-northeast-2-737382971423" #빈스톡 생성시 자동으로 생성된 s3 이름
-    bucket_path: "simple-app" #app 이름과 동일하게 작성
+    region: &quot;ap-northeast-2&quot;
+    app: &quot;simple-app&quot;
+    env: &quot;Simpleapp-env&quot; #빈스톡 생성시 env 지정 가능
+    bucket_name: &quot;elasticbeanstalk-ap-northeast-2-737382971423&quot; #빈스톡 생성시 자동으로 생성된 s3 이름
+    bucket_path: &quot;simple-app&quot; #app 이름과 동일하게 작성
     on:
     branch: master #어떤 브랜치를 배포할 것 인가
     access_key_id: $AWS_ACCESS_KEY #트래비스에 등록된 환경변수
     secret_access_key: $AWS_SECRET_ACCESS_KEY
-```</p>
+</code></pre></div>
 <ol>
 <li>
 <p>빌드가 성공적으로 이뤄지면</p>
@@ -1044,7 +1191,7 @@ COPY static-html-directory /usr/share/nginx/html</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

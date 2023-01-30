@@ -15,7 +15,7 @@
         <link rel="next" href="../Terraform%20Practice/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -634,106 +634,101 @@
 <h2 id="backend">Backend 준비</h2>
 <hr />
 <ol>
-<li>작업을 위한 디렉터리를 생성합니다</li>
-</ol>
-<pre><code>mkdir init
-cd init
-</code></pre>
-<ol>
-<li>백엔드에 사용할 S3버킷과 DynamoDB 테이블을 생성합니다</li>
-</ol>
-<pre><code>vi init.tf
-</code></pre>
-<pre><code>provider &quot;aws&quot; {
-    region = &quot;ap-northeast-2&quot; # Please use the default region ID
-    version = &quot;~&gt; 2.49.0&quot; # Please choose any version or delete this line if you want the latest version
-}
-
-# S3 bucket for backend
-resource &quot;aws_s3_bucket&quot; &quot;tfstate&quot; {
-    bucket = &quot;ljw-terra-backend&quot; #Global Unique
-
-    versioning {
-    enabled = true # Prevent from deleting tfstate file
-    }
-}
-
-# DynamoDB for terraform state lock
-######### DO NOT TOUCH #############
-resource &quot;aws_dynamodb_table&quot; &quot;terraform_state_lock&quot; {
-    name           = &quot;terraform-lock&quot;
-    hash_key       = &quot;LockID&quot;
-    billing_mode   = &quot;PAY_PER_REQUEST&quot;
-
-    attribute {
-    name = &quot;LockID&quot;
-    type = &quot;S&quot;
-    }
-}
-######### DO NOT TOUCH #############
-</code></pre>
-<ol>
-<li>plan에 따르면 두 개의 리소스가 생성됨을 안내하고 있습니다</li>
-</ol>
-<pre><code>terraform plan
-</code></pre>
-<pre><code>![Terraform Backend/Untitled.png](Terraform Backend/Untitled.png)
-</code></pre>
-<ol>
-<li>의도한 바가 맞으니 적용해줍니다</li>
-</ol>
-<pre><code>terraform apply
-</code></pre>
-<pre><code>![Terraform Backend/Untitled%201.png](Terraform Backend/Untitled%201.png)
-</code></pre>
-<ol>
 <li>
-<p>버킷과 테이블이 잘 생성되었습니다</p>
-<p><img alt="Terraform Backend/Untitled%202.png" src="Untitled%202.png" /></p>
-<p><img alt="Terraform Backend/Untitled%203.png" src="Untitled%203.png" /></p>
+<p>작업을 위한 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>init
+<span class="nb">cd</span><span class="w"> </span>init
+</code></pre></div>
+</li>
+<li>
+<p>백엔드에 사용할 S3버킷과 DynamoDB 테이블을 생성합니다</p>
+<div class="highlight"><pre><span></span><code>vi<span class="w"> </span>init.tf
+</code></pre></div>
+<div class="highlight"><span class="filename">init.if</span><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span><span class="c1"> # Please use the default region ID</span>
+<span class="w">    </span><span class="na">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~&gt; 2.49.0&quot;</span><span class="c1"> # Please choose any version or delete this line if you want the latest version</span>
+<span class="p">}</span>
+
+<span class="c1"># S3 bucket for backend</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_s3_bucket&quot;</span><span class="w"> </span><span class="nv">&quot;tfstate&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ljw-terra-backend&quot;</span><span class="c1"> #Global Unique</span>
+
+<span class="w">    </span><span class="nb">versioning</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span><span class="c1"> # Prevent from deleting tfstate file</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># DynamoDB for terraform state lock</span>
+<span class="c1">######### DO NOT TOUCH #############</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_dynamodb_table&quot;</span><span class="w"> </span><span class="nv">&quot;terraform_state_lock&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terraform-lock&quot;</span>
+<span class="w">    </span><span class="na">hash_key</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;LockID&quot;</span>
+<span class="w">    </span><span class="na">billing_mode</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PAY_PER_REQUEST&quot;</span>
+
+<span class="w">    </span><span class="nb">attribute</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;LockID&quot;</span>
+<span class="w">    </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;S&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">######### DO NOT TOUCH #############</span>
+</code></pre></div>
+</li>
+<li>
+<p>plan에 따르면 두 개의 리소스가 생성됨을 안내하고 있습니다
+    <div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan
+</code></pre></div></p>
+<p><img alt="Terraform Backend/Untitled.png" src="Untitled.png" /></p>
+</li>
+<li>
+<p>의도한 바가 맞으니 적용해줍니다
+    <div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply
+</code></pre></div></p>
+<p><img alt="Terraform Backend/Untitled%201.png" src="Untitled%201.png" /></p>
+</li>
+<li>
+<p>버킷과 테이블이 잘 생성되었습니다
+    <img alt="Terraform Backend/Untitled%202.png" src="Untitled%202.png" />
+    <img alt="Terraform Backend/Untitled%203.png" src="Untitled%203.png" /></p>
 </li>
 </ol>
 <h2 id="backend_1">Backend 적용</h2>
 <hr />
 <ol>
 <li>iam을 제어하는 코드를 백엔드로 관리해봅니다</li>
-<li>작업중인 폴더(init)에서 나와서 iam 디렉터리로 이동합니다</li>
-</ol>
-<pre><code>cd ../iam
-</code></pre>
-<ol>
-<li>백엔드로 제어하기 위해 코드를 작성합니다</li>
-</ol>
-<pre><code>vi backend.tf
-</code></pre>
-<ol>
-<li>백엔드로 S3를 사용하고 DynamoDB를 이용해 Lock 할 것을 명시합니다</li>
-</ol>
-<pre><code>terraform {
-    backend &quot;s3&quot; {
-        bucket         = &quot;ljw-terra-backend&quot;
-        key            = &quot;terraform_source/iam/terraform.tfstate&quot;
-                    #s3내 경로는 현재 경로와 일치 시키는 것이 관리하기 편리합니다
-        region         = &quot;ap-northeast-2&quot;
-        encrypt        = true
-        dynamodb_table = &quot;terraform-lock&quot;
-    }
-}
-</code></pre>
-<ol>
+<li>
+<p>작업중인 폴더(init)에서 나와서 iam 디렉터리로 이동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>../iam
+</code></pre></div>
+</li>
+<li>
+<p>백엔드로 제어하기 위해 코드를 작성합니다</p>
+<div class="highlight"><pre><span></span><code>vi<span class="w"> </span>backend.tf
+</code></pre></div>
+</li>
+<li>
+<p>백엔드로 S3를 사용하고 DynamoDB를 이용해 Lock 할 것을 명시합니다</p>
+<div class="highlight"><span class="filename">backend.tf</span><pre><span></span><code><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kr">backend</span><span class="w"> </span><span class="nv">&quot;s3&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">bucket</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ljw-terra-backend&quot;</span>
+<span class="w">        </span><span class="na">key</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terraform_source/iam/terraform.tfstate&quot;</span>
+<span class="c1">                    #s3내 경로는 현재 경로와 일치 시키는 것이 관리하기 편리합니다</span>
+<span class="w">        </span><span class="na">region</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
+<span class="w">        </span><span class="na">encrypt</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">        </span><span class="na">dynamodb_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terraform-lock&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
 <li>
 <p>s3내 경로는 현재 경로와 일치 시키는것이 관리하기 편리합니다</p>
 <p><img alt="Terraform Backend/Untitled%204.png" src="Untitled%204.png" /></p>
 </li>
 <li>
 <p>백엔드 설정 후에는 다시 init 하는 과정이 필요합니다</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>init
+</code></pre></div>
+<p><img alt="Terraform Backend/Untitled%205.png" src="Untitled%205.png" /></p>
 </li>
-</ol>
-<pre><code>terraform init
-</code></pre>
-<pre><code>![Terraform Backend/Untitled%205.png](Terraform Backend/Untitled%205.png)
-</code></pre>
-<ol>
 <li>
 <p>로컬 파일을 S3에 업로드 하는것에 대해 동의여부를 묻습니다. yes</p>
 <p><img alt="Terraform Backend/Untitled%206.png" src="Untitled%206.png" /></p>
@@ -752,13 +747,12 @@ resource &quot;aws_dynamodb_table&quot; &quot;terraform_state_lock&quot; {
 </li>
 <li>
 <p>이제 로컬에 tfstate 파일이 없어도 plan이 잘 동작합니다</p>
+<div class="highlight"><pre><span></span><code>rm<span class="w"> </span>-rf<span class="w"> </span>terraform.tfstate<span class="w"> </span>terraform.tfstate.backup
+terraform<span class="w"> </span>plan
+</code></pre></div>
+<p><img alt="Terraform Backend/Untitled%2010.png" src="Untitled%2010.png" /></p>
 </li>
 </ol>
-<pre><code>rm -rf terraform.tfstate terraform.tfstate.backup
-terraform plan
-</code></pre>
-<pre><code>![Terraform Backend/Untitled%2010.png](Terraform Backend/Untitled%2010.png)
-</code></pre>
 
 
 
@@ -796,7 +790,7 @@ terraform plan
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>

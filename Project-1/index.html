@@ -15,7 +15,7 @@
         <link rel="next" href="../Prometheus%20and%20Grafana/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -731,7 +731,7 @@ user_data 사용시 terraform init 다시 해야 함</li>
 <p>HTTP랑 HTTPS랑 헷갈리지 말것ㅜㅜㅜㅜ(제일 어이 없던 부분)</p>
 </li>
 <li>HTML은 잘 나오지만 CSS, JS 로드가 안되면 Nginx 설정 문제</li>
-<li>정적컨텐츠 s3 호스팅을 위한 이동으로 cp <em>/</em>/<em>.css </em>/<em>/</em>.js ./deploy 이런것도 가능</li>
+<li>정적컨텐츠 s3 호스팅을 위한 이동으로 cp <em>/</em>/<em>.css */</em>/*.js ./deploy 이런것도 가능</li>
 <li>S3에 static resource 분리할 때 public access 권한 점검하기</li>
 <li>S3 버킷정책 만들 때 리소스에 /* 붙이기<a href="https://stackoverflow.com/questions/44228422/s3-bucket-action-doesnt-apply-to-any-resources">https://stackoverflow.com/questions/44228422/s3-bucket-action-doesnt-apply-to-any-resources</a></li>
 <li>테라폼에서 보안그룹 스스로를 소스로 사용하려면 ID를 넣지 말고 self = true 이용하기
@@ -761,7 +761,8 @@ user_data 사용시 terraform init 다시 해야 함</li>
 </li>
 <li>
 <p>MySQL 접속 커맨드</p>
-<p><code>mysql -h myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u root -p</code></p>
+<div class="highlight"><pre><span></span><code>mysql -h myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u root -p
+</code></pre></div>
 </li>
 <li>
 <p>도커 스웜모드 에러 확인</p>
@@ -772,34 +773,34 @@ user_data 사용시 terraform init 다시 해야 함</li>
 <h2 id="todo">TODO</h2>
 <hr />
 <ul>
-<li>IaC<ul>
-<li>[x]  Terraform</li>
-<li>[ ]  Terraform 고도화</li>
+<li>IaC<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Terraform</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Terraform 고도화</li>
 </ul>
 </li>
-<li>CICD<ul>
-<li>[x]  Container(Dockerfile)<ul>
-<li>[x]  Flask + gunicorn</li>
-<li>[x]  MySQL</li>
-<li>[x]  Nginx</li>
+<li>CICD<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Container(Dockerfile)<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Flask + gunicorn</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Nginx</li>
 </ul>
 </li>
-<li>[x]  Docker Compose</li>
-<li>[x]  Travis CI</li>
-<li>[x]  CodeDeploy</li>
-<li>[x]  배포 완료 후 구동 세팅</li>
-<li>[x]  EC2</li>
-<li>[ ]  CI를 위한 테스트코드 작성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Docker Compose</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Travis CI</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> CodeDeploy</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 배포 완료 후 구동 세팅</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> EC2</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> CI를 위한 테스트코드 작성</li>
 </ul>
 </li>
-<li>Server<ul>
-<li>[x]  HTML CSS 틀 만들기</li>
-<li>[x]  RDS, MySQL 연결</li>
-<li>[x]  기능 제작</li>
+<li>Server<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HTML CSS 틀 만들기</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS, MySQL 연결</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 기능 제작</li>
 </ul>
 </li>
-<li>Orchestration<ul>
-<li>[x]  Swarm Mode</li>
+<li>Orchestration<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Swarm Mode</li>
 </ul>
 </li>
 </ul>
@@ -832,29 +833,29 @@ user_data 사용시 terraform init 다시 해야 함</li>
 <ol>
 <li>CodeDeploy Agent 설치</li>
 </ol>
-<pre><code>aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
+<div class="highlight"><pre><span></span><code>aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
 sudo yum install -y ruby wget
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent start
 sudo service codedeploy-agent status
-</code></pre>
+</code></pre></div>
 <ol>
 <li>Docker 설치</li>
 </ol>
-<pre><code>sudo yum -y install docker
+<div class="highlight"><pre><span></span><code>sudo yum -y install docker
 sudo systemctl start docker
 sudo systemctl enable docker 
 sudo usermod -aG docker ec2-user
-</code></pre>
+</code></pre></div>
 <pre><code>권한 문제로 docker ps -a 명령이 불가능 할 경우
 </code></pre>
-<pre><code>sudo chmod 666 /var/run/docker.sock
-</code></pre>
+<div class="highlight"><pre><span></span><code>sudo chmod 666 /var/run/docker.sock
+</code></pre></div>
 <ol>
 <li>따라서 테라폼에 작성할 EC2 인스턴스의 사용자 데이터는 다음과 같습니다</li>
 </ol>
-<pre><code>&lt;&lt;-EOF
+<div class="highlight"><pre><span></span><code>&lt;&lt;-EOF
     #!/bin/bash
     aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
     sudo yum install -y ruby wget git
@@ -869,11 +870,11 @@ sudo usermod -aG docker ec2-user
     sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     EOF
-</code></pre>
+</code></pre></div>
 <ol>
 <li>CICD를 위한 .travis.yml 작성</li>
 </ol>
-<pre><code>language: generic
+<div class="highlight"><pre><span></span><code>language: generic
 
 services:
     - docker
@@ -923,11 +924,11 @@ deploy:
     wait-until-deployed: true #AWS에 파일 전달 이후에도 에러 확인 가능
     on:
         branch: main
-</code></pre>
+</code></pre></div>
 <ol>
 <li>CodeDeploy 이후 작업 명시를 위한 appspec.yml 작성</li>
 </ol>
-<pre><code>version: 0.0
+<div class="highlight"><pre><span></span><code>version: 0.0
 os: linux
 files:
     - source: /
@@ -937,50 +938,51 @@ hooks:
     AfterInstall:
     - location: execute-deploy.sh
         timeout: 300
-</code></pre>
+</code></pre></div>
 <ol>
 <li>서버에서 구동 위한 docker-compose-ec2.yml 작성</li>
 </ol>
-<p>```
- version: "3"
- services:
-   flask-submit-server:
-     image: dotoryeee/flask-submit-server
-     restart: always
-     container_name: flask-submit-server
-     ports:
-       - "8000:8000"
-     command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:server</p>
-<p>flask-result-server:
-     image: dotoryeee/flask-result-server
-     restart: always
-     container_name: flask-result-server
-     ports:
-       - "7000:7000"
-     volumes:
-       - ./flask-result-server:/usr/src/app
-     command: gunicorn -w 1 -b 0.0.0.0:7000 wsgi:server</p>
-<p>nginx:
-     image: dotoryeee/nginx
-     container_name: nginx
-     restart: always
-     ports:
-       - "80:80"
-     #flask 컨테이너 로드가 끝나면 Nginx를 시작합니다
-     depends_on:
-       - flask-submit-server
-       - flask-result-server
- ```</p>
+<div class="highlight"><pre><span></span><code>version: &quot;3&quot;
+services:
+  flask-submit-server:
+    image: dotoryeee/flask-submit-server
+    restart: always
+    container_name: flask-submit-server
+    ports:
+      - &quot;8000:8000&quot;
+    command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:server
+
+  flask-result-server:
+    image: dotoryeee/flask-result-server
+    restart: always
+    container_name: flask-result-server
+    ports:
+      - &quot;7000:7000&quot;
+    volumes:
+      - ./flask-result-server:/usr/src/app
+    command: gunicorn -w 1 -b 0.0.0.0:7000 wsgi:server
+
+  nginx:
+    image: dotoryeee/nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - &quot;80:80&quot;
+    #flask 컨테이너 로드가 끝나면 Nginx를 시작합니다
+    depends_on:
+      - flask-submit-server
+      - flask-result-server
+</code></pre></div>
 <ol>
 <li>연동하여 서버 시작 명령이 명시된 execute-deploy 스크립트 작성</li>
 </ol>
-<pre><code>#!/bin/bash
+<div class="highlight"><pre><span></span><code>#!/bin/bash
 sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose -f /home/e2-user/app/docker-compose-ec2.yml rm -fs
 docker system prune -a -f
 docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
-</code></pre>
+</code></pre></div>
 <h2 id="_6">동작 확인</h2>
 <hr />
 <ol>
@@ -989,7 +991,7 @@ docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
 </ul>
 </li>
 </ol>
-<pre><code>An execution plan has been generated and is shown below.
+<div class="highlight"><pre><span></span><code>An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
     + create
 
@@ -1411,7 +1413,7 @@ Plan: 17 to add, 0 to change, 0 to destroy.
 
 Do you want to perform these actions?
     Terraform will perform the actions described above.
-    Only 'yes' will be accepted to approve.
+    Only &#39;yes&#39; will be accepted to approve.
 
     Enter a value: yes
 
@@ -1458,7 +1460,7 @@ aws_instance.public_01: Creation complete after 21s [id=i-00cb9f1261ba14494]
 aws_instance.public_02: Creation complete after 21s [id=i-0a84d66623f8c2a83]
 
 Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
-</code></pre>
+</code></pre></div>
 <pre><code>![Project-1/Untitled%2013.png](Project-1/Untitled%2013.png)
 </code></pre>
 <ol>
@@ -1643,8 +1645,8 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
 <p>다음과 같이 EC2 에서 RDS에 연결할 수 있도록 설정을 해둡니다</p>
 </li>
 </ol>
-<pre><code>mysql -u root -p --host myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com
-</code></pre>
+<div class="highlight"><pre><span></span><code>mysql -u root -p --host myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com
+</code></pre></div>
 <pre><code>![Project-1/Untitled%2055.png](Project-1/Untitled%2055.png)
 </code></pre>
 <ol>
@@ -1653,8 +1655,8 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
 <p>합격 결과를 띄어줄 result는 기본 값에 0을 부여합니다</p>
 </li>
 </ol>
-<pre><code>create table {RDS_TABLE} (number int auto_increment primary key, name char(10) not null ,contact text not null ,resume text, blog text, result BOOLEAN default 0)
-</code></pre>
+<div class="highlight"><pre><span></span><code>create table {RDS_TABLE} (number int auto_increment primary key, name char(10) not null ,contact text not null ,resume text, blog text, result BOOLEAN default 0)
+</code></pre></div>
 <ol>
 <li>
 <p>다음과 같이 테스트 해봅니다. 잘 연결되었습니다.</p>
@@ -1689,8 +1691,8 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
 <p>매니저 노드를 시작합니다</p>
 </li>
 </ol>
-<pre><code>docker swarm init --advertise-addr {ADDR}
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker swarm init --advertise-addr {ADDR}
+</code></pre></div>
 <pre><code>![Project-1/Untitled%2062.png](Project-1/Untitled%2062.png)
 </code></pre>
 <ol>
@@ -1704,10 +1706,10 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
 <p>다음과 같은 방식으로 Nginx 컨테이너를 로드하고 정보를 확인할 수 있습니다</p>
 </li>
 </ol>
-<pre><code>docker service create --name nginx -p 80:80 nginx
+<div class="highlight"><pre><span></span><code>docker service create --name nginx -p 80:80 nginx
 docker service ls
 docker service ps nginx
-</code></pre>
+</code></pre></div>
 <pre><code>![Project-1/Untitled%2066.png](Project-1/Untitled%2066.png)
 </code></pre>
 <ol>
@@ -1725,8 +1727,8 @@ docker service ps nginx
 <p><img alt="Project-1/Untitled%2069.png" src="Untitled%2069.png" /></p>
 </li>
 </ol>
-<pre><code>docker stack deploy --compose-file docker-compose-swarm.yml test
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker stack deploy --compose-file docker-compose-swarm.yml test
+</code></pre></div>
 <ol>
 <li>
 <p>서비스가 잘 실행되면 RDS에 2개의 연결이 생성된 것을 확인할 수 있습니다</p>
@@ -1960,7 +1962,7 @@ docker service ps nginx
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>
