@@ -9,17 +9,17 @@
       
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../../Docker/Docker%20volume%20with%20MySQL/">
       
       
-        <link rel="next" href="../API%20Gateway%20with%20Lambda/">
+        <link rel="next" href="../AWS%20Codedeploy%20install/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
     
     
       
-        <title>3-Tier 기본 인프라 구성 - dotoryeee's blog</title>
+        <title>AWS CLI 모둠 - dotoryeee's blog</title>
       
     
     
@@ -78,11 +78,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#3-tier" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -111,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              3-Tier 기본 인프라 구성
+              AWS CLI 모둠
             
           </span>
         </div>
@@ -209,16 +204,16 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
       
       
       
@@ -227,7 +222,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Cloud Infra
@@ -238,129 +233,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          3-Tier 기본 인프라 구성
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/3-Tier%20Basic%20Infra/" class="md-nav__link">
         3-Tier 기본 인프라 구성
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    개념도
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#todo" class="md-nav__link">
-    TODO
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vpc" class="md-nav__link">
-    VPC
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ec2-instance" class="md-nav__link">
-    EC2 Instance
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bastion-host" class="md-nav__link">
-    Bastion Host 접속
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#elb" class="md-nav__link">
-    ELB 만들기
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#auto-scaling" class="md-nav__link">
-    Auto Scaling
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bastion-host_1" class="md-nav__link">
-    Bastion Host → 웹 서버 접속
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rdsmysql" class="md-nav__link">
-    RDS(MySQL)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#db" class="md-nav__link">
-    DB동작 확인
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql-workbench" class="md-nav__link">
-    MySQL workbench
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jetbrains-datagrip" class="md-nav__link">
-    Jetbrains DataGrip
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -372,7 +249,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../API%20Gateway%20with%20Lambda/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/API%20Gateway%20with%20Lambda/" class="md-nav__link">
         API Gateway with Lambda
       </a>
     </li>
@@ -386,7 +263,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
         Access S3, DynamoDB with Lambda
       </a>
     </li>
@@ -400,7 +277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Failover%20for%20HA/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Failover%20for%20HA/" class="md-nav__link">
         Failover for HA
       </a>
     </li>
@@ -414,7 +291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Prometheus%20and%20Grafana/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Prometheus%20and%20Grafana/" class="md-nav__link">
         Prometheus and Grafana
       </a>
     </li>
@@ -428,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
         Transaction on GCP Spanner
       </a>
     </li>
@@ -442,7 +319,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VPC%20Endpoint%20with%20Role/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/" class="md-nav__link">
         VPC Endpoint with Role
       </a>
     </li>
@@ -634,16 +511,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-        
-      
-      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
       
       
       
@@ -652,7 +529,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Memozzang
@@ -663,11 +540,19 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../Memozzang/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         AWS CLI 모둠
       </a>
+      
     </li>
   
 
@@ -679,7 +564,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Memozzang/AWS%20Codedeploy%20install/" class="md-nav__link">
+      <a href="../AWS%20Codedeploy%20install/" class="md-nav__link">
         AWS Codedeploy install
       </a>
     </li>
@@ -693,7 +578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Memozzang/JupyterLab/" class="md-nav__link">
+      <a href="../JupyterLab/" class="md-nav__link">
         JupyterLab
       </a>
     </li>
@@ -707,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Memozzang/Nextcloud/" class="md-nav__link">
+      <a href="../Nextcloud/" class="md-nav__link">
         Nextcloud
       </a>
     </li>
@@ -896,100 +781,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    개념도
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#todo" class="md-nav__link">
-    TODO
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vpc" class="md-nav__link">
-    VPC
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ec2-instance" class="md-nav__link">
-    EC2 Instance
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bastion-host" class="md-nav__link">
-    Bastion Host 접속
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#elb" class="md-nav__link">
-    ELB 만들기
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#auto-scaling" class="md-nav__link">
-    Auto Scaling
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bastion-host_1" class="md-nav__link">
-    Bastion Host → 웹 서버 접속
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rdsmysql" class="md-nav__link">
-    RDS(MySQL)
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#db" class="md-nav__link">
-    DB동작 확인
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql-workbench" class="md-nav__link">
-    MySQL workbench
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jetbrains-datagrip" class="md-nav__link">
-    Jetbrains DataGrip
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1005,369 +796,34 @@
 
 
 
-<h1 id="3-tier">3-Tier 기본 인프라 구성</h1>
-<h2 id="_1">개념도</h2>
-<hr />
-<p><img alt="3-Tier Basic Infra/Untitled.png" src="Untitled.png" /></p>
-<h2 id="todo">TODO</h2>
-<hr />
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
-</ul>
-<h2 id="vpc">VPC</h2>
-<hr />
 <ol>
 <li>
-<p>VPC 생성</p>
-<p><img alt="3-Tier Basic Infra/Untitled%201.png" src="Untitled%201.png" /></p>
-</li>
-<li>
-<p>서브넷 생성(public 2ea, private 2ea)</p>
-<p><img alt="3-Tier Basic Infra/screencapture-ap-northeast-2-console-aws-amazon-vpc-home-2021-01-12-13_14_32.png" src="screencapture-ap-northeast-2-console-aws-amazon-vpc-home-2021-01-12-13_14_32.png" /></p>
-</li>
-<li>
-<p>서브넷 확인</p>
-<p><img alt="3-Tier Basic Infra/Untitled%202.png" src="Untitled%202.png" /></p>
-</li>
-<li>
-<p>퍼블릭서브넷의 public-IP 자동할당 사용</p>
-<p><img alt="3-Tier Basic Infra/Untitled%203.png" src="Untitled%203.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%204.png" src="Untitled%204.png" /></p>
-<p>→ 퍼블릭서브넷(총 2개)에 모두 적용</p>
-</li>
-<li>
-<p>라우팅테이블 생성</p>
-<p><img alt="3-Tier Basic Infra/Untitled%205.png" src="Untitled%205.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%206.png" src="Untitled%206.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%207.png" src="Untitled%207.png" /></p>
-<p>→ VPC당 IGW는 1개 이므로 public route table은 1개, private route table은 2개 생성</p>
-</li>
-<li>
-<p>IGW 생성</p>
-<p><img alt="3-Tier Basic Infra/Untitled%208.png" src="Untitled%208.png" /></p>
-</li>
-<li>
-<p>IGW를 VPC에 attach</p>
-<p><img alt="3-Tier Basic Infra/Untitled%209.png" src="Untitled%209.png" /></p>
-</li>
-<li>
-<p>Final-Public-RT의 라우트 설정</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2010.png" src="Untitled%2010.png" /></p>
-</li>
-<li>
-<p>private서브넷에는 NAT gateway 생성 후 할당(요금 발생으로 인해 실습X)</p>
-</li>
-<li>
-<p>라우팅테이블을 서브넷에 연결</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2011.png" src="Untitled%2011.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2012.png" src="Untitled%2012.png" /></p>
-<p>→ Final-Public-02도 마찬가지로 Final-Public-RT에 연결</p>
-<p>→ Final-Private-01, Final-Private-02 은 각각 Final-Private-01-RT, Final-Private-02-RT 연결</p>
-</li>
-</ol>
-<h2 id="ec2-instance">EC2 Instance</h2>
-<hr />
-<ol>
-<li>
-<p>SSH접속을 위한 Key pair 생성</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2013.png" src="Untitled%2013.png" /></p>
-<p>→ putty 쓰려면 ppk선택(범용성이 떨어져 권장하지 않음)</p>
-</li>
-<li>
-<p>Bastion Host 용 SG(보안그룹) 생성</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2014.png" src="Untitled%2014.png" /></p>
-</li>
-<li>
-<p>Bastion Host Instance 생성 * 2ea</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2015.png" src="Untitled%2015.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2016.png" src="Untitled%2016.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2017.png" src="Untitled%2017.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2018.png" src="Untitled%2018.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2019.png" src="Untitled%2019.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2020.png" src="Untitled%2020.png" /></p>
-<p>→ VPC, Subnet, SG 만 알맞게 조절</p>
-</li>
-<li>
-<p>이전에 생성한 키페어 선택</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2021.png" src="Untitled%2021.png" /></p>
-</li>
-<li>
-<p>같은 작업을 반복하여 Bastion-Host(2c) 생성</p>
-</li>
-</ol>
-<h2 id="bastion-host">Bastion Host 접속</h2>
-<hr />
-<ol>
-<li>
-<p>Bastion Host(2a)의 public IP 할당을 확인</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2022.png" src="Untitled%2022.png" /></p>
-</li>
-<li>
-<p>터미널 열어서 키페어파일 위치로 이동 후 다음 명령을 이용하여 접속</p>
-<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">snapshots</span><span class="w"> </span><span class="o">--</span><span class="n">filters</span><span class="w"> </span><span class="n">Name</span><span class="o">=</span><span class="n">owner</span><span class="o">-</span><span class="n">id</span><span class="p">,</span><span class="n">Values</span><span class="o">=</span><span class="m">123456789012</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Snapshots[?(StartTime&gt;=&#39;2019-01-01&#39;) &amp;&amp; (StartTime&lt;=&#39;2019-12-31&#39;)].[SnapshotId]&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">text</span>
 </code></pre></div>
 </li>
 <li>
-<p>SSH 최초 접속시 hash 값 확인 → yes 입력</p>
-</li>
-<li>
-<p>접속 확인(bastion host 정상작동)</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2023.png" src="Untitled%2023.png" /></p>
-</li>
-</ol>
-<h2 id="elb">ELB 만들기</h2>
-<hr />
-<ol>
-<li>
-<p>LoadBalancer(internet Facing)를 위한 SG(보안그룹)을 생성해줍니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2024.png" src="Untitled%2024.png" /></p>
-<p>→ internetFacing이기 때문에 모든 포트를 오픈해줍니다</p>
-</li>
-<li>
-<p>WebServer를 위한 SG를 생성합니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2025.png" src="Untitled%2025.png" /></p>
-<p>→ 보안그룹체이닝을 이용하여 ELB에게만 HTTP포트를 오픈해줍니다</p>
-</li>
-<li>
-<p>좌측 메뉴의 Load Balancing → Target Groups에서 새로운 Target Group을 생성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2026.png" src="Untitled%2026.png" /></p>
-<p>→ VPC만 설정하고 다른 부분은 기본값으로 진행합니다</p>
-</li>
-<li>
-<p>일단 인스턴스 추가 없이 생성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2027.png" src="Untitled%2027.png" /></p>
-</li>
-<li>
-<p>Load Balancing → Load Balancers에서 새 LB를 생성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2028.png" src="Untitled%2028.png" /></p>
-</li>
-<li>
-<p>Internet-Facing LB 이므로 퍼블릭서브넷에 생성해줍니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2029.png" src="Untitled%2029.png" /></p>
-</li>
-<li>
-<p>이전에 생성해둔 LB용 SG를 선택합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2030.png" src="Untitled%2030.png" /></p>
-</li>
-<li>
-<p>Target Group도 사전에 만들어둔 TG-21-01-12를 선택합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2031.png" src="Untitled%2031.png" /></p>
-</li>
-</ol>
-<h2 id="auto-scaling">Auto Scaling</h2>
-<hr />
-<ol>
-<li>
-<p>EC2 좌측 메뉴 Auto Scaling → Launch Configuration 에서 새로 작성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2032.png" src="Untitled%2032.png" /></p>
-</li>
-<li>
-<p>이름을 할당하고 AMI를 선택해줍니다. 미리 만들어둔 AMI가 없으면 새로 만들면 됩니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2033.png" src="Untitled%2033.png" /></p>
-<p>→ 웹 서버용 SG를 선택하고 키페어도 연결해줍니다</p>
-</li>
-<li>
-<p>좌측메뉴 Auto Scaling Groups을 진입하고 Create Auto Scaling Group을 클릭합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2034.png" src="Untitled%2034.png" /></p>
-</li>
-<li>
-<p>오토스케일러 이름을 할당하고 Launch Configuration을 선택해줍니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2035.png" src="Untitled%2035.png" /></p>
-<p>→ 목록에 안 보이면 밑줄 친 부분을 누르면 됩니다</p>
-</li>
-<li>
-<p>오토스케일을 적용할 서브넷(private)을 선택합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2036.png" src="Untitled%2036.png" /></p>
-</li>
-<li>
-<p>이 전에 만들어둔 로드밸런서를 사용합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2037.png" src="Untitled%2037.png" /></p>
-</li>
-<li>
-<p>목표, 최소, 최대 인스턴스 개수와 스케일링 정책을 작성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2038.png" src="Untitled%2038.png" /></p>
-</li>
-<li>
-<p>스케일러에 의해 시작된 인스턴스에 붙일 태그를 작성합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2039.png" src="Untitled%2039.png" /></p>
-</li>
-<li>
-<p>EC2 인스턴스에 들어가보면 2-4의 목표값인 '2개'만큼 인스턴스가 실행되어있습니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2040.png" src="Untitled%2040.png" /></p>
-</li>
-<li>
-<p>ELB의 DNS 주소를 찾아봅니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2041.png" src="Untitled%2041.png" /></p>
-</li>
-<li>
-<p>해당 DNS주소에 접속하면 웹서버로 진입할 수 있습니다</p>
-</li>
-<li>
-<p>사전에 생성해둔 서버 화면이 표시됩니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2042.png" src="Untitled%2042.png" /></p>
-<p>→ 화면에선 AZ 메타정보(2a)를 확인해볼 수 있습니다</p>
-</li>
-<li>
-<p>라운드로빈 방식의 LB이기 때문에 접속을 할 때 마다 서버가 변경됩니다.</p>
-<p>새로고침을 하면 다른 AZ(2c)의 웹서버에 접속된 걸 확인할 수 있습니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2043.png" src="Untitled%2043.png" /></p>
-</li>
-</ol>
-<h2 id="bastion-host_1">Bastion Host → 웹 서버 접속</h2>
-<hr />
-<ol>
-<li>
-<p>SSH로 Bastion host에 접속합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2044.png" src="Untitled%2044.png" /></p>
-</li>
-<li>
-<p>PEM키 파일을 Bastion 에 다운로드합니다</p>
-<p>단순 실습을 위해 AWS S3에 업로드 후 wget을 이용하여 다운로드 하였습니다</p>
-<p>나중에 현장에서 이렇게 일 하면 안됩니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2045.png" src="Untitled%2045.png" /></p>
-</li>
-<li>
-<p>Webserver SG에 bastion host 를 위한 SSH 포트를 개방합니다</p>
-<p>체이닝된 source SG는 FINAL-SG-Bastion입니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2046.png" src="Untitled%2046.png" /></p>
-</li>
-<li>
-<p>스케일러에 의해 생성된 서버의 내부 IP를 찾습니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2047.png" src="Untitled%2047.png" /></p>
-</li>
-<li>
-<p>Bastion의 터미널에 다음과 같은 명령으로 Webserver에 접속합니다</p>
-<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">instances</span><span class="w"> </span><span class="o">--</span><span class="n">filters</span><span class="w"> </span><span class="n">Name</span><span class="o">=</span><span class="n">instance</span><span class="o">-</span><span class="n">state</span><span class="o">-</span><span class="n">name</span><span class="p">,</span><span class="n">Values</span><span class="o">=</span><span class="n">running</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Reservations[*].Instances[*].InstanceId&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">text</span>
 </code></pre></div>
 </li>
 <li>
-<p>다음 에러 발생시 chmod를 적용합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2048.png" src="Untitled%2048.png" /></p>
-<div class="highlight"><pre><span></span><code>chmod 400 FINAL-KEY.pem
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">snapshots</span><span class="w"> </span><span class="o">--</span><span class="n">owner</span><span class="o">-</span><span class="n">ids</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">awk</span><span class="w"> </span><span class="o">-</span><span class="bp">F</span><span class="w"> </span><span class="s">&#39;&quot;&#39;</span><span class="w"> </span><span class="s">&#39;/SnapshotId/ {print $4}&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">xargs</span><span class="w"> </span><span class="o">-</span><span class="n">I</span><span class="p">{}</span><span class="w"> </span><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">snapshot</span><span class="o">-</span><span class="n">attribute</span><span class="w"> </span><span class="o">--</span><span class="n">attribute</span><span class="w"> </span><span class="n">createVolumePermission</span><span class="w"> </span><span class="o">--</span><span class="n">snapshot</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">vF</span><span class="w"> </span><span class="s">&#39;&quot;CreateVolumePermissions&quot;: []&#39;</span>
 </code></pre></div>
 </li>
 <li>
-<p>재접속 하면 정상적으로 WebServer에 연결된 것을 볼 수 있습니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2049.png" src="Untitled%2049.png" /></p>
-</li>
-</ol>
-<h2 id="rdsmysql">RDS(MySQL)</h2>
-<hr />
-<ol>
-<li>
-<p>DB서버를 위한 SG를 생성합니다</p>
-<p>BastionHost와 WebServer에서 3306포트를 접속할 수 있도록 SG체이닝을 넣어줍니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2050.png" src="Untitled%2050.png" /></p>
-</li>
-<li>
-<p>AWS RDS페이지에서 DB에 사용할 서브넷 설정을 생성합니다.</p>
-<p>DB는 private 서브넷에 상주하는 것을 생각하고 알맞게 체크하면 됩니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2051.png" src="Untitled%2051.png" /></p>
-</li>
-<li>
-<p>AWS RDS페이지에서 Create database를 선택합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2052.png" src="Untitled%2052.png" /></p>
-</li>
-<li>
-<p>MySQL을 선택합니다</p>
-<p>학습용이니 하단의 Free Tier제한 옵션도 선택해줍니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2053.png" src="Untitled%2053.png" /></p>
-</li>
-<li>
-<p>subnet, SG를 잘 선택해주고 DB관련한 값을 알맞게 적어줍니다</p>
-<p>/* </p>
-<p>DB식별자 : dbdb(x) → mydb</p>
-<p>Master User : DBadmin</p>
-<p>Password : DB-password</p>
-<p>DatabaseName : lab</p>
-<p>*/</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2054.png" src="Untitled%2054.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2055.png" src="Untitled%2055.png" /></p>
-<p><img alt="3-Tier Basic Infra/Untitled%2056.png" src="Untitled%2056.png" /></p>
-</li>
-</ol>
-<h2 id="db">DB동작 확인</h2>
-<hr />
-<ol>
-<li>
-<p>SSH를 이용해 Bastion Host에 접속합니다.</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2057.png" src="Untitled%2057.png" /></p>
-</li>
-<li>
-<p>다음 명령을 이용해 Bastion Host에 MySQL을 설치합니다</p>
-<div class="highlight"><pre><span></span><code>sudo yum -y install mysql
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">images</span><span class="w"> </span><span class="o">--</span><span class="n">owners</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="m">-1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">awk</span><span class="w"> </span><span class="o">-</span><span class="bp">F</span><span class="w"> </span><span class="s">&#39;&quot;&#39;</span><span class="w">  </span><span class="s">&#39;/ImageId/ {print $4}&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">xargs</span><span class="w"> </span><span class="o">-</span><span class="n">I</span><span class="p">{}</span><span class="w"> </span><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">attribute</span><span class="w"> </span><span class="o">--</span><span class="n">attribute</span><span class="w"> </span><span class="n">launchPermission</span><span class="w"> </span><span class="o">--</span><span class="n">image</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="m">-1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">vF</span><span class="w"> </span><span class="s">&#39;&quot;LaunchPermissions&quot;: []&#39;</span>
 </code></pre></div>
 </li>
 <li>
-<p>서버접속을 위해 다음 명령을 이용해 MySQL 을 사용합니다</p>
-<div class="highlight"><pre><span></span><code>mysql -h {DNS} -P {PORT} -u {USER} -p
-                         ↓(예시)
-mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">instances</span><span class="w"> </span><span class="o">--</span><span class="n">filters</span><span class="w"> </span><span class="n">Name</span><span class="o">=</span><span class="n">tag</span><span class="o">:</span><span class="n">Name</span><span class="p">,</span><span class="n">Values</span><span class="o">=</span><span class="s">&quot;*db*&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Reservations[*].Instances[*].BlockDeviceMappings[*].Ebs.VolumeId&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;.[][][]&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">xargs</span><span class="w"> </span><span class="o">-</span><span class="n">I</span><span class="p">{}</span><span class="w"> </span><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="m">-1</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">volumes</span><span class="w"> </span><span class="o">--</span><span class="n">filters</span><span class="w"> </span><span class="n">Name</span><span class="o">=</span><span class="n">volume</span><span class="o">-</span><span class="n">id</span><span class="p">,</span><span class="n">Values</span><span class="o">=</span><span class="p">{}</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Volumes[*].Size&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;.[]&#39;</span>
 </code></pre></div>
 </li>
 <li>
-<p>'MySQL&gt;' 이 뜨면 접속 성공한 것입니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2058.png" src="Untitled%2058.png" /></p>
-</li>
-</ol>
-<h2 id="mysql-workbench">MySQL workbench</h2>
-<hr />
-<ol>
-<li>
-<p>MySQL Workbench 다운로드 &amp; 실행</p>
-<p><a href="https://dev.mysql.com/downloads/workbench/">MySQL :: Download MySQL Workbench</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">southeast</span><span class="m">-1</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">volumes</span><span class="w"> </span><span class="o">--</span><span class="n">filters</span><span class="w"> </span><span class="n">Name</span><span class="o">=</span><span class="n">attachment.status</span><span class="p">,</span><span class="n">Values</span><span class="o">=</span><span class="n">attached</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Volumes[*].Size&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="s">&quot;[0-9]&quot;</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="s">&#39;s/^[ \t]*//&#39;</span>
+</code></pre></div>
 </li>
 <li>
-<p>Basiton Host 사용시 아래와 같이 입력</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2059.png" src="Untitled%2059.png" /></p>
-</li>
-<li>
-<p>올바르게 작성된 예시</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2060.png" src="Untitled%2060.png" /></p>
-</li>
-<li>
-<p>OK누르면 비밀번호 입력창이 뜹니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2061.png" src="Untitled%2061.png" /></p>
-</li>
-<li>
-<p>접속 완료하였습니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2062.png" src="Untitled%2062.png" /></p>
-</li>
-</ol>
-<h2 id="jetbrains-datagrip">Jetbrains DataGrip</h2>
-<hr />
-<ol>
-<li>
-<p>DataGrip을 실행합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2063.png" src="Untitled%2063.png" /></p>
-</li>
-<li>
-<p>MySQL 연결을 새로 만듭니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2064.png" src="Untitled%2064.png" /></p>
-</li>
-<li>
-<p>SSH를 선택하고 터널링 설정을 엽니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2065.png" src="Untitled%2065.png" /></p>
-</li>
-<li>
-<p>BastionHost의 정보를 입력해줍니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2066.png" src="Untitled%2066.png" /></p>
-</li>
-<li>
-<p>General로 돌아와서 host, port, User, password 입력합니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2067.png" src="Untitled%2067.png" /></p>
-</li>
-<li>
-<p>접속에 성공하였습니다</p>
-<p><img alt="3-Tier Basic Infra/Untitled%2068.png" src="Untitled%2068.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">aws</span><span class="w"> </span><span class="n">ec2</span><span class="w"> </span><span class="n">describe</span><span class="o">-</span><span class="n">images</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="w"> </span><span class="o">--</span><span class="n">owners</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="s">&quot;Images[?contains(Name, &#39;DLM&#39;)].{Id:ImageId,EBS:BlockDeviceMappings}&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="s">&#39;Id|SnapshotId&#39;</span>
+</code></pre></div>
 </li>
 </ol>
 
@@ -1398,7 +854,7 @@ mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: 무계획 공부 전문" rel="prev">
+          <a href="../../Docker/Docker%20volume%20with%20MySQL/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker volume with MySQL" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1407,20 +863,20 @@ mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                무계획 공부 전문
+                Docker volume with MySQL
               </div>
             </div>
           </a>
         
         
           
-          <a href="../API%20Gateway%20with%20Lambda/" class="md-footer__link md-footer__link--next" aria-label="Next: API Gateway with Lambda" rel="next">
+          <a href="../AWS%20Codedeploy%20install/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS Codedeploy install" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                API Gateway with Lambda
+                AWS Codedeploy install
               </div>
             </div>
             <div class="md-footer__button md-icon">
