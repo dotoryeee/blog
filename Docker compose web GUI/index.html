@@ -733,71 +733,67 @@
 <h2 id="_2">설치 전 기본 작업</h2>
 <hr />
 <ol>
-<li>원활한 작업을 위해 Ubuntu 시스템을 업데이트합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo apt update &amp;&amp; sudo apt upgrade
+<li>
+<p>원활한 작업을 위해 Ubuntu 시스템을 업데이트합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">upgrade</span>
 </code></pre></div>
-<ol>
-<li>트러블슈팅 혹은 작업시 필요한 net-tools와 ssh, vim을 설치합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo apt install net-tools ssh vim
+</li>
+<li>
+<p>트러블슈팅 혹은 작업시 필요한 net-tools와 ssh, vim을 설치합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">net</span><span class="o">-</span><span class="n">tools</span><span class="w"> </span><span class="n">ssh</span><span class="w"> </span><span class="n">vim</span>
 </code></pre></div>
-<ol>
-<li>https를 이용하여 프로그램에 접근 / ca서명 / http를 이용한 통신 / GPG키 관리자 / PPA액세스를 위한 프로그램을 각각 설치합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+</li>
+<li>
+<p>https를 이용하여 프로그램에 접근 / ca서명 / http를 이용한 통신 / GPG키 관리자 / PPA액세스를 위한 프로그램을 각각 설치합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span><span class="w"> </span><span class="n">ca</span><span class="o">-</span><span class="n">certificates</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="n">gnupg</span><span class="o">-</span><span class="n">agent</span><span class="w"> </span><span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span>
 </code></pre></div>
+</li>
+</ol>
 <h2 id="docker">Docker 설치 및 확인</h2>
 <hr />
 <ol>
-<li>도커의 GPG PublicKey를 다운로드한 후 apt-key에 추가합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+<li>
+<p>도커의 GPG PublicKey를 다운로드한 후 apt-key에 추가합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">curl</span><span class="w"> </span>–<span class="n">fsSL</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">download.docker.com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">gpg</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">key</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="o">-</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>OK를 확인하여 정상적으로 완료된 것을 알 수 있습니다</p>
 <p><img alt="Docker compose and web GUI/Untitled.png" src="../Docker%20compose%20and%20web%20GUI/Untitled.png" /></p>
 </li>
 <li>
 <p>ppa저장소를 추가하고 업데이트 합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
-sudo apt update
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span><span class="w"> </span><span class="s">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;</span>
+<span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">update</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>도커를 설치합니다</p>
 <p>docker-ce : 도커 데몬으로 모든 작업을 수행하는 부분입니다</p>
 <p>docker-cli : 데몬은 제어하는 CLI 도구입니다</p>
 <p>containerd.io : 컨테이너 데몬입니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">containerd.io</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo apt install docker-ce docker-cli containerd.io
+<li>
+<p>도커의 명령을 실행해봅니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span>–<span class="n">v</span>
 </code></pre></div>
-<ol>
-<li>도커의 명령을 실행해봅니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker –v
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>정상적으로 설치가 완료되었습니다</p>
 <p><img alt="Docker compose and web GUI/Untitled%201.png" src="../Docker%20compose%20and%20web%20GUI/Untitled%201.png" /></p>
 </li>
 <li>
 <p>리눅스 부팅될 때 자동으로 도커가 실행될 수 있도록 서비스에 등록합니다</p>
-<div class="highlight"><pre><span></span><code>sudo systemctl enable docker &amp;&amp; service docker start
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">start</span>
 </code></pre></div>
 </li>
 <li>
 <p>리눅스에서 도커 서비스 상태를 확인합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>service docker status
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">status</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>정상적으로 동작하고 있는 것을 확인할 수 있습니다</p>
 <p><img alt="Docker compose and web GUI/Untitled%202.png" src="../Docker%20compose%20and%20web%20GUI/Untitled%202.png" /></p>
@@ -805,11 +801,10 @@ sudo apt update
 </ol>
 <h2 id="docker_1">DOCKER 명령어</h2>
 <hr />
-<aside>
-💡 옵션이 너무 많은 경우 생략 → 각 명령어의 파라미터 —help 참조
-
-</aside>
-
+<div class="admonition details">
+<p class="admonition-title">Details</p>
+<p>💡 옵션이 너무 많은 경우 생략 → 각 명령어의 파라미터 —help 참조</p>
+</div>
 <h3 id="_3">기본 명령어</h3>
 <hr />
 <ul>
@@ -847,11 +842,11 @@ sudo apt update
 <hr />
 <ol>
 <li>docker를 쉽게 관리할 수 있는 GUI 도구인 portainer를 설치합니다</li>
-<li>portainer를 설치할 디렉토리를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo mkdir -p /data/portainer
+<li>
+<p>portainer를 설치할 디렉토리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">portainer</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>portainer를 실행할 수 있도록 docker에 컨테이너 형태로 추가합니다</p>
 <p>—name : {컨테이너 이름}</p>
@@ -860,11 +855,9 @@ sudo apt update
 <p>—restart : always ← 재부팅 시 자동 시작</p>
 <p>-v {호스트-컨테이너 간 볼륨 매칭}</p>
 <p>portainer/portainer ← 이미지 사용</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/portainer:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">portainer</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">9000</span><span class="o">:</span><span class="m">9000</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="o">--</span><span class="n">restart</span><span class="w"> </span><span class="n">always</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">portainer</span><span class="o">:/</span><span class="n">data</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker.sock</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">docker.sock</span><span class="w"> </span><span class="n">portainer</span><span class="o">/</span><span class="n">portainer</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>명령에 대한 진행사항을 확인할 수 있습니다</p>
 <p><img alt="Docker compose and web GUI/Untitled%205.png" src="../Docker%20compose%20and%20web%20GUI/Untitled%205.png" /></p>
@@ -897,11 +890,9 @@ sudo apt update
 </li>
 <li>
 <p>도커는 항상 root 권한이 필요하니 sudo를 붙여서 명령해줍니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">80</span><span class="o">:</span><span class="m">80</span><span class="w"> </span><span class="n">vulnerables</span><span class="o">/</span><span class="n">web</span><span class="o">-</span><span class="n">dvwa</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>로컬 시스템에서 컨테이너를 찾아보고 없으면 알아서 다운로드 → 컨테이너로드 까지 한 번에 실행됩니다</p>
 <p><img alt="Docker compose and web GUI/Untitled%2011.png" src="../Docker%20compose%20and%20web%20GUI/Untitled%2011.png" /></p>
@@ -922,62 +913,62 @@ sudo apt update
 <h2 id="yaml-compose-code">YAML + Compose를 활용해 Code로 관리하기</h2>
 <hr />
 <ol>
-<li>root 권한으로 docker-compose를 설치합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo apt install docker-compose
+<li>
+<p>root 권한으로 docker-compose를 설치합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
 </code></pre></div>
-<ol>
-<li>YAML파일 작성을 위해 홈 디렉토리로 이동합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>cd /home/{USER}
+</li>
+<li>
+<p>YAML파일 작성을 위해 홈 디렉토리로 이동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="p">{</span><span class="n">USER</span><span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>컴포즈를 위한 YAML파일을 생성(수정)합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo vi docker-compose.yml
+</li>
+<li>
+<p>컴포즈를 위한 YAML파일을 생성(수정)합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>
 </code></pre></div>
-<ol>
-<li>다음과 같이 작성합니다. wordpress와 mysql5.7 이미지를 다운받고 컨테이너를 로드할 때 설정값도 같이 넣어줍니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>version: &#39;3.1&#39;
-services:
-        wordpress:
-                image: wordpress
-                restart: always
-                ports:
-                        - 8080:80
-                environment:
-                        WORDPRESS_DB_HOST: db
-                        WORDPRESS_DB_USER: admin
-                        WORDPRESS_DB_PASSWORD: password
-                        WORDPRESS_DB_NAME: wordpress
-                volumes:
-                        - wordpress:/var/www/html
-        db:
-                image: mysql:5.7
-                restart: always
-                environment:
-                        MYSQL_DATABASE: wordpress
-                        MYSQL_USER: admin
-                        MYSQL_PASSWORD: password
-                        MYSQL_RANDOM_ROOT_PASSWORD: &#39;1&#39;
-                volumes:
-                        - db:/var/lib/mysql
-volumes:
-    wordpress:
-    db:
+</li>
+<li>
+<p>다음과 같이 작성합니다. wordpress와 mysql5.7 이미지를 다운받고 컨테이너를 로드할 때 설정값도 같이 넣어줍니다</p>
+<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.1&#39;</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">wordpress</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wordpress</span>
+<span class="w">                </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">                </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">                        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080:80</span>
+<span class="w">                </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">                        </span><span class="nt">WORDPRESS_DB_HOST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<span class="w">                        </span><span class="nt">WORDPRESS_DB_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">                        </span><span class="nt">WORDPRESS_DB_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">                        </span><span class="nt">WORDPRESS_DB_NAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wordpress</span>
+<span class="w">                </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">                        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wordpress:/var/www/html</span>
+<span class="w">        </span><span class="nt">db</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql:5.7</span>
+<span class="w">                </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">                </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">                        </span><span class="nt">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wordpress</span>
+<span class="w">                        </span><span class="nt">MYSQL_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">                        </span><span class="nt">MYSQL_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">                        </span><span class="nt">MYSQL_RANDOM_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1&#39;</span>
+<span class="w">                </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">                        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db:/var/lib/mysql</span>
+<span class="nt">volumes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">wordpress</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">db</span><span class="p">:</span>
 </code></pre></div>
-<ol>
-<li>docker-compose를 백그라운드에서 실행합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sudo docker-compose up -d
+</li>
+<li>
+<p>docker-compose를 백그라운드에서 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
 </code></pre></div>
-<ol>
-<li>웹 브라우저를 열고 다음 주소로 이동합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>localhost:8080
+</li>
+<li>
+<p>웹 브라우저를 열고 다음 주소로 이동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">localhost</span><span class="o">:</span><span class="m">8080</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>Wordpress와 MySQL이 잘 동작하는 것을 확인할 수 있습니다</p>
 <p><img alt="Docker compose and web GUI/Untitled%2015.png" src="../Docker%20compose%20and%20web%20GUI/Untitled%2015.png" /></p>

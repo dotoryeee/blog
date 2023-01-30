@@ -636,13 +636,13 @@
 <ol>
 <li>
 <p>작업을 위한 디렉터리를 생성합니다</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>init
-<span class="nb">cd</span><span class="w"> </span>init
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">init</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">init</span>
 </code></pre></div>
 </li>
 <li>
 <p>백엔드에 사용할 S3버킷과 DynamoDB 테이블을 생성합니다</p>
-<div class="highlight"><pre><span></span><code>vi<span class="w"> </span>init.tf
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">init.tf</span>
 </code></pre></div>
 <div class="highlight"><span class="filename">init.if</span><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span><span class="c1"> # Please use the default region ID</span>
@@ -675,13 +675,13 @@
 </li>
 <li>
 <p>plan에 따르면 두 개의 리소스가 생성됨을 안내하고 있습니다
-    <div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan
+    <div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div></p>
 <p><img alt="Terraform Backend/Untitled.png" src="Untitled.png" /></p>
 </li>
 <li>
 <p>의도한 바가 맞으니 적용해줍니다
-    <div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply
+    <div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div></p>
 <p><img alt="Terraform Backend/Untitled%201.png" src="Untitled%201.png" /></p>
 </li>
@@ -697,12 +697,12 @@
 <li>iam을 제어하는 코드를 백엔드로 관리해봅니다</li>
 <li>
 <p>작업중인 폴더(init)에서 나와서 iam 디렉터리로 이동합니다</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>../iam
+<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="n">..</span><span class="o">/</span><span class="n">iam</span>
 </code></pre></div>
 </li>
 <li>
 <p>백엔드로 제어하기 위해 코드를 작성합니다</p>
-<div class="highlight"><pre><span></span><code>vi<span class="w"> </span>backend.tf
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">backend.tf</span>
 </code></pre></div>
 </li>
 <li>
@@ -725,7 +725,7 @@
 </li>
 <li>
 <p>백엔드 설정 후에는 다시 init 하는 과정이 필요합니다</p>
-<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>init
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">init</span>
 </code></pre></div>
 <p><img alt="Terraform Backend/Untitled%205.png" src="Untitled%205.png" /></p>
 </li>
@@ -747,8 +747,8 @@
 </li>
 <li>
 <p>이제 로컬에 tfstate 파일이 없어도 plan이 잘 동작합니다</p>
-<div class="highlight"><pre><span></span><code>rm<span class="w"> </span>-rf<span class="w"> </span>terraform.tfstate<span class="w"> </span>terraform.tfstate.backup
-terraform<span class="w"> </span>plan
+<div class="highlight"><pre><span></span><code><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="n">terraform.tfstate</span><span class="w"> </span><span class="n">terraform.tfstate.backup</span>
+<span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
 <p><img alt="Terraform Backend/Untitled%2010.png" src="Untitled%2010.png" /></p>
 </li>

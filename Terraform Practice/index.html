@@ -618,22 +618,24 @@
 </aside>
 
 <ul>
-<li>EC2에 SSH 접속을 위한 키페어 생성<ol>
+<li>
+<p>EC2에 SSH 접속을 위한 키페어 생성</p>
+<ol>
 <li>비밀키를 생성합니다</li>
 </ol>
+<div class="highlight"><pre><span></span><code><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">rsa</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span>
+</code></pre></div>
+<ol>
+<li>pem을 사용하려면 권한을 수정해야 합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">chmod</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span>
+</code></pre></div>
+<ol>
+<li>AWS에 넘겨줄 공개키를 생성합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pub</span>
+</code></pre></div>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><code>ssh-keygen -t rsa -b 2048 -f ~/dotoryeee.pem -q -P 
-</code></pre></div>
-<pre><code>2. pem을 사용하려면 권한을 수정해야 합니다
-</code></pre>
-<div class="highlight"><pre><span></span><code>chmod 400 ~/dotoryeee.pem
-</code></pre></div>
-<pre><code>3. AWS에 넘겨줄 공개키를 생성합니다
-</code></pre>
-<div class="highlight"><pre><span></span><code>ssh-keygen -y -f ~/dotoryeee.pem &gt; ~/dotoryeee.pub
-</code></pre></div>
-<ul>
 <li>
 <p>Terraform Docs</p>
 <p><a href="https://registry.terraform.io/providers/hashicorp/aws/latest/docs"></a></p>
@@ -646,28 +648,32 @@
 <li>MySQL RDS생성시 allocated_storage값에 0은 불가능</li>
 <li>DB인스턴스는 별도로 서브넷 그룹을 생성해야 함</li>
 </ol>
+<div class="highlight"><pre><span></span><code><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">creating</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">Instance</span><span class="o">:</span><span class="w"> </span><span class="n">InvalidParameterCombination</span><span class="o">:</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">EC2</span><span class="w"> </span><span class="n">security</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">different</span><span class="w"> </span><span class="n">VPCs.</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">vpc</span><span class="m">-7</span><span class="n">ae25b11</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">EC2</span><span class="w"> </span><span class="n">security</span><span class="w"> </span><span class="n">group</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">vpc</span><span class="m">-07</span><span class="n">d48e73dba07404a</span>
+<span class="n">status</span><span class="w"> </span><span class="n">code</span><span class="o">:</span><span class="w"> </span><span class="m">400</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="m">25</span><span class="n">f97e75</span><span class="m">-89</span><span class="n">d9</span><span class="m">-4323-9</span><span class="n">cd3</span><span class="o">-</span><span class="n">b09e83675d4e</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="p">[</span><span class="n">rds.tf</span><span class="p">](</span><span class="n">http</span><span class="o">://</span><span class="n">rds.tf</span><span class="o">/</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="s">&quot;aws_db_instance&quot;</span><span class="w"> </span><span class="s">&quot;rds&quot;</span><span class="o">:</span>
+<span class="m">16</span><span class="o">:</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="s">&quot;aws_db_instance&quot;</span><span class="w"> </span><span class="s">&quot;rds&quot;</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+<ol>
+<li>RDS는 반드시 서브넷 2개 이상을 묶어서 구성</li>
+<li>베스천 호스트 사용하는 RDS는 당연시 퍼블릭 엑세스 제한</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">creating</span><span class="w"> </span><span class="n">DB</span><span class="w"> </span><span class="n">Instance</span><span class="o">:</span><span class="w"> </span><span class="n">InvalidVPCNetworkStateFault</span><span class="o">:</span><span class="w"> </span><span class="n">Cannot</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">publicly</span><span class="w"> </span><span class="n">accessible</span><span class="w"> </span><span class="n">DBInstance.</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">VPC</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">support</span><span class="w"> </span><span class="n">DNS</span><span class="w"> </span><span class="n">resolution</span><span class="p">,</span><span class="w"> </span><span class="n">DNS</span><span class="w"> </span><span class="n">hostnames</span><span class="p">,</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">both.</span><span class="w"> </span><span class="n">Update</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">VPC</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">then</span><span class="w"> </span><span class="n">try</span><span class="w"> </span><span class="n">again</span>
+<span class="n">status</span><span class="w"> </span><span class="n">code</span><span class="o">:</span><span class="w"> </span><span class="m">400</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="n">d26672f9</span><span class="m">-7</span><span class="n">f0a</span><span class="m">-40</span><span class="n">ac</span><span class="m">-9e17-6</span><span class="n">fd0b9fa2558</span>
+</code></pre></div>
+<ol>
+<li>ssh 접속을 위한 map_public_ip_on_launch (서브넷) 당연히 true</li>
+<li>
+<p>RDS는 생성에 오랜 시간이 걸리는 점 유의</p>
+<p><img alt="Terraform Practice/Untitled.png" src="Untitled.png" /></p>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidParameterCombination: The DB instance and EC2 security group are in different VPCs. The DB instance is in vpc-7ae25b11 and the EC2 security group is in vpc-07d48e73dba07404a
-status code: 400, request id: 25f97e75-89d9-4323-9cd3-b09e83675d4e on [rds.tf](http://rds.tf/) line 16, in resource &quot;aws_db_instance&quot; &quot;rds&quot;:
-16: resource &quot;aws_db_instance&quot; &quot;rds&quot; {
-</code></pre></div>
-<pre><code>5. RDS는 반드시 서브넷 2개 이상을 묶어서 구성
-6. 베스천 호스트 사용하는 RDS는 당연시 퍼블릭 엑세스 제한
-</code></pre>
-<div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidVPCNetworkStateFault: Cannot create a publicly accessible DBInstance.  The specified VPC does not support DNS resolution, DNS hostnames, or both. Update the VPC and then try again
-status code: 400, request id: d26672f9-7f0a-40ac-9e17-6fd0b9fa2558
-</code></pre></div>
-<pre><code>7. ssh 접속을 위한 map_public_ip_on_launch (서브넷) 당연히 true
-8. RDS는 생성에 오랜 시간이 걸리는 점 유의
-
-    ![Terraform Practice/Untitled.png](Terraform Practice/Untitled.png)
-
-9. 보안그룸 이름은 소문자 sg로 시작할 수 없음
-10. RDS 보안그룹은 security_group_names 대신 vpc_security_group_ids 사용
-</code></pre>
+<li>
+<p>보안그룸 이름은 소문자 sg로 시작할 수 없음</p>
+</li>
+<li>RDS 보안그룹은 security_group_names 대신 vpc_security_group_ids 사용</li>
+</ol>
 <div class="highlight"><pre><span></span><code>Error: Error creating DB Instance: InvalidParameterCombination: DB Security Groups can only be associated with VPC DB Instances using API versions 2012-01-15 through 2012-09-17.
 </code></pre></div>
+</li>
+</ul>
 <h2 id="1-vpc-subnets-ec2-igw">연습1 (VPC, Subnets, EC2, IGW)</h2>
 <hr />
 <ul>
@@ -677,527 +683,525 @@ status code: 400, request id: d26672f9-7f0a-40ac-9e17-6fd0b9fa2558
 </li>
 <li>
 <p>코드</p>
+<div class="highlight"><pre><span></span><code><span class="c1">#---------------VPC-----------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/16&quot;</span>
+<span class="w">    </span><span class="na">instance_tenancy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="c1"> #전용인스턴스 사용, default는 사용 하지 않음을 의미</span>
+<span class="w">    </span><span class="na">enable_dns_hostnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;vpc_practice_01&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#---------------IGW-----------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_internet_gateway&quot;</span><span class="w"> </span><span class="nv">&quot;default&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;igw_practice_01&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#---------------Subnet-----------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="nv">&quot;public_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+
+<span class="w">    </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/24&quot;</span>
+<span class="w">    </span><span class="na">availability_zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2a&quot;</span>
+
+<span class="w">    </span><span class="na">map_public_ip_on_launch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;public_subnet_01&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="nv">&quot;public_02&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+
+<span class="w">    </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.1.0/24&quot;</span>
+<span class="w">    </span><span class="na">availability_zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2c&quot;</span>
+
+<span class="w">    </span><span class="na">map_public_ip_on_launch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;public_subnet_02&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#--------------Association--------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_route_table_association&quot;</span><span class="w"> </span><span class="nv">&quot;public_01_association&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.public_01.id</span>
+<span class="w">    </span><span class="na">route_table_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_route_table.public.id</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_route_table_association&quot;</span><span class="w"> </span><span class="nv">&quot;public_02_association&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.public_02.id</span>
+<span class="w">    </span><span class="na">route_table_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_route_table.public.id</span>
+<span class="p">}</span>
+<span class="c1">#-------------Route table---------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_route_table&quot;</span><span class="w"> </span><span class="nv">&quot;public&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;public_route_table&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#-----------Route table Routes------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_route&quot;</span><span class="w"> </span><span class="nv">&quot;public_sub_IGW&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">route_table_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_route_table.public.id</span>
+<span class="w">    </span><span class="na">destination_cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span>
+<span class="w">    </span><span class="na">gateway_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_internet_gateway.default.id</span>
+<span class="p">}</span>
+<span class="c1">#----------Security Group for EC2----------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_security_group&quot;</span><span class="w"> </span><span class="nv">&quot;practice_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+<span class="w">    </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;practice_01_SG&quot;</span>
+<span class="w">    </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SG_for_EC2&quot;</span>
+
+<span class="c1">    #-----------인바운드-----------</span>
+<span class="w">    </span><span class="nb">ingress</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">from_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span>
+<span class="w">        </span><span class="na">to_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">22</span>
+<span class="w">        </span><span class="na">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<span class="w">        </span><span class="na">cidr_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;open SSH from Anywhere&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="c1">    #----------아웃바운드-----------</span>
+<span class="w">    </span><span class="nb">egress</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">from_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="c1"> #모든 포트</span>
+<span class="w">        </span><span class="na">to_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>
+<span class="w">        </span><span class="na">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-1&quot;</span><span class="c1"> #모든 프로토콜</span>
+<span class="w">        </span><span class="na">cidr_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">]</span><span class="c1"> #리스트 형태도 가능</span>
+<span class="w">        </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;open all port from anywhere&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#----------ready Public Key--------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_key_pair&quot;</span><span class="w"> </span><span class="nv">&quot;practice_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">key_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span>
+<span class="w">    </span><span class="na">public_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ssh-rsa...... 키 삭제&quot;</span>
+<span class="p">}</span>
+<span class="c1">#---------public_01  EC2 Instance---------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_instance&quot;</span><span class="w"> </span><span class="nv">&quot;dotoryeee-EC2-01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">ami</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ami-006e2f9fa7597680a&quot;</span>
+<span class="w">    </span><span class="na">instance_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+
+<span class="w">    </span><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.public_01.id</span>
+
+<span class="w">    </span><span class="na">key_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_key_pair.practice_01.key_name</span>
+
+<span class="w">    </span><span class="na">security_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_security_group.practice_01.id</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;doto_EC2_01&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#---------public_02  EC2 Instance---------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_instance&quot;</span><span class="w"> </span><span class="nv">&quot;dotoryeee-EC2-02&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">ami</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ami-006e2f9fa7597680a&quot;</span>
+<span class="w">    </span><span class="na">instance_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+
+<span class="w">    </span><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.public_02.id</span>
+
+<span class="w">    </span><span class="na">key_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_key_pair.practice_01.key_name</span>
+
+<span class="w">    </span><span class="na">security_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_security_group.practice_01.id</span><span class="p">]</span>
+
+<span class="w">    </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;doto_EC2_02&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><code>#---------------VPC-----------------
-resource &quot;aws_vpc&quot; &quot;main&quot; {
-    cidr_block = &quot;10.0.0.0/16&quot;
-    instance_tenancy = &quot;default&quot; #전용인스턴스 사용, default는 사용 하지 않음을 의미
-    enable_dns_hostnames = true
+<li>
+<p>terraform apply</p>
+<div class="highlight"><pre><span></span><code><span class="err">A</span><span class="kc">n</span><span class="w"> </span><span class="err">execu</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">pla</span><span class="kc">n</span><span class="w"> </span><span class="err">has</span><span class="w"> </span><span class="err">bee</span><span class="kc">n</span><span class="w"> </span><span class="err">ge</span><span class="kc">nerate</span><span class="err">d</span><span class="w"> </span><span class="err">a</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">show</span><span class="kc">n</span><span class="w"> </span><span class="err">below.</span>
+<span class="err">Resource</span><span class="w"> </span><span class="err">ac</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="err">are</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="err">dica</span><span class="kc">te</span><span class="err">d</span><span class="w"> </span><span class="err">wi</span><span class="kc">t</span><span class="err">h</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="kc">f</span><span class="err">ollowi</span><span class="kc">n</span><span class="err">g</span><span class="w"> </span><span class="err">symbols</span><span class="p">:</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span>
 
-    tags = {
-        Name = &quot;vpc_practice_01&quot;
-    }
-}
-#---------------IGW-----------------
-resource &quot;aws_internet_gateway&quot; &quot;default&quot; {
-    vpc_id = aws_vpc.main.id
+<span class="err">Terra</span><span class="kc">f</span><span class="err">orm</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">per</span><span class="kc">f</span><span class="err">orm</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="kc">f</span><span class="err">ollowi</span><span class="kc">n</span><span class="err">g</span><span class="w"> </span><span class="err">ac</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="p">:</span>
 
-    tags = {
-        Name = &quot;igw_practice_01&quot;
-    }
-}
-#---------------Subnet-----------------
-resource &quot;aws_subnet&quot; &quot;public_01&quot; {
-    vpc_id = aws_vpc.main.id
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_i</span><span class="kc">nstan</span><span class="err">ce.do</span><span class="kc">t</span><span class="err">oryeee</span><span class="mf">-E</span><span class="err">C</span><span class="mi">2-01</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_instance&quot;</span><span class="w"> </span><span class="s2">&quot;dotoryeee-EC2-01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ami</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ami-006e2f9fa7597680a&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">associa</span><span class="kc">te</span><span class="err">_public_ip_address</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cpu_core_cou</span><span class="kc">nt</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cpu_</span><span class="kc">t</span><span class="err">hreads_per_core</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ge</span><span class="kc">t</span><span class="err">_password_da</span><span class="kc">ta</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">hos</span><span class="kc">t</span><span class="err">_id</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_s</span><span class="kc">tate</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_</span><span class="kc">t</span><span class="err">ype</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_address_cou</span><span class="kc">nt</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_addresses</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">key_</span><span class="kc">na</span><span class="err">me</span><span class="w">                     </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ou</span><span class="kc">t</span><span class="err">pos</span><span class="kc">t</span><span class="err">_ar</span><span class="kc">n</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">password_da</span><span class="kc">ta</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">placeme</span><span class="kc">nt</span><span class="err">_group</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">primary_</span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_d</span><span class="kc">ns</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ip</span><span class="w">                   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">public_d</span><span class="kc">ns</span><span class="w">                   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">public_ip</span><span class="w">                    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">seco</span><span class="kc">n</span><span class="err">dary_priva</span><span class="kc">te</span><span class="err">_ips</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">                    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                         </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;doto_EC2_01&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">tenan</span><span class="err">cy</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_securi</span><span class="kc">t</span><span class="err">y_group_ids</span><span class="w">       </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
 
-    cidr_block = &quot;10.0.0.0/24&quot;
-    availability_zone = &quot;ap-northeast-2a&quot;
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ebs_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">cryp</span><span class="kc">te</span><span class="err">d</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">iops</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">kms_key_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">s</span><span class="kc">na</span><span class="err">psho</span><span class="kc">t</span><span class="err">_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">hroughpu</span><span class="kc">t</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_size</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_</span><span class="kc">t</span><span class="err">ype</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    map_public_ip_on_launch = true
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">clave_op</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">bled</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    tags = {
-        Name = &quot;public_subnet_01&quot;
-    }
-}
-resource &quot;aws_subnet&quot; &quot;public_02&quot; {
-    vpc_id = aws_vpc.main.id
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ephemeral_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">n</span><span class="err">o_device</span><span class="w">    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">vir</span><span class="kc">tual</span><span class="err">_</span><span class="kc">na</span><span class="err">me</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    cidr_block = &quot;10.0.1.0/24&quot;
-    availability_zone = &quot;ap-northeast-2c&quot;
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">me</span><span class="kc">ta</span><span class="err">da</span><span class="kc">ta</span><span class="err">_op</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_e</span><span class="kc">n</span><span class="err">dpoi</span><span class="kc">nt</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_pu</span><span class="kc">t</span><span class="err">_respo</span><span class="kc">nse</span><span class="err">_hop_limi</span><span class="kc">t</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_</span><span class="kc">t</span><span class="err">oke</span><span class="kc">ns</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    map_public_ip_on_launch = true
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_i</span><span class="kc">n</span><span class="err">dex</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce_id</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    tags = {
-        Name = &quot;public_subnet_02&quot;
-    }
-}
-#--------------Association--------------
-resource &quot;aws_route_table_association&quot; &quot;public_01_association&quot; {
-    subnet_id = aws_subnet.public_01.id
-    route_table_id = aws_route_table.public.id
-}
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">roo</span><span class="kc">t</span><span class="err">_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">cryp</span><span class="kc">te</span><span class="err">d</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">iops</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">kms_key_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">hroughpu</span><span class="kc">t</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_size</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_</span><span class="kc">t</span><span class="err">ype</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-resource &quot;aws_route_table_association&quot; &quot;public_02_association&quot; {
-    subnet_id = aws_subnet.public_02.id
-    route_table_id = aws_route_table.public.id
-}
-#-------------Route table---------------
-resource &quot;aws_route_table&quot; &quot;public&quot; {
-    vpc_id = aws_vpc.main.id
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_i</span><span class="kc">nstan</span><span class="err">ce.do</span><span class="kc">t</span><span class="err">oryeee</span><span class="mf">-E</span><span class="err">C</span><span class="mi">2-02</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_instance&quot;</span><span class="w"> </span><span class="s2">&quot;dotoryeee-EC2-02&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ami</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ami-006e2f9fa7597680a&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">associa</span><span class="kc">te</span><span class="err">_public_ip_address</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cpu_core_cou</span><span class="kc">nt</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cpu_</span><span class="kc">t</span><span class="err">hreads_per_core</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ge</span><span class="kc">t</span><span class="err">_password_da</span><span class="kc">ta</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">hos</span><span class="kc">t</span><span class="err">_id</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_s</span><span class="kc">tate</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_</span><span class="kc">t</span><span class="err">ype</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_address_cou</span><span class="kc">nt</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_addresses</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">key_</span><span class="kc">na</span><span class="err">me</span><span class="w">                     </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ou</span><span class="kc">t</span><span class="err">pos</span><span class="kc">t</span><span class="err">_ar</span><span class="kc">n</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">password_da</span><span class="kc">ta</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">placeme</span><span class="kc">nt</span><span class="err">_group</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">primary_</span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_d</span><span class="kc">ns</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ip</span><span class="w">                   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">public_d</span><span class="kc">ns</span><span class="w">                   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">public_ip</span><span class="w">                    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">seco</span><span class="kc">n</span><span class="err">dary_priva</span><span class="kc">te</span><span class="err">_ips</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">                    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                         </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;doto_EC2_02&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">tenan</span><span class="err">cy</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_securi</span><span class="kc">t</span><span class="err">y_group_ids</span><span class="w">       </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
 
-    tags = {
-        Name = &quot;public_route_table&quot;
-    }
-}
-#-----------Route table Routes------------
-resource &quot;aws_route&quot; &quot;public_sub_IGW&quot; {
-    route_table_id = aws_route_table.public.id
-    destination_cidr_block = &quot;0.0.0.0/0&quot;
-    gateway_id = aws_internet_gateway.default.id
-}
-#----------Security Group for EC2----------
-resource &quot;aws_security_group&quot; &quot;practice_01&quot; {
-    vpc_id = aws_vpc.main.id
-    name = &quot;practice_01_SG&quot;
-    description = &quot;SG_for_EC2&quot;
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ebs_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">cryp</span><span class="kc">te</span><span class="err">d</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">iops</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">kms_key_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">s</span><span class="kc">na</span><span class="err">psho</span><span class="kc">t</span><span class="err">_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">hroughpu</span><span class="kc">t</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_size</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_</span><span class="kc">t</span><span class="err">ype</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    #-----------인바운드-----------
-    ingress {
-        from_port = 22
-        to_port = 22
-        protocol = &quot;tcp&quot;
-        cidr_blocks = [&quot;0.0.0.0/0&quot;]
-        description = &quot;open SSH from Anywhere&quot;
-    }
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">clave_op</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">bled</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    #----------아웃바운드-----------
-    egress {
-        from_port = 0 #모든 포트
-        to_port = 0 
-        protocol = &quot;-1&quot; #모든 프로토콜
-        cidr_blocks = [&quot;0.0.0.0/0&quot;] #리스트 형태도 가능
-        description = &quot;open all port from anywhere&quot;
-    }
-}
-#----------ready Public Key--------------
-resource &quot;aws_key_pair&quot; &quot;practice_01&quot; {
-    key_name = &quot;practice_01&quot;
-    public_key = &quot;ssh-rsa...... 키 삭제&quot;
-}
-#---------public_01  EC2 Instance---------
-resource &quot;aws_instance&quot; &quot;dotoryeee-EC2-01&quot; {
-    ami = &quot;ami-006e2f9fa7597680a&quot;
-    instance_type = &quot;t2.micro&quot;
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ephemeral_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">n</span><span class="err">o_device</span><span class="w">    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">vir</span><span class="kc">tual</span><span class="err">_</span><span class="kc">na</span><span class="err">me</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    subnet_id = aws_subnet.public_01.id
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">me</span><span class="kc">ta</span><span class="err">da</span><span class="kc">ta</span><span class="err">_op</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_e</span><span class="kc">n</span><span class="err">dpoi</span><span class="kc">nt</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_pu</span><span class="kc">t</span><span class="err">_respo</span><span class="kc">nse</span><span class="err">_hop_limi</span><span class="kc">t</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">h</span><span class="kc">tt</span><span class="err">p_</span><span class="kc">t</span><span class="err">oke</span><span class="kc">ns</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    key_name = aws_key_pair.practice_01.key_name
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_i</span><span class="kc">n</span><span class="err">dex</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce_id</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
 
-    security_groups = [aws_security_group.practice_01.id]
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">roo</span><span class="kc">t</span><span class="err">_block_device</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">dele</span><span class="kc">te</span><span class="err">_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">ter</span><span class="err">mi</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_</span><span class="kc">na</span><span class="err">me</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">n</span><span class="err">cryp</span><span class="kc">te</span><span class="err">d</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">iops</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">kms_key_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">hroughpu</span><span class="kc">t</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_size</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">volume_</span><span class="kc">t</span><span class="err">ype</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    tags = {
-        Name = &quot;doto_EC2_01&quot;
-    }
-}
-#---------public_02  EC2 Instance---------
-resource &quot;aws_instance&quot; &quot;dotoryeee-EC2-02&quot; {
-    ami = &quot;ami-006e2f9fa7597680a&quot;
-    instance_type = &quot;t2.micro&quot;
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_i</span><span class="kc">nternet</span><span class="err">_ga</span><span class="kc">te</span><span class="err">way.de</span><span class="kc">fault</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_internet_gateway&quot;</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">       </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">     </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;igw_practice_01&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_id</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
 
-    subnet_id = aws_subnet.public_02.id
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_key_pair.prac</span><span class="kc">t</span><span class="err">ice_</span><span class="mi">01</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_key_pair&quot;</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">gerpri</span><span class="kc">nt</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">key_</span><span class="kc">na</span><span class="err">me</span><span class="w">    </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">key_pair_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">public_key</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD5D5mHSD/vdgcGmh6Kd57DqLxebcvbrUsHj8DYDW0+9MSvvK874Bm4hpqHliYze/ht7VnzL5+A5qZkCevKGBDeJNmR/QDHccCsCfRuyEmzMlvj3SxzYSH2N4lBG6eZZbQ+0yRl7ny3aeyol5boDkztLZ/PZwVR5IH6BgsNiGClSDtuf2CYoKN7hQufjeuCDcLlQa+ItFa4abMe/mWtMeEh7+ZpC+0KAFFvqY80OCtuUdqq7tcP8uHzQy9mPKvKBieJYitUoStjFEMAro1v34u6193Qgk6DAhyMom4GmLc2+tTyKMsvBlRKUOb87F+2zsATX3Ahz9cMpEkfPTkY15V dotoryeee@i5-6500&quot;</span>
+<span class="w">    </span><span class="p">}</span>
 
-    key_name = aws_key_pair.practice_01.key_name
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_</span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce.public_</span><span class="mi">01</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_network_interface&quot;</span><span class="w"> </span><span class="s2">&quot;public_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_address_cou</span><span class="kc">nt</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_addresses</span><span class="w">     </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">mac_address</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ou</span><span class="kc">t</span><span class="err">pos</span><span class="kc">t</span><span class="err">_ar</span><span class="kc">n</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_d</span><span class="kc">ns</span><span class="err">_</span><span class="kc">na</span><span class="err">me</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ip</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ips</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ips_cou</span><span class="kc">nt</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">source_des</span><span class="kc">t</span><span class="err">_check</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;interface_public_01&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 
-    security_groups = [aws_security_group.practice_01.id]
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">a</span><span class="kc">tta</span><span class="err">chme</span><span class="kc">nt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">a</span><span class="kc">tta</span><span class="err">chme</span><span class="kc">nt</span><span class="err">_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_i</span><span class="kc">n</span><span class="err">dex</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 
-    tags = {
-        Name = &quot;doto_EC2_02&quot;
-    }
-}
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_</span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce.public_</span><span class="mi">02</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_network_interface&quot;</span><span class="w"> </span><span class="s2">&quot;public_02&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_address_cou</span><span class="kc">nt</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_addresses</span><span class="w">     </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">mac_address</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ou</span><span class="kc">t</span><span class="err">pos</span><span class="kc">t</span><span class="err">_ar</span><span class="kc">n</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_d</span><span class="kc">ns</span><span class="err">_</span><span class="kc">na</span><span class="err">me</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ip</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ips</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">priva</span><span class="kc">te</span><span class="err">_ips_cou</span><span class="kc">nt</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">source_des</span><span class="kc">t</span><span class="err">_check</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;interface_public_02&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">a</span><span class="kc">tta</span><span class="err">chme</span><span class="kc">nt</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">a</span><span class="kc">tta</span><span class="err">chme</span><span class="kc">nt</span><span class="err">_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">device_i</span><span class="kc">n</span><span class="err">dex</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_rou</span><span class="kc">te</span><span class="err">.public_sub_IGW</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route&quot;</span><span class="w"> </span><span class="s2">&quot;public_sub_IGW&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">des</span><span class="kc">t</span><span class="err">i</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="err">_cidr_block</span><span class="w">     </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">des</span><span class="kc">t</span><span class="err">i</span><span class="kc">nat</span><span class="err">io</span><span class="kc">n</span><span class="err">_pre</span><span class="kc">f</span><span class="err">ix_lis</span><span class="kc">t</span><span class="err">_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">egress_o</span><span class="kc">nl</span><span class="err">y_ga</span><span class="kc">te</span><span class="err">way_id</span><span class="w">     </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ga</span><span class="kc">te</span><span class="err">way_id</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_id</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">local_ga</span><span class="kc">te</span><span class="err">way_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">nat</span><span class="err">_ga</span><span class="kc">te</span><span class="err">way_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">net</span><span class="err">work_i</span><span class="kc">nterfa</span><span class="err">ce_id</span><span class="w">       </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">origi</span><span class="kc">n</span><span class="w">                     </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">s</span><span class="kc">tate</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble.public</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route_table&quot;</span><span class="w"> </span><span class="s2">&quot;public&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">propaga</span><span class="kc">t</span><span class="err">i</span><span class="kc">n</span><span class="err">g_vgws</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">rou</span><span class="kc">te</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;public_route_table&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">.public_</span><span class="mi">01</span><span class="err">_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route_table_association&quot;</span><span class="w"> </span><span class="s2">&quot;public_01_association&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">.public_</span><span class="mi">02</span><span class="err">_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route_table_association&quot;</span><span class="w"> </span><span class="s2">&quot;public_02_association&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_id</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">sub</span><span class="kc">net</span><span class="err">_id</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_securi</span><span class="kc">t</span><span class="err">y_group.prac</span><span class="kc">t</span><span class="err">ice_</span><span class="mi">01</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_security_group&quot;</span><span class="w"> </span><span class="s2">&quot;practice_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                    </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;SG_for_EC2&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">egress</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">cidr_blocks</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;open all port from anywhere&quot;</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="kc">fr</span><span class="err">om_por</span><span class="kc">t</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_cidr_blocks</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">pre</span><span class="kc">f</span><span class="err">ix_lis</span><span class="kc">t</span><span class="err">_ids</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">pro</span><span class="kc">t</span><span class="err">ocol</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;-1&quot;</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">sel</span><span class="kc">f</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">o_por</span><span class="kc">t</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                     </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="err">gress</span><span class="w">                </span><span class="err">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">cidr_blocks</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                  </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w">      </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;open SSH from Anywhere&quot;</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="kc">fr</span><span class="err">om_por</span><span class="kc">t</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="mi">22</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_cidr_blocks</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">pre</span><span class="kc">f</span><span class="err">ix_lis</span><span class="kc">t</span><span class="err">_ids</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">pro</span><span class="kc">t</span><span class="err">ocol</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">securi</span><span class="kc">t</span><span class="err">y_groups</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="err">sel</span><span class="kc">f</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">              </span><span class="err">+</span><span class="w"> </span><span class="kc">t</span><span class="err">o_por</span><span class="kc">t</span><span class="w">          </span><span class="err">=</span><span class="w"> </span><span class="mi">22</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">na</span><span class="err">me</span><span class="w">                   </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;practice_01_SG&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">na</span><span class="err">me_pre</span><span class="kc">f</span><span class="err">ix</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">revoke_rules_o</span><span class="kc">n</span><span class="err">_dele</span><span class="kc">te</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_id</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_sub</span><span class="kc">net</span><span class="err">.public_</span><span class="mi">01</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="s2">&quot;public_01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">assig</span><span class="kc">n</span><span class="err">_ipv</span><span class="mi">6</span><span class="err">_address_o</span><span class="kc">n</span><span class="err">_crea</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2a&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="err">_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cidr_block</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/24&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_cidr_block_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">_id</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">map_public_ip_o</span><span class="kc">n</span><span class="err">_lau</span><span class="kc">n</span><span class="err">ch</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">                        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                            </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;public_subnet_01&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_id</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_sub</span><span class="kc">net</span><span class="err">.public_</span><span class="mi">02</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="s2">&quot;public_02&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                             </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">assig</span><span class="kc">n</span><span class="err">_ipv</span><span class="mi">6</span><span class="err">_address_o</span><span class="kc">n</span><span class="err">_crea</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2c&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">availabili</span><span class="kc">t</span><span class="err">y_zo</span><span class="kc">ne</span><span class="err">_id</span><span class="w">            </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cidr_block</span><span class="w">                      </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;10.0.1.0/24&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_cidr_block_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">_id</span><span class="w">  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">map_public_ip_o</span><span class="kc">n</span><span class="err">_lau</span><span class="kc">n</span><span class="err">ch</span><span class="w">         </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">                        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                            </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;public_subnet_02&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">vpc_id</span><span class="w">                          </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="err">aws_vpc.mai</span><span class="kc">n</span><span class="w"> </span><span class="err">will</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">crea</span><span class="kc">te</span><span class="err">d</span>
+<span class="w">  </span><span class="err">+</span><span class="w"> </span><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="s2">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ar</span><span class="kc">n</span><span class="w">                              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">assig</span><span class="kc">n</span><span class="err">_ge</span><span class="kc">nerate</span><span class="err">d_ipv</span><span class="mi">6</span><span class="err">_cidr_block</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">cidr_block</span><span class="w">                       </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/16&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">de</span><span class="kc">fault</span><span class="err">_</span><span class="kc">net</span><span class="err">work_acl_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">de</span><span class="kc">fault</span><span class="err">_rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_id</span><span class="w">           </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">de</span><span class="kc">fault</span><span class="err">_securi</span><span class="kc">t</span><span class="err">y_group_id</span><span class="w">        </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">dhcp_op</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="err">_id</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">ble_classicli</span><span class="kc">n</span><span class="err">k</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">ble_classicli</span><span class="kc">n</span><span class="err">k_d</span><span class="kc">ns</span><span class="err">_suppor</span><span class="kc">t</span><span class="w">   </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">ble_d</span><span class="kc">ns</span><span class="err">_hos</span><span class="kc">tna</span><span class="err">mes</span><span class="w">             </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">e</span><span class="kc">na</span><span class="err">ble_d</span><span class="kc">ns</span><span class="err">_suppor</span><span class="kc">t</span><span class="w">               </span><span class="err">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">id</span><span class="w">                               </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">i</span><span class="kc">nstan</span><span class="err">ce_</span><span class="kc">tenan</span><span class="err">cy</span><span class="w">                 </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_associa</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">_id</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ipv</span><span class="mi">6</span><span class="err">_cidr_block</span><span class="w">                  </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">mai</span><span class="kc">n</span><span class="err">_rou</span><span class="kc">te</span><span class="err">_</span><span class="kc">ta</span><span class="err">ble_id</span><span class="w">              </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="err">ow</span><span class="kc">ner</span><span class="err">_id</span><span class="w">                         </span><span class="err">=</span><span class="w"> </span><span class="err">(k</span><span class="kc">n</span><span class="err">ow</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">fter</span><span class="w"> </span><span class="err">apply)</span>
+<span class="w">      </span><span class="err">+</span><span class="w"> </span><span class="kc">ta</span><span class="err">gs</span><span class="w">                             </span><span class="err">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="err">+</span><span class="w"> </span><span class="s2">&quot;Name&quot;</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="s2">&quot;vpc_practice_01&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="err">Pla</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">add</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">cha</span><span class="kc">n</span><span class="err">ge</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">des</span><span class="kc">tr</span><span class="err">oy.</span>
 </code></pre></div>
-<ul>
-<li>terraform apply</li>
-</ul>
-<div class="highlight"><pre><span></span><code>An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  # aws_instance.dotoryeee-EC2-01 will be created
-  + resource &quot;aws_instance&quot; &quot;dotoryeee-EC2-01&quot; {
-      + ami                          = &quot;ami-006e2f9fa7597680a&quot;
-      + arn                          = (known after apply)
-      + associate_public_ip_address  = (known after apply)
-      + availability_zone            = (known after apply)
-      + cpu_core_count               = (known after apply)
-      + cpu_threads_per_core         = (known after apply)
-      + get_password_data            = false
-      + host_id                      = (known after apply)
-      + id                           = (known after apply)
-      + instance_state               = (known after apply)
-      + instance_type                = &quot;t2.micro&quot;
-      + ipv6_address_count           = (known after apply)
-      + ipv6_addresses               = (known after apply)
-      + key_name                     = &quot;practice_01&quot;
-      + outpost_arn                  = (known after apply)
-      + password_data                = (known after apply)
-      + placement_group              = (known after apply)
-      + primary_network_interface_id = (known after apply)
-      + private_dns                  = (known after apply)
-      + private_ip                   = (known after apply)
-      + public_dns                   = (known after apply)
-      + public_ip                    = (known after apply)
-      + secondary_private_ips        = (known after apply)
-      + security_groups              = (known after apply)
-      + subnet_id                    = (known after apply)
-      + tags                         = {
-          + &quot;Name&quot; = &quot;doto_EC2_01&quot;
-        }
-      + tenancy                      = (known after apply)
-      + vpc_security_group_ids       = (known after apply)
-
-      + ebs_block_device {
-          + delete_on_termination = (known after apply)
-          + device_name           = (known after apply)
-          + encrypted             = (known after apply)
-          + iops                  = (known after apply)
-          + kms_key_id            = (known after apply)
-          + snapshot_id           = (known after apply)
-          + tags                  = (known after apply)
-          + throughput            = (known after apply)
-          + volume_id             = (known after apply)
-          + volume_size           = (known after apply)
-          + volume_type           = (known after apply)
-        }
-
-      + enclave_options {
-          + enabled = (known after apply)
-        }
-
-      + ephemeral_block_device {
-          + device_name  = (known after apply)
-          + no_device    = (known after apply)
-          + virtual_name = (known after apply)
-        }
-
-      + metadata_options {
-          + http_endpoint               = (known after apply)
-          + http_put_response_hop_limit = (known after apply)
-          + http_tokens                 = (known after apply)
-        }
-
-      + network_interface {
-          + delete_on_termination = false
-          + device_index          = 0
-          + network_interface_id  = (known after apply)
-        }
-
-      + root_block_device {
-          + delete_on_termination = (known after apply)
-          + device_name           = (known after apply)
-          + encrypted             = (known after apply)
-          + iops                  = (known after apply)
-          + kms_key_id            = (known after apply)
-          + tags                  = (known after apply)
-          + throughput            = (known after apply)
-          + volume_id             = (known after apply)
-          + volume_size           = (known after apply)
-          + volume_type           = (known after apply)
-        }
-    }
-
-  # aws_instance.dotoryeee-EC2-02 will be created
-  + resource &quot;aws_instance&quot; &quot;dotoryeee-EC2-02&quot; {
-      + ami                          = &quot;ami-006e2f9fa7597680a&quot;
-      + arn                          = (known after apply)
-      + associate_public_ip_address  = (known after apply)
-      + availability_zone            = (known after apply)
-      + cpu_core_count               = (known after apply)
-      + cpu_threads_per_core         = (known after apply)
-      + get_password_data            = false
-      + host_id                      = (known after apply)
-      + id                           = (known after apply)
-      + instance_state               = (known after apply)
-      + instance_type                = &quot;t2.micro&quot;
-      + ipv6_address_count           = (known after apply)
-      + ipv6_addresses               = (known after apply)
-      + key_name                     = &quot;practice_01&quot;
-      + outpost_arn                  = (known after apply)
-      + password_data                = (known after apply)
-      + placement_group              = (known after apply)
-      + primary_network_interface_id = (known after apply)
-      + private_dns                  = (known after apply)
-      + private_ip                   = (known after apply)
-      + public_dns                   = (known after apply)
-      + public_ip                    = (known after apply)
-      + secondary_private_ips        = (known after apply)
-      + security_groups              = (known after apply)
-      + subnet_id                    = (known after apply)
-      + tags                         = {
-          + &quot;Name&quot; = &quot;doto_EC2_02&quot;
-        }
-      + tenancy                      = (known after apply)
-      + vpc_security_group_ids       = (known after apply)
-
-      + ebs_block_device {
-          + delete_on_termination = (known after apply)
-          + device_name           = (known after apply)
-          + encrypted             = (known after apply)
-          + iops                  = (known after apply)
-          + kms_key_id            = (known after apply)
-          + snapshot_id           = (known after apply)
-          + tags                  = (known after apply)
-          + throughput            = (known after apply)
-          + volume_id             = (known after apply)
-          + volume_size           = (known after apply)
-          + volume_type           = (known after apply)
-        }
-
-      + enclave_options {
-          + enabled = (known after apply)
-        }
-
-      + ephemeral_block_device {
-          + device_name  = (known after apply)
-          + no_device    = (known after apply)
-          + virtual_name = (known after apply)
-        }
-
-      + metadata_options {
-          + http_endpoint               = (known after apply)
-          + http_put_response_hop_limit = (known after apply)
-          + http_tokens                 = (known after apply)
-        }
-
-      + network_interface {
-          + delete_on_termination = false
-          + device_index          = 0
-          + network_interface_id  = (known after apply)
-        }
-
-      + root_block_device {
-          + delete_on_termination = (known after apply)
-          + device_name           = (known after apply)
-          + encrypted             = (known after apply)
-          + iops                  = (known after apply)
-          + kms_key_id            = (known after apply)
-          + tags                  = (known after apply)
-          + throughput            = (known after apply)
-          + volume_id             = (known after apply)
-          + volume_size           = (known after apply)
-          + volume_type           = (known after apply)
-        }
-    }
-
-  # aws_internet_gateway.default will be created
-  + resource &quot;aws_internet_gateway&quot; &quot;default&quot; {
-      + arn      = (known after apply)
-      + id       = (known after apply)
-      + owner_id = (known after apply)
-      + tags     = {
-          + &quot;Name&quot; = &quot;igw_practice_01&quot;
-        }
-      + vpc_id   = (known after apply)
-    }
-
-  # aws_key_pair.practice_01 will be created
-  + resource &quot;aws_key_pair&quot; &quot;practice_01&quot; {
-      + arn         = (known after apply)
-      + fingerprint = (known after apply)
-      + id          = (known after apply)
-      + key_name    = &quot;practice_01&quot;
-      + key_pair_id = (known after apply)
-      + public_key  = &quot;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD5D5mHSD/vdgcGmh6Kd57DqLxebcvbrUsHj8DYDW0+9MSvvK874Bm4hpqHliYze/ht7VnzL5+A5qZkCevKGBDeJNmR/QDHccCsCfRuyEmzMlvj3SxzYSH2N4lBG6eZZbQ+0yRl7ny3aeyol5boDkztLZ/PZwVR5IH6BgsNiGClSDtuf2CYoKN7hQufjeuCDcLlQa+ItFa4abMe/mWtMeEh7+ZpC+0KAFFvqY80OCtuUdqq7tcP8uHzQy9mPKvKBieJYitUoStjFEMAro1v34u6193Qgk6DAhyMom4GmLc2+tTyKMsvBlRKUOb87F+2zsATX3Ahz9cMpEkfPTkY15V dotoryeee@i5-6500&quot;
-    }
-
-  # aws_network_interface.public_01 will be created
-  + resource &quot;aws_network_interface&quot; &quot;public_01&quot; {
-      + id                 = (known after apply)
-      + ipv6_address_count = (known after apply)
-      + ipv6_addresses     = (known after apply)
-      + mac_address        = (known after apply)
-      + outpost_arn        = (known after apply)
-      + private_dns_name   = (known after apply)
-      + private_ip         = (known after apply)
-      + private_ips        = (known after apply)
-      + private_ips_count  = (known after apply)
-      + security_groups    = (known after apply)
-      + source_dest_check  = true
-      + subnet_id          = (known after apply)
-      + tags               = {
-          + &quot;Name&quot; = &quot;interface_public_01&quot;
-        }
-
-      + attachment {
-          + attachment_id = (known after apply)
-          + device_index  = (known after apply)
-          + instance      = (known after apply)
-        }
-    }
-
-  # aws_network_interface.public_02 will be created
-  + resource &quot;aws_network_interface&quot; &quot;public_02&quot; {
-      + id                 = (known after apply)
-      + ipv6_address_count = (known after apply)
-      + ipv6_addresses     = (known after apply)
-      + mac_address        = (known after apply)
-      + outpost_arn        = (known after apply)
-      + private_dns_name   = (known after apply)
-      + private_ip         = (known after apply)
-      + private_ips        = (known after apply)
-      + private_ips_count  = (known after apply)
-      + security_groups    = (known after apply)
-      + source_dest_check  = true
-      + subnet_id          = (known after apply)
-      + tags               = {
-          + &quot;Name&quot; = &quot;interface_public_02&quot;
-        }
-
-      + attachment {
-          + attachment_id = (known after apply)
-          + device_index  = (known after apply)
-          + instance      = (known after apply)
-        }
-    }
-
-  # aws_route.public_sub_IGW will be created
-  + resource &quot;aws_route&quot; &quot;public_sub_IGW&quot; {
-      + destination_cidr_block     = &quot;0.0.0.0/0&quot;
-      + destination_prefix_list_id = (known after apply)
-      + egress_only_gateway_id     = (known after apply)
-      + gateway_id                 = (known after apply)
-      + id                         = (known after apply)
-      + instance_id                = (known after apply)
-      + instance_owner_id          = (known after apply)
-      + local_gateway_id           = (known after apply)
-      + nat_gateway_id             = (known after apply)
-      + network_interface_id       = (known after apply)
-      + origin                     = (known after apply)
-      + route_table_id             = (known after apply)
-      + state                      = (known after apply)
-    }
-
-  # aws_route_table.public will be created
-  + resource &quot;aws_route_table&quot; &quot;public&quot; {
-      + id               = (known after apply)
-      + owner_id         = (known after apply)
-      + propagating_vgws = (known after apply)
-      + route            = (known after apply)
-      + tags             = {
-          + &quot;Name&quot; = &quot;public_route_table&quot;
-        }
-      + vpc_id           = (known after apply)
-    }
-
-  # aws_route_table_association.public_01_association will be created
-  + resource &quot;aws_route_table_association&quot; &quot;public_01_association&quot; {
-      + id             = (known after apply)
-      + route_table_id = (known after apply)
-      + subnet_id      = (known after apply)
-    }
-
-  # aws_route_table_association.public_02_association will be created
-  + resource &quot;aws_route_table_association&quot; &quot;public_02_association&quot; {
-      + id             = (known after apply)
-      + route_table_id = (known after apply)
-      + subnet_id      = (known after apply)
-    }
-
-  # aws_security_group.practice_01 will be created
-  + resource &quot;aws_security_group&quot; &quot;practice_01&quot; {
-      + arn                    = (known after apply)
-      + description            = &quot;SG_for_EC2&quot;
-      + egress                 = [
-          + {
-              + cidr_blocks      = [
-                  + &quot;0.0.0.0/0&quot;,
-                ]
-              + description      = &quot;open all port from anywhere&quot;
-              + from_port        = 0
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = &quot;-1&quot;
-              + security_groups  = []
-              + self             = false
-              + to_port          = 0
-            },
-        ]
-      + id                     = (known after apply)
-      + ingress                = [
-          + {
-              + cidr_blocks      = [
-                  + &quot;0.0.0.0/0&quot;,
-                ]
-              + description      = &quot;open SSH from Anywhere&quot;
-              + from_port        = 22
-              + ipv6_cidr_blocks = []
-              + prefix_list_ids  = []
-              + protocol         = &quot;tcp&quot;
-              + security_groups  = []
-              + self             = false
-              + to_port          = 22
-            },
-        ]
-      + name                   = &quot;practice_01_SG&quot;
-      + name_prefix            = (known after apply)
-      + owner_id               = (known after apply)
-      + revoke_rules_on_delete = false
-      + vpc_id                 = (known after apply)
-    }
-
-  # aws_subnet.public_01 will be created
-  + resource &quot;aws_subnet&quot; &quot;public_01&quot; {
-      + arn                             = (known after apply)
-      + assign_ipv6_address_on_creation = false
-      + availability_zone               = &quot;ap-northeast-2a&quot;
-      + availability_zone_id            = (known after apply)
-      + cidr_block                      = &quot;10.0.0.0/24&quot;
-      + id                              = (known after apply)
-      + ipv6_cidr_block_association_id  = (known after apply)
-      + map_public_ip_on_launch         = true
-      + owner_id                        = (known after apply)
-      + tags                            = {
-          + &quot;Name&quot; = &quot;public_subnet_01&quot;
-        }
-      + vpc_id                          = (known after apply)
-    }
-
-  # aws_subnet.public_02 will be created
-  + resource &quot;aws_subnet&quot; &quot;public_02&quot; {
-      + arn                             = (known after apply)
-      + assign_ipv6_address_on_creation = false
-      + availability_zone               = &quot;ap-northeast-2c&quot;
-      + availability_zone_id            = (known after apply)
-      + cidr_block                      = &quot;10.0.1.0/24&quot;
-      + id                              = (known after apply)
-      + ipv6_cidr_block_association_id  = (known after apply)
-      + map_public_ip_on_launch         = true
-      + owner_id                        = (known after apply)
-      + tags                            = {
-          + &quot;Name&quot; = &quot;public_subnet_02&quot;
-        }
-      + vpc_id                          = (known after apply)
-    }
-
-  # aws_vpc.main will be created
-  + resource &quot;aws_vpc&quot; &quot;main&quot; {
-      + arn                              = (known after apply)
-      + assign_generated_ipv6_cidr_block = false
-      + cidr_block                       = &quot;10.0.0.0/16&quot;
-      + default_network_acl_id           = (known after apply)
-      + default_route_table_id           = (known after apply)
-      + default_security_group_id        = (known after apply)
-      + dhcp_options_id                  = (known after apply)
-      + enable_classiclink               = (known after apply)
-      + enable_classiclink_dns_support   = (known after apply)
-      + enable_dns_hostnames             = true
-      + enable_dns_support               = true
-      + id                               = (known after apply)
-      + instance_tenancy                 = &quot;default&quot;
-      + ipv6_association_id              = (known after apply)
-      + ipv6_cidr_block                  = (known after apply)
-      + main_route_table_id              = (known after apply)
-      + owner_id                         = (known after apply)
-      + tags                             = {
-          + &quot;Name&quot; = &quot;vpc_practice_01&quot;
-        }
-    }
-
-Plan: 14 to add, 0 to change, 0 to destroy.
-</code></pre></div>
-<ul>
+</li>
 <li>
 <p>결과</p>
 <p><img alt="Terraform Practice/Untitled%202.png" src="Untitled%202.png" /></p>
@@ -1218,35 +1222,33 @@ Plan: 14 to add, 0 to change, 0 to destroy.
 <ul>
 <li>variables.tf</li>
 </ul>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><code>variable &quot;aws_region&quot; {
-  description = &quot;region for AWS&quot;
-}
+<div class="highlight"><span class="filename">variables.tf</span><pre><span></span><code><span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;aws_region&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;region for AWS&quot;</span>
+<span class="p">}</span>
 
-variable &quot;vpc_name&quot; {
-  description = &quot;name for practice_02 VPC&quot;
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;vpc_name&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;name for practice_02 VPC&quot;</span>
+<span class="p">}</span>
 
-variable &quot;subnet_name&quot; {
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;subnet_name&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="p">}</span>
 
-variable &quot;instance_names&quot; {
-  type = list(string)
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;instance_names&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span>
+<span class="p">}</span>
 
-variable &quot;az&quot; {
-  type    = list(string)
-  default = [&quot;ap-northeast-2a&quot;]
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;az&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span>
+<span class="w">  </span><span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ap-northeast-2a&quot;</span><span class="p">]</span>
+<span class="p">}</span>
 
-variable &quot;ami_id_maps&quot; {
-  type    = map(any)
-  default = {}
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;ami_id_maps&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="err">any</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
 
-variable &quot;instance_type&quot; {
-}
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;instance_type&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="p">}</span>
 </code></pre></div>
 <pre><code>- terraform.tfvars
 </code></pre>
@@ -1416,48 +1418,48 @@ resource &quot;aws_instance&quot; &quot;public_02&quot; {
   }
 }
 </code></pre></div>
-<ul>
-<li>rds.tf</li>
-</ul>
-<div class="highlight"><pre><span></span><code>#--------------Security Group----------------
-resource &quot;aws_security_group&quot; &quot;rds&quot; {
-  vpc_id = aws_vpc.main.id
-  name   = &quot;SG-for-RDS&quot;
+</li>
+<li>
+<p>rds.tf</p>
+<div class="highlight"><span class="filename">rds.tf</span><pre><span></span><code><span class="c1">#--------------Security Group----------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_security_group&quot;</span><span class="w"> </span><span class="nv">&quot;rds&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span>
+<span class="w">  </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SG-for-RDS&quot;</span>
 
-  ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = &quot;tcp&quot;
-    security_groups = [aws_security_group.public_ec2.id]
-  }
-}
-#---------------RDS Subnet Group--------
-resource &quot;aws_db_subnet_group&quot; &quot;_&quot; {
-  name = &quot;subnet_for_rds&quot;
-  subnet_ids = [
-    aws_subnet.private.id,
-    aws_subnet.private2.id
-  ]
-}
-#----------------RDS instance-------------
-resource &quot;aws_db_instance&quot; &quot;_&quot; {
-  #settings for Free tier
-  instance_class      = &quot;db.t2.micro&quot;
-  skip_final_snapshot = true
-  allocated_storage   = 10
-  engine              = &quot;mysql&quot;
-  engine_version      = &quot;5.7&quot;
-  #settings for Free tier
+<span class="w">  </span><span class="nb">ingress</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">from_port</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">3306</span>
+<span class="w">    </span><span class="na">to_port</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="m">3306</span>
+<span class="w">    </span><span class="na">protocol</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<span class="w">    </span><span class="na">security_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_security_group.public_ec2.id</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#---------------RDS Subnet Group--------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_db_subnet_group&quot;</span><span class="w"> </span><span class="nv">&quot;_&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;subnet_for_rds&quot;</span>
+<span class="w">  </span><span class="na">subnet_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nv">aws_subnet.private.id</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">aws_subnet.private2.id</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+<span class="c1">#----------------RDS instance-------------</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_db_instance&quot;</span><span class="w"> </span><span class="nv">&quot;_&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">  #settings for Free tier</span>
+<span class="w">  </span><span class="na">instance_class</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;db.t2.micro&quot;</span>
+<span class="w">  </span><span class="na">skip_final_snapshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">  </span><span class="na">allocated_storage</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
+<span class="w">  </span><span class="na">engine</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mysql&quot;</span>
+<span class="w">  </span><span class="na">engine_version</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;5.7&quot;</span>
+<span class="c1">  #settings for Free tier</span>
 
-  identifier = &quot;demodb&quot;
-  username   = &quot;root&quot;
-  password   = &quot;password&quot;
-  name       = &quot;mydb&quot;
+<span class="w">  </span><span class="na">identifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;demodb&quot;</span>
+<span class="w">  </span><span class="na">username</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;root&quot;</span>
+<span class="w">  </span><span class="na">password</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;password&quot;</span>
+<span class="w">  </span><span class="na">name</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mydb&quot;</span>
 
-  db_subnet_group_name = aws_db_subnet_group._.name
+<span class="w">  </span><span class="na">db_subnet_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_db_subnet_group._.name</span>
 
-  vpc_security_group_ids = [aws_security_group.rds.id]
-}
+<span class="w">  </span><span class="na">vpc_security_group_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_security_group.rds.id</span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>terraform apply</li>
@@ -1891,7 +1893,7 @@ Terraform will perform the following actions:
 
 Plan: 14 to add, 0 to change, 0 to destroy.
 </code></pre></div>
-<ul>
+</li>
 <li>
 <p>결과</p>
 <ul>
@@ -1931,16 +1933,18 @@ Plan: 14 to add, 0 to change, 0 to destroy.
 </li>
 <li>
 <p>코드</p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+</li>
+<li>
+<p>구성</p>
+</li>
+<li>
+<p>코드</p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
-<ul>
-<li>구성</li>
-<li>코드</li>
-</ul>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
 
 
 

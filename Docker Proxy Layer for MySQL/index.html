@@ -744,86 +744,88 @@
 <h2 id="proxysql">ProxySQL 컨테이너 로드</h2>
 <hr />
 <ol>
-<li>ProxySQL 컨테이너에 매핑할 디렉터리를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>mkdir -p /db/proxysql/data /db/proxysql/conf
+<li>
+<p>ProxySQL 컨테이너에 매핑할 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">data</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">conf</span>
 </code></pre></div>
-<ol>
-<li>생성한 디렉터리에 접근 가능하도록 권한을 설정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>chmod 777 /db/proxysql /db/proxysql/data /db/proxysql/conf
+</li>
+<li>
+<p>생성한 디렉터리에 접근 가능하도록 권한을 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">data</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">conf</span>
 </code></pre></div>
-<ol>
-<li>conf 디렉터리에 다음과 같은 내용으로 설정파일(proxysql.cnf)을 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi /db/proxysql/conf/proxysql.cnf
+</li>
+<li>
+<p>conf 디렉터리에 다음과 같은 내용으로 설정파일(proxysql.cnf)을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">proxysql.cnf</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>datadir=&quot;/var/lib/proxysql&quot;
-admin_variables=
-{
-    admin_credentials=&quot;admin:admin;radmin:radmin&quot;
-    mysql_ifaces=&quot;0.0.0.0:6032&quot;
-}
-mysql_variables=
-{
-    threads=4
-    max_connections=2048
-    default_query_delay=0
-    default_query_timeout=36000000
-    have_compress=true
-    poll_timeout=2000
-    interfaces=&quot;0.0.0.0:6033&quot;
-    default_schema=&quot;information_schema&quot;
-    stacksize=1048576
-    server_version=&quot;5.5.30&quot;
-    connect_timeout_server=3000
-    monitor_username=&quot;monitor&quot;
-    monitor_password=&quot;monitor&quot;
-    monitor_history=600000
-    monitor_connect_interval=60000
-    monitor_ping_interval=10000
-    monitor_read_only_interval=1500
-    monitor_read_only_timeout=500
-    ping_interval_server_msec=120000
-    ping_timeout_server=500
-    commands_stats=true
-    sessions_sort=true
-    connect_retries_on_failure=10
-}
+<div class="highlight"><pre><span></span><code><span class="err">da</span><span class="kc">ta</span><span class="err">dir=</span><span class="s2">&quot;/var/lib/proxysql&quot;</span>
+<span class="err">admi</span><span class="kc">n</span><span class="err">_variables=</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="err">admi</span><span class="kc">n</span><span class="err">_crede</span><span class="kc">nt</span><span class="err">ials=</span><span class="s2">&quot;admin:admin;radmin:radmin&quot;</span>
+<span class="w">    </span><span class="err">mysql_i</span><span class="kc">fa</span><span class="err">ces=</span><span class="s2">&quot;0.0.0.0:6032&quot;</span>
+<span class="p">}</span>
+<span class="err">mysql_variables=</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kc">t</span><span class="err">hreads=</span><span class="mi">4</span>
+<span class="w">    </span><span class="err">max_co</span><span class="kc">nne</span><span class="err">c</span><span class="kc">t</span><span class="err">io</span><span class="kc">ns</span><span class="err">=</span><span class="mi">2048</span>
+<span class="w">    </span><span class="err">de</span><span class="kc">fault</span><span class="err">_query_delay=</span><span class="mi">0</span>
+<span class="w">    </span><span class="err">de</span><span class="kc">fault</span><span class="err">_query_</span><span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span><span class="err">=</span><span class="mi">36000000</span>
+<span class="w">    </span><span class="err">have_compress=</span><span class="kc">true</span>
+<span class="w">    </span><span class="err">poll_</span><span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span><span class="err">=</span><span class="mi">2000</span>
+<span class="w">    </span><span class="err">i</span><span class="kc">nterfa</span><span class="err">ces=</span><span class="s2">&quot;0.0.0.0:6033&quot;</span>
+<span class="w">    </span><span class="err">de</span><span class="kc">fault</span><span class="err">_schema=</span><span class="s2">&quot;information_schema&quot;</span>
+<span class="w">    </span><span class="err">s</span><span class="kc">ta</span><span class="err">cksize=</span><span class="mi">1048576</span>
+<span class="w">    </span><span class="err">server_versio</span><span class="kc">n</span><span class="err">=</span><span class="s2">&quot;5.5.30&quot;</span>
+<span class="w">    </span><span class="err">co</span><span class="kc">nne</span><span class="err">c</span><span class="kc">t</span><span class="err">_</span><span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span><span class="err">_server=</span><span class="mi">3000</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_user</span><span class="kc">na</span><span class="err">me=</span><span class="s2">&quot;monitor&quot;</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_password=</span><span class="s2">&quot;monitor&quot;</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_his</span><span class="kc">t</span><span class="err">ory=</span><span class="mi">600000</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_co</span><span class="kc">nne</span><span class="err">c</span><span class="kc">t</span><span class="err">_i</span><span class="kc">nter</span><span class="err">val=</span><span class="mi">60000</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_pi</span><span class="kc">n</span><span class="err">g_i</span><span class="kc">nter</span><span class="err">val=</span><span class="mi">10000</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_read_o</span><span class="kc">nl</span><span class="err">y_i</span><span class="kc">nter</span><span class="err">val=</span><span class="mi">1500</span>
+<span class="w">    </span><span class="err">mo</span><span class="kc">n</span><span class="err">i</span><span class="kc">t</span><span class="err">or_read_o</span><span class="kc">nl</span><span class="err">y_</span><span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span><span class="err">=</span><span class="mi">500</span>
+<span class="w">    </span><span class="err">pi</span><span class="kc">n</span><span class="err">g_i</span><span class="kc">nter</span><span class="err">val_server_msec=</span><span class="mi">120000</span>
+<span class="w">    </span><span class="err">pi</span><span class="kc">n</span><span class="err">g_</span><span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span><span class="err">_server=</span><span class="mi">500</span>
+<span class="w">    </span><span class="err">comma</span><span class="kc">n</span><span class="err">ds_s</span><span class="kc">tats</span><span class="err">=</span><span class="kc">true</span>
+<span class="w">    </span><span class="err">sessio</span><span class="kc">ns</span><span class="err">_sor</span><span class="kc">t</span><span class="err">=</span><span class="kc">true</span>
+<span class="w">    </span><span class="err">co</span><span class="kc">nne</span><span class="err">c</span><span class="kc">t</span><span class="err">_re</span><span class="kc">tr</span><span class="err">ies_o</span><span class="kc">n</span><span class="err">_</span><span class="kc">fa</span><span class="err">ilure=</span><span class="mi">10</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>설정파일의 권한을 설정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>chmod 644 /db/proxysql/conf/proxysql.cnf
+</li>
+<li>
+<p>설정파일의 권한을 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">chmod</span><span class="w"> </span><span class="m">644</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">proxysql</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">proxysql.cnf</span>
 </code></pre></div>
-<ol>
-<li>mybridge 네트워크에서 proxySQL 컨테이너를 실행합니다.</li>
+</li>
+<li>
+<p>mybridge 네트워크에서 proxySQL 컨테이너를 실행합니다.</p>
+</li>
 </ol>
 <p>16032:6032 포트와 16033:6033 포트를 사용합니다</p>
-<div class="highlight"><pre><span></span><code>docker run -i -t --name proxysql -h proxysql --net mybridge --net-alias=proxysql -p 16032:6032 -p 16033:6033 -v /db/proxysql/data:/var/lib/proxysql -v /db/proxysql/conf/proxysql.cnf:/etc/proxysql.cnf -d proxysql/proxysql
-</code></pre></div>
+<pre><code>```s
+docker run -i -t --name proxysql -h proxysql --net mybridge --net-alias=proxysql -p 16032:6032 -p 16033:6033 -v /db/proxysql/data:/var/lib/proxysql -v /db/proxysql/conf/proxysql.cnf:/etc/proxysql.cnf -d proxysql/proxysql
+```
+</code></pre>
 <ol>
-<li>컨테이너가 잘 실행되었는지 확인해봅니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
+<li>
+<p>컨테이너가 잘 실행되었는지 확인해봅니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>컨테이너가 잘 실행되었습니다</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%202.png" src="Untitled%202.png" /></p>
 </li>
 <li>
 <p>MySQL을 이용해 proxySQL에 접근을 시도합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="m">127.0</span><span class="n">.</span><span class="m">0.1</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span><span class="m">16032</span><span class="w"> </span><span class="o">-</span><span class="n">uradmin</span><span class="w"> </span><span class="o">-</span><span class="n">pradmin</span><span class="w"> </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;ProxySQL Admin&gt;&quot;</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
+<li>
+<p>MySQL 클라이언트가 없다면 설치 후 재시도 합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">dnf</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">mysql</span>
 </code></pre></div>
-<ol>
-<li>MySQL 클라이언트가 없다면 설치 후 재시도 합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>dnf install -y mysql
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>ProxySQL Admin에 잘 접속되었습니다</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%203.png" src="Untitled%203.png" /></p>
@@ -833,196 +835,202 @@ mysql_variables=
 <hr />
 <h3 id="db">DB컨테이너 세팅</h3>
 <ol>
-<li>db001 컨테이너의 MySQL 서버에 접속합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
+<li>
+<p>db001 컨테이너의 MySQL 서버에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
-<ol>
-<li>testdb 데이터베이스를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE DATABASE testdb DEFAULT CHARACTER SET utf8;
+</li>
+<li>
+<p>testdb 데이터베이스를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">testdb</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>어플리케이션용 user를 생성하고 db접근 권한을 부여합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE USER appuser@&#39;%&#39; IDENTIFIED BY &#39;apppass&#39;;
-GRANT SELECT, INSERT, UPDATE, DELETE ON testdb.* TO appuser@&#39;%&#39;;
+</li>
+<li>
+<p>어플리케이션용 user를 생성하고 db접근 권한을 부여합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">appuser</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;apppass&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">testdb</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">appuser</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>ProxySQL모니터용 user를 생성하고 권한을 부여합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE USER monitor@&#39;%&#39; IDENTIFIED BY &#39;monitor&#39;;
-GRANT REPLICATION CLIENT ON *.* TO monitor@&#39;%&#39;;
+</li>
+<li>
+<p>ProxySQL모니터용 user를 생성하고 권한을 부여합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">monitor</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;monitor&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">CLIENT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">monitor</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>권한을 적용합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>flush privileges;
+</li>
+<li>
+<p>권한을 적용합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">flush</span><span class="w"> </span><span class="n">privileges</span><span class="p">;</span>
 </code></pre></div>
+</li>
+</ol>
 <h3 id="proxysql_2">ProxySQL 설정(서버정보)</h3>
 <hr />
 <ol>
-<li>sql을 이용해 ProxySQL 컨테이너 접속</li>
-</ol>
-<div class="highlight"><pre><span></span><code>mysql -h 127.0.0.1 -P 16032 -uradmin -pradmin --prompt &quot;ProxySQL Admin&gt;&quot;
+<li>
+<p>sql을 이용해 ProxySQL 컨테이너 접속</p>
+<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="m">127.0</span><span class="n">.</span><span class="m">0.1</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span><span class="m">16032</span><span class="w"> </span><span class="o">-</span><span class="n">uradmin</span><span class="w"> </span><span class="o">-</span><span class="n">pradmin</span><span class="w"> </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;ProxySQL Admin&gt;&quot;</span>
 </code></pre></div>
-<ol>
-<li>hostgroup 10(쓰기 쿼리 그룹) 에 db001을 등록합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (10, &#39;db001&#39;, 3306);
+</li>
+<li>
+<p>hostgroup 10(쓰기 쿼리 그룹) 에 db001을 등록합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_servers</span><span class="p">(</span><span class="n">hostgroup_id</span><span class="p">,</span><span class="w"> </span><span class="n">hostname</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3306</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>hostgroup 20(읽기 쿼리 그룹)에 모든 db를 등록합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db001&#39;, 3306);
-INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db002&#39;, 3306);
-INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (20, &#39;db003&#39;, 3306);
+</li>
+<li>
+<p>hostgroup 20(읽기 쿼리 그룹)에 모든 db를 등록합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_servers</span><span class="p">(</span><span class="n">hostgroup_id</span><span class="p">,</span><span class="w"> </span><span class="n">hostname</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3306</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_servers</span><span class="p">(</span><span class="n">hostgroup_id</span><span class="p">,</span><span class="w"> </span><span class="n">hostname</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3306</span><span class="p">);</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_servers</span><span class="p">(</span><span class="n">hostgroup_id</span><span class="p">,</span><span class="w"> </span><span class="n">hostname</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;db003&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3306</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>SQL구문으로 설정 상태를 확인해볼 수 있습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>SELECT * FROM mysql-servers;
+</li>
+<li>
+<p>SQL구문으로 설정 상태를 확인해볼 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mysql</span><span class="o">-</span><span class="n">servers</span><span class="p">;</span>
 </code></pre></div>
-<pre><code>![Docker Proxy Layer for MySQL/Untitled%204.png](Docker Proxy Layer for MySQL/Untitled%204.png)
-</code></pre>
-<ol>
+<p><img alt="Docker Proxy Layer for MySQL/Untitled%204.png" src="Untitled%204.png" /></p>
+</li>
 <li>
 <p>그룹의 정보를 저장해줍니다</p>
 <p>값은 WRITE GROUP, READ GROUP, WRITE와 READ그룹을 구별하는 기준,'' 입니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_replication_hostgroups</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;read_only&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="o">//</span><span class="p">(</span><span class="k">WRITE</span><span class="w"> </span><span class="k">GROUP</span><span class="p">,</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">GROUP</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE와</span><span class="w"> </span><span class="n">READ그룹을</span><span class="w"> </span><span class="err">구별하는</span><span class="w"> </span><span class="err">기준</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>마찬가지로 SQL로 설정을 확인할 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mysql_replication_hostgroups</span><span class="p">;</span>
+</code></pre></div>
+<p><img alt="Docker Proxy Layer for MySQL/Untitled%205.png" src="Untitled%205.png" /></p>
+</li>
+<li>
+<p>설정을 적용하고 저장합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">RUNTIME</span><span class="p">;</span>
+<span class="n">SAVE</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">DISK</span><span class="p">;</span>
+<span class="o">//</span>설정된<span class="w"> </span>정보를<span class="w"> </span>반영
+<span class="o">//</span>설정을<span class="w"> </span>영구적으로<span class="w"> </span>저장<span class="p">(</span>디스크에<span class="w"> </span>기록<span class="p">)</span>
+</code></pre></div>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_replication_hostgroups VALUES (10, 20, &#39;read_only&#39;, &#39;&#39;);
-//(WRITE GROUP, READ GROUP, WRITE와 READ그룹을 구별하는 기준,&#39;&#39;)
-</code></pre></div>
-<ol>
-<li>마찬가지로 SQL로 설정을 확인할 수 있습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>SELECT * FROM mysql_replication_hostgroups;
-</code></pre></div>
-<pre><code>![Docker Proxy Layer for MySQL/Untitled%205.png](Docker Proxy Layer for MySQL/Untitled%205.png)
-</code></pre>
-<ol>
-<li>설정을 적용하고 저장합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
-SAVE MYSQL SERVERS TO DISK;
-//설정된 정보를 반영
-//설정을 영구적으로 저장(디스크에 기록)
-</code></pre></div>
 <h3 id="proxysql-user">ProxySQL 설정(USER 정보)</h3>
 <hr />
 <ol>
 <li>어플리케이션은 DB서버가 아닌 ProxySQL에 접속하기 때문에 ProxySQL에서 세팅합니다</li>
-<li>어플리케이션용 USER 정보를 ProxySQL에 등록합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_users(username, password, default_hostgroup, transaction_persistent)
-VALUES (&#39;appuser&#39;, &#39;apppass&#39;, 10, 0);
+<li>
+<p>어플리케이션용 USER 정보를 ProxySQL에 등록합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_users</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">default_hostgroup</span><span class="p">,</span><span class="w"> </span><span class="n">transaction_persistent</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;appuser&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;apppass&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>마찬가지로 설정을 적용하고 저장합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
-SAVE MYSQL SERVERS TO DISK;
+</li>
+<li>
+<p>마찬가지로 설정을 적용하고 저장합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">RUNTIME</span><span class="p">;</span>
+<span class="n">SAVE</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">DISK</span><span class="p">;</span>
 </code></pre></div>
+</li>
+</ol>
 <h3 id="proxysql_3">ProxySQL 설정(쿼리 룰)</h3>
 <hr />
-<aside>
-💡 작업 순서를 반드시 지킬 것
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 작업 순서를 반드시 지킬 것</p>
+</div>
 </aside>
-
 <ol>
-<li>SELECT FOR UPDATE(쓰기) 구문 요청이 들어오면 10번 그룹으로 보냅니다 //쓰기 쿼리 룰</li>
-</ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
-VALUES (1, 1, &#39;^SELECT.*FOR UPDATE$&#39;, 10);
+<li>
+<p>SELECT FOR UPDATE(쓰기) 구문 요청이 들어오면 10번 그룹으로 보냅니다 //쓰기 쿼리 룰</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_query_rules</span><span class="p">(</span><span class="n">rule_id</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="p">,</span><span class="w"> </span><span class="n">match_pattern</span><span class="p">,</span><span class="w"> </span><span class="n">destination_hostgroup</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;^SELECT.*FOR UPDATE$&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>SELECT 쿼리는 20번 호스트 그룹으로 보냅니다 //읽기 쿼리 룰</li>
-</ol>
-<div class="highlight"><pre><span></span><code>INSERT INTO mysql_query_rules(rule_id, active, match_pattern, destination_hostgroup)
-VALUES (2, 1, &#39;^SELECT&#39;, 20);
+</li>
+<li>
+<p>SELECT 쿼리는 20번 호스트 그룹으로 보냅니다 //읽기 쿼리 룰</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mysql_query_rules</span><span class="p">(</span><span class="n">rule_id</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="p">,</span><span class="w"> </span><span class="n">match_pattern</span><span class="p">,</span><span class="w"> </span><span class="n">destination_hostgroup</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;^SELECT&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>저장합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>LOAD MYSQL SERVERS TO RUNTIME;
-SAVE MYSQL SERVERS TO DISK;
+</li>
+<li>
+<p>저장합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">RUNTIME</span><span class="p">;</span>
+<span class="n">SAVE</span><span class="w"> </span><span class="n">MYSQL</span><span class="w"> </span><span class="n">SERVERS</span><span class="w"> </span><span class="n">TO</span><span class="w"> </span><span class="n">DISK</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>ProxySQL컨테이너에서 빠져나옵니다</li>
+</li>
+<li>
+<p>ProxySQL컨테이너에서 빠져나옵니다</p>
+</li>
 </ol>
 <h2 id="_2">동작 테스트</h2>
 <hr />
 <ol>
 <li>테스트용 스크립트를 생성합니다</li>
-<li>proxySQL 서버의 IP를 확인합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker inspect --format &quot;{{.NetworkSettings.Networks.mybridge.IPAddress}}&quot; proxysql
+<li>
+<p>proxySQL 서버의 IP를 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">inspect</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;{{.NetworkSettings.Networks.mybridge.IPAddress}}&quot;</span><span class="w"> </span><span class="n">proxysql</span>
 </code></pre></div>
-<ol>
-<li>16033포트로 접속해 select 구문을 실행하는</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi app_test_conn.sh
+</li>
+<li>
+<p>16033포트로 접속해 select 구문을 실행하는</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">app_test_conn.sh</span>
 </code></pre></div>
-<ul>
-<li>app_test_conn.sh</li>
-</ul>
-<div class="highlight"><pre><span></span><code>#!/bin/bash
-while true;
-do
-    mysql -uappuser -papppass -h127.0.0.1 -P16033 -N -e &quot;select @@hostname,now()&quot; 2&gt;&amp;1| grep -v &quot;Warning&quot;
-    sleep 1
-done
+</li>
+<li>
+<p>app_test_conn.sh</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="k">while</span><span class="w"> </span>true<span class="p">;</span>
+<span class="k">do</span>
+<span class="w">    </span>mysql<span class="w"> </span>-uappuser<span class="w"> </span>-papppass<span class="w"> </span>-h127.0.0.1<span class="w"> </span>-P16033<span class="w"> </span>-N<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;select @@hostname,now()&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;Warning&quot;</span>
+<span class="w">    </span>sleep<span class="w"> </span><span class="m">1</span>
+<span class="k">done</span>
 </code></pre></div>
-<ol>
-<li>select 구문 스크립트를 실행합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sh app_test_conn.sh
+</li>
+<li>
+<p>select 구문 스크립트를 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sh</span><span class="w"> </span><span class="n">app_test_conn.sh</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>읽기 쿼리는 이쪽 저쪽 DB를 모두 쑤시고 다닙니다</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%206.png" src="Untitled%206.png" /></p>
 </li>
 <li>
 <p>다음으로 db001컨테이너 SQL 서버에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
+<li>
+<p>Insert 구문 테스트를 위해 기록용 테이블을 만들어줍니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">USE</span><span class="w"> </span><span class="n">testdb</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">insert_test</span><span class="p">(</span><span class="n">hostname</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span><span class="w"> </span><span class="n">insert_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li>Insert 구문 테스트를 위해 기록용 테이블을 만들어줍니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>USE testdb;
-CREATE TABLE insert_test(hostname varchar(15), insert_time datetime);
+</li>
+<li>
+<p>db001 컨테이너에서 빠져나옵니다</p>
+</li>
+<li>
+<p>16033포트로 접속해  insert 구문을 실행하는</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">app_test_insert.sh</span>
 </code></pre></div>
-<ol>
-<li>db001 컨테이너에서 빠져나옵니다</li>
-<li>16033포트로 접속해  insert 구문을 실행하는</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi app_test_insert.sh
-</code></pre></div>
-<ul>
-<li>app_test_insert.sh</li>
-</ul>
-<div class="highlight"><pre><span></span><code>#!/bin/bash
+</li>
+<li>
+<p>app_test_insert.sh</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
-while true;
-do
-  mysql -uappuser -papppass -h127.0.0.1 -P16033 -N -e &quot;insert into testdb.insert_test select @@hostname,now()&quot; 2&gt;&amp;1| grep -v &quot;Warning&quot;
-  sleep 1
-done
+<span class="k">while</span><span class="w"> </span>true<span class="p">;</span>
+<span class="k">do</span>
+mysql<span class="w"> </span>-uappuser<span class="w"> </span>-papppass<span class="w"> </span>-h127.0.0.1<span class="w"> </span>-P16033<span class="w"> </span>-N<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;insert into testdb.insert_test select @@hostname,now()&quot;</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;Warning&quot;</span>
+sleep<span class="w"> </span><span class="m">1</span>
+<span class="k">done</span>
 </code></pre></div>
-<ol>
-<li>insert 구문 스크립트를 실행합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>sh app_test_insert.sh
+</li>
+<li>
+<p>insert 구문 스크립트를 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">sh</span><span class="w"> </span><span class="n">app_test_insert.sh</span>
 </code></pre></div>
-<ol>
-<li>이 스크립트는 동작하고 있지만 화면에 실시간으로 표시되지 않습니다</li>
+</li>
+<li>
+<p>이 스크립트는 동작하고 있지만 화면에 실시간으로 표시되지 않습니다</p>
+</li>
 <li>
 <p>db001에 접속하면 데이터가 잘 쓰여진 것을 확인할 수 있습니다(1초간격)</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%207.png" src="Untitled%207.png" /></p>
@@ -1032,14 +1040,14 @@ done
 <hr />
 <ol>
 <li>장애 상황에서 의도한대로 동작하는지 테스트 합니다</li>
-<li>db001에 접속해 테이블 내용을 날려줍니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
+<li>
+<p>db001에 접속해 테이블 내용을 날려줍니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>TRUNCATE TABLE testdb.insert_test;
+<div class="highlight"><pre><span></span><code><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">testdb</span><span class="p">.</span><span class="n">insert_test</span><span class="p">;</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>다음 사진 처럼 두 개의 터미널을 준비하고 insert 스크립트 실행 도중 MasterDB에 장애를 일으킵니다</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%208.png" src="Untitled%208.png" /></p>
@@ -1054,12 +1062,10 @@ mysql -uroot -p
 </li>
 <li>
 <p>Master로 전환된 db002의 SQL 서버에 접속합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
-mysql -uroot -p
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>db001이 중지하고 14초 이후에 db002에 쓰기 트랜잭션이 박히는 모습을 확인할 수 있습니다!</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%2011.png" src="Untitled%2011.png" /></p>
@@ -1070,17 +1076,15 @@ mysql -uroot -p
 </li>
 <li>
 <p>원상 복구를 위해 db001을 다시 SLAVE로 가동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span>
+<span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">read_only</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker start db001
-docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>set global read_only=1;
-CHANGE MASTER TO MASTER_HOST=&#39;db002&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
-START SLAVE;
-</code></pre></div>
-<ol>
 <li>
 <p>db001이 SLAVE로써 다시 클러스터로 복귀했습니다</p>
 <p><img alt="Docker Proxy Layer for MySQL/Untitled%2013.png" src="Untitled%2013.png" /></p>

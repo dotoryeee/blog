@@ -614,11 +614,10 @@
 <h1 id="transaction-on-gcp-spanner">Transaction on GCP Spanner</h1>
 <h2 id="_1">안내</h2>
 <hr />
-<aside>
-💡 다음 서적을 공부하며 요약하였습니다
-
-</aside>
-
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>💡 다음 서적을 공부하며 요약하였습니다</p>
+</div>
 <p><img alt="Transaction on GCP Spanner/Untitled.png" src="Untitled.png" /></p>
 <h2 id="spanner">Spanner를 왜 사용해야 할까</h2>
 <hr />
@@ -650,13 +649,13 @@
 </li>
 <li>
 <p>google cloud SDK(이하 SDK)에서 접속하기 위해 다음 명령을 실행합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>gcloud auth application-default login {Project ID}
+<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">auth</span><span class="w"> </span><span class="n">application</span><span class="o">-</span><span class="n">default</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="p">{</span><span class="n">Project</span><span class="w"> </span><span class="n">ID</span><span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>6.3 코드를 이용해 테이블에 값을 추가합니다.
-이때 6.3 코드는 JSON을 이용해 데이터를 삽입합니다<a href="https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js">https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js</a></li>
+</li>
+<li>
+<p>6.3 코드를 이용해 테이블에 값을 추가합니다.
+이때 6.3 코드는 JSON을 이용해 데이터를 삽입합니다<a href="https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js">https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js</a></p>
+</li>
 <li>데이터가 잘 삽입되면 다음과 같이 확인할 수 있습니다</li>
 <li>
 <p>@SDK</p>
@@ -703,23 +702,20 @@ SDK코드에 SQL구문을 삽입하여 실행하는 6.6코드를 실행해봅니
 </li>
 <li>
 <p>② SDK에 SQL구문 직접 실어보내기</p>
+<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">spanner</span><span class="w"> </span><span class="n">databases</span><span class="w"> </span><span class="n">ddl</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="o">-</span><span class="k">database</span><span class="w"> </span><span class="c1">--instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>gcloud spanner databases ddl update test-database --instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;
+<li>
+<p>색인을 사용하기 위해 색인테이블을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
-<ol>
-<li>색인을 사용하기 위해 색인테이블을 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE INDEX employees_by_name ON employees (name)
+<p><img alt="Transaction on GCP Spanner/Untitled%2014.png" src="Untitled%2014.png" /></p>
+</li>
+<li>
+<p>색인 후 다시 데이터로 돌아가 추가 데이터를 가져오는 것을 비효율적이기 때문에 애초에 색인테이블에 다른 데이터도 추가로 삽입해둘 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="n">STORING</span><span class="w"> </span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
 </code></pre></div>
-<pre><code>![Transaction on GCP Spanner/Untitled%2014.png](Transaction on GCP Spanner/Untitled%2014.png)
-</code></pre>
-<ol>
-<li>색인 후 다시 데이터로 돌아가 추가 데이터를 가져오는 것을 비효율적이기 때문에 애초에 색인테이블에 다른 데이터도 추가로 삽입해둘 수 있습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE INDEX employees_by_name ON employees (name) STORING (start_date)
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>색인테이블에 다른데이터 열이 추가로 지정된 모습입니다</p>
 <p><img alt="Transaction on GCP Spanner/Untitled%2015.png" src="Untitled%2015.png" /></p>

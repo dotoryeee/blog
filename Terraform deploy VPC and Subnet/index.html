@@ -620,71 +620,64 @@
 </ul>
 <h2 id="deploy-vpc">deploy VPC</h2>
 <hr />
-<aside>
-💡 git 사용시 .terraform 디렉터리를 ignore 처리합니다
-
-</aside>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 git 사용시 .terraform 디렉터리를 ignore 처리합니다</p>
+</div>
 <ol>
-<li>provider 설정을 분리하여 따로 작성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi provider.tf
+<li>
+<p>provider 설정을 분리하여 따로 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>provider &quot;aws&quot; {
-    region = &quot;ap-northeast-2&quot;
-}
+<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>vpc용 테라폼 코드를 작성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+</li>
+<li>
+<p>vpc용 테라폼 코드를 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
-        cidr_block = &quot;10.0.0.0/16&quot;
-        tags = {
-                Name = &quot;Terraform TEST1&quot;
-        }
-}
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="nv">&quot;terra-test&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/16&quot;</span>
+<span class="w">        </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Terraform TEST1&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>테라폼 플랜을 실행합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
+</li>
+<li>
+<p>테라폼 플랜을 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>당연히 init을 하지 않으면 진행할 수 없습니다</p>
 <p><img alt="Terraform deploy VPC and Subnet/Untitled.png" src="Untitled.png" /></p>
 </li>
 <li>
 <p>테라폼 시작을 선언합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform init
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">init</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>테라폼이 AWS를 컨트롤 할 수 있는 플러그인을 다운로드 합니다</p>
 <p><img alt="Terraform deploy VPC and Subnet/Untitled%201.png" src="Untitled%201.png" /></p>
 </li>
 <li>
 <p>다시 plan을 시작합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>현재 작성된 테라폼 코드에 따르면 아래와 같이 인프라가 생성된다는 예상 결과를 보여줍니다</p>
 <p><img alt="Terraform deploy VPC and Subnet/Untitled%202.png" src="Untitled%202.png" /></p>
 </li>
 <li>
 <p>본격적으로 AWS에 인프라 생성을 시작합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>경고창이 뜨면 yes를 입력합니다</p>
 <p><img alt="Terraform deploy VPC and Subnet/Untitled%203.png" src="Untitled%203.png" /></p>
@@ -708,43 +701,41 @@
 <ul>
 <li>서브넷을 생성할 때 VPC를 지정하려면 변수를 넣는 것 처럼 aws_vpc.{NAME}.id 형태로 작성할 수 있습니다</li>
 </ul>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="nv">&quot;terra-test&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/16&quot;</span>
+
+<span class="w">        </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Terraform TEST1&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="err">resource</span><span class="s2">&quot;aws_subnet&quot; &quot;public01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.terra-test.id</span>
+<span class="w">        </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/24&quot;</span>
+<span class="w">        </span><span class="na">availability_zone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2a&quot;</span>
+
+<span class="w">        </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra-public-01-subnet&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_subnet&quot;</span><span class="w"> </span><span class="nv">&quot;private01&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.terra-test.id</span>
+<span class="w">        </span><span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.1.0/24&quot;</span>
+
+<span class="w">        </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra-private-01-subnet&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>테라폼 플랜을 이용해 잘 작성했는지 체크합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_vpc&quot; &quot;terra-test&quot; {
-        cidr_block = &quot;10.0.0.0/16&quot;
-
-        tags = {
-                Name = &quot;Terraform TEST1&quot;
-        }
-}
-
-resource&quot;aws_subnet&quot; &quot;public01&quot; {
-        vpc_id = aws_vpc.terra-test.id
-        cidr_block = &quot;10.0.0.0/24&quot;
-        availability_zone = &quot;ap-northeast-2a&quot;
-
-        tags = {
-                Name = &quot;terra-public-01-subnet&quot;
-        }
-}
-
-resource &quot;aws_subnet&quot; &quot;private01&quot; {
-        vpc_id = aws_vpc.terra-test.id
-        cidr_block = &quot;10.0.1.0/24&quot;
-
-        tags = {
-                Name = &quot;terra-private-01-subnet&quot;
-        }
-}
-</code></pre></div>
-<ol>
-<li>테라폼 플랜을 이용해 잘 작성했는지 체크합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>현재 코드에 3개의 리소스(VPC, public subnet, private subnet)이 작성되어있지만</p>
 <p>VPC는 아까 만들었기 때문에 2개가 추가된다고 안내하고 있습니다</p>
@@ -753,11 +744,9 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
 </li>
 <li>
 <p>AWS 인프라에 적용해봅니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>금방 생성됩니다</p>
 <p><img alt="Terraform deploy VPC and Subnet/Untitled%207.png" src="Untitled%207.png" /></p>
@@ -768,12 +757,11 @@ resource &quot;aws_subnet&quot; &quot;private01&quot; {
 </li>
 <li>
 <p>다음 명령을 이용하면 현재 생성된 리스트를 볼 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">list</span>
+</code></pre></div>
+<p><img alt="Terraform deploy VPC and Subnet/Untitled%209.png" src="Untitled%209.png" /></p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>terraform state list
-</code></pre></div>
-<pre><code>![Terraform deploy VPC and Subnet/Untitled%209.png](Terraform deploy VPC and Subnet/Untitled%209.png)
-</code></pre>
 
 
 

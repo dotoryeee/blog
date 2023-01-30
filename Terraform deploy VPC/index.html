@@ -651,75 +651,68 @@
 <h2 id="deploy-igw-nat">deploy IGW, NAT</h2>
 <hr />
 <ol>
-<li>이전에 작성했던 vpc.tf에 이어서 작업합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>이전에 작성했던 vpc.tf에 이어서 작업합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_internet_gateway&quot; &quot;igw&quot; {
-        vpc_id = aws_vpc.terra-test.id
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_internet_gateway&quot;</span><span class="w"> </span><span class="nv">&quot;igw&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.terra-test.id</span>
 
-        tags = {
-                Name = &quot;terra-IGW&quot;
-        }
-}
+<span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra-IGW&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>작성했으면 플랜 명령으로 확인합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
+</li>
+<li>
+<p>작성했으면 플랜 명령으로 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>플랜으로 확인한 예상작업이 의도한대로 IGW를 추가합니다</p>
 <p><img alt="Terraform deploy VPC/Untitled.png" src="Untitled.png" /></p>
 </li>
 <li>
 <p>인프라에 적용합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>이어서 NAT Gateway를 한 개 작성합니다</p>
 <p>NAT Gateway는 EIP가 필요하기 때문에 반드시 같이 작성합니다</p>
 <p>NAT Gateway는 public 서브넷에 존재해야 함을 생각하고 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">VPC.tf</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_eip&quot;</span><span class="w"> </span><span class="nv">&quot;terraEIP&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="na">vpc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="nb">lifecycle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">create_before_destroy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_nat_gateway&quot;</span><span class="w"> </span><span class="nv">&quot;nat&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="na">allocation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_eip.terraEIP.id</span>
+
+<span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.private01.id</span>
+
+<span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_NAT&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi VPC.tf
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_eip&quot; &quot;terraEIP&quot; {
-        vpc = true
-
-        lifecycle {
-                create_before_destroy = true
-        }
-}
-
-resource &quot;aws_nat_gateway&quot; &quot;nat&quot; {
-        allocation_id = aws_eip.terraEIP.id
-
-        subnet_id = aws_subnet.private01.id
-
-        tags = {
-                Name = &quot;terra_NAT&quot;
-        }
-}
-</code></pre></div>
-<ol>
 <li>
 <p>terraform plan을 이용하면 이번에도 잘 작성되었습니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%201.png" src="Untitled%201.png" /></p>
 </li>
 <li>
 <p>바로 적용합니다. 다만 NAT Gateway 생성은 다른 리소스에 비해 많은 시간이 소모됩니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<pre><code>![Terraform deploy VPC/Untitled%202.png](Terraform deploy VPC/Untitled%202.png)
-</code></pre>
-<ol>
+<p><img alt="Terraform deploy VPC/Untitled%202.png" src="Untitled%202.png" /></p>
+</li>
 <li>
 <p>NAT Gateway가 잘 생성된 것을 콘솔에서도 확인할 수 있습니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%203.png" src="Untitled%203.png" /></p>
@@ -727,49 +720,50 @@ resource &quot;aws_nat_gateway&quot; &quot;nat&quot; {
 <li>
 <p>NAT Gateway는 존재만으로도 비용이 발생하기 떄문에 사용하지 않으면 바로 삭제합니다</p>
 </li>
-<li>테라폼에서 생성한 인프라를 전부 날리는 명령어는 다음과 같습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform destroy
+<li>
+<p>테라폼에서 생성한 인프라를 전부 날리는 명령어는 다음과 같습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">destroy</span>
 </code></pre></div>
-<ol>
-<li>NAT Gateway만 삭제하려는 경우 NAT Gateway를 주석처리하고 업데이트 하면 됩니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+</li>
+<li>
+<p>NAT Gateway만 삭제하려는 경우 NAT Gateway를 주석처리하고 업데이트 하면 됩니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
+</li>
+</ol>
 <h2 id="build-route-table">build Route-table</h2>
 <hr />
 <ol>
-<li>바로 코드 수정에 들어갑니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>바로 코드 수정에 들어갑니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<ol>
-<li>두 개의 라우팅 테이블을 작성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_route_table&quot; &quot;public&quot;{
-        vpc_id = aws_vpc.terra-test.id
+</li>
+<li>
+<p>두 개의 라우팅 테이블을 작성합니다</p>
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route_table&quot; &quot;public&quot;</span><span class="p">{</span>
+<span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.terra-test.id</span>
 
-        tags = {
-                Name = &quot;terra_public_rt&quot;
-        }
-}
+<span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_public_rt&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
 
-resource &quot;aws_route_table&quot; &quot;private&quot;{
-        vpc_id = aws_vpc.terra-test.id
+<span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_route_table&quot; &quot;private&quot;</span><span class="p">{</span>
+<span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.terra-test.id</span>
 
-        tags = {
-                Name = &quot;terra_private_rt&quot;
-        }
-}
+<span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_private_rt&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<pre><code>![Terraform deploy VPC/Untitled%204.png](Terraform deploy VPC/Untitled%204.png)
-</code></pre>
-<ol>
-<li>plan 해보고 문제 없으면 바로 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<p><img alt="Terraform deploy VPC/Untitled%204.png" src="Untitled%204.png" /></p>
+</li>
+<li>
+<p>plan 해보고 문제 없으면 바로 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>잘 생성되었습니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%205.png" src="Untitled%205.png" /></p>
@@ -778,24 +772,28 @@ resource &quot;aws_route_table&quot; &quot;private&quot;{
 <h2 id="association">Association</h2>
 <hr />
 <ol>
-<li>이제 어소시에이션을 시작합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>이제 어소시에이션을 시작합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<ol>
-<li>어소시에이션을 작성합니다</li>
+</li>
+<li>
+<p>어소시에이션을 작성합니다</p>
+</li>
 </ol>
 <p>서브넷id와 라우팅테이블id가 필요합니다</p>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_route_table_association&quot; &quot;public_association&quot;{
-        subnet_id = aws_subnet.public01.id
-        route_table_id = aws_route_table.public.id
+<pre><code>```terraform title="vpc.tf"
+resource "aws_route_table_association" "public_association"{
+subnet_id = aws_subnet.public01.id
+route_table_id = aws_route_table.public.id
 }
 
-resource &quot;aws_route_table_association&quot; &quot;private_association&quot; {
-        subnet_id = aws_subnet.private01.id
-        route_table_id = aws_route_table.private.id
+resource "aws_route_table_association" "private_association" {
+subnet_id = aws_subnet.private01.id
+route_table_id = aws_route_table.private.id
 }
-</code></pre></div>
+```
+</code></pre>
 <ol>
 <li>
 <p>plan에 문제가 없으면 바로 생성을 시작합니다</p>
@@ -803,11 +801,9 @@ resource &quot;aws_route_table_association&quot; &quot;private_association&quot;
 </li>
 <li>
 <p>생성쓰</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>라우팅테이블이 서브넷에 각각 알맞게 매핑되었습니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%207.png" src="Untitled%207.png" /></p>
@@ -817,40 +813,41 @@ resource &quot;aws_route_table_association&quot; &quot;private_association&quot;
 <h2 id="make-routing-rule">make Routing Rule</h2>
 <hr />
 <ol>
-<li>일단 여기다 그냥 작성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>일단 여기다 그냥 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<ol>
-<li>퍼블릭용 라우팅테이블 내에서 라우팅을 선언할 수도 있습니다(inner rule)</li>
-</ol>
-<div class="highlight"><pre><span></span><code>route {
-        cidr_block = &quot;0.0.0.0/0&quot;
-        gateway_id = aws_internet_gateway.igw.id
-        }
+</li>
+<li>
+<p>퍼블릭용 라우팅테이블 내에서 라우팅을 선언할 수도 있습니다(inner rule)</p>
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="nb">route</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="na">cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span>
+<span class="na">gateway_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_internet_gateway.igw.id</span>
+<span class="p">}</span>
 </code></pre></div>
-<pre><code>![Terraform deploy VPC/Untitled%209.png](Terraform deploy VPC/Untitled%209.png)
-</code></pre>
-<ol>
-<li>콘솔에서 Public Routing table에 IGW가 연결된 것을 확인할 수 있습니다</li>
+<p><img alt="Terraform deploy VPC/Untitled%209.png" src="Untitled%209.png" /></p>
+</li>
+<li>
+<p>콘솔에서 Public Routing table에 IGW가 연결된 것을 확인할 수 있습니다</p>
+</li>
 </ol>
 <p>이제 public subnet은 인터넷 사용이 가능해졌습니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%2010.png" src="Untitled%2010.png" /></p>
 <ol>
-<li>이번엔 inner rule이 아닌 바깥에서 rule을 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi vpc.tf
+<li>
+<p>이번엔 inner rule이 아닌 바깥에서 rule을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">vpc.tf</span>
 </code></pre></div>
-<ol>
-<li>다음과 같이 private route table에 NAT 게이트웨이를 부착합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_route&quot; &quot;private_nat&quot; {
-        route_table_id = aws_route_table.private.id
-        destination_cidr_block = &quot;0.0.0.0/0&quot;
-        nat_gateway_id = aws_nat_gateway.nat.id
-}
+</li>
+<li>
+<p>다음과 같이 private route table에 NAT 게이트웨이를 부착합니다</p>
+<div class="highlight"><span class="filename">vpc.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_route&quot;</span><span class="w"> </span><span class="nv">&quot;private_nat&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="na">route_table_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_route_table.private.id</span>
+<span class="na">destination_cidr_block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span>
+<span class="na">nat_gateway_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_nat_gateway.nat.id</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>plan후 잘 작성되었으면 바로 apply 합니다</p>
 <p><img alt="Terraform deploy VPC/Untitled%2011.png" src="Untitled%2011.png" /></p>

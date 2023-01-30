@@ -657,48 +657,45 @@
 <h2 id="iam-user">IAM User</h2>
 <hr />
 <ol>
-<li>IAM 작업 디렉터리를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>mkdir iam
-cd iam
+<li>
+<p>IAM 작업 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>이제 자연스럽게 provider를 먼저 생성합니다</p>
 <p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
+<span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi provider.tf
+<li>
+<p>IAM을 코딩하기 위한 파일을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">iam.tf</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>provider &quot;aws&quot;{
-        region = &quot;ap-northeast-2&quot;
-}
+</li>
+<li>
+<p>gildong.hong 유저를 생성하는 코드를 작성했습니다</p>
+<div class="highlight"><span class="filename">iam.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user&quot;</span><span class="w"> </span><span class="nv">&quot;gildong_hong&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gildong.hong&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>IAM을 코딩하기 위한 파일을 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi iam.tf
+</li>
+<li>
+<p>테라폼 사용을 선언합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">init</span>
 </code></pre></div>
-<ol>
-<li>gildong.hong 유저를 생성하는 코드를 작성했습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_user&quot; &quot;gildong_hong&quot; {
-        name = &quot;gildong.hong&quot;
-}
+</li>
+<li>
+<p>plan을 실행하면 문제가 없음을 확인할 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
-<ol>
-<li>테라폼 사용을 선언합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform init
-</code></pre></div>
-<ol>
-<li>plan을 실행하면 문제가 없음을 확인할 수 있습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
-</code></pre></div>
-<pre><code>![Terraform AWS IAM/Untitled.png](Terraform AWS IAM/Untitled.png)
-</code></pre>
-<ol>
+<p><img alt="Terraform AWS IAM/Untitled.png" src="Untitled.png" /></p>
+</li>
 <li>
 <p>유저가 잘 생성되었다고 합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%201.png" src="Untitled%201.png" /></p>
@@ -718,27 +715,25 @@ cd iam
 <hr />
 <ol>
 <li>순서는 그룹 생성 → 멤버십 생성 → '멤버십을 그룹에 연결' 입니다</li>
-<li>그룹 생성 코드 작성을 시작합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi user_group.tf
+<li>
+<p>그룹 생성 코드 작성을 시작합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
 </code></pre></div>
-<ol>
-<li>코드 내용을 다음처럼 필수요소만 넣어줍니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
-        name = &quot;terra_group&quot;
-}
+</li>
+<li>
+<p>코드 내용을 다음처럼 필수요소만 넣어줍니다</p>
+<div class="highlight"><span class="filename">user_group.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>plan해보고 문제 없으면 바로 apply 합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%203.png" src="Untitled%203.png" /></p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform plan
-terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
+<span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>에러없이 잘 생성되었습니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%204.png" src="Untitled%204.png" /></p>
@@ -749,28 +744,26 @@ terraform apply
 </li>
 <li>
 <p>이번엔 그룹에 유저를 추가해봅니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi user_group.tf
+<li>
+<p>코드는 다음과 같은 형태가 됩니다</p>
+<div class="highlight"><span class="filename">user_group.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
+<span class="p">}</span>
+
+<span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group_membership&quot; &quot;terra_group&quot;</span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
+
+<span class="w">        </span><span class="na">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="nv">aws_iam_user.gildong_hong.name</span>
+<span class="w">        </span><span class="p">]</span>
+
+<span class="w">        </span><span class="na">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
-<li>코드는 다음과 같은 형태가 됩니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_group&quot; &quot;test_group&quot;{
-        name = &quot;terra_group&quot;
-}
-
-resource &quot;aws_iam_group_membership&quot; &quot;terra_group&quot;{
-        name = aws_iam_group.test_group.name
-
-        users = [
-                aws_iam_user.gildong_hong.name
-        ]
-
-        group = aws_iam_group.test_group.name
-}
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>plan에 문제가 없으니 바로 apply 합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%206.png" src="Untitled%206.png" /></p>
@@ -792,45 +785,43 @@ resource &quot;aws_iam_group_membership&quot; &quot;terra_group&quot;{
 <li>총 3개의 리소스로 이뤄집니다</li>
 </ul>
 </li>
-<li>'hello' 이름을 가지는 역할생성을 시작합니다</li>
-</ol>
+<li>
+<p>'hello' 이름을 가지는 역할생성을 시작합니다</p>
 <div class="highlight"><pre><span></span><code>vi iam_role_hello.tf
 </code></pre></div>
-<ol>
-<li>역할 설정 코드는 권한 정책이 포함됩니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_role&quot; &quot;hello&quot; {
-        name                    = &quot;hello-iam-role&quot;
-        path                    = &quot;/&quot;
-        assume_role_policy      = &lt;&lt;EOF
-{
-        &quot;Version&quot; : &quot;2012-10-17&quot;,
-        &quot;Statement&quot; : [
-        {
-        &quot;Sid&quot; : &quot;&quot;,
-        &quot;Effect&quot; : &quot;Allow&quot;,
-        &quot;Principal&quot; : {
-                &quot;Service&quot; : &quot;ec2.amazonaws.com&quot;
-        },
-        &quot;Action&quot; : &quot;sts:AssumeRole&quot;
-        }
-        ]
-}
-EOF
-}
+</li>
+<li>
+<p>역할 설정 코드는 권한 정책이 포함됩니다</p>
+<div class="highlight"><span class="filename">iam_role_hello.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_role&quot;</span><span class="w"> </span><span class="nv">&quot;hello&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-iam-role&quot;</span>
+<span class="w">        </span><span class="na">path</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/&quot;</span>
+<span class="w">        </span><span class="na">assume_role_policy</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<span class="sh">{</span>
+<span class="sh">        &quot;Version&quot; : &quot;2012-10-17&quot;,</span>
+<span class="sh">        &quot;Statement&quot; : [</span>
+<span class="sh">        {</span>
+<span class="sh">        &quot;Sid&quot; : &quot;&quot;,</span>
+<span class="sh">        &quot;Effect&quot; : &quot;Allow&quot;,</span>
+<span class="sh">        &quot;Principal&quot; : {</span>
+<span class="sh">                &quot;Service&quot; : &quot;ec2.amazonaws.com&quot;</span>
+<span class="sh">        },</span>
+<span class="sh">        &quot;Action&quot; : &quot;sts:AssumeRole&quot;</span>
+<span class="sh">        }</span>
+<span class="sh">        ]</span>
+<span class="sh">}</span>
+<span class="dl">EOF</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>plan은 성공적으로 마쳤습니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%209.png" src="Untitled%209.png" /></p>
 </li>
 <li>
 <p>바로 apply 진행합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>역할이 잘 생성되었습니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%2010.png" src="Untitled%2010.png" /></p>
@@ -845,43 +836,39 @@ EOF
 </li>
 <li>
 <p>이번에는 Permission을 추가해봅니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi iam_role_hello.tf
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">iam_role_hello.tf</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>다음 내용을 추가합니다</p>
 <p>정책을 만든 후 Role에 매핑하는 구조가 됩니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;{
-    name   = &quot;hello-s3-download&quot;
-    role   = aws_iam_role.hello.id
-    policy = &lt;&lt;EOF
-{
-    &quot;Statement&quot; : [
-        {
-            &quot;Sid&quot; : &quot;AllowAppArtifactsReadAccess&quot;,
-            &quot;Action&quot; : [
-                &quot;s3:GetObject&quot;
-            ],
-            &quot;Resource&quot; : [
-            &quot;*&quot;
-            ],
-            &quot;Effect&quot; : &quot;Allow&quot;
-        }
-        ]
-}
-EOF
-}
+<div class="highlight"><span class="filename">iam_role_hello.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;</span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-s3-download&quot;</span>
+<span class="w">    </span><span class="na">role</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.id</span>
+<span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<span class="sh">{</span>
+<span class="sh">    &quot;Statement&quot; : [</span>
+<span class="sh">        {</span>
+<span class="sh">            &quot;Sid&quot; : &quot;AllowAppArtifactsReadAccess&quot;,</span>
+<span class="sh">            &quot;Action&quot; : [</span>
+<span class="sh">                &quot;s3:GetObject&quot;</span>
+<span class="sh">            ],</span>
+<span class="sh">            &quot;Resource&quot; : [</span>
+<span class="sh">            &quot;*&quot;</span>
+<span class="sh">            ],</span>
+<span class="sh">            &quot;Effect&quot; : &quot;Allow&quot;</span>
+<span class="sh">        }</span>
+<span class="sh">        ]</span>
+<span class="sh">}</span>
+<span class="dl">EOF</span>
+<span class="p">}</span>
 
-resource &quot;aws_iam_instance_profile&quot; &quot;hello&quot;{
-        name = &quot;hello-profile&quot;
-        role = aws_iam_role.hello.name
-}
+<span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_instance_profile&quot; &quot;hello&quot;</span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-profile&quot;</span>
+<span class="w">        </span><span class="na">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.name</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>plan에서 정책이 잘 추가되면 apply 진행합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%2013.png" src="Untitled%2013.png" /></p>
@@ -892,84 +879,81 @@ resource &quot;aws_iam_instance_profile&quot; &quot;hello&quot;{
 </li>
 <li>
 <p>Iam_instance_profile 리소스는 다음 역할을 수행합니다</p>
-<p><aside>
-💡 IAM 역할을 위한 컨테이너로 인스턴스 시작시 EC2에 역할 정보 전달에 사용한다
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>💡 IAM 역할을 위한 컨테이너로 인스턴스 시작시 EC2에 역할 정보 전달에 사용한다
 EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 특징입니다</p>
-</aside>
+</div>
 </li>
 </ol>
 <h2 id="iam-policy">IAM Policy</h2>
 <hr />
 <ol>
 <li>AWS가 제공하는 Policy가 매우 많지만, 그래도 Customer가 직접 컨트롤 하는 것이 타이트한 권한 관리가 가능하기 때문에 이를 권장합니다</li>
-<li>따라서 이번엔 홍길동 유저에게 Customer Managed 권한을 부여해봅니다</li>
-</ol>
+<li>
+<p>따라서 이번엔 홍길동 유저에게 Customer Managed 권한을 부여해봅니다</p>
 <div class="highlight"><pre><span></span><code>vi iam.tf
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>다음 코드를 추가합니다</p>
 <p>IAM user에 할당할 super-admin이라는 policy를 추가했습니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>resource &quot;aws_iam_user_policy&quot; &quot;art_devops_black&quot; {
-    name  = &quot;super-admin&quot;
-    user  = aws_iam_user.gildong_hong.name
+<div class="highlight"><span class="filename">iam.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user_policy&quot;</span><span class="w"> </span><span class="nv">&quot;art_devops_black&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;super-admin&quot;</span>
+<span class="w">    </span><span class="na">user</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_user.gildong_hong.name</span>
 
-    policy = &lt;&lt;EOF
-{
-    &quot;Version&quot;: &quot;2012-10-17&quot;,
-    &quot;Statement&quot;: [
-        {
-            &quot;Effect&quot;: &quot;Allow&quot;,
-            &quot;Action&quot;: [
-                &quot;*&quot;
-            ],
-            &quot;Resource&quot;: [
-                &quot;*&quot;
-            ]
-        }
-    ]
-}
-EOF
-}
+<span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<span class="sh">{</span>
+<span class="sh">    &quot;Version&quot;: &quot;2012-10-17&quot;,</span>
+<span class="sh">    &quot;Statement&quot;: [</span>
+<span class="sh">        {</span>
+<span class="sh">            &quot;Effect&quot;: &quot;Allow&quot;,</span>
+<span class="sh">            &quot;Action&quot;: [</span>
+<span class="sh">                &quot;*&quot;</span>
+<span class="sh">            ],</span>
+<span class="sh">            &quot;Resource&quot;: [</span>
+<span class="sh">                &quot;*&quot;</span>
+<span class="sh">            ]</span>
+<span class="sh">        }</span>
+<span class="sh">    ]</span>
+<span class="sh">}</span>
+<span class="dl">EOF</span>
+<span class="p">}</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>테라폼에서 plan은 좋은 습관입니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%2015.png" src="Untitled%2015.png" /></p>
 </li>
 <li>
 <p>이상 없으면 바로 적용해봅니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>terraform apply
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>홍길동에게 super-admin 정책이 잘 붙었습니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%2016.png" src="Untitled%2016.png" /></p>
 </li>
 <li>
 <p>그룹정책을 설정할 때는 aws iam user policy 대신 aws_iam_group_policy를 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">aws_iam_group_policy</span>
+</code></pre></div>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>aws_iam_group_policy
-</code></pre></div>
 <h2 id="ec2-role">EC2-Role</h2>
 <hr />
 <ol>
 <li>EC2에 키를 직접 보관하는것을 보안상 좋지 않기 때문에 EC2에 역할을 할당해 쓰는것이 권장됩니다</li>
-<li>다음 명령을 쓰면 AK, SK가 그대로 노출되는것을 볼 수 있습니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>cat ~/.aws/credentials
+<li>
+<p>다음 명령을 쓰면 AK, SK가 그대로 노출되는것을 볼 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">cat</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
 </code></pre></div>
-<ol>
-<li>따라서 이 값을 모두 삭제하고</li>
-</ol>
-<div class="highlight"><pre><span></span><code>rm -rf ~/.aws/credentials
+</li>
+<li>
+<p>따라서 이 값을 모두 삭제하고</p>
+<div class="highlight"><pre><span></span><code><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>권한이 잘 제거되었습니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%2017.png" src="Untitled%2017.png" /></p>
@@ -988,10 +972,10 @@ EOF
 </li>
 <li>
 <p>디렉터리 내 현재까지 작성된 모든 리소스를 보고 싶으면 다음 명령으로 조회할 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">list</span>
+</code></pre></div>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>terraform state list
-</code></pre></div>
 <p><img alt="Terraform AWS IAM/Untitled%2021.png" src="Untitled%2021.png" /></p>
 <h2 id="link">Link</h2>
 <hr />

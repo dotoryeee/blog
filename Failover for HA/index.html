@@ -710,54 +710,53 @@
 <li>
 <p>오케스트레이터 컨테이너를 로드합니다(openarkcode/orchestrator)</p>
 <p>이전에 생성한 mybridge에 연결하며 호스트포트 3000에 매핑합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="w"> </span><span class="n">mybridge</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="o">-</span><span class="n">alias</span><span class="o">=</span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">openarkcode</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">:</span><span class="n">latest</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너가 잘 로드되었는지 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;</span>
+</code></pre></div>
+<p><img alt="Failover for HA/Untitled.png" src="Untitled.png" /></p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>docker run -i -t --name orchestrator -h orchestrator --net mybridge --net-alias=orchestrator -p 3000:3000 -d openarkcode/orchestrator:latest
-</code></pre></div>
-<ol>
-<li>컨테이너가 잘 로드되었는지 확인합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;
-</code></pre></div>
-<pre><code>![Failover for HA/Untitled.png](Failover for HA/Untitled.png)
-</code></pre>
 <h3 id="db">오케스트레이터를 위한 DB 설정</h3>
 <hr />
 <ol>
 <li>
 <p>이전의 작업을 이어서 하기 위해 DB컨테이너를 재시작 합니다</p>
 <p>컨테이너(도커 호스트)를 종료하지 않았다면 생략합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="n">db003</span>
+</code></pre></div>
+</li>
+<li>
+<p>db001 SQL DB에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+</li>
+<li>
+<p>오케스트레이터를 위한 MySQL 유저 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;orc_client_password&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>필요한 권한을 부여합니다 1</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">SUPER</span><span class="p">,</span><span class="w"> </span><span class="n">PROCESS</span><span class="p">,</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">,</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>필요한 권한을 부여합니다 2</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">slave_master_info</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">http</span><span class="o">://</span><span class="p">{</span><span class="n">DOCKER</span><span class="w"> </span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span><span class="o">:</span><span class="m">3000</span>
+<span class="o">//</span><span class="n">EC2</span><span class="w"> </span>인스턴스를<span class="w"> </span>사용하는<span class="w"> </span>경우<span class="w"> </span>네트워크<span class="w"> </span>인바운드에<span class="w"> </span><span class="m">3000</span>번<span class="w"> </span>포트를<span class="w"> </span>열어줘야합니다
+</code></pre></div>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>docker start db001 db002 db003
-</code></pre></div>
-<ol>
-<li>db001 SQL DB에 접속합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
-</code></pre></div>
-<ol>
-<li>오케스트레이터를 위한 MySQL 유저 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CREATE USER orc_client_user@&#39;172.%&#39; IDENTIFIED BY &#39;orc_client_password&#39;;
-</code></pre></div>
-<ol>
-<li>필요한 권한을 부여합니다 1</li>
-</ol>
-<div class="highlight"><pre><span></span><code>GRANT SUPER, PROCESS, REPLICATION SLAVE, RELOAD ON *.* TO orc_client_user@&#39;172.%&#39;;
-</code></pre></div>
-<ol>
-<li>필요한 권한을 부여합니다 2</li>
-</ol>
-<div class="highlight"><pre><span></span><code>GRANT SELECT ON mysql.slave_master_info TO orc_client_user@&#39;172.%&#39;;
-</code></pre></div>
-<ol>
-<li>웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>http://{DOCKER HOST IP}:3000
-//EC2 인스턴스를 사용하는 경우 네트워크 인바운드에 3000번 포트를 열어줘야합니다
-</code></pre></div>
 <h3 id="_4">오케스트레이터 설정</h3>
 <hr />
 <ol>
@@ -791,7 +790,7 @@ mysql -uroot -p
 <ol>
 <li>
 <p>장애상황을 만들기 위해 마스터DB 컨테이너(db001)을 정지합니다</p>
-<div class="highlight"><pre><span></span><code>docker stop db001
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 <li>
@@ -821,17 +820,15 @@ mysql -uroot -p
 <li>
 <p>터미널에서 직접 확인해볼수도 있습니다</p>
 <p>db002 SQL DB에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
-mysql -uroot -p
+<li>
+<p>slave 상태조회 명령을 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span>\<span class="n">G</span>
 </code></pre></div>
-<ol>
-<li>slave 상태조회 명령을 실행합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>show slave status \G
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>현재 Slave 상태가 아니기 때문에 empty set을 리턴합니다</p>
 <p><img alt="Failover for HA/Untitled%2012.png" src="Untitled%2012.png" /></p>
@@ -840,43 +837,41 @@ mysql -uroot -p
 <h2 id="fail-over">Fail-Over 이후 복구</h2>
 <hr />
 <ol>
-<li>기존에 Master였던 db001 컨테이너를 다시 구동합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker start db001
+<li>
+<p>기존에 Master였던 db001 컨테이너를 다시 구동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>컨테이너가 접속 가능한 상태이지만 여전히 클러스터에서 분리되어 있습니다</p>
 <p><img alt="Failover for HA/Untitled%2013.png" src="Untitled%2013.png" /></p>
 </li>
 <li>
 <p>db001 컨테이너의 MySQL에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
+<li>
+<p>db001을 slave로 동작시키기 위해 read_only로 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">read_only</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>db001을 slave로 동작시키기 위해 read_only로 설정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>set global read_only=1;
+</li>
+<li>
+<p>db002 MASTER를 바라보도록 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>db002 MASTER를 바라보도록 설정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CHANGE MASTER TO MASTER_HOST=&#39;db002&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
+</li>
+<li>
+<p>slave로써의 동작을 시작합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">start</span><span class="w"> </span><span class="n">slave</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>slave로써의 동작을 시작합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>start slave;
+</li>
+<li>
+<p>slave 상태를 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
 </code></pre></div>
-<ol>
-<li>slave 상태를 확인합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>show slave status \G
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>db001이 db002를 마스터로 바라보고 있습니다</p>
 <p><img alt="Failover for HA/Untitled%2014.png" src="Untitled%2014.png" /></p>
@@ -894,21 +889,19 @@ mysql -uroot -p
 <h2 id="auto-fail-over">AUTO Fail-Over</h2>
 <hr />
 <ol>
-<li>오케스트레이터 컨테이너에 접속합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it orchestrator /bin/bash
+<li>
+<p>오케스트레이터 컨테이너에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
 </code></pre></div>
-<ol>
-<li>오케스트레이터 설정 파일을 수정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>vi /etc/orchestrator.conf.json
+</li>
+<li>
+<p>오케스트레이터 설정 파일을 수정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">orchestrator.conf.json</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>JSON에 다음 값을 수정 합니다. db001, db002간의 Failover만 테스트 하기 위해 db003이 마스터로 승격되는 일이 발생하지 않도록 제외해둡니다.</p>
 <p>이대로 구현되면 db001 ↔ db002 간에 장애 발생시 번갈아가며 Master로 승격됩니다</p>
-</li>
-</ol>
 <div class="highlight"><pre><span></span><code>&quot;RecoverMasterClusterFilters&quot;:[
 &quot;*&quot;
 ],
@@ -916,23 +909,21 @@ mysql -uroot -p
 &quot;db003&quot;
 ]
 </code></pre></div>
-<ol>
-<li>오케스트레이터 컨테이너를 재시작 합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker restart orchestrator
+</li>
+<li>
+<p>오케스트레이터 컨테이너를 재시작 합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">orchestrator</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>Auto Failover가 잘 설정되면 하트 표시에 불이 들어옵니다</p>
 <p><img alt="Failover for HA/Untitled%2017.png" src="Untitled%2017.png" /></p>
 </li>
 <li>
 <p>db002 컨테이너를 중지하여 Fail-Over를 테스트합니다</p>
-</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker stop db002
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db002</span>
 </code></pre></div>
-<ol>
+</li>
 <li>
 <p>별 다른 작업을 하지 않아도 db002가 클러스터에서 분리되었습니다</p>
 <p><img alt="Failover for HA/Untitled%2018.png" src="Untitled%2018.png" /></p>
@@ -943,23 +934,21 @@ mysql -uroot -p
 </li>
 <li>
 <p>페일오버가 잘 실행되었으면 복구를 위해 db002를 다시 로드합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db002</span>
+</code></pre></div>
 </li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker start db002
+<li>
+<p>db002의 MySQL서버에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
-<ol>
-<li>db002의 MySQL서버에 접속합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>docker exec -it -uroot db002 /bin/bash
-mysql -uroot -p
+</li>
+<li>
+<p>db001을 마스터로 바라보도록 db002를 slave로 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>db001을 마스터로 바라보도록 db002를 slave로 설정합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code>CHANGE MASTER TO MASTER_HOST=&#39;db001&#39;, MASTER_USER=&#39;repl&#39;, MASTER_PASSWORD=&#39;repl&#39;, MASTER_AUTO_POSITION=1;
-START SLAVE;
-</code></pre></div>
-<ol>
+</li>
 <li>
 <p>이처럼 GUI 콘솔을 이용하면 변화를 쉽게 알 수 있습니다</p>
 <p><img alt="Failover for HA/Untitled%2020.png" src="Untitled%2020.png" /></p>
