@@ -1,9 +1,7 @@
 # Project - 1
 
-<aside>
-💡 유형 : 개인 토이 프로젝트
-
-</aside>
+!!! tip
+    💡 유형 : 개인 토이 프로젝트
 
 ## 목표
 
@@ -102,7 +100,7 @@ user_data 사용시 terraform init 다시 해야 함
 - RDS가 프라이빗 서브넷에 존재하면 Travis에서 코드테스트를 진행할 때 RDS에 접속실패하여 테스트 실패로 이어지는 것에 주의
 - MySQL 접속 커맨드
     
-    ```
+    ```s
     mysql -h myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u root -p
     ```
     
@@ -169,165 +167,165 @@ user_data 사용시 terraform init 다시 해야 함
 
 1. CodeDeploy Agent 설치
     
-```
-aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
-sudo yum install -y ruby wget
-chmod +x ./install
-sudo ./install auto
-sudo service codedeploy-agent start
-sudo service codedeploy-agent status
-```
-    
-2. Docker 설치
-    
-```
-sudo yum -y install docker
-sudo systemctl start docker
-sudo systemctl enable docker 
-sudo usermod -aG docker ec2-user
-```
-    
-    권한 문제로 docker ps -a 명령이 불가능 할 경우
-    
-```
-sudo chmod 666 /var/run/docker.sock
-```
-
-3. 따라서 테라폼에 작성할 EC2 인스턴스의 사용자 데이터는 다음과 같습니다
-    
-```
-<<-EOF
-    #!/bin/bash
+    ```s
     aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
-    sudo yum install -y ruby wget git
+    sudo yum install -y ruby wget
     chmod +x ./install
     sudo ./install auto
     sudo service codedeploy-agent start
+    sudo service codedeploy-agent status
+    ```
+    
+2. Docker 설치
+    
+    ```s
     sudo yum -y install docker
     sudo systemctl start docker
-    sudo systemctl enable docker
+    sudo systemctl enable docker 
     sudo usermod -aG docker ec2-user
-    sudo chmod 666 /var/run/docker.sock
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    EOF
-```
+    ```
     
+    권한 문제로 docker ps -a 명령이 불가능 할 경우
+    
+    ```s
+    sudo chmod 666 /var/run/docker.sock
+    ```
+
+3. 따라서 테라폼에 작성할 EC2 인스턴스의 사용자 데이터는 다음과 같습니다
+        
+    ```s
+    <<-EOF
+        #!/bin/bash
+        aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
+        sudo yum install -y ruby wget git
+        chmod +x ./install
+        sudo ./install auto
+        sudo service codedeploy-agent start
+        sudo yum -y install docker
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        sudo usermod -aG docker ec2-user
+        sudo chmod 666 /var/run/docker.sock
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        EOF
+    ```
+        
 4. CICD를 위한 .travis.yml 작성
 
-```
-language: generic
+    ```yaml title=".travis.yml"
+    language: generic
 
-services:
-    - docker
+    services:
+        - docker
 
-before_install:
-    - docker build -t dotoryeee/test-submit-server -f ./flask-submit-server/Dockerfile ./flask-submit-server
+    before_install:
+        - docker build -t dotoryeee/test-submit-server -f ./flask-submit-server/Dockerfile ./flask-submit-server
 
-script:
-    - docker run -e CI=true dotoryeee/test-submit-server python3 test.py
+    script:
+        - docker run -e CI=true dotoryeee/test-submit-server python3 test.py
 
-after_success:
-    - docker build -t dotoryeee/flask-submit-server ./flask-submit-server
-    - docker build -t dotoryeee/flask-result-server ./flask-result-server
-    - docker build -t dotoryeee/nginx ./nginx
+    after_success:
+        - docker build -t dotoryeee/flask-submit-server ./flask-submit-server
+        - docker build -t dotoryeee/flask-result-server ./flask-result-server
+        - docker build -t dotoryeee/nginx ./nginx
 
-    - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
+        - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
 
-    - docker push dotoryeee/flask-submit-server
-    - docker push dotoryeee/flask-result-server
-    - docker push dotoryeee/nginx
+        - docker push dotoryeee/flask-submit-server
+        - docker push dotoryeee/flask-result-server
+        - docker push dotoryeee/nginx
 
-before_deploy:
-    - zip -r myapp.zip ./* #CI 완료 후 모든 파일을 myapp.zip로 압축
-    - mkdir -p deploy  # deploy 디렉터리 생성
-    - mv myapp.zip ./deploy #myapp.zip를 deploy 디렉터리로 이동
+    before_deploy:
+        - zip -r myapp.zip ./* #CI 완료 후 모든 파일을 myapp.zip로 압축
+        - mkdir -p deploy  # deploy 디렉터리 생성
+        - mv myapp.zip ./deploy #myapp.zip를 deploy 디렉터리로 이동
 
-deploy:
-    - provider: s3
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
-    bucket: dotoryeee-s3
-    region: ap-northeast-2
-    skip_cleanup: true #압축파일 삭제 방지
-    local_dir: deploy #deploy 디렉터리의 파일을 S3에 전송
-    wait-until-deployed: true
-    on:
-        branch: main
-    - provider: codedeploy
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
-    bucket: dotoryeee-s3
-    key: myapp.zip
-    bundle_type: zip
-    application: talentpool
-    deployment_group: CICD-test
-    region: ap-northeast-2
-    wait-until-deployed: true #AWS에 파일 전달 이후에도 에러 확인 가능
-    on:
-        branch: main
-```
+    deploy:
+        - provider: s3
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: dotoryeee-s3
+        region: ap-northeast-2
+        skip_cleanup: true #압축파일 삭제 방지
+        local_dir: deploy #deploy 디렉터리의 파일을 S3에 전송
+        wait-until-deployed: true
+        on:
+            branch: main
+        - provider: codedeploy
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: dotoryeee-s3
+        key: myapp.zip
+        bundle_type: zip
+        application: talentpool
+        deployment_group: CICD-test
+        region: ap-northeast-2
+        wait-until-deployed: true #AWS에 파일 전달 이후에도 에러 확인 가능
+        on:
+            branch: main
+    ```
 
 5. CodeDeploy 이후 작업 명시를 위한 appspec.yml 작성
     
-```
-version: 0.0
-os: linux
-files:
-    - source: /
-    destination: /home/ec2-user/app
-    overwrite: yes
-hooks:
-    AfterInstall:
-    - location: execute-deploy.sh
-        timeout: 300
-```
+    ```yaml title="appspec.yml"
+    version: 0.0
+    os: linux
+    files:
+        - source: /
+        destination: /home/ec2-user/app
+        overwrite: yes
+    hooks:
+        AfterInstall:
+        - location: execute-deploy.sh
+            timeout: 300
+    ```
     
 1. 서버에서 구동 위한 docker-compose-ec2.yml 작성
- 
- ```
- version: "3"
- services:
-   flask-submit-server:
-     image: dotoryeee/flask-submit-server
-     restart: always
-     container_name: flask-submit-server
-     ports:
-       - "8000:8000"
-     command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:server
- 
-   flask-result-server:
-     image: dotoryeee/flask-result-server
-     restart: always
-     container_name: flask-result-server
-     ports:
-       - "7000:7000"
-     volumes:
-       - ./flask-result-server:/usr/src/app
-     command: gunicorn -w 1 -b 0.0.0.0:7000 wsgi:server
- 
-   nginx:
-     image: dotoryeee/nginx
-     container_name: nginx
-     restart: always
-     ports:
-       - "80:80"
-     #flask 컨테이너 로드가 끝나면 Nginx를 시작합니다
-     depends_on:
-       - flask-submit-server
-       - flask-result-server
- ```
+    
+    ```yaml title="docker-compose-ec2.yml"
+    version: "3"
+    services:
+    flask-submit-server:
+        image: dotoryeee/flask-submit-server
+        restart: always
+        container_name: flask-submit-server
+        ports:
+        - "8000:8000"
+        command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:server
+    
+    flask-result-server:
+        image: dotoryeee/flask-result-server
+        restart: always
+        container_name: flask-result-server
+        ports:
+        - "7000:7000"
+        volumes:
+        - ./flask-result-server:/usr/src/app
+        command: gunicorn -w 1 -b 0.0.0.0:7000 wsgi:server
+    
+    nginx:
+        image: dotoryeee/nginx
+        container_name: nginx
+        restart: always
+        ports:
+        - "80:80"
+        #flask 컨테이너 로드가 끝나면 Nginx를 시작합니다
+        depends_on:
+        - flask-submit-server
+        - flask-result-server
+    ```
     
 7. 연동하여 서버 시작 명령이 명시된 execute-deploy 스크립트 작성
-    
-```
-#!/bin/bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose -f /home/e2-user/app/docker-compose-ec2.yml rm -fs
-docker system prune -a -f
-docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
-```
+        
+    ```bash title="execute-deploy.sh"
+    #!/bin/bash
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    docker-compose -f /home/e2-user/app/docker-compose-ec2.yml rm -fs
+    docker system prune -a -f
+    docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
+    ```
     
 
 ## 동작 확인
@@ -337,477 +335,477 @@ docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
 1. Terraform Apply를 이용해 인프라를 생성합니다
     - Terraform Apply
         
-```
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-    + create
+    ```json
+    An execution plan has been generated and is shown below.
+    Resource actions are indicated with the following symbols:
+        + create
 
-Terraform will perform the following actions:
+    Terraform will perform the following actions:
 
-    # aws_instance.public_01 will be created
-    + resource "aws_instance" "public_01" {
-        + ami                          = "ami-006e2f9fa7597680a"
-        + arn                          = (known after apply)
-        + associate_public_ip_address  = (known after apply)
-        + availability_zone            = (known after apply)
-        + cpu_core_count               = (known after apply)
-        + cpu_threads_per_core         = (known after apply)
-        + get_password_data            = false
-        + host_id                      = (known after apply)
-        + iam_instance_profile         = "EC2_role_for_codedeploy"
-        + id                           = (known after apply)
-        + instance_state               = (known after apply)
-        + instance_type                = "t2.micro"
-        + ipv6_address_count           = (known after apply)
-        + ipv6_addresses               = (known after apply)
-        + key_name                     = "dotoryeee"
-        + outpost_arn                  = (known after apply)
-        + password_data                = (known after apply)
-        + placement_group              = (known after apply)
-        + primary_network_interface_id = (known after apply)
-        + private_dns                  = (known after apply)
-        + private_ip                   = (known after apply)
-        + public_dns                   = (known after apply)
-        + public_ip                    = (known after apply)
-        + secondary_private_ips        = (known after apply)
-        + security_groups              = (known after apply)
-        + source_dest_check            = true
-        + subnet_id                    = (known after apply)
-        + tags                         = {
-            + "Name" = "talentpool-webserver"
-        }
-        + tenancy                      = (known after apply)
-        + user_data                    = "37dd0b56bc65486734172a29cc30def4180da21a"
-        + vpc_security_group_ids       = (known after apply)
+        # aws_instance.public_01 will be created
+        + resource "aws_instance" "public_01" {
+            + ami                          = "ami-006e2f9fa7597680a"
+            + arn                          = (known after apply)
+            + associate_public_ip_address  = (known after apply)
+            + availability_zone            = (known after apply)
+            + cpu_core_count               = (known after apply)
+            + cpu_threads_per_core         = (known after apply)
+            + get_password_data            = false
+            + host_id                      = (known after apply)
+            + iam_instance_profile         = "EC2_role_for_codedeploy"
+            + id                           = (known after apply)
+            + instance_state               = (known after apply)
+            + instance_type                = "t2.micro"
+            + ipv6_address_count           = (known after apply)
+            + ipv6_addresses               = (known after apply)
+            + key_name                     = "dotoryeee"
+            + outpost_arn                  = (known after apply)
+            + password_data                = (known after apply)
+            + placement_group              = (known after apply)
+            + primary_network_interface_id = (known after apply)
+            + private_dns                  = (known after apply)
+            + private_ip                   = (known after apply)
+            + public_dns                   = (known after apply)
+            + public_ip                    = (known after apply)
+            + secondary_private_ips        = (known after apply)
+            + security_groups              = (known after apply)
+            + source_dest_check            = true
+            + subnet_id                    = (known after apply)
+            + tags                         = {
+                + "Name" = "talentpool-webserver"
+            }
+            + tenancy                      = (known after apply)
+            + user_data                    = "37dd0b56bc65486734172a29cc30def4180da21a"
+            + vpc_security_group_ids       = (known after apply)
 
-        + ebs_block_device {
-            + delete_on_termination = (known after apply)
-            + device_name           = (known after apply)
-            + encrypted             = (known after apply)
-            + iops                  = (known after apply)
-            + kms_key_id            = (known after apply)
-            + snapshot_id           = (known after apply)
-            + tags                  = (known after apply)
-            + throughput            = (known after apply)
-            + volume_id             = (known after apply)
-            + volume_size           = (known after apply)
-            + volume_type           = (known after apply)
-        }
+            + ebs_block_device {
+                + delete_on_termination = (known after apply)
+                + device_name           = (known after apply)
+                + encrypted             = (known after apply)
+                + iops                  = (known after apply)
+                + kms_key_id            = (known after apply)
+                + snapshot_id           = (known after apply)
+                + tags                  = (known after apply)
+                + throughput            = (known after apply)
+                + volume_id             = (known after apply)
+                + volume_size           = (known after apply)
+                + volume_type           = (known after apply)
+            }
 
-        + enclave_options {
-            + enabled = (known after apply)
-        }
+            + enclave_options {
+                + enabled = (known after apply)
+            }
 
-        + ephemeral_block_device {
-            + device_name  = (known after apply)
-            + no_device    = (known after apply)
-            + virtual_name = (known after apply)
-        }
+            + ephemeral_block_device {
+                + device_name  = (known after apply)
+                + no_device    = (known after apply)
+                + virtual_name = (known after apply)
+            }
 
-        + metadata_options {
-            + http_endpoint               = (known after apply)
-            + http_put_response_hop_limit = (known after apply)
-            + http_tokens                 = (known after apply)
-        }
+            + metadata_options {
+                + http_endpoint               = (known after apply)
+                + http_put_response_hop_limit = (known after apply)
+                + http_tokens                 = (known after apply)
+            }
 
-        + network_interface {
-            + delete_on_termination = (known after apply)
-            + device_index          = (known after apply)
-            + network_interface_id  = (known after apply)
-        }
+            + network_interface {
+                + delete_on_termination = (known after apply)
+                + device_index          = (known after apply)
+                + network_interface_id  = (known after apply)
+            }
 
-        + root_block_device {
-            + delete_on_termination = (known after apply)
-            + device_name           = (known after apply)
-            + encrypted             = (known after apply)
-            + iops                  = (known after apply)
-            + kms_key_id            = (known after apply)
-            + tags                  = (known after apply)
-            + throughput            = (known after apply)
-            + volume_id             = (known after apply)
-            + volume_size           = (known after apply)
-            + volume_type           = (known after apply)
-        }
-    }
-
-    # aws_instance.public_02 will be created
-    + resource "aws_instance" "public_02" {
-        + ami                          = "ami-006e2f9fa7597680a"
-        + arn                          = (known after apply)
-        + associate_public_ip_address  = (known after apply)
-        + availability_zone            = (known after apply)
-        + cpu_core_count               = (known after apply)
-        + cpu_threads_per_core         = (known after apply)
-        + get_password_data            = false
-        + host_id                      = (known after apply)
-        + iam_instance_profile         = "EC2_role_for_codedeploy"
-        + id                           = (known after apply)
-        + instance_state               = (known after apply)
-        + instance_type                = "t2.micro"
-        + ipv6_address_count           = (known after apply)
-        + ipv6_addresses               = (known after apply)
-        + key_name                     = "dotoryeee"
-        + outpost_arn                  = (known after apply)
-        + password_data                = (known after apply)
-        + placement_group              = (known after apply)
-        + primary_network_interface_id = (known after apply)
-        + private_dns                  = (known after apply)
-        + private_ip                   = (known after apply)
-        + public_dns                   = (known after apply)
-        + public_ip                    = (known after apply)
-        + secondary_private_ips        = (known after apply)
-        + security_groups              = (known after apply)
-        + source_dest_check            = true
-        + subnet_id                    = (known after apply)
-        + tags                         = {
-            + "Name" = "talentpool-webserver"
-        }
-        + tenancy                      = (known after apply)
-        + user_data                    = "37dd0b56bc65486734172a29cc30def4180da21a"
-        + vpc_security_group_ids       = (known after apply)
-
-        + ebs_block_device {
-            + delete_on_termination = (known after apply)
-            + device_name           = (known after apply)
-            + encrypted             = (known after apply)
-            + iops                  = (known after apply)
-            + kms_key_id            = (known after apply)
-            + snapshot_id           = (known after apply)
-            + tags                  = (known after apply)
-            + throughput            = (known after apply)
-            + volume_id             = (known after apply)
-            + volume_size           = (known after apply)
-            + volume_type           = (known after apply)
+            + root_block_device {
+                + delete_on_termination = (known after apply)
+                + device_name           = (known after apply)
+                + encrypted             = (known after apply)
+                + iops                  = (known after apply)
+                + kms_key_id            = (known after apply)
+                + tags                  = (known after apply)
+                + throughput            = (known after apply)
+                + volume_id             = (known after apply)
+                + volume_size           = (known after apply)
+                + volume_type           = (known after apply)
+            }
         }
 
-        + enclave_options {
-            + enabled = (known after apply)
+        # aws_instance.public_02 will be created
+        + resource "aws_instance" "public_02" {
+            + ami                          = "ami-006e2f9fa7597680a"
+            + arn                          = (known after apply)
+            + associate_public_ip_address  = (known after apply)
+            + availability_zone            = (known after apply)
+            + cpu_core_count               = (known after apply)
+            + cpu_threads_per_core         = (known after apply)
+            + get_password_data            = false
+            + host_id                      = (known after apply)
+            + iam_instance_profile         = "EC2_role_for_codedeploy"
+            + id                           = (known after apply)
+            + instance_state               = (known after apply)
+            + instance_type                = "t2.micro"
+            + ipv6_address_count           = (known after apply)
+            + ipv6_addresses               = (known after apply)
+            + key_name                     = "dotoryeee"
+            + outpost_arn                  = (known after apply)
+            + password_data                = (known after apply)
+            + placement_group              = (known after apply)
+            + primary_network_interface_id = (known after apply)
+            + private_dns                  = (known after apply)
+            + private_ip                   = (known after apply)
+            + public_dns                   = (known after apply)
+            + public_ip                    = (known after apply)
+            + secondary_private_ips        = (known after apply)
+            + security_groups              = (known after apply)
+            + source_dest_check            = true
+            + subnet_id                    = (known after apply)
+            + tags                         = {
+                + "Name" = "talentpool-webserver"
+            }
+            + tenancy                      = (known after apply)
+            + user_data                    = "37dd0b56bc65486734172a29cc30def4180da21a"
+            + vpc_security_group_ids       = (known after apply)
+
+            + ebs_block_device {
+                + delete_on_termination = (known after apply)
+                + device_name           = (known after apply)
+                + encrypted             = (known after apply)
+                + iops                  = (known after apply)
+                + kms_key_id            = (known after apply)
+                + snapshot_id           = (known after apply)
+                + tags                  = (known after apply)
+                + throughput            = (known after apply)
+                + volume_id             = (known after apply)
+                + volume_size           = (known after apply)
+                + volume_type           = (known after apply)
+            }
+
+            + enclave_options {
+                + enabled = (known after apply)
+            }
+
+            + ephemeral_block_device {
+                + device_name  = (known after apply)
+                + no_device    = (known after apply)
+                + virtual_name = (known after apply)
+            }
+
+            + metadata_options {
+                + http_endpoint               = (known after apply)
+                + http_put_response_hop_limit = (known after apply)
+                + http_tokens                 = (known after apply)
+            }
+
+            + network_interface {
+                + delete_on_termination = (known after apply)
+                + device_index          = (known after apply)
+                + network_interface_id  = (known after apply)
+            }
+
+            + root_block_device {
+                + delete_on_termination = (known after apply)
+                + device_name           = (known after apply)
+                + encrypted             = (known after apply)
+                + iops                  = (known after apply)
+                + kms_key_id            = (known after apply)
+                + tags                  = (known after apply)
+                + throughput            = (known after apply)
+                + volume_id             = (known after apply)
+                + volume_size           = (known after apply)
+                + volume_type           = (known after apply)
+            }
         }
 
-        + ephemeral_block_device {
-            + device_name  = (known after apply)
-            + no_device    = (known after apply)
-            + virtual_name = (known after apply)
+        # aws_internet_gateway.main will be created
+        + resource "aws_internet_gateway" "main" {
+            + arn      = (known after apply)
+            + id       = (known after apply)
+            + owner_id = (known after apply)
+            + tags     = {
+                + "Name" = "igw-talent-pool"
+            }
+            + vpc_id   = (known after apply)
         }
 
-        + metadata_options {
-            + http_endpoint               = (known after apply)
-            + http_put_response_hop_limit = (known after apply)
-            + http_tokens                 = (known after apply)
+        # aws_key_pair.dotoryeee will be created
+        + resource "aws_key_pair" "dotoryeee" {
+            + arn         = (known after apply)
+            + fingerprint = (known after apply)
+            + id          = (known after apply)
+            + key_name    = "dotoryeee"
+            + key_pair_id = (known after apply)
+            + public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD5D5mHSD/vdgcGmh6Kd57DqLxebcvbrUsHj8DYDW0+9MSvvK874Bm4hpqHliYze/ht7VnzL5+A5qZkCevKGBDeJNmR/QDHccCsCfRuyEmzMlvj3SxzYSH2N4lBG6eZZbQ+0yRl7ny3aeyol5boDkztLZ/PZwVR5IH6BgsNiGClSDtuf2CYoKN7hQufjeuCDcLlQa+ItFa4abMe/mWtMeEh7+ZpC+0KAFFvqY80OCtuUdqq7tcP8uHzQy9mPKvKBieJYitUoStjFEMAro1v34u6193Qgk6DAhyMom4GmLc2+tTyKMsvBlRKUOb87F+2zsATX3Ahz9cMpEkfPTkY15V dotoryeee@i5-6500"
         }
 
-        + network_interface {
-            + delete_on_termination = (known after apply)
-            + device_index          = (known after apply)
-            + network_interface_id  = (known after apply)
+        # aws_route.default will be created
+        + resource "aws_route" "default" {
+            + destination_cidr_block     = "0.0.0.0/0"
+            + destination_prefix_list_id = (known after apply)
+            + egress_only_gateway_id     = (known after apply)
+            + gateway_id                 = (known after apply)
+            + id                         = (known after apply)
+            + instance_id                = (known after apply)
+            + instance_owner_id          = (known after apply)
+            + local_gateway_id           = (known after apply)
+            + nat_gateway_id             = (known after apply)
+            + network_interface_id       = (known after apply)
+            + origin                     = (known after apply)
+            + route_table_id             = (known after apply)
+            + state                      = (known after apply)
         }
 
-        + root_block_device {
-            + delete_on_termination = (known after apply)
-            + device_name           = (known after apply)
-            + encrypted             = (known after apply)
-            + iops                  = (known after apply)
-            + kms_key_id            = (known after apply)
-            + tags                  = (known after apply)
-            + throughput            = (known after apply)
-            + volume_id             = (known after apply)
-            + volume_size           = (known after apply)
-            + volume_type           = (known after apply)
+        # aws_route_table.private will be created
+        + resource "aws_route_table" "private" {
+            + id               = (known after apply)
+            + owner_id         = (known after apply)
+            + propagating_vgws = (known after apply)
+            + route            = (known after apply)
+            + tags             = {
+                + "Name" = "RT-private-talent-pool"
+            }
+            + vpc_id           = (known after apply)
         }
-    }
 
-    # aws_internet_gateway.main will be created
-    + resource "aws_internet_gateway" "main" {
-        + arn      = (known after apply)
-        + id       = (known after apply)
-        + owner_id = (known after apply)
-        + tags     = {
-            + "Name" = "igw-talent-pool"
+        # aws_route_table.public will be created
+        + resource "aws_route_table" "public" {
+            + id               = (known after apply)
+            + owner_id         = (known after apply)
+            + propagating_vgws = (known after apply)
+            + route            = (known after apply)
+            + tags             = {
+                + "Name" = "RT-public-talent-pool"
+            }
+            + vpc_id           = (known after apply)
         }
-        + vpc_id   = (known after apply)
-    }
 
-    # aws_key_pair.dotoryeee will be created
-    + resource "aws_key_pair" "dotoryeee" {
-        + arn         = (known after apply)
-        + fingerprint = (known after apply)
-        + id          = (known after apply)
-        + key_name    = "dotoryeee"
-        + key_pair_id = (known after apply)
-        + public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD5D5mHSD/vdgcGmh6Kd57DqLxebcvbrUsHj8DYDW0+9MSvvK874Bm4hpqHliYze/ht7VnzL5+A5qZkCevKGBDeJNmR/QDHccCsCfRuyEmzMlvj3SxzYSH2N4lBG6eZZbQ+0yRl7ny3aeyol5boDkztLZ/PZwVR5IH6BgsNiGClSDtuf2CYoKN7hQufjeuCDcLlQa+ItFa4abMe/mWtMeEh7+ZpC+0KAFFvqY80OCtuUdqq7tcP8uHzQy9mPKvKBieJYitUoStjFEMAro1v34u6193Qgk6DAhyMom4GmLc2+tTyKMsvBlRKUOb87F+2zsATX3Ahz9cMpEkfPTkY15V dotoryeee@i5-6500"
-    }
-
-    # aws_route.default will be created
-    + resource "aws_route" "default" {
-        + destination_cidr_block     = "0.0.0.0/0"
-        + destination_prefix_list_id = (known after apply)
-        + egress_only_gateway_id     = (known after apply)
-        + gateway_id                 = (known after apply)
-        + id                         = (known after apply)
-        + instance_id                = (known after apply)
-        + instance_owner_id          = (known after apply)
-        + local_gateway_id           = (known after apply)
-        + nat_gateway_id             = (known after apply)
-        + network_interface_id       = (known after apply)
-        + origin                     = (known after apply)
-        + route_table_id             = (known after apply)
-        + state                      = (known after apply)
-    }
-
-    # aws_route_table.private will be created
-    + resource "aws_route_table" "private" {
-        + id               = (known after apply)
-        + owner_id         = (known after apply)
-        + propagating_vgws = (known after apply)
-        + route            = (known after apply)
-        + tags             = {
-            + "Name" = "RT-private-talent-pool"
+        # aws_route_table_association.private-asso-2a will be created
+        + resource "aws_route_table_association" "private-asso-2a" {
+            + id             = (known after apply)
+            + route_table_id = (known after apply)
+            + subnet_id      = (known after apply)
         }
-        + vpc_id           = (known after apply)
-    }
 
-    # aws_route_table.public will be created
-    + resource "aws_route_table" "public" {
-        + id               = (known after apply)
-        + owner_id         = (known after apply)
-        + propagating_vgws = (known after apply)
-        + route            = (known after apply)
-        + tags             = {
-            + "Name" = "RT-public-talent-pool"
+        # aws_route_table_association.private-asso-2c will be created
+        + resource "aws_route_table_association" "private-asso-2c" {
+            + id             = (known after apply)
+            + route_table_id = (known after apply)
+            + subnet_id      = (known after apply)
         }
-        + vpc_id           = (known after apply)
-    }
 
-    # aws_route_table_association.private-asso-2a will be created
-    + resource "aws_route_table_association" "private-asso-2a" {
-        + id             = (known after apply)
-        + route_table_id = (known after apply)
-        + subnet_id      = (known after apply)
-    }
-
-    # aws_route_table_association.private-asso-2c will be created
-    + resource "aws_route_table_association" "private-asso-2c" {
-        + id             = (known after apply)
-        + route_table_id = (known after apply)
-        + subnet_id      = (known after apply)
-    }
-
-    # aws_route_table_association.public-asso-2a will be created
-    + resource "aws_route_table_association" "public-asso-2a" {
-        + id             = (known after apply)
-        + route_table_id = (known after apply)
-        + subnet_id      = (known after apply)
-    }
-
-    # aws_route_table_association.public-asso-2c will be created
-    + resource "aws_route_table_association" "public-asso-2c" {
-        + id             = (known after apply)
-        + route_table_id = (known after apply)
-        + subnet_id      = (known after apply)
-    }
-
-    # aws_security_group.public_ec2 will be created
-    + resource "aws_security_group" "public_ec2" {
-        + arn                    = (known after apply)
-        + description            = "allow SSH from anywhere"
-        + egress                 = [
-            + {
-                + cidr_blocks      = [
-                    + "0.0.0.0/0",
-                ]
-                + description      = ""
-                + from_port        = 0
-                + ipv6_cidr_blocks = []
-                + prefix_list_ids  = []
-                + protocol         = "-1"
-                + security_groups  = []
-                + self             = false
-                + to_port          = 0
-            },
-        ]
-        + id                     = (known after apply)
-        + ingress                = [
-            + {
-                + cidr_blocks      = [
-                    + "0.0.0.0/0",
-                ]
-                + description      = ""
-                + from_port        = 22
-                + ipv6_cidr_blocks = []
-                + prefix_list_ids  = []
-                + protocol         = "tcp"
-                + security_groups  = []
-                + self             = false
-                + to_port          = 22
-            },
-            + {
-                + cidr_blocks      = [
-                    + "0.0.0.0/0",
-                ]
-                + description      = ""
-                + from_port        = 80
-                + ipv6_cidr_blocks = []
-                + prefix_list_ids  = []
-                + protocol         = "tcp"
-                + security_groups  = []
-                + self             = false
-                + to_port          = 80
-            },
-        ]
-        + name                   = "allow SSH and HTTP"
-        + name_prefix            = (known after apply)
-        + owner_id               = (known after apply)
-        + revoke_rules_on_delete = false
-        + tags                   = {
-            + "Name" = "SG-EC2-webserver"
+        # aws_route_table_association.public-asso-2a will be created
+        + resource "aws_route_table_association" "public-asso-2a" {
+            + id             = (known after apply)
+            + route_table_id = (known after apply)
+            + subnet_id      = (known after apply)
         }
-        + vpc_id                 = (known after apply)
-    }
 
-    # aws_subnet.private-2a will be created
-    + resource "aws_subnet" "private-2a" {
-        + arn                             = (known after apply)
-        + assign_ipv6_address_on_creation = false
-        + availability_zone               = "ap-northeast-2a"
-        + availability_zone_id            = (known after apply)
-        + cidr_block                      = "10.0.2.0/24"
-        + id                              = (known after apply)
-        + ipv6_cidr_block_association_id  = (known after apply)
-        + map_public_ip_on_launch         = false
-        + owner_id                        = (known after apply)
-        + tags                            = {
-            + "Name" = "private-2a"
+        # aws_route_table_association.public-asso-2c will be created
+        + resource "aws_route_table_association" "public-asso-2c" {
+            + id             = (known after apply)
+            + route_table_id = (known after apply)
+            + subnet_id      = (known after apply)
         }
-        + vpc_id                          = (known after apply)
-    }
 
-    # aws_subnet.private-2c will be created
-    + resource "aws_subnet" "private-2c" {
-        + arn                             = (known after apply)
-        + assign_ipv6_address_on_creation = false
-        + availability_zone               = "ap-northeast-2c"
-        + availability_zone_id            = (known after apply)
-        + cidr_block                      = "10.0.3.0/24"
-        + id                              = (known after apply)
-        + ipv6_cidr_block_association_id  = (known after apply)
-        + map_public_ip_on_launch         = false
-        + owner_id                        = (known after apply)
-        + tags                            = {
-            + "Name" = "private-2c"
+        # aws_security_group.public_ec2 will be created
+        + resource "aws_security_group" "public_ec2" {
+            + arn                    = (known after apply)
+            + description            = "allow SSH from anywhere"
+            + egress                 = [
+                + {
+                    + cidr_blocks      = [
+                        + "0.0.0.0/0",
+                    ]
+                    + description      = ""
+                    + from_port        = 0
+                    + ipv6_cidr_blocks = []
+                    + prefix_list_ids  = []
+                    + protocol         = "-1"
+                    + security_groups  = []
+                    + self             = false
+                    + to_port          = 0
+                },
+            ]
+            + id                     = (known after apply)
+            + ingress                = [
+                + {
+                    + cidr_blocks      = [
+                        + "0.0.0.0/0",
+                    ]
+                    + description      = ""
+                    + from_port        = 22
+                    + ipv6_cidr_blocks = []
+                    + prefix_list_ids  = []
+                    + protocol         = "tcp"
+                    + security_groups  = []
+                    + self             = false
+                    + to_port          = 22
+                },
+                + {
+                    + cidr_blocks      = [
+                        + "0.0.0.0/0",
+                    ]
+                    + description      = ""
+                    + from_port        = 80
+                    + ipv6_cidr_blocks = []
+                    + prefix_list_ids  = []
+                    + protocol         = "tcp"
+                    + security_groups  = []
+                    + self             = false
+                    + to_port          = 80
+                },
+            ]
+            + name                   = "allow SSH and HTTP"
+            + name_prefix            = (known after apply)
+            + owner_id               = (known after apply)
+            + revoke_rules_on_delete = false
+            + tags                   = {
+                + "Name" = "SG-EC2-webserver"
+            }
+            + vpc_id                 = (known after apply)
         }
-        + vpc_id                          = (known after apply)
-    }
 
-    # aws_subnet.public-2a will be created
-    + resource "aws_subnet" "public-2a" {
-        + arn                             = (known after apply)
-        + assign_ipv6_address_on_creation = false
-        + availability_zone               = "ap-northeast-2a"
-        + availability_zone_id            = (known after apply)
-        + cidr_block                      = "10.0.0.0/24"
-        + id                              = (known after apply)
-        + ipv6_cidr_block_association_id  = (known after apply)
-        + map_public_ip_on_launch         = true
-        + owner_id                        = (known after apply)
-        + tags                            = {
-            + "Name" = "public-2a-talent-pool"
+        # aws_subnet.private-2a will be created
+        + resource "aws_subnet" "private-2a" {
+            + arn                             = (known after apply)
+            + assign_ipv6_address_on_creation = false
+            + availability_zone               = "ap-northeast-2a"
+            + availability_zone_id            = (known after apply)
+            + cidr_block                      = "10.0.2.0/24"
+            + id                              = (known after apply)
+            + ipv6_cidr_block_association_id  = (known after apply)
+            + map_public_ip_on_launch         = false
+            + owner_id                        = (known after apply)
+            + tags                            = {
+                + "Name" = "private-2a"
+            }
+            + vpc_id                          = (known after apply)
         }
-        + vpc_id                          = (known after apply)
-    }
 
-    # aws_subnet.public-2c will be created
-    + resource "aws_subnet" "public-2c" {
-        + arn                             = (known after apply)
-        + assign_ipv6_address_on_creation = false
-        + availability_zone               = "ap-northeast-2c"
-        + availability_zone_id            = (known after apply)
-        + cidr_block                      = "10.0.1.0/24"
-        + id                              = (known after apply)
-        + ipv6_cidr_block_association_id  = (known after apply)
-        + map_public_ip_on_launch         = true
-        + owner_id                        = (known after apply)
-        + tags                            = {
-            + "Name" = "public-2c-talent-pool"
+        # aws_subnet.private-2c will be created
+        + resource "aws_subnet" "private-2c" {
+            + arn                             = (known after apply)
+            + assign_ipv6_address_on_creation = false
+            + availability_zone               = "ap-northeast-2c"
+            + availability_zone_id            = (known after apply)
+            + cidr_block                      = "10.0.3.0/24"
+            + id                              = (known after apply)
+            + ipv6_cidr_block_association_id  = (known after apply)
+            + map_public_ip_on_launch         = false
+            + owner_id                        = (known after apply)
+            + tags                            = {
+                + "Name" = "private-2c"
+            }
+            + vpc_id                          = (known after apply)
         }
-        + vpc_id                          = (known after apply)
-    }
 
-    # aws_vpc.main will be created
-    + resource "aws_vpc" "main" {
-        + arn                              = (known after apply)
-        + assign_generated_ipv6_cidr_block = false
-        + cidr_block                       = "10.0.0.0/16"
-        + default_network_acl_id           = (known after apply)
-        + default_route_table_id           = (known after apply)
-        + default_security_group_id        = (known after apply)
-        + dhcp_options_id                  = (known after apply)
-        + enable_classiclink               = (known after apply)
-        + enable_classiclink_dns_support   = (known after apply)
-        + enable_dns_hostnames             = true
-        + enable_dns_support               = true
-        + id                               = (known after apply)
-        + instance_tenancy                 = "default"
-        + ipv6_association_id              = (known after apply)
-        + ipv6_cidr_block                  = (known after apply)
-        + main_route_table_id              = (known after apply)
-        + owner_id                         = (known after apply)
-        + tags                             = {
-            + "Name" = "vpc-talent-pool"
+        # aws_subnet.public-2a will be created
+        + resource "aws_subnet" "public-2a" {
+            + arn                             = (known after apply)
+            + assign_ipv6_address_on_creation = false
+            + availability_zone               = "ap-northeast-2a"
+            + availability_zone_id            = (known after apply)
+            + cidr_block                      = "10.0.0.0/24"
+            + id                              = (known after apply)
+            + ipv6_cidr_block_association_id  = (known after apply)
+            + map_public_ip_on_launch         = true
+            + owner_id                        = (known after apply)
+            + tags                            = {
+                + "Name" = "public-2a-talent-pool"
+            }
+            + vpc_id                          = (known after apply)
         }
-    }
 
-Plan: 17 to add, 0 to change, 0 to destroy.
+        # aws_subnet.public-2c will be created
+        + resource "aws_subnet" "public-2c" {
+            + arn                             = (known after apply)
+            + assign_ipv6_address_on_creation = false
+            + availability_zone               = "ap-northeast-2c"
+            + availability_zone_id            = (known after apply)
+            + cidr_block                      = "10.0.1.0/24"
+            + id                              = (known after apply)
+            + ipv6_cidr_block_association_id  = (known after apply)
+            + map_public_ip_on_launch         = true
+            + owner_id                        = (known after apply)
+            + tags                            = {
+                + "Name" = "public-2c-talent-pool"
+            }
+            + vpc_id                          = (known after apply)
+        }
 
-Do you want to perform these actions?
-    Terraform will perform the actions described above.
-    Only 'yes' will be accepted to approve.
+        # aws_vpc.main will be created
+        + resource "aws_vpc" "main" {
+            + arn                              = (known after apply)
+            + assign_generated_ipv6_cidr_block = false
+            + cidr_block                       = "10.0.0.0/16"
+            + default_network_acl_id           = (known after apply)
+            + default_route_table_id           = (known after apply)
+            + default_security_group_id        = (known after apply)
+            + dhcp_options_id                  = (known after apply)
+            + enable_classiclink               = (known after apply)
+            + enable_classiclink_dns_support   = (known after apply)
+            + enable_dns_hostnames             = true
+            + enable_dns_support               = true
+            + id                               = (known after apply)
+            + instance_tenancy                 = "default"
+            + ipv6_association_id              = (known after apply)
+            + ipv6_cidr_block                  = (known after apply)
+            + main_route_table_id              = (known after apply)
+            + owner_id                         = (known after apply)
+            + tags                             = {
+                + "Name" = "vpc-talent-pool"
+            }
+        }
 
-    Enter a value: yes
+    Plan: 17 to add, 0 to change, 0 to destroy.
 
-aws_key_pair.dotoryeee: Creating...
-aws_vpc.main: Creating...
-aws_key_pair.dotoryeee: Creation complete after 1s [id=dotoryeee]
-aws_vpc.main: Still creating... [10s elapsed]
-aws_vpc.main: Creation complete after 11s [id=vpc-0c885c480266a1609]
-aws_route_table.public: Creating...
-aws_subnet.private-2c: Creating...
-aws_subnet.public-2a: Creating...
-aws_route_table.private: Creating...
-aws_internet_gateway.main: Creating...
-aws_subnet.public-2c: Creating...
-aws_subnet.private-2a: Creating...
-aws_security_group.public_ec2: Creating...
-aws_route_table.private: Creation complete after 0s [id=rtb-007ecd93701976184]
-aws_route_table.public: Creation complete after 0s [id=rtb-07a3c28f427d9d9b0]
-aws_internet_gateway.main: Creation complete after 1s [id=igw-08b4682de4ec8f301]
-aws_subnet.private-2c: Creation complete after 1s [id=subnet-0f054920c100a9591]
-aws_subnet.private-2a: Creation complete after 1s [id=subnet-05bfc7af15120b423]
-aws_route_table_association.private-asso-2c: Creating...
-aws_route.default: Creating...
-aws_route_table_association.private-asso-2a: Creating...
-aws_route_table_association.private-asso-2c: Creation complete after 0s [id=rtbassoc-0dbe25bb20f9f3fbf]
-aws_route_table_association.private-asso-2a: Creation complete after 0s [id=rtbassoc-099fe2753e2de8eeb]
-aws_route.default: Creation complete after 0s [id=r-rtb-07a3c28f427d9d9b01080289494]
-aws_security_group.public_ec2: Creation complete after 2s [id=sg-0a3b2cfbd654e0211]
-aws_subnet.public-2a: Still creating... [10s elapsed]
-aws_subnet.public-2c: Still creating... [10s elapsed]
-aws_subnet.public-2c: Creation complete after 11s [id=subnet-08dd1b40e3066df36]
-aws_subnet.public-2a: Creation complete after 11s [id=subnet-03874ee39103bba68]
-aws_route_table_association.public-asso-2c: Creating...
-aws_route_table_association.public-asso-2a: Creating...
-aws_instance.public_01: Creating...
-aws_instance.public_02: Creating...
-aws_route_table_association.public-asso-2a: Creation complete after 0s [id=rtbassoc-0b6bc559f38878ca0]
-aws_route_table_association.public-asso-2c: Creation complete after 0s [id=rtbassoc-0eaa97ebcf00bcfd6]
-aws_instance.public_01: Still creating... [10s elapsed]
-aws_instance.public_02: Still creating... [10s elapsed]
-aws_instance.public_01: Still creating... [20s elapsed]
-aws_instance.public_02: Still creating... [20s elapsed]
-aws_instance.public_01: Creation complete after 21s [id=i-00cb9f1261ba14494]
-aws_instance.public_02: Creation complete after 21s [id=i-0a84d66623f8c2a83]
+    Do you want to perform these actions?
+        Terraform will perform the actions described above.
+        Only 'yes' will be accepted to approve.
 
-Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
-```
+        Enter a value: yes
+
+    aws_key_pair.dotoryeee: Creating...
+    aws_vpc.main: Creating...
+    aws_key_pair.dotoryeee: Creation complete after 1s [id=dotoryeee]
+    aws_vpc.main: Still creating... [10s elapsed]
+    aws_vpc.main: Creation complete after 11s [id=vpc-0c885c480266a1609]
+    aws_route_table.public: Creating...
+    aws_subnet.private-2c: Creating...
+    aws_subnet.public-2a: Creating...
+    aws_route_table.private: Creating...
+    aws_internet_gateway.main: Creating...
+    aws_subnet.public-2c: Creating...
+    aws_subnet.private-2a: Creating...
+    aws_security_group.public_ec2: Creating...
+    aws_route_table.private: Creation complete after 0s [id=rtb-007ecd93701976184]
+    aws_route_table.public: Creation complete after 0s [id=rtb-07a3c28f427d9d9b0]
+    aws_internet_gateway.main: Creation complete after 1s [id=igw-08b4682de4ec8f301]
+    aws_subnet.private-2c: Creation complete after 1s [id=subnet-0f054920c100a9591]
+    aws_subnet.private-2a: Creation complete after 1s [id=subnet-05bfc7af15120b423]
+    aws_route_table_association.private-asso-2c: Creating...
+    aws_route.default: Creating...
+    aws_route_table_association.private-asso-2a: Creating...
+    aws_route_table_association.private-asso-2c: Creation complete after 0s [id=rtbassoc-0dbe25bb20f9f3fbf]
+    aws_route_table_association.private-asso-2a: Creation complete after 0s [id=rtbassoc-099fe2753e2de8eeb]
+    aws_route.default: Creation complete after 0s [id=r-rtb-07a3c28f427d9d9b01080289494]
+    aws_security_group.public_ec2: Creation complete after 2s [id=sg-0a3b2cfbd654e0211]
+    aws_subnet.public-2a: Still creating... [10s elapsed]
+    aws_subnet.public-2c: Still creating... [10s elapsed]
+    aws_subnet.public-2c: Creation complete after 11s [id=subnet-08dd1b40e3066df36]
+    aws_subnet.public-2a: Creation complete after 11s [id=subnet-03874ee39103bba68]
+    aws_route_table_association.public-asso-2c: Creating...
+    aws_route_table_association.public-asso-2a: Creating...
+    aws_instance.public_01: Creating...
+    aws_instance.public_02: Creating...
+    aws_route_table_association.public-asso-2a: Creation complete after 0s [id=rtbassoc-0b6bc559f38878ca0]
+    aws_route_table_association.public-asso-2c: Creation complete after 0s [id=rtbassoc-0eaa97ebcf00bcfd6]
+    aws_instance.public_01: Still creating... [10s elapsed]
+    aws_instance.public_02: Still creating... [10s elapsed]
+    aws_instance.public_01: Still creating... [20s elapsed]
+    aws_instance.public_02: Still creating... [20s elapsed]
+    aws_instance.public_01: Creation complete after 21s [id=i-00cb9f1261ba14494]
+    aws_instance.public_02: Creation complete after 21s [id=i-0a84d66623f8c2a83]
+
+    Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
+    ```
         
     
     ![Project-1/Untitled%2013.png](Project-1/Untitled%2013.png)
@@ -992,10 +990,10 @@ Apply complete! Resources: 17 added, 0 changed, 0 destroyed.
     ![Project-1/Untitled%2054.png](Project-1/Untitled%2054.png)
     
 2. 다음과 같이 EC2 에서 RDS에 연결할 수 있도록 설정을 해둡니다
-    
-```
-mysql -u root -p --host myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com
-```
+        
+    ```s
+    mysql -u root -p --host myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com
+    ```
     
     ![Project-1/Untitled%2055.png](Project-1/Untitled%2055.png)
     
@@ -1003,9 +1001,9 @@ mysql -u root -p --host myapp.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com
     
     합격 결과를 띄어줄 result는 기본 값에 0을 부여합니다
     
-```
-create table {RDS_TABLE} (number int auto_increment primary key, name char(10) not null ,contact text not null ,resume text, blog text, result BOOLEAN default 0)
-```
+    ```sql
+    create table {RDS_TABLE} (number int auto_increment primary key, name char(10) not null ,contact text not null ,resume text, blog text, result BOOLEAN default 0)
+    ```
     
 4. 다음과 같이 테스트 해봅니다. 잘 연결되었습니다.
     
@@ -1040,10 +1038,10 @@ create table {RDS_TABLE} (number int auto_increment primary key, name char(10) n
     
 3. 매니저 노드를 시작합니다
 
-```
-docker swarm init --advertise-addr {ADDR}
-```
-    
+    ```s
+    docker swarm init --advertise-addr {ADDR}
+    ```
+        
     ![Project-1/Untitled%2062.png](Project-1/Untitled%2062.png)
     
 4. 워커 노드를 추가합니다
@@ -1056,11 +1054,11 @@ docker swarm init --advertise-addr {ADDR}
     
 5. 다음과 같은 방식으로 Nginx 컨테이너를 로드하고 정보를 확인할 수 있습니다
     
-```
-docker service create --name nginx -p 80:80 nginx
-docker service ls
-docker service ps nginx
-```
+    ```s
+    docker service create --name nginx -p 80:80 nginx
+    docker service ls
+    docker service ps nginx
+    ```
     
     ![Project-1/Untitled%2066.png](Project-1/Untitled%2066.png)
     
@@ -1077,9 +1075,9 @@ docker service ps nginx
     
     ![Project-1/Untitled%2069.png](Project-1/Untitled%2069.png)
 
-```
-docker stack deploy --compose-file docker-compose-swarm.yml test
-```
+    ```s
+    docker stack deploy --compose-file docker-compose-swarm.yml test
+    ```
 
 10. 서비스가 잘 실행되면 RDS에 2개의 연결이 생성된 것을 확인할 수 있습니다
     

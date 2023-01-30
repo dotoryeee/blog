@@ -11,43 +11,41 @@
 
 ---
 
-<aside>
-💡 git 사용시 .terraform 디렉터리를 ignore 처리합니다
-
-</aside>
+!!! warning
+    💡 git 사용시 .terraform 디렉터리를 ignore 처리합니다
 
 1. provider 설정을 분리하여 따로 작성합니다
 
-```
-vi provider.tf
-```
+    ```s
+    vi provider.tf
+    ```
 
-```
-provider "aws" {
-    region = "ap-northeast-2"
-}
-```
+    ```terraform title="provider.tf"
+    provider "aws" {
+        region = "ap-northeast-2"
+    }
+    ```
 
 2. vpc용 테라폼 코드를 작성합니다
 
-```
-vi vpc.tf
-```
+    ```s
+    vi vpc.tf
+    ```
 
-```
-resource "aws_vpc" "terra-test" {
-        cidr_block = "10.0.0.0/16"
-        tags = {
-                Name = "Terraform TEST1"
-        }
-}
-```
+    ```terraform title="vpc.tf"
+    resource "aws_vpc" "terra-test" {
+            cidr_block = "10.0.0.0/16"
+            tags = {
+                    Name = "Terraform TEST1"
+            }
+    }
+    ```
     
 3. 테라폼 플랜을 실행합니다
 
-```
-terraform plan
-```
+    ```s
+    terraform plan
+    ```
     
 4. 당연히 init을 하지 않으면 진행할 수 없습니다
     
@@ -55,19 +53,19 @@ terraform plan
     
 5. 테라폼 시작을 선언합니다
 
-```
-terraform init
-```
-    
+    ```s
+    terraform init
+    ```
+        
 6. 테라폼이 AWS를 컨트롤 할 수 있는 플러그인을 다운로드 합니다
     
     ![Terraform deploy VPC and Subnet/Untitled%201.png](Terraform deploy VPC and Subnet/Untitled%201.png)
     
 7. 다시 plan을 시작합니다
 
-```
-terraform plan
-```
+    ```s
+    terraform plan
+    ```
 
 8. 현재 작성된 테라폼 코드에 따르면 아래와 같이 인프라가 생성된다는 예상 결과를 보여줍니다
     
@@ -75,9 +73,9 @@ terraform plan
     
 9. 본격적으로 AWS에 인프라 생성을 시작합니다
 
-```
-terraform apply
-```
+    ```s
+    terraform apply
+    ```
     
 10. 경고창이 뜨면 yes를 입력합니다
     
@@ -103,44 +101,44 @@ terraform apply
     
     - 서브넷을 생성할 때 VPC를 지정하려면 변수를 넣는 것 처럼 aws_vpc.{NAME}.id 형태로 작성할 수 있습니다
     
-```
-vi vpc.tf
-```
+    ```s
+    vi vpc.tf
+    ```
 
-```
-resource "aws_vpc" "terra-test" {
-        cidr_block = "10.0.0.0/16"
+    ```terraform title="vpc.tf"
+    resource "aws_vpc" "terra-test" {
+            cidr_block = "10.0.0.0/16"
 
-        tags = {
-                Name = "Terraform TEST1"
-        }
-}
+            tags = {
+                    Name = "Terraform TEST1"
+            }
+    }
 
-resource"aws_subnet" "public01" {
-        vpc_id = aws_vpc.terra-test.id
-        cidr_block = "10.0.0.0/24"
-        availability_zone = "ap-northeast-2a"
+    resource"aws_subnet" "public01" {
+            vpc_id = aws_vpc.terra-test.id
+            cidr_block = "10.0.0.0/24"
+            availability_zone = "ap-northeast-2a"
 
-        tags = {
-                Name = "terra-public-01-subnet"
-        }
-}
+            tags = {
+                    Name = "terra-public-01-subnet"
+            }
+    }
 
-resource "aws_subnet" "private01" {
-        vpc_id = aws_vpc.terra-test.id
-        cidr_block = "10.0.1.0/24"
+    resource "aws_subnet" "private01" {
+            vpc_id = aws_vpc.terra-test.id
+            cidr_block = "10.0.1.0/24"
 
-        tags = {
-                Name = "terra-private-01-subnet"
-        }
-}
-```
+            tags = {
+                    Name = "terra-private-01-subnet"
+            }
+    }
+    ```
     
 1. 테라폼 플랜을 이용해 잘 작성했는지 체크합니다
  
- ```
- terraform plan
- ```
+    ```s
+    terraform plan
+    ```
     
 3. 현재 코드에 3개의 리소스(VPC, public subnet, private subnet)이 작성되어있지만
     
@@ -152,9 +150,9 @@ resource "aws_subnet" "private01" {
     
 4. AWS 인프라에 적용해봅니다
     
-```
-terraform apply
-```
+    ```s
+    terraform apply
+    ```
 
 5. 금방 생성됩니다
 
@@ -166,9 +164,9 @@ terraform apply
     
 7. 다음 명령을 이용하면 현재 생성된 리스트를 볼 수 있습니다
     
-```
-terraform state list
-```
+    ```s
+    terraform state list
+    ```
 
     ![Terraform deploy VPC and Subnet/Untitled%209.png](Terraform deploy VPC and Subnet/Untitled%209.png)
     

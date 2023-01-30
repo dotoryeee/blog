@@ -23,14 +23,14 @@
 
 1. 작업을 위한 디렉터리를 생성합니다
         
-    ``` bash
+    ``` s
     mkdir init
     cd init
     ```
     
 2. 백엔드에 사용할 S3버킷과 DynamoDB 테이블을 생성합니다
 
-    ``` bash
+    ``` s
     vi init.tf
     ```
         
@@ -65,14 +65,14 @@
     ```
         
 3. plan에 따르면 두 개의 리소스가 생성됨을 안내하고 있습니다
-    ```bash
+    ```s
     terraform plan
     ```
     
     ![Terraform Backend/Untitled.png](Terraform Backend/Untitled.png)
     
 4. 의도한 바가 맞으니 적용해줍니다
-    ```bash
+    ```s
     terraform apply
     ```
         
@@ -90,13 +90,13 @@
 1. iam을 제어하는 코드를 백엔드로 관리해봅니다
 2. 작업중인 폴더(init)에서 나와서 iam 디렉터리로 이동합니다
 
-    ```bash
+    ```s
     cd ../iam
     ```
 
 3. 백엔드로 제어하기 위해 코드를 작성합니다
 
-    ```bash
+    ```s
     vi backend.tf
     ```
 
@@ -121,7 +121,7 @@
     
 6. 백엔드 설정 후에는 다시 init 하는 과정이 필요합니다
 
-    ```bash
+    ```s
     terraform init
     ```
         
@@ -145,7 +145,7 @@
     
 11. 이제 로컬에 tfstate 파일이 없어도 plan이 잘 동작합니다
     
-    ```bash
+    ```s
     rm -rf terraform.tfstate terraform.tfstate.backup
     terraform plan
     ```

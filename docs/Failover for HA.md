@@ -19,16 +19,16 @@
 1. 오케스트레이터 컨테이너를 로드합니다(openarkcode/orchestrator)
     
     이전에 생성한 mybridge에 연결하며 호스트포트 3000에 매핑합니다
-    
-```
-docker run -i -t --name orchestrator -h orchestrator --net mybridge --net-alias=orchestrator -p 3000:3000 -d openarkcode/orchestrator:latest
-```
+        
+    ```s
+    docker run -i -t --name orchestrator -h orchestrator --net mybridge --net-alias=orchestrator -p 3000:3000 -d openarkcode/orchestrator:latest
+    ```
     
 2. 컨테이너가 잘 로드되었는지 확인합니다
     
-```
-docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
-```
+    ```s
+    docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
+    ```
     
     ![Failover for HA/Untitled.png](Failover for HA/Untitled.png)
     
@@ -41,41 +41,41 @@ docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
     
     컨테이너(도커 호스트)를 종료하지 않았다면 생략합니다
     
-```
-docker start db001 db002 db003
-```
+    ```s
+    docker start db001 db002 db003
+    ```
     
 2. db001 SQL DB에 접속합니다
     
-```
-docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
-```
+    ```s
+    docker exec -it -uroot db001 /bin/bash
+    mysql -uroot -p
+    ```
     
 3. 오케스트레이터를 위한 MySQL 유저 생성합니다
-    
-```
-CREATE USER orc_client_user@'172.%' IDENTIFIED BY 'orc_client_password';
-```
-    
+        
+    ```sql
+    CREATE USER orc_client_user@'172.%' IDENTIFIED BY 'orc_client_password';
+    ```
+        
 4. 필요한 권한을 부여합니다 1
     
-```
-GRANT SUPER, PROCESS, REPLICATION SLAVE, RELOAD ON *.* TO orc_client_user@'172.%';
-```
+    ```sql
+    GRANT SUPER, PROCESS, REPLICATION SLAVE, RELOAD ON *.* TO orc_client_user@'172.%';
+    ```
     
 5. 필요한 권한을 부여합니다 2
-    
-```
-GRANT SELECT ON mysql.slave_master_info TO orc_client_user@'172.%';
-```
-    
+        
+    ```sql
+    GRANT SELECT ON mysql.slave_master_info TO orc_client_user@'172.%';
+    ```
+        
 6. 웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다
     
-```
-http://{DOCKER HOST IP}:3000
-//EC2 인스턴스를 사용하는 경우 네트워크 인바운드에 3000번 포트를 열어줘야합니다
-```
+    ```s
+    http://{DOCKER HOST IP}:3000
+    //EC2 인스턴스를 사용하는 경우 네트워크 인바운드에 3000번 포트를 열어줘야합니다
+    ```
     
 
 ### 오케스트레이터 설정
@@ -111,11 +111,11 @@ http://{DOCKER HOST IP}:3000
 ---
 
 1. 장애상황을 만들기 위해 마스터DB 컨테이너(db001)을 정지합니다
-    
-    ```
+        
+    ```s
     docker stop db001
     ```
-    
+        
 2. 컨테이너가 정지되었습니다
     
     ![Failover for HA/Untitled%206.png](Failover for HA/Untitled%206.png)
@@ -143,17 +143,17 @@ http://{DOCKER HOST IP}:3000
 8. 터미널에서 직접 확인해볼수도 있습니다
     
     db002 SQL DB에 접속합니다
-    
-```
-docker exec -it -uroot db002 /bin/bash
-mysql -uroot -p
-```
+        
+    ```s
+    docker exec -it -uroot db002 /bin/bash
+    mysql -uroot -p
+    ```
     
 9. slave 상태조회 명령을 실행합니다
-    
-```
-show slave status \G
-```
+        
+    ```s
+    show slave status \G
+    ```
     
 10. 현재 Slave 상태가 아니기 때문에 empty set을 리턴합니다
     
@@ -165,45 +165,45 @@ show slave status \G
 ---
 
 1. 기존에 Master였던 db001 컨테이너를 다시 구동합니다
-    
-```
-docker start db001
-```
-    
+        
+    ```s
+    docker start db001
+    ```
+        
 2. 컨테이너가 접속 가능한 상태이지만 여전히 클러스터에서 분리되어 있습니다
     
     ![Failover for HA/Untitled%2013.png](Failover for HA/Untitled%2013.png)
     
 3. db001 컨테이너의 MySQL에 접속합니다
     
-```
-docker exec -it -uroot db001 /bin/bash
-mysql -uroot -p
-```
-    
+    ```s
+    docker exec -it -uroot db001 /bin/bash
+    mysql -uroot -p
+    ```
+        
 4. db001을 slave로 동작시키기 위해 read_only로 설정합니다
 
-```
-set global read_only=1;
-```
-    
+    ```sql
+    set global read_only=1;
+    ```
+        
 5. db002 MASTER를 바라보도록 설정합니다
     
-```
-CHANGE MASTER TO MASTER_HOST='db002', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
-```
+    ```sql
+    CHANGE MASTER TO MASTER_HOST='db002', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
+    ```
     
 6. slave로써의 동작을 시작합니다
 
-```
-start slave;
-```
+    ```sql
+    start slave;
+    ```
     
 7. slave 상태를 확인합니다
     
-```
-show slave status \G
-```
+    ```sql
+    show slave status \G
+    ```
     
 8. db001이 db002를 마스터로 바라보고 있습니다
     
@@ -226,34 +226,34 @@ show slave status \G
 
 1. 오케스트레이터 컨테이너에 접속합니다
 
-```
-docker exec -it orchestrator /bin/bash
-```
+    ```s
+    docker exec -it orchestrator /bin/bash
+    ```
 
 2. 오케스트레이터 설정 파일을 수정합니다
     
-```
-vi /etc/orchestrator.conf.json
-```
-    
+    ```s
+    vi /etc/orchestrator.conf.json
+    ```
+        
 3. JSON에 다음 값을 수정 합니다. db001, db002간의 Failover만 테스트 하기 위해 db003이 마스터로 승격되는 일이 발생하지 않도록 제외해둡니다.
     
     이대로 구현되면 db001 ↔ db002 간에 장애 발생시 번갈아가며 Master로 승격됩니다
     
-```
-"RecoverMasterClusterFilters":[
-"*"
-],
-"PromotionIgnoreHostnameFilters":[
-"db003"
-]
-```
-    
+    ```conf
+    "RecoverMasterClusterFilters":[
+    "*"
+    ],
+    "PromotionIgnoreHostnameFilters":[
+    "db003"
+    ]
+    ```
+        
 4. 오케스트레이터 컨테이너를 재시작 합니다
     
-```
-docker restart orchestrator
-```
+    ```s
+    docker restart orchestrator
+    ```
     
 5. Auto Failover가 잘 설정되면 하트 표시에 불이 들어옵니다
     
@@ -261,9 +261,9 @@ docker restart orchestrator
     
 6. db002 컨테이너를 중지하여 Fail-Over를 테스트합니다
 
-```
-docker stop db002
-```
+    ```s
+    docker stop db002
+    ```
     
 7. 별 다른 작업을 하지 않아도 db002가 클러스터에서 분리되었습니다
     
@@ -275,23 +275,23 @@ docker stop db002
     
 9. 페일오버가 잘 실행되었으면 복구를 위해 db002를 다시 로드합니다
     
-```
-docker start db002
-```
+    ```s
+    docker start db002
+    ```
     
 10. db002의 MySQL서버에 접속합니다
     
-```
-docker exec -it -uroot db002 /bin/bash
-mysql -uroot -p
-```
+    ```s
+    docker exec -it -uroot db002 /bin/bash
+    mysql -uroot -p
+    ```
     
 11. db001을 마스터로 바라보도록 db002를 slave로 설정합니다
     
-```
-CHANGE MASTER TO MASTER_HOST='db001', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
-START SLAVE;
-```
+    ```sql
+    CHANGE MASTER TO MASTER_HOST='db001', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
+    START SLAVE;
+    ```
     
 12. 이처럼 GUI 콘솔을 이용하면 변화를 쉽게 알 수 있습니다
     

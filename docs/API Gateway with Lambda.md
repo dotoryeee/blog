@@ -129,7 +129,7 @@
 22. 리눅스 터미널을 이용해 간편하게 API를 테스트 해봅시다
 23. curl 을 사용해 접근합니다
         
-    ```bash
+    ```s
     curl -X GET '{DNS ADDRESS}'
     ```
 
@@ -139,7 +139,7 @@
 
 25. curl 명령에 파라메터값도 같이 날려봅니다
 
-    ```bash
+    ```s
     curl -X GET '{DNS ADDRESS}?myParam=HELLO'
     ```
 
@@ -149,7 +149,7 @@
 
 27. /resource페이지도 정상적으로 반응하는 것을 볼 수 있습니다
 
-    ```bash
+    ```s
     curl -X GET '{DNS ADDRESS}/resource?myParam=HELLO'
     ```
     

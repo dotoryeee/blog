@@ -1,0 +1,1964 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Failover%20for%20HA/">
+      
+      
+        <link rel="next" href="../Project-1/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
+    
+    
+      
+        <title>Multi container CICD - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#multi-container-cicd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Multi container CICD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        title1 1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3-Tier%20Basic%20Infra/" class="md-nav__link">
+        3-Tier 기본 인프라 구성
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API%20Gateway%20with%20Lambda/" class="md-nav__link">
+        API Gateway with Lambda
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
+        Access S3, DynamoDB with Lambda
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CICD%20on%20Single%20container/" class="md-nav__link">
+        CICD on Single container
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Circle-CI%20basic/" class="md-nav__link">
+        Circle-CI Basics
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker%20Proxy%20Layer%20for%20MySQL/" class="md-nav__link">
+        Docker Proxy Layer for MySQL
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker%20basics/" class="md-nav__link">
+        Docker basics
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker%20compose%20web%20GUI/" class="md-nav__link">
+        Docker compose and web GUI
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Docker%20volume%20with%20MySQL/" class="md-nav__link">
+        Docker volume with MySQL
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Failover%20for%20HA/" class="md-nav__link">
+        Failover for HA
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Multi container CICD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Multi container CICD
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    구성도
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    요약
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendnodejs" class="md-nav__link">
+    Backend(nodeJS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontendreactjs" class="md-nav__link">
+    Frontend(reactJS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-for-react" class="md-nav__link">
+    Dockerfile 작성 - for React
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile 작성 - for React">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfiledev" class="md-nav__link">
+    개발 환경용 Dockerfile.dev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    운영 환경용 Dockerfile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    라우팅용 Nginx 설정(정적파일 제공을 위한)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-for-nodejs" class="md-nav__link">
+    Dockerfile 작성 - for NodeJS
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile 작성 - for NodeJS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfiledev_1" class="md-nav__link">
+    개발 환경용 Dockerfile.dev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile_1" class="md-nav__link">
+    운영 환경용 Dockerfile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    DB 세팅
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-layer-nginx" class="md-nav__link">
+    Proxy Layer용 Nginx 설정
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose 작성
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ready-for-cicd" class="md-nav__link">
+    ready for CICD
+  </a>
+  
+    <nav class="md-nav" aria-label="ready for CICD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remove-mysql-container" class="md-nav__link">
+    remove MySQL Container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#travis-ci-yaml" class="md-nav__link">
+    Travis CI YAML 작성
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws" class="md-nav__link">
+    AWS
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerrunawsjson" class="md-nav__link">
+    Dockerrun.aws.json ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecs" class="md-nav__link">
+    ECS 작업 정의 파일 작성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-beanstalk" class="md-nav__link">
+    AWS Beanstalk 생성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-rds" class="md-nav__link">
+    AWS RDS 생성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_1" class="md-nav__link">
+    AWS 보안그룹
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beanstalk-rds" class="md-nav__link">
+    Beanstalk ↔ RDS 연결을 위한 환경변수 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    배포 설정
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    최종 푸시
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-1/" class="md-nav__link">
+        Project - 1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prometheus%20and%20Grafana/" class="md-nav__link">
+        Prometheus and Grafana
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Terraform%20AWS%20IAM/" class="md-nav__link">
+        Terraform AWS IAM
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Terraform%20Backend/" class="md-nav__link">
+        Terraform Backend
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Terraform%20Practice/" class="md-nav__link">
+        Terraform Practice
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Terraform%20deploy%20VPC%20and%20Subnet/" class="md-nav__link">
+        Terraform deploy VPC and Subnet
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Terraform%20deploy%20VPC/" class="md-nav__link">
+        Terraform deploy VPC
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
+        Transaction on GCP Spanner
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VPC%20Endpoint%20with%20Role/" class="md-nav__link">
+        VPC Endpoint with Role
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    구성도
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    요약
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backendnodejs" class="md-nav__link">
+    Backend(nodeJS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontendreactjs" class="md-nav__link">
+    Frontend(reactJS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-for-react" class="md-nav__link">
+    Dockerfile 작성 - for React
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile 작성 - for React">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfiledev" class="md-nav__link">
+    개발 환경용 Dockerfile.dev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    운영 환경용 Dockerfile
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    라우팅용 Nginx 설정(정적파일 제공을 위한)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dockerfile-for-nodejs" class="md-nav__link">
+    Dockerfile 작성 - for NodeJS
+  </a>
+  
+    <nav class="md-nav" aria-label="Dockerfile 작성 - for NodeJS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfiledev_1" class="md-nav__link">
+    개발 환경용 Dockerfile.dev
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile_1" class="md-nav__link">
+    운영 환경용 Dockerfile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    DB 세팅
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxy-layer-nginx" class="md-nav__link">
+    Proxy Layer용 Nginx 설정
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    Docker compose 작성
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ready-for-cicd" class="md-nav__link">
+    ready for CICD
+  </a>
+  
+    <nav class="md-nav" aria-label="ready for CICD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remove-mysql-container" class="md-nav__link">
+    remove MySQL Container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#travis-ci-yaml" class="md-nav__link">
+    Travis CI YAML 작성
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws" class="md-nav__link">
+    AWS
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerrunawsjson" class="md-nav__link">
+    Dockerrun.aws.json ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecs" class="md-nav__link">
+    ECS 작업 정의 파일 작성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-beanstalk" class="md-nav__link">
+    AWS Beanstalk 생성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-rds" class="md-nav__link">
+    AWS RDS 생성
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_1" class="md-nav__link">
+    AWS 보안그룹
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beanstalk-rds" class="md-nav__link">
+    Beanstalk ↔ RDS 연결을 위한 환경변수 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    배포 설정
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    최종 푸시
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="multi-container-cicd">Multi container CICD</h1>
+<h2 id="_1">구성도</h2>
+<ul>
+<li>
+<p>DEV Flow chart</p>
+<p><img alt="Multi container CICD/Untitled.png" src="Untitled.png" /></p>
+</li>
+<li>
+<p>Service ENV</p>
+<p>Docker-compose를 사용해 모든 컨테이너 환경을 제어합니다</p>
+<p><img alt="Multi container CICD/Untitled%201.png" src="Untitled%201.png" /></p>
+</li>
+</ul>
+<h2 id="_2">요약</h2>
+<hr />
+<ol>
+<li>멀티컨테이너를 이용해 개발환경과 운영환경을 구축합니다</li>
+<li>nodeJS백엔드 ↔ reactJS프론트엔드 간에 REST API 구조로 데이터를 전달합니다(axios)</li>
+<li>Nginx의 라우팅을 활용하여 
+URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(ReactJS)로 보내도록 설정합니다</li>
+<li>Docker Compose를 사용해 컨테이너간의 통신 등 개발환경을 구축합니다</li>
+<li>깃헙에 푸시하면 → Travis CI 테스트→ Docker Hub로 이미지를 전달하고 Beanstalk이 ECS를 이용해 이미지를 pull하고 ECS를 이용해 컨테이너를 Deploy하도록 합니다</li>
+</ol>
+<h2 id="backendnodejs">Backend(nodeJS)</h2>
+<hr />
+<ol>
+<li>
+<p>메인 작업 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">docker_multicon_app</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">docker_multicon_app</span>
+</code></pre></div>
+</li>
+<li>
+<p>nodeJS로 백앤드를 구성합니다. 백앤드 작업용 폴더를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">backend</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">backend</span>
+</code></pre></div>
+</li>
+<li>
+<p>노드 세팅을 시작합니다. 모두 기본값으로 진행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">npm</span><span class="w"> </span><span class="n">init</span>
+</code></pre></div>
+</li>
+<li>
+<p>종속성을 수정합니다</p>
+<p>body-parser는 클라이언트에서 오는 요청의 본문을 해석해주는 미들웨어입니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">package.json</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="nt">&quot;test&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><span class="p">,</span>
+<span class="nt">&quot;start&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;node server.js&quot;</span><span class="p">,</span>
+<span class="nt">&quot;dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nodemon server.js&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;dependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="nt">&quot;express&quot;</span><span class="p">:</span><span class="s2">&quot;^4.17.1&quot;</span><span class="p">,</span>
+<span class="nt">&quot;mysql&quot;</span><span class="p">:</span><span class="s2">&quot;^2.18.1&quot;</span><span class="p">,</span>
+<span class="nt">&quot;nodemon&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^2.0.7&quot;</span><span class="p">,</span>
+<span class="nt">&quot;body-parser&quot;</span><span class="p">:</span><span class="s2">&quot;^1.19.0&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>mysql연결을 위한 db.js를 작성합니다</p>
+<p>데이터베이스를 이용하려면  connection을 연결한 후 다 사용하고 나면 그 connection을 반납해야합니다. 하지만 너무 많은 요청이 오면 이 과정에서 부하가 생길 수 있기 때문에 연결된 Connection을 Pool에 보관한 후 필요할 때 Pool에 있는 Connection을 가져다가 쓸 수 있습니다.</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">db.js</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">mysql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mysql&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mysql</span><span class="p">.</span><span class="nx">createPool</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">connectionLimit</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">host</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;mysql&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;root&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">database</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;myapp&quot;</span>
+<span class="p">});</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">pool</span><span class="p">;</span><span class="w"> </span><span class="c1">//다른 앱에서 쓸 수 있도록 export</span>
+</code></pre></div>
+</li>
+<li>
+<p>app의 시작점인 server.js를 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">server.js</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">express</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;express&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bodyParser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;body-parser&quot;</span><span class="p">);</span>
+<span class="c1">//앞에서 export된 pool의 시작점인 db.js를 불러오기</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./db&quot;</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">EXPRESS_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5000</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
+
+<span class="c1">//JSON형태로 오는 요청을 해석할 수 있도록 parser 사용</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+<span class="c1">//------------! 테이블 생성 !---------------/</span>
+<span class="c1">//참고용으로 기록해두었으며, 실제 환경에서는 컨테이너 로드시 별도로 테이블을 생성합니다</span>
+<span class="cm">/*</span>
+<span class="cm">db.pool.query(`CREATE TABLE lists(</span>
+<span class="cm">    id INT AUTO_INCREMENT,</span>
+<span class="cm">    value TEXT,</span>
+<span class="cm">    PRIMARY KEY (id)</span>
+<span class="cm">)`, (err, results, fields) =&gt; {</span>
+<span class="cm">    console.log(`results : ${results}`)</span>
+<span class="cm">})</span>
+<span class="cm">*/</span><span class="w">   </span>
+<span class="c1">//--------------! API !--------------------/</span>
+<span class="c1">//DB 테이블에 있는 모든 데이터를 프론트로 보내기</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/values&#39;</span><span class="p">),</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//핸들러 생성</span>
+<span class="w">    </span><span class="nx">db</span><span class="p">.</span><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM lists;&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">//DB에서 모든 데이터 가져오기</span>
+<span class="w">        </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">results</span><span class="p">,</span><span class="w"> </span><span class="nx">fields</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">500</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">results</span><span class="p">)</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="c1">//프론트에서 입력한 값을 DB 테이블에 입력</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/values&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">db</span><span class="p">.</span><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="sb">`INSERT INTO lists (values) VALUES(&quot;</span><span class="si">${</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">value</span><span class="si">}</span><span class="sb">&quot;);`</span><span class="p">,</span><span class="w"> </span><span class="c1">//bodyParser 사용</span>
+<span class="w">        </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">results</span><span class="p">,</span><span class="w"> </span><span class="nx">fields</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mf">500</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">value</span><span class="p">})</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="p">})</span>
+
+<span class="c1">//------------! START EXPRESS !-----------------/</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">EXPRESS_PORT</span><span class="p">,</span><span class="w"> </span><span class="p">())</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;app running on PORT 5000&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="frontendreactjs">Frontend(reactJS)</h2>
+<hr />
+<ol>
+<li>
+<p>메인 작업 디렉터리에 리액트를 설치합니다. </p>
+<div class="highlight"><pre><span></span><code><span class="n">npx</span><span class="w"> </span><span class="n">create</span><span class="o">-</span><span class="n">react</span><span class="o">-</span><span class="n">app</span><span class="w"> </span><span class="n">frontend</span>
+</code></pre></div>
+</li>
+<li>
+<p>다음과 같은 구조가 되겠습니다</p>
+<p><img alt="Multi container CICD/Untitled%202.png" src="Untitled%202.png" /></p>
+</li>
+<li>
+<p>데이터 입력을 위해 리액트 /src/app.js에 인풋과 버튼을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">form</span> <span class="na">className</span><span class="o">=</span><span class="s">&quot;example&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span>
+      <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span>
+      <span class="na">placeholder</span><span class="o">=</span><span class="s">&quot;type something here&quot;</span>
+    <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="p">&gt;</span>GO<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+</li>
+<li>
+<p>데이터 전달에 useState, useEffect, axios를 사용합니다</p>
+<ul>
+<li>package.json - depencencise</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="s">&quot;axios&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;^0.21.1&quot;</span><span class="w"> </span>
+<span class="o">-&gt;</span><span class="w"> </span>종속성<span class="w"> </span>업데이트<span class="w"> </span>후<span class="w"> </span><span class="n">npm</span><span class="w"> </span><span class="n">install</span>
+</code></pre></div>
+<ul>
+<li>import</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="p">,</span><span class="w"> </span><span class="nx">useEffect</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="c1">//useState, useEffect를 사용하기 위해 react라이브러리에서 가져옵니다</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">axios</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;axios&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>useState</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">lists</span><span class="p">,</span><span class="w"> </span><span class="nx">setLists</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">([])</span><span class="w"> </span><span class="c1">//기본state는 빈 배열</span>
+<span class="c1">// 데이터베이스에 저장된 값을 가져와서 화면에 보여주기전 이 State에 넣어둡니다</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">setValue</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">//기본state에 빈 스트링</span>
+<span class="c1">//Input박스에 입력한 값이 이 state에 들어갑니다</span>
+</code></pre></div>
+</li>
+<li>
+<p>axios, useEffect</p>
+<div class="highlight"><pre><span></span><code><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//이곳에서 데이터베이스에 있는 값을 요청</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/values&#39;</span><span class="p">)</span><span class="w"> </span><span class="c1">//데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//백엔드(Node)가 처리 후 송신한 데이터가 이곳(respose 파라미터)로 수신</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`response </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span><span class="w"> </span><span class="c1">//어떤 값이 왔는지 콘솔로 확인</span>
+<span class="w">        </span><span class="nx">setLists</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="c1">//수신한 데이터를 이곳(setLists(38행))에 넣어줌</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[])</span>
+
+<span class="w">  </span><span class="c1">//changeHandler역할 : 56행 onChange컨트롤 = input박스에 입력을 할 때 onChangeEvent가 발생할 때 마다 value state를 변화시켜줌</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">changeHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//onChange핸들러 이벤트 발생시 다음 단계 수행</span>
+<span class="w">    </span><span class="nx">setValue</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">//submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">submitHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//이벤트를 받아옵니다</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span><span class="w"> </span><span class="c1">//오동작 방지를 위해 기본 동작을 제거합니다</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/value&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">//데이터 전달을 위해 백엔드에 POST request를 보냅니다</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="c1">//키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//백엔드에서 처리 후 회신받은 데이터를 response에 받아옴</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//response가 성공했다면 &lt;- server.js 42행 참고</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`response.data : </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span><span class="w"> </span><span class="c1">//성공했을경우 결과값을 한 번 살펴봅니다</span>
+<span class="w">          </span><span class="nx">setLists</span><span class="p">([...</span><span class="nx">lists</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">])</span><span class="w"> </span><span class="c1">//38행 리스트[0] (lists)에 값을 넣어주기. 원래 리스트에 있던 데이터에 이어서 넣어주기 위해 ...lists(3번째)로 작성</span>
+<span class="w">          </span><span class="nx">setValue</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//데이터 입력 후 input 박스 내용은 삭제</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//response가 실패했다면</span>
+<span class="w">          </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;DB에 데이터 넣기 실패&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>이벤트핸들러 호출을 위한 부분(onSubmit, onChange)과 렌더링 보강(아래 코드조각의 3~5행)을 위해 html 코드를 수정합니다. 이는 화면에 표시되는 리스트의 개수가 다를 떄 렌더링 오류가 발생하는 것을 수정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;container&quot;</span><span class="o">&gt;</span>
+
+<span class="w">  </span><span class="p">{</span><span class="nx">lists</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">lists</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">list</span><span class="p">,</span><span class="w"> </span><span class="nx">index</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">li</span><span class="w"> </span><span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">index</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">list</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
+<span class="w">  </span><span class="p">))}</span>
+
+<span class="w">  </span><span class="o">&lt;</span><span class="nx">form</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="w"> </span><span class="nx">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="nx">submitHandler</span><span class="p">}</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">input</span>
+<span class="w">      </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span>
+<span class="w">      </span><span class="nx">placeholder</span><span class="o">=</span><span class="s2">&quot;type something here&quot;</span>
+<span class="w">      </span><span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">changeHandler</span><span class="p">}</span>
+<span class="w">      </span><span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}</span>
+<span class="w">    </span><span class="o">/&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="o">&gt;</span><span class="nx">GO</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="err">/form&gt;</span>
+<span class="o">&lt;</span><span class="err">/div&gt;</span>
+</code></pre></div>
+</li>
+<li>
+<p>고로 최종적인 코드는 다음과 같습니다</p>
+<ul>
+<li>App.js</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="nx">logo</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;./logo.svg&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="s1">&#39;./App.css&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">React</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useState</span><span class="p">,</span><span class="w"> </span><span class="nx">useEffect</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="c1">//useState, useEffect를 사용하기 위해 react라이브러리에서 가져옵니다</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">axios</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;axios&#39;</span><span class="p">;</span><span class="w"> </span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">App</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//이곳에서 데이터베이스에 있는 값을 요청</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/values&#39;</span><span class="p">)</span><span class="w"> </span><span class="c1">//데이터를 요청하기 위해 get Request 보내는 곳, Node서버에서 지정해준 경로대로</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//백엔드(Node)가 처리 후 송신한 데이터가 이곳(respose 파라미터)로 수신</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`response </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span><span class="w"> </span><span class="c1">//어떤 값이 왔는지 콘솔로 확인</span>
+<span class="w">        </span><span class="nx">setLists</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="c1">//수신한 데이터를 이곳(setLists(38행))에 넣어줌</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[])</span>
+
+<span class="w">  </span><span class="c1">//changeHandler역할 : 56행 onChange컨트롤 = input박스에 입력을 할 때 onChangeEvent가 발생할 때 마다 value state를 변화시켜줌</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">changeHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//onChange핸들러 이벤트 발생시 다음 단계 수행</span>
+<span class="w">    </span><span class="nx">setValue</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">//submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">submitHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//이벤트를 받아옵니다</span>
+<span class="w">    </span><span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span><span class="w"> </span><span class="c1">//오동작 방지를 위해 기본 동작을 제거합니다</span>
+<span class="w">    </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/value&#39;</span><span class="p">,</span><span class="w"> </span><span class="c1">//데이터 전달을 위해 백엔드에 POST request를 보냅니다</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="c1">//키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//백엔드에서 처리 후 회신받은 데이터를 response에 받아옴</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//response가 성공했다면 &lt;- server.js 42행 참고</span>
+<span class="w">          </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`response.data : </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span><span class="w"> </span><span class="c1">//성공했을경우 결과값을 한 번 살펴봅니다</span>
+<span class="w">          </span><span class="nx">setLists</span><span class="p">([...</span><span class="nx">lists</span><span class="p">,</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">])</span><span class="w"> </span><span class="c1">//38행 리스트[0] (lists)에 값을 넣어주기. 원래 리스트에 있던 데이터에 이어서 넣어주기 위해 ...lists(3번째)로 작성</span>
+<span class="w">          </span><span class="nx">setValue</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//데이터 입력 후 input 박스 내용은 삭제</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//response가 실패했다면</span>
+<span class="w">          </span><span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;DB에 데이터 넣기 실패&quot;</span><span class="p">)</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">lists</span><span class="p">,</span><span class="w"> </span><span class="nx">setLists</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">([])</span><span class="w"> </span><span class="c1">//기본state는 빈 배열</span>
+<span class="w">  </span><span class="c1">// 데이터베이스에 저장된 값을 가져와서 화면에 보여주기전 이 State에 넣어둡니다</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">setValue</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useState</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">//기본state에 빈 스트링</span>
+<span class="w">  </span><span class="c1">//Input박스에 입력한 값이 이 state에 들어갑니다</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;App&quot;</span><span class="o">&gt;</span>
+<span class="w">      </span><span class="o">&lt;</span><span class="nx">header</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;App-header&quot;</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">img</span><span class="w"> </span><span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">logo</span><span class="p">}</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;App-logo&quot;</span><span class="w"> </span><span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;logo&quot;</span><span class="w"> </span><span class="o">/&gt;</span>
+
+<span class="w">        </span><span class="o">&lt;</span><span class="nx">div</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;container&quot;</span><span class="o">&gt;</span>
+<span class="w">          </span><span class="p">{</span><span class="nx">lists</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">lists</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">list</span><span class="p">,</span><span class="w"> </span><span class="nx">index</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">//38행의 lists</span>
+<span class="w">            </span><span class="o">&lt;</span><span class="nx">li</span><span class="w"> </span><span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">index</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">list</span><span class="p">.</span><span class="nx">value</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/li&gt; /</span><span class="o">/</span><span class="nx">map메소드</span><span class="w"> </span><span class="nx">사용시</span><span class="w"> </span><span class="nx">key값</span><span class="w"> </span><span class="nx">명시</span><span class="w"> </span><span class="nx">필수</span>
+<span class="w">          </span><span class="p">))}</span>
+<span class="w">          </span><span class="o">&lt;</span><span class="nx">form</span><span class="w"> </span><span class="nx">className</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="w"> </span><span class="nx">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="nx">submitHandler</span><span class="p">}</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">&lt;</span><span class="nx">input</span>
+<span class="w">              </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span>
+<span class="w">              </span><span class="nx">placeholder</span><span class="o">=</span><span class="s2">&quot;type something here&quot;</span>
+<span class="w">              </span><span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">changeHandler</span><span class="p">}</span>
+<span class="w">              </span><span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}</span><span class="w"> </span><span class="c1">//40행과 매핑</span>
+<span class="w">            </span><span class="o">/&gt;</span>
+<span class="w">            </span><span class="o">&lt;</span><span class="nx">button</span><span class="w"> </span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="o">&gt;</span><span class="nx">GO</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+<span class="w">          </span><span class="o">&lt;</span><span class="err">/form&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="err">/div&gt;        </span>
+
+<span class="w">      </span><span class="o">&lt;</span><span class="err">/header&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">App</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>디자인을 위해 app.css도 추가합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">App.css</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">375</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">input</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="kc">grey</span><span class="p">;</span>
+<span class="w">  </span><span class="k">float</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#f1f1f1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">button</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">float</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#2196F3</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">white</span><span class="p">;</span>
+<span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="kc">grey</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border-left</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">  </span><span class="k">cursor</span><span class="p">:</span><span class="w"> </span><span class="kc">pointer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="w"> </span><span class="nt">button</span><span class="p">:</span><span class="nd">hover</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#0b7dda</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">form</span><span class="p">.</span><span class="nc">example</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="k">clear</span><span class="p">:</span><span class="w"> </span><span class="kc">both</span><span class="p">;</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">table</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>프론트에서 백엔드로 데이터를 밀어넣을 준비가 되었습니다</p>
+<p><img alt="Multi container CICD/Untitled%203.png" src="Untitled%203.png" /></p>
+</li>
+</ol>
+<h2 id="dockerfile-for-react">Dockerfile 작성 - for React</h2>
+<hr />
+<ul>
+<li>
+<p>다음과 같이 frontend 디렉터리에 작성합니다</p>
+<p><img alt="Multi container CICD/Untitled%204.png" src="Untitled%204.png" /></p>
+</li>
+</ul>
+<h3 id="dockerfiledev">개발 환경용 Dockerfile.dev</h3>
+<pre><code>```s
+code Dockerfile.dev
+```
+
+```dockerfile
+FROM node:alpine 
+#도커허브에서 베이스 이미지를 가져옵니다
+WORKDIR /app
+#해당 어플의 소스코드들이 /app에 들어가게 됩니다
+COPY package.json ./
+#소스코드가 바뀔 때 마다 종속성을 다시 복사하지 않도록 먼저 작업합니다
+RUN npm install
+#종속성에 명시된 라이브러리, 프레임워크를 설치합니다
+COPY ./ ./
+#모든 소스코드를 WORKDIR로 복사합니다
+CMD ["npm", "run", "start"]
+#컨테이너를 로드할 때 실행할 명령어를 지정합니다
+```
+</code></pre>
+<h3 id="dockerfile">운영 환경용 Dockerfile</h3>
+<pre><code>```
+code Dockerfile
+```
+
+```dockerfile
+FROM node:alpine as builder
+WORKDIR /app
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+RUN npm run build
+#여기까지 nginx에서 사용할 파일을 build합니다
+
+#Nginx를 가동하고 윗 단계에서 생성한 빌드파일들을 nginx에 복사합니다
+FROM nginx
+EXPOSE 3000
+#nginx 컨테이너가 3000번 포트를 listen 하도록 합니다
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+#default.conf설정파일 미리 만들고 nginx컨테이너 안에 적용하도록 복사합니다
+COPY --from=builder /app/build /usr/share/nginx/html
+#빌드가 완료된 파일을 Nginx 루트 폴더에 복사합니다
+```
+</code></pre>
+<h3 id="nginx">라우팅용 Nginx 설정(정적파일 제공을 위한)</h3>
+<ul>
+<li>
+<p>frontend 디렉토리에 nginx폴더 생성</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">nginx</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">nginx</span>
+<span class="n">code</span><span class="w"> </span><span class="n">default.conf</span>
+</code></pre></div>
+</li>
+<li>
+<p>default.conf</p>
+<div class="highlight"><pre><span></span><code><span class="n">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">listen</span><span class="w"> </span><span class="m">3000</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="n">root</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="p">;</span>
+<span class="w">    </span><span class="n">index</span><span class="w"> </span><span class="n">index.html</span><span class="w"> </span><span class="n">index.htm</span><span class="p">;</span>
+<span class="w">    </span><span class="n">try_files</span><span class="w"> </span><span class="o">$</span><span class="n">uri</span><span class="w"> </span><span class="o">$</span><span class="n">uri</span><span class="o">/</span><span class="w"> </span><span class="o">/</span><span class="n">index.html</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>listen 3000 : nginx 서버가 사용할 포트를 오픈합니다</li>
+<li>location / : 만약 루트로 요청이 들어온다면</li>
+<li>root /usr/share/nginx/html : HTML파일(빌드파일)이 위치한 루트폴더를 설정합니다</li>
+<li>index index.html index.htm : 사이트의 Index페이지를 index.html로 설정합니다</li>
+<li>
+<p>try_files $uri $uri/ /index.html
+ : React Router를 사용해서 페이지간 이동할 때 필요한 옵션입니다</p>
+<p><aside>
+💡 React는 SPA이기 때문에 index.html단일 파일만 가지고 있으며, URL GET(REST)로 접속을 하려고 할 때고 index.html로 라우팅 시켜야합니다.
+하지만 NginX는 이것을 인지하지 않고 있기 때문에 어떤 요청이 들어와도 강제로 index.html에 라우팅 하도록 설정합니다</p>
+</aside>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="dockerfile-for-nodejs">Dockerfile 작성 - for NodeJS</h2>
+<hr />
+<ul>
+<li>당연히 backend 디렉터리에서 작업합니다</li>
+</ul>
+<h3 id="dockerfiledev_1">개발 환경용 Dockerfile.dev</h3>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>💡 너무 많이 반복했기 때문에 설명은 생략합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="n">backend</span>
+<span class="n">code</span><span class="w"> </span><span class="n">Dockerfile.dev</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">node:alpine</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="k">COPY</span><span class="w"> </span>./package.json<span class="w"> </span>./
+
+<span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>install
+
+<span class="k">COPY</span><span class="w"> </span>./<span class="w"> </span>./
+
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;npm&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;dev&quot;</span><span class="p">]</span>
+<span class="c">#npm run start가 아닌 npm run dev를 사용해서 nodemon모듈을 이용해 시작합니다</span>
+</code></pre></div>
+</div>
+<h3 id="dockerfile_1">운영 환경용 Dockerfile</h3>
+<pre><code>```s
+code Dockerfile
+```
+
+```dockerfile
+FROM node:alpine
+
+WORKDIR /app
+
+COPY ./package.json ./
+
+RUN npm install
+
+COPY ./ ./
+
+CMD ["npm", "run", "start"]
+```
+</code></pre>
+<h2 id="db">DB 세팅</h2>
+<hr />
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 DB작업은 중요한 데이터를 다루기 때문에 작은 실수로도 큰 재앙을 초래할 수 있습니다.
+따라서 개발환경은 도커를 이용하고 운영환경에서는 AWS RDS를 사용하였습니다</p>
+</div>
+<ol>
+<li>개발환경은 도커로 MySQL서버를 구축합니다</li>
+<li>
+<p>한글이 깨지는 것을 막기 위해 MySQL 인코딩을 UTF-8로 설정합니다.
+MySQL용 conf 파일을 이용해 설정할 수 있습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">mysql</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">mysql</span>
+<span class="n">code</span><span class="w"> </span><span class="n">my.cnf</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[mysqld]
+character-set-server=utf8
+
+[mysql]
+default-character-set=utf8
+
+[client]
+default-character-set=utf8
+</code></pre></div>
+</li>
+<li>
+<p>mysql 디렉터리를 생성하고 도커파일을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">Dockerfile</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">mysql:5.7</span>
+
+<span class="k">COPY</span><span class="w"> </span>./my.cnf<span class="w"> </span>/etc/mysql/conf.d/my.cnf
+</code></pre></div>
+</li>
+<li>
+<p>MySQL DB를 로드한 후 초기 db와 테이블 사용을 위한 초기 환경을 제작합니다</p>
+</li>
+<li>
+<p>디렉터리를 새로 만들고 sql문을 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">sqls</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">sqls</span>
+<span class="n">code</span><span class="w"> </span><span class="n">init.sql</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">DTOP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">myapp</span><span class="p">;</span>
+<span class="c1">-- 이전에 생성된 myapp DB가 존재할 경우 삭제</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">myapp</span><span class="p">;</span>
+<span class="n">USE</span><span class="w"> </span><span class="n">myapp</span><span class="p">;</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lists</span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="proxy-layer-nginx">Proxy Layer용 Nginx 설정</h2>
+<hr />
+<ol>
+<li>
+<p>루트폴더에 Nginx를 위한 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">nginx</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">nginx</span>
+</code></pre></div>
+</li>
+<li>
+<p>도커파일을 생성합니다(개발, 운영 환경 설정이 같기 때문에 .dev를 따로 생성하지 않습니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">Dockerfile</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
+<span class="c">#Nginx베이스 이미지 가져오기</span>
+<span class="k">COPY</span><span class="w"> </span>./default.conf<span class="w"> </span>/etc/nginx/conf.d/default.conf
+<span class="c">#작성된 conf 파일을 Nginx컨테이너에 복사하여 설정 적용하기</span>
+</code></pre></div>
+</li>
+<li>
+<p>Nginx 설정파일 생성을 시작합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">default.conf</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">upstream</span><span class="w"> </span><span class="n">frontend</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">server</span><span class="w"> </span><span class="n">frontend</span><span class="o">:</span><span class="m">3000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">upstream</span><span class="w"> </span><span class="n">backend</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">server</span><span class="w"> </span><span class="n">backend</span><span class="o">:</span><span class="m">5000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">listen</span><span class="w"> </span><span class="m">80</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">frontend</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="n">api</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">backend</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">location</span><span class="w"> </span><span class="o">/</span><span class="n">sockjs</span><span class="o">-</span><span class="n">node</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">frontend</span><span class="p">;</span>
+<span class="w">        </span><span class="n">proxy_http_version</span><span class="w"> </span><span class="m">1.1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="n">Upgrade</span><span class="w"> </span><span class="o">$</span><span class="n">http_upgrade</span><span class="p">;</span>
+<span class="w">        </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="n">Connection</span><span class="w"> </span><span class="s">&quot;Upgrade&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>아래 'frontend', 'backend'는 docker-compose 파일에서 명시합니다</li>
+<li>upstream frontend : 3000번 포트에서 frontend가 동작중인 것을 명시합니다</li>
+<li>upstream backend : 5000번 포트에서 backend가 동작중인 것을 명시합니다</li>
+<li>listen 80 : Nginx 서버 80번 포트를 Listening(오픈) 합니다</li>
+<li>location / : 아래에 나오는 조건에 해당하는 라우팅 설정이 없으면 frontend로 라우팅 합니다</li>
+<li>location /api : /api로 들어오는 요청은 backend로 보내줍니다</li>
+<li>
+<p>location /sockjs-node : 리액트 개발환경에서 발생하는 에러(↓)를 처리하기 위해 작성합니다</p>
+<p><img alt="Multi container CICD/Untitled%205.png" src="Untitled%205.png" /></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="docker-compose">Docker compose 작성</h2>
+<hr />
+<ul>
+<li>
+<p>디렉터리 구조는 다음과 같습니다</p>
+<p><img alt="Multi container CICD/Untitled%206.png" src="Untitled%206.png" /></p>
+</li>
+<li>
+<p>루트 폴더에서 컴포즈 파일을 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code>version:<span class="w"> </span><span class="s2">&quot;3&quot;</span>
+services:
+frontend:
+<span class="w">  </span>build:<span class="w"> </span>#개발환경의<span class="w"> </span>Dockerfile이<span class="w"> </span>어디있는지<span class="w"> </span>알려줍니다
+<span class="w">    </span>dockerfile:<span class="w"> </span>Dockerfile.dev
+<span class="w">    </span>context:<span class="w"> </span>./frontend
+<span class="w">  </span>container_name:<span class="w"> </span>app_frontend
+<span class="w">  </span>environment:
+<span class="w">    </span>-<span class="w"> </span><span class="nv">CHOKIDAR_USEPOLLING</span><span class="o">=</span>true
+<span class="w">  </span>volumes:<span class="w"> </span>#코드수정후<span class="w"> </span>이미지를<span class="w"> </span>다시<span class="w"> </span>빌드할<span class="w"> </span>필요<span class="w"> </span>없도록<span class="w"> </span>매핑합니다
+<span class="w">    </span>-<span class="w"> </span>/app/node_modules<span class="w"> </span>#매핑에서<span class="w"> </span>제외합니다
+<span class="w">    </span>-<span class="w"> </span>./frontend:/app<span class="w"> </span>#나머지는<span class="w"> </span>전부<span class="w"> </span>이곳으로<span class="w"> </span>매핑합니다
+<span class="w">  </span>stdin_open:<span class="w"> </span><span class="nb">true</span><span class="w"> </span>#리액트<span class="w"> </span>앱을<span class="w"> </span>종료할<span class="w"> </span>때<span class="w"> </span>발생하는<span class="w"> </span>버그를<span class="w"> </span>해결해줍니다
+nginx:
+<span class="w">  </span>restart:<span class="w"> </span>always<span class="w"> </span>#proxy역할을<span class="w"> </span>하고<span class="w"> </span>있는<span class="w"> </span>Nginx가<span class="w"> </span>죽어버리면<span class="w"> </span>시스템<span class="w"> </span>전체가<span class="w"> </span>다운되기<span class="w"> </span>때문에<span class="w"> </span>얘는<span class="w"> </span>항상<span class="w"> </span>재시작
+<span class="w">  </span>#재시작<span class="w"> </span>정책
+<span class="w">  </span>#no<span class="w"> </span>:<span class="w"> </span>어떤<span class="w"> </span>상황에도<span class="w"> </span>재시작<span class="w"> </span>하지<span class="w"> </span>않음
+<span class="w">  </span>#always<span class="w"> </span>:<span class="w"> </span>항상<span class="w"> </span>재시작
+<span class="w">  </span>#on-failure<span class="w"> </span>:<span class="w"> </span>on-failure에러코드와<span class="w"> </span>함께<span class="w"> </span>컨테이너가<span class="w"> </span>멈추었을<span class="w"> </span>때만<span class="w"> </span>재시작
+<span class="w">  </span>#unless-stopped<span class="w"> </span>:<span class="w"> </span>개발자가<span class="w"> </span>임의로<span class="w"> </span>멈추려<span class="w"> </span>하는<span class="w"> </span>경우를<span class="w"> </span>제외하고<span class="w"> </span>항상<span class="w"> </span>재시작
+<span class="w">  </span>build:
+<span class="w">    </span>dockerfile:<span class="w"> </span>Dockerfile
+<span class="w">    </span>context:<span class="w"> </span>./nginx
+<span class="w">  </span>container_name:<span class="w"> </span>app_proxy_nginx
+<span class="w">  </span>ports:<span class="w"> </span>-<span class="s2">&quot;3000:80&quot;</span>
+backend:
+<span class="w">  </span>build:
+<span class="w">    </span>dockerfile:<span class="w"> </span>Dockerfile.dev
+<span class="w">    </span>context:<span class="w"> </span>./backend
+<span class="w">  </span>container_name:<span class="w"> </span>app_backend
+<span class="w">  </span>volumes:
+<span class="w">    </span>-<span class="w"> </span>/app/node_modules
+<span class="w">    </span>-<span class="w"> </span>./backend:/app
+mysql:
+<span class="w">  </span>build:<span class="w"> </span>./mysql
+<span class="w">  </span>restart:<span class="w"> </span>unless-stopped
+<span class="w">  </span>container_name:<span class="w"> </span>app_mysql
+ports:<span class="w"> </span>-<span class="s2">&quot;3306:3306&quot;</span>
+volumes:
+<span class="w">  </span>-<span class="w"> </span>./mysql/mysql_data:/var/lib/mysql
+<span class="w">  </span>-<span class="w"> </span>./mysql/sqls/:/docker-entrypoint-initdb.d/
+environment:<span class="w"> </span>#환경변수
+<span class="w">  </span>MYSQL_ROOT_PASSWORD:<span class="w"> </span>password
+<span class="w">  </span>MYSQL_DATABASE:<span class="w"> </span>myapp
+</code></pre></div>
+</li>
+<li>
+<p>작성이 완료되었으면 컴포즈를 실행해봅니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span>
+</code></pre></div>
+</li>
+<li>
+<p>ERROR : -initialize specified but the data directory has files in it. Aborting. 발생시
+볼륨으로 연결된 mysql 데이터 디렉터리를 날려줍니다</p>
+</li>
+</ul>
+<h2 id="ready-for-cicd">ready for CICD</h2>
+<hr />
+<h3 id="remove-mysql-container">remove MySQL Container</h3>
+<ol>
+<li>AWS환경에서는 DB로 RDS를 이용하기 때문에 MySQL 컨테이너가 필요하지 않으니 삭제합니다</li>
+<li>
+<p>docker-compose.yml 에서 MySQL코드를 제거합니다</p>
+<p><img alt="Multi container CICD/Untitled%207.png" src="Untitled%207.png" /></p>
+</li>
+</ol>
+<h2 id="travis-ci-yaml">Travis CI YAML 작성</h2>
+<ol>
+<li>
+<p>루트 폴더에 트레비스 설정 파일을 작성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">.travis.yml</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">.travis.yml</span><pre><span></span><code><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
+
+<span class="nt">sudo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">required</span>
+
+<span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="c1">#Travis CI에게 도커 환경으로 만들것이라고 선언해주기</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+
+<span class="nt">before_install</span><span class="p">:</span><span class="w"> </span><span class="c1">#구성된 도커 환경에서 Dockerfile.dev를 이용해 이미지 생성</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/build-test -f ./frontend/Dockerfile.dev ./frontend</span>
+
+<span class="nt">script</span><span class="p">:</span><span class="w"> </span><span class="c1">#생성된 테스트 이미지를 이용해 테스트 수행하기</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker run -e CI=true dotoryeee/build-test npm run test</span>
+
+<span class="nt">after_success</span><span class="p">:</span><span class="w"> </span><span class="c1">#테스트가 성공하면 본격적으로 운영버전을 빌드</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/docker-frontend ./frontend</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/docker-backend ./backend</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/docker-nginx ./nginx</span>
+<span class="w">  </span><span class="c1">#도커 허브에 로그인</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo &quot;$DOCKER_HUB_PASSWORD&quot; | docker login -u &quot;$DOCKER_HUB_ID&quot; --password-stdin</span>
+<span class="w">  </span><span class="c1">#도커 허브에 이미지 푸시</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push dotoryeee/docker-frontend</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push dotoryeee/docker-backend</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push dotoryeee/docker-nginx</span>
+</code></pre></div>
+</li>
+<li>
+<p>계정 정보는 Travis CI 환경변수에 입력합니다</p>
+<p><img alt="Multi container CICD/Untitled%208.png" src="Untitled%208.png" /></p>
+</li>
+<li>
+<p>깃헙에 푸시하고 한 번 지켜봅니다</p>
+<p><img alt="Multi container CICD/Untitled%209.png" src="Untitled%209.png" /></p>
+</li>
+<li>
+<p>환경변수도 잘 가져오는 것을 확인할 수 있습니다</p>
+<p><img alt="Multi container CICD/Untitled%2010.png" src="Untitled%2010.png" /></p>
+</li>
+<li>
+<p>헹</p>
+<p><img alt="Multi container CICD/Untitled%2011.png" src="Untitled%2011.png" /></p>
+</li>
+<li>
+<p>도커 허브에 이미지가 잘 업로드 된 것을 확인할 수 있습니다</p>
+<p><img alt="Multi container CICD/Untitled%2012.png" src="Untitled%2012.png" /></p>
+</li>
+</ol>
+<h2 id="aws">AWS</h2>
+<hr />
+<h3 id="dockerrunawsjson">Dockerrun.aws.json ?</h3>
+<ul>
+<li>Dockerfile이 다수 존재하는 경우 Beanstalk이 어떻게 처리해야 하는지 프로세스를 모르기 때문에 Dockerrun.aws.json을 이용해 '작업 정의(Task Definition)'를 명시해줄 수 있으며 작업 정의를 등록할 떄는 '컨테이너 정의(Container Definition)'도 명시해야 합니다</li>
+<li>따라서 멀티컨테이너 환경에서만 필요합니다</li>
+<li>작업정의에서 할 수 있는 것<ul>
+<li>컨테이너에서 사용할 도커 이미지</li>
+<li>컨테이너를 띄울 vCPU, 메모리</li>
+<li>컨테이너가 사용할 도커 네트워크</li>
+<li>작업이 호스팅되는 인프라</li>
+<li>작업에 사용할 로깅 구성</li>
+<li>AWS IAM</li>
+</ul>
+</li>
+</ul>
+<h3 id="ecs">ECS 작업 정의 파일 작성</h3>
+<ol>
+<li>
+<p>루트 폴더에 JSON 파일을 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">Dockerrun.aws.json</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Dockerrun.aws.json</span><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;AWSEBDockerrunVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;containerDefinitions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frontend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dotoryeee/docker-frontend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frontend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;essential&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dotoryeee/docker-backend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;essential&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginx&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dotoryeee/docker-nginx&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nginx&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;essential&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;portMappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;hostPort&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;containerPort&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;links&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;frontend&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="mi">128</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너 정의 간단 설명</p>
+<ul>
+<li>name : 컨테이너 이름</li>
+<li>hostname : 이것을 이용해서 도커 컴포즈를 이용해 생성된 다른 컨테이너에서 접근 가능</li>
+<li>essential : 컨테이너가 실패할 경우 작업을 중지해야하면 true. 필수적이지 않은 컨테이너는 인스턴스의 나머지 컨테이너에 영향을 미치지 않고 종료되거나 충돌할 수 있습니다
+지금 작업에선 Nginx가 죽으면 아무것도 동작할 수 없기 때문에 Nginx만 true 입니다</li>
+<li>
+<p>links : 연결할 컨테이너의 목록. 연결된 컨테이너는 서로를 검색하고 통신할 수 있습니다</p>
+<p>현재 links처럼 설정하면 아래 그림 처럼 연결됩니다</p>
+<p><img alt="Multi container CICD/Untitled%2013.png" src="Untitled%2013.png" /></p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="aws-beanstalk">AWS Beanstalk 생성</h3>
+<ul>
+<li>
+<p>멀티컨테이너 플랫폼으로 생성합니다</p>
+<p><img alt="Multi container CICD/Untitled%2014.png" src="Untitled%2014.png" /></p>
+</li>
+</ul>
+<h3 id="aws-rds">AWS RDS 생성</h3>
+<ol>
+<li>
+<p>RDS접속을 위해 Docker-compose 파일에 다음과 같이 환경변수를 추가합니다</p>
+<div class="highlight"><pre><span></span><code><span class="nt">environment</span><span class="p">:</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">MYSQL_HOST</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
+<span class="w">  </span><span class="nt">MYSQL_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">root</span>
+<span class="w">  </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span>
+<span class="w">  </span><span class="nt">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myapp</span>
+<span class="w">  </span><span class="nt">MYSQL_PORT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3306</span>
+</code></pre></div>
+</li>
+<li>
+<p>RDS접속을 위해 /backend/db.js 파일에서 환경변수를 불러옵니다</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mysql</span><span class="p">.</span><span class="nx">createPool</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">connectionLimit</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">host</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MYSQL_HOST</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MYSQL_USER</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MYSQL_ROOT_PASSWORD</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">database</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MYSQL_DATABASE</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">port</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MYSQL_PORT</span>
+<span class="p">});</span>
+</code></pre></div>
+</li>
+<li>
+<p>AWS RDS에 접속해서 인스턴스를 생성합니다</p>
+<p><img alt="Multi container CICD/Untitled%2015.png" src="Untitled%2015.png" /></p>
+</li>
+<li>
+<p>환경변수에 맞춰서 세팅해줍니다</p>
+<p><img alt="Multi container CICD/Untitled%2016.png" src="Untitled%2016.png" /></p>
+</li>
+<li>
+<p>편하게 추가 설정에서 초기 DB도 미리 만들어줍니다</p>
+<p><img alt="Multi container CICD/Untitled%2017.png" src="Untitled%2017.png" /></p>
+</li>
+</ol>
+<h3 id="aws_1">AWS 보안그룹</h3>
+<ol>
+<li>
+<p>인바운드 옵션 없이 SG를 생성합니다</p>
+<p><img alt="Multi container CICD/Untitled%2018.png" src="Untitled%2018.png" /></p>
+</li>
+<li>
+<p>인바운드에 SG스스로를 소스로 등록하고 3306 포트를 허용합니다</p>
+<p>이는 VPC 내부에서만 통신을 허용하게 합니다</p>
+<p><img alt="Multi container CICD/Untitled%2019.png" src="Untitled%2019.png" /></p>
+</li>
+<li>
+<p>RDS에 방금 생성한 보안그룹을 등록합니다</p>
+<p><img alt="Multi container CICD/Untitled%2020.png" src="Untitled%2020.png" /></p>
+</li>
+<li>
+<p>수정사항을 즉시 적용합니다</p>
+<p><img alt="Multi container CICD/Untitled%2021.png" src="Untitled%2021.png" /></p>
+</li>
+<li>
+<p>이번엔 Beanstalk에 보안그룹을 적용합니다
+Beanstalk의 동작환경(env) → Configuration → Instance의 Edit 메뉴에 진입합니다</p>
+<p><img alt="Multi container CICD/Untitled%2022.png" src="Untitled%2022.png" /></p>
+</li>
+<li>
+<p>방금 만든 SG를 적용합니다</p>
+<p><img alt="Multi container CICD/Untitled%2023.png" src="Untitled%2023.png" /></p>
+</li>
+</ol>
+<h3 id="beanstalk-rds">Beanstalk ↔ RDS 연결을 위한 환경변수 설정</h3>
+<ol>
+<li>빈스톡 안에있는 컨테이너들은 MySQL과 소통할 떄 환경변수를 인식할 수 없기 때문에 따로 설정해야 합니다</li>
+<li>
+<p>RDS의 엔드포인트(접속)주소를 복사합니다</p>
+<p><img alt="Multi container CICD/Untitled%2024.png" src="Untitled%2024.png" /></p>
+</li>
+<li>
+<p>빈스톡 환경 구성에서 Software를 편집합니다</p>
+<p><img alt="Multi container CICD/Untitled%2025.png" src="Untitled%2025.png" /></p>
+</li>
+<li>
+<p>다음과 같이 환경변수를 설정하고 저장합니다</p>
+<p><img alt="Multi container CICD/Untitled%2026.png" src="Untitled%2026.png" /></p>
+</li>
+</ol>
+<h2 id="_3">배포 설정</h2>
+<ol>
+<li>
+<p>.travis.yml에 다음 코드를 추가합니다</p>
+<div class="highlight"><span class="filename">.travis.yml</span><pre><span></span><code><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticbeanstalk</span>
+<span class="w">  </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ap-northeast-2&quot;</span>
+<span class="w">  </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dotoryeee_FIRST_ECS_APP&quot;</span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dotoryeeefirstecsapp-env&quot;</span>
+<span class="w">  </span><span class="nt">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticbeanstalk-ap-northeast-2-737382971423</span>
+<span class="w">  </span><span class="nt">bucket_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dotoryeee_FIRST_ECS_APP&quot;</span>
+<span class="w">  </span><span class="nt">on</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+
+<span class="w">  </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_ACCESS_KEY</span>
+<span class="w">  </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_SECRET_ACCESS_KEY</span>
+</code></pre></div>
+</li>
+<li>
+<p>travis 환경변수에 AWS API KEY정보를 추가해줍니다</p>
+<p><img alt="Multi container CICD/Untitled%2027.png" src="Untitled%2027.png" /></p>
+</li>
+</ol>
+<h2 id="_4">최종 푸시</h2>
+<ol>
+<li>git push</li>
+<li>
+<p>빌드 성공</p>
+<p><img alt="Multi container CICD/Untitled%2028.png" src="Untitled%2028.png" /></p>
+</li>
+<li>
+<p>자동으로 빈스톡에 배포됩니다</p>
+<p><img alt="Multi container CICD/Untitled%2029.png" src="Untitled%2029.png" /></p>
+</li>
+</ol>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a00a7c5e.min.js"></script>
+      
+    
+  </body>
+</html>

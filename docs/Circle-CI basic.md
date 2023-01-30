@@ -38,50 +38,50 @@
     
 9. yml파일 위치는 다음과 같습니다
     
-    `
+    ```s
     .circleci/config.yml
-    `
+    ```
     
 10. config.yml내용은 다음과 같습니다
-```
-version: 2.1
+    ```yaml
+    version: 2.1
 
-orbs:
-  aws-cli: circleci/aws-cli@1.3.1
-  aws-s3: circleci/aws-s3@2.0
+    orbs:
+      aws-cli: circleci/aws-cli@1.3.1
+      aws-s3: circleci/aws-s3@2.0
 
-jobs:
-  deploy-s3:
-    executor: aws-cli/default
-    steps:
-      - attach_workspace:
-          at: .
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-      - run: ls /home/circleci/project
-      - aws-s3/sync:
-          arguments: --acl public-read
-          aws-region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: .
-          to: "s3://nuspam-static/frontend"
-      - aws-s3/copy:
-          arguments: "--dryrun"
-          from: .
-          to: "s3://nuspam-static/frontend"
-
-workflows:
-  deploy-frontend:
     jobs:
-      - deploy-s3:
-        filters:
-          branches:
-            only: main
-    
-```
+      deploy-s3:
+        executor: aws-cli/default
+        steps:
+          - attach_workspace:
+              at: .
+          - persist_to_workspace:
+              root: .
+              paths:
+                - .
+          - run: ls /home/circleci/project
+          - aws-s3/sync:
+              arguments: --acl public-read
+              aws-region: AWS_REGION
+              aws-access-key-id: AWS_ACCESS_KEY_ID
+              aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+              from: .
+              to: "s3://nuspam-static/frontend"
+          - aws-s3/copy:
+              arguments: "--dryrun"
+              from: .
+              to: "s3://nuspam-static/frontend"
+
+    workflows:
+      deploy-frontend:
+        jobs:
+          - deploy-s3:
+            filters:
+              branches:
+                only: main
+        
+    ```
 ## AWS CodeDeploy for EC2
 
 1. AWS CLI접속용 User에 CodeDeploy FA 권한을 부여합니다
@@ -114,58 +114,58 @@ workflows:
     
 8. EC2 인스턴스에 CodeDeploy 에이전트를 설치합니다
     
-```
-aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
-sudo yum install -y ruby wget
-chmod +x ./install
-sudo ./install auto
-sudo service codedeploy-agent start
-sudo service codedeploy-agent status
-```
- 
+    ```s
+    aws s3 cp s3://aws-codedeploy-ap-northeast-2/latest/install . --region ap-northeast-2
+    sudo yum install -y ruby wget
+    chmod +x ./install
+    sudo ./install auto
+    sudo service codedeploy-agent start
+    sudo service codedeploy-agent status
+    ```
+    
 9. CircleCI config.yml을 다음과 같이 적당하게 작성합니다
     
-```
-version: "2.1"
-orbs:
-  aws-code-deploy: circleci/aws-code-deploy@2.0.0
-  aws-s3: circleci/aws-s3@2.0
-  aws-cli: circleci/aws-cli@1.3.1
+    ```yaml
+    version: "2.1"
+    orbs:
+      aws-code-deploy: circleci/aws-code-deploy@2.0.0
+      aws-s3: circleci/aws-s3@2.0
+      aws-cli: circleci/aws-cli@1.3.1
 
-jobs:
-  deploy-step1:
-    executor: aws-cli/default
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-      - aws-s3/sync:
-          aws-region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: .
-          to: "s3://nuspam-static/backend/"
-
-workflows:
-  deploy_application:
     jobs:
-      - deploy-step1
-      - aws-code-deploy/deploy:
-          requires:
-            - deploy-step1
-          application-name: nuspam-api
-          bundle-bucket: nuspam-static
-          bundle-key: app
-          deployment-group: api-server
-          service-role-arn: arn:aws:iam::737382971423:role/Role_for_codedeploy
-          filters:
-            branches:
-              only: main
-```
+      deploy-step1:
+        executor: aws-cli/default
+        steps:
+          - checkout
+          - attach_workspace:
+              at: .
+          - persist_to_workspace:
+              root: .
+              paths:
+                - .
+          - aws-s3/sync:
+              aws-region: AWS_REGION
+              aws-access-key-id: AWS_ACCESS_KEY_ID
+              aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+              from: .
+              to: "s3://nuspam-static/backend/"
+
+    workflows:
+      deploy_application:
+        jobs:
+          - deploy-step1
+          - aws-code-deploy/deploy:
+              requires:
+                - deploy-step1
+              application-name: nuspam-api
+              bundle-bucket: nuspam-static
+              bundle-key: app
+              deployment-group: api-server
+              service-role-arn: arn:aws:iam::737382971423:role/Role_for_codedeploy
+              filters:
+                branches:
+                  only: main
+    ```
     
 10. CircleCI에서 작업이 완료되면
     
@@ -177,15 +177,15 @@ workflows:
     
 12. 인스턴스 초기에 python3 정지하는 스크립트 에러가 발생할 경우 다음과 같이 스크립트를 작성하면 됩니다.
     
-```
-#!/bin/bash
-if pgrep -x python3 >/dev/null
-then
-  sudo kill $(pgrep -f python3)
-else
-  exit 0
-fi
-```
+    ```s
+    #!/bin/bash
+    if pgrep -x python3 >/dev/null
+    then
+      sudo kill $(pgrep -f python3)
+    else
+      exit 0
+    fi
+    ```
     
 13. 배포 후 flask가 종료되버리는 경우 다음과 같이 명령 마지막에 & 을 삽입해 백그라운드에 동작을 유도하면 됩니다
     
