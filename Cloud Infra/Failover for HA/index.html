@@ -1,0 +1,1271 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/">
+      
+      
+        <link rel="next" href="../Prometheus%20and%20Grafana/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+    
+    
+      
+        <title>Failover for HA - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-22LC2P5RV5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#failover-for-ha" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Failover for HA
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        title1 1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AWS/" class="md-nav__link">
+        AWS
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Cloud Infra
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Cloud Infra
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3-Tier%20Basic%20Infra/" class="md-nav__link">
+        3-Tier 기본 인프라 구성
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API%20Gateway%20with%20Lambda/" class="md-nav__link">
+        API Gateway with Lambda
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
+        Access S3, DynamoDB with Lambda
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Failover for HA
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Failover for HA
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    목표
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    오케스트레이터 세팅
+  </a>
+  
+    <nav class="md-nav" aria-label="오케스트레이터 세팅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    오케스트레이터 컨테이너 로드
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    오케스트레이터를 위한 DB 설정
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    오케스트레이터 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ha" class="md-nav__link">
+    HA(고가용성) 테스트
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fail-over" class="md-nav__link">
+    Fail-Over 이후 복구
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-fail-over" class="md-nav__link">
+    AUTO Fail-Over
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prometheus%20and%20Grafana/" class="md-nav__link">
+        Prometheus and Grafana
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
+        Transaction on GCP Spanner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VPC%20Endpoint%20with%20Role/" class="md-nav__link">
+        VPC Endpoint with Role
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          DevOps
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          DevOps
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/CICD%20on%20Single%20container/" class="md-nav__link">
+        CICD on Single container
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/Circle-CI%20basic/" class="md-nav__link">
+        Circle-CI Basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/Multi%20container%20CICD/" class="md-nav__link">
+        Multi container CICD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%20Proxy%20Layer%20for%20MySQL/" class="md-nav__link">
+        Docker Proxy Layer for MySQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%20basics/" class="md-nav__link">
+        Docker basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%20compose%20web%20GUI/" class="md-nav__link">
+        Docker compose and web GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker/Docker%20volume%20with%20MySQL/" class="md-nav__link">
+        Docker volume with MySQL
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Projects/Project-1/" class="md-nav__link">
+        Project - 1
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Terraform
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Terraform
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20AWS%20IAM/" class="md-nav__link">
+        Terraform AWS IAM
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20Backend/" class="md-nav__link">
+        Terraform Backend
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20Practice/" class="md-nav__link">
+        Terraform Practice
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20deploy%20VPC%20and%20Subnet/" class="md-nav__link">
+        Terraform deploy VPC and Subnet
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20deploy%20VPC/" class="md-nav__link">
+        Terraform deploy VPC
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    목표
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    오케스트레이터 세팅
+  </a>
+  
+    <nav class="md-nav" aria-label="오케스트레이터 세팅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    오케스트레이터 컨테이너 로드
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    오케스트레이터를 위한 DB 설정
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    오케스트레이터 설정
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ha" class="md-nav__link">
+    HA(고가용성) 테스트
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fail-over" class="md-nav__link">
+    Fail-Over 이후 복구
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-fail-over" class="md-nav__link">
+    AUTO Fail-Over
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="failover-for-ha">Failover for HA</h1>
+<h2 id="_1">목표</h2>
+<hr />
+<ul>
+<li>오케스트레이터를 이용한 HA 구현</li>
+<li>오케스트레이터 GUI도구를 이용한 쉬운 이해</li>
+<li>Master가 다운되면 자동으로 Fail-Over 동작</li>
+<li>인위적으로 마스터를 다운시켜서 동작 확인</li>
+<li>사람의 개입 없이 자동으로 FailOver가 이뤄지도록 자동화를 구현</li>
+</ul>
+<h2 id="_2">오케스트레이터 세팅</h2>
+<h3 id="_3">오케스트레이터 컨테이너 로드</h3>
+<hr />
+<ol>
+<li>
+<p>오케스트레이터 컨테이너를 로드합니다(openarkcode/orchestrator)</p>
+<p>이전에 생성한 mybridge에 연결하며 호스트포트 3000에 매핑합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="w"> </span><span class="n">mybridge</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="o">-</span><span class="n">alias</span><span class="o">=</span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">openarkcode</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">:</span><span class="n">latest</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너가 잘 로드되었는지 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;</span>
+</code></pre></div>
+<p><img alt="Failover for HA/Untitled.png" src="Untitled.png" /></p>
+</li>
+</ol>
+<h3 id="db">오케스트레이터를 위한 DB 설정</h3>
+<hr />
+<ol>
+<li>
+<p>이전의 작업을 이어서 하기 위해 DB컨테이너를 재시작 합니다</p>
+<p>컨테이너(도커 호스트)를 종료하지 않았다면 생략합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="n">db003</span>
+</code></pre></div>
+</li>
+<li>
+<p>db001 SQL DB에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+</li>
+<li>
+<p>오케스트레이터를 위한 MySQL 유저 생성합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;orc_client_password&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>필요한 권한을 부여합니다 1</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">SUPER</span><span class="p">,</span><span class="w"> </span><span class="n">PROCESS</span><span class="p">,</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">,</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>필요한 권한을 부여합니다 2</p>
+<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">slave_master_info</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">http</span><span class="o">://</span><span class="p">{</span><span class="n">DOCKER</span><span class="w"> </span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span><span class="o">:</span><span class="m">3000</span>
+<span class="o">//</span><span class="n">EC2</span><span class="w"> </span>인스턴스를<span class="w"> </span>사용하는<span class="w"> </span>경우<span class="w"> </span>네트워크<span class="w"> </span>인바운드에<span class="w"> </span><span class="m">3000</span>번<span class="w"> </span>포트를<span class="w"> </span>열어줘야합니다
+</code></pre></div>
+</li>
+</ol>
+<h3 id="_4">오케스트레이터 설정</h3>
+<hr />
+<ol>
+<li>
+<p>오케스트레이터에 컨테이너를 추가하기 위해 Clusters → Discover로 진입합니다</p>
+<p><img alt="Failover for HA/Untitled%201.png" src="Untitled%201.png" /></p>
+</li>
+<li>
+<p>컨테이너의 이름과 (호스트)포트 번호를 등록합니다</p>
+<p><img alt="Failover for HA/Untitled%202.png" src="Untitled%202.png" /></p>
+</li>
+<li>
+<p>오케스트레이터가 db001을 찾는데 성공했습니다</p>
+<p><img alt="Failover for HA/Untitled%203.png" src="Untitled%203.png" /></p>
+</li>
+<li>
+<p>Dashboard에서 db001 컨테이너의 ID를 눌러 진입합니다</p>
+<p><img alt="Failover for HA/Untitled%204.png" src="Untitled%204.png" /></p>
+</li>
+<li>
+<p>오케스트레이터가 SLAVE로 연결된 DB까지 잘 찾았습니다</p>
+<p><img alt="마스터와 슬레이브가 연결될 때 까지 시간이 조금 걸릴 수 있습니다 " src="Untitled%205.png" /></p>
+<p>마스터와 슬레이브가 연결될 때 까지 시간이 조금 걸릴 수 있습니다 </p>
+</li>
+<li>
+<p>이때 컨테이너 ID가 아닌 별칭으로 콘솔을 제어하고 싶으면 컨테이너를 생성할 때 -h 옵션으로 hostname을 부여하면 됩니다</p>
+</li>
+</ol>
+<h2 id="ha">HA(고가용성) 테스트</h2>
+<hr />
+<ol>
+<li>
+<p>장애상황을 만들기 위해 마스터DB 컨테이너(db001)을 정지합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너가 정지되었습니다</p>
+<p><img alt="Failover for HA/Untitled%206.png" src="Untitled%206.png" /></p>
+</li>
+<li>
+<p>오케스트레이터가 db001에 접속 불가능해진것을 확인했고, Recover가 필요함을 안내합니다</p>
+<p><img alt="Failover for HA/Untitled%207.png" src="Untitled%207.png" /></p>
+</li>
+<li>
+<p>Recover(복구) 메뉴에서 db002를 선택합니다</p>
+<p><img alt="Failover for HA/Untitled%208.png" src="Untitled%208.png" /></p>
+</li>
+<li>
+<p>장애가 발생한 db001은 클러스터에서 격리되고</p>
+<p><img alt="Failover for HA/Untitled%209.png" src="Untitled%209.png" /></p>
+</li>
+<li>
+<p>db002가 Master로 승격되었으며, db003은 Slave로써 db002를 Master 바라보고 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2010.png" src="Untitled%2010.png" /></p>
+</li>
+<li>
+<p>마스터가 된 db002는 ReadOnly 값이 OFF 된 것을 콘솔에서 확인할 수 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2011.png" src="Untitled%2011.png" /></p>
+</li>
+<li>
+<p>터미널에서 직접 확인해볼수도 있습니다</p>
+<p>db002 SQL DB에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+</li>
+<li>
+<p>slave 상태조회 명령을 실행합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span>\<span class="n">G</span>
+</code></pre></div>
+</li>
+<li>
+<p>현재 Slave 상태가 아니기 때문에 empty set을 리턴합니다</p>
+<p><img alt="Failover for HA/Untitled%2012.png" src="Untitled%2012.png" /></p>
+</li>
+</ol>
+<h2 id="fail-over">Fail-Over 이후 복구</h2>
+<hr />
+<ol>
+<li>
+<p>기존에 Master였던 db001 컨테이너를 다시 구동합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너가 접속 가능한 상태이지만 여전히 클러스터에서 분리되어 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2013.png" src="Untitled%2013.png" /></p>
+</li>
+<li>
+<p>db001 컨테이너의 MySQL에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+</li>
+<li>
+<p>db001을 slave로 동작시키기 위해 read_only로 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">read_only</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>db002 MASTER를 바라보도록 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>slave로써의 동작을 시작합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">start</span><span class="w"> </span><span class="n">slave</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>slave 상태를 확인합니다</p>
+<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
+</code></pre></div>
+</li>
+<li>
+<p>db001이 db002를 마스터로 바라보고 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2014.png" src="Untitled%2014.png" /></p>
+</li>
+<li>
+<p>콘솔에서 db002가 Master로써 동작하는 것을 확인할 수 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2015.png" src="Untitled%2015.png" /></p>
+</li>
+<li>
+<p>페일오버가 발생했음을 확인하기 위해  콘솔에서 페일오버 내역을  Acknowledge 처리합니다</p>
+<p><img alt="ack등 코멘트를 입력해서 확인" src="Untitled%2016.png" /></p>
+<p>ack등 코멘트를 입력해서 확인</p>
+</li>
+</ol>
+<h2 id="auto-fail-over">AUTO Fail-Over</h2>
+<hr />
+<ol>
+<li>
+<p>오케스트레이터 컨테이너에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+</code></pre></div>
+</li>
+<li>
+<p>오케스트레이터 설정 파일을 수정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">orchestrator.conf.json</span>
+</code></pre></div>
+</li>
+<li>
+<p>JSON에 다음 값을 수정 합니다. db001, db002간의 Failover만 테스트 하기 위해 db003이 마스터로 승격되는 일이 발생하지 않도록 제외해둡니다.</p>
+<p>이대로 구현되면 db001 ↔ db002 간에 장애 발생시 번갈아가며 Master로 승격됩니다</p>
+<div class="highlight"><pre><span></span><code>&quot;RecoverMasterClusterFilters&quot;:[
+&quot;*&quot;
+],
+&quot;PromotionIgnoreHostnameFilters&quot;:[
+&quot;db003&quot;
+]
+</code></pre></div>
+</li>
+<li>
+<p>오케스트레이터 컨테이너를 재시작 합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">orchestrator</span>
+</code></pre></div>
+</li>
+<li>
+<p>Auto Failover가 잘 설정되면 하트 표시에 불이 들어옵니다</p>
+<p><img alt="Failover for HA/Untitled%2017.png" src="Untitled%2017.png" /></p>
+</li>
+<li>
+<p>db002 컨테이너를 중지하여 Fail-Over를 테스트합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db002</span>
+</code></pre></div>
+</li>
+<li>
+<p>별 다른 작업을 하지 않아도 db002가 클러스터에서 분리되었습니다</p>
+<p><img alt="Failover for HA/Untitled%2018.png" src="Untitled%2018.png" /></p>
+</li>
+<li>
+<p>옆집 클러스터에서 db001이 마스터로 잘 살고 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2019.png" src="Untitled%2019.png" /></p>
+</li>
+<li>
+<p>페일오버가 잘 실행되었으면 복구를 위해 db002를 다시 로드합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db002</span>
+</code></pre></div>
+</li>
+<li>
+<p>db002의 MySQL서버에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+</code></pre></div>
+</li>
+<li>
+<p>db001을 마스터로 바라보도록 db002를 slave로 설정합니다</p>
+<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>이처럼 GUI 콘솔을 이용하면 변화를 쉽게 알 수 있습니다</p>
+<p><img alt="Failover for HA/Untitled%2020.png" src="Untitled%2020.png" /></p>
+</li>
+</ol>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Access S3, DynamoDB with Lambda" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Previous
+                </span>
+                Access S3, DynamoDB with Lambda
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Prometheus%20and%20Grafana/" class="md-footer__link md-footer__link--next" aria-label="Next: Prometheus and Grafana" rel="next">
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Next
+                </span>
+                Prometheus and Grafana
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021 - 2023 Jeongwon Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/e_.garden/" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a00a7c5e.min.js"></script>
+      
+    
+  </body>
+</html>
