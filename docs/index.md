@@ -1,27 +1,14 @@
-# title1 1
+# 무계획 공부 전문
 
-## title 2
+---
+## Study TODO List
 
-* `command here` - command action
-
-## code describing
-
-| Method      | Description                          |
-| ----------- | ------------------------------------ |
-| `GET`       | :material-check:     Fetch resource  |
-| `PUT`       | :material-check-all: Update resource |
-| `DELETE`    | :material-close:     Delete resource |
-
-
-
-``` mermaid
-graph LR
-  A[Start] --> B{Error?};
-  B -->|Yes| C[Hmm...];
-  C --> D[Debug];
-  D --> B;
-  B ---->|No| E[Yay!];
-``` 
-!!!Example ""
-    
-    
+- [ ] Kubernetes 강의 수강
+- [ ] Kafka 강의 수강
+- [ ] Certification
+    - [ ] AWS SOA
+    - [ ] AWS SAP
+    - [ ] K8S 자격증 아무거나
+- [ ] Python 클린코드 읽어보기
+- [ ] Python 소프트웨어 아키텍처 읽어보기
+- [ ] Speak 공부 매일 하기

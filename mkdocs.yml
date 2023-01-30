@@ -10,6 +10,8 @@ theme:
     - navigation.expand
     - navigation.top
     - navigation.footer
+  palette:
+    primary: deep orange
 
 extra:
   social:
