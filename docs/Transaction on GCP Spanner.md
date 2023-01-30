@@ -4,10 +4,9 @@
 
 ---
 
-<aside>
-💡 다음 서적을 공부하며 요약하였습니다
+!!! notice
+    💡 다음 서적을 공부하며 요약하였습니다
 
-</aside>
 
 ![Transaction on GCP Spanner/Untitled.png](Transaction on GCP Spanner/Untitled.png)
 
@@ -46,9 +45,9 @@
     
 6. google cloud SDK(이하 SDK)에서 접속하기 위해 다음 명령을 실행합니다
     
-```
-gcloud auth application-default login {Project ID}
-```
+    ```s
+    gcloud auth application-default login {Project ID}
+    ```
     
 7. 6.3 코드를 이용해 테이블에 값을 추가합니다.
 이때 6.3 코드는 JSON을 이용해 데이터를 삽입합니다[https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js](https://github.com/Jpub/GCP/blob/master/Chapter_6/list6.3.js)
@@ -94,23 +93,23 @@ SDK코드에 SQL구문을 삽입하여 실행하는 6.6코드를 실행해봅니
     
 19. ② SDK에 SQL구문 직접 실어보내기
 
-```
-gcloud spanner databases ddl update test-database --instance=test-instance --ddl="ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;"
-```
+    ```sql
+    gcloud spanner databases ddl update test-database --instance=test-instance --ddl="ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;"
+    ```
     
 20. 색인을 사용하기 위해 색인테이블을 생성합니다
-    
-```
-CREATE INDEX employees_by_name ON employees (name)
-```
+        
+    ```sql
+    CREATE INDEX employees_by_name ON employees (name)
+    ```
 
     ![Transaction on GCP Spanner/Untitled%2014.png](Transaction on GCP Spanner/Untitled%2014.png)
     
 21. 색인 후 다시 데이터로 돌아가 추가 데이터를 가져오는 것을 비효율적이기 때문에 애초에 색인테이블에 다른 데이터도 추가로 삽입해둘 수 있습니다
     
-```
-CREATE INDEX employees_by_name ON employees (name) STORING (start_date)
-```
+    ```sql
+    CREATE INDEX employees_by_name ON employees (name) STORING (start_date)
+    ```
     
 22. 색인테이블에 다른데이터 열이 추가로 지정된 모습입니다
     

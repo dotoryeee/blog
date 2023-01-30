@@ -15,21 +15,21 @@
 
 1. 원활한 작업을 위해 Ubuntu 시스템을 업데이트합니다
 
-```
-sudo apt update && sudo apt upgrade
-```
-    
+    ```s
+    sudo apt update && sudo apt upgrade
+    ```
+        
 2. 트러블슈팅 혹은 작업시 필요한 net-tools와 ssh, vim을 설치합니다
 
-```
-sudo apt install net-tools ssh vim
-```
+    ```s
+    sudo apt install net-tools ssh vim
+    ```
     
 3. https를 이용하여 프로그램에 접근 / ca서명 / http를 이용한 통신 / GPG키 관리자 / PPA액세스를 위한 프로그램을 각각 설치합니다
     
-```
-sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-```
+    ```s
+    sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    ```
     
 
 ## Docker 설치 및 확인
@@ -38,9 +38,9 @@ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-p
 
 1. 도커의 GPG PublicKey를 다운로드한 후 apt-key에 추가합니다
     
-```
-curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-```
+    ```s
+    curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    ```
     
 2. OK를 확인하여 정상적으로 완료된 것을 알 수 있습니다
     
@@ -48,10 +48,10 @@ curl –fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     
 3. ppa저장소를 추가하고 업데이트 합니다
     
-```
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-sudo apt update
-```
+    ```s
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    sudo apt update
+    ```
     
 4. 도커를 설치합니다
     
@@ -60,16 +60,16 @@ sudo apt update
     docker-cli : 데몬은 제어하는 CLI 도구입니다
     
     containerd.io : 컨테이너 데몬입니다
-    
-```
-sudo apt install docker-ce docker-cli containerd.io
-```
+        
+    ```s
+    sudo apt install docker-ce docker-cli containerd.io
+    ```
 
 5.  도커의 명령을 실행해봅니다
 
-```
-docker –v
-```
+    ```s
+    docker –v
+    ```
     
 6.  정상적으로 설치가 완료되었습니다
     
@@ -77,15 +77,15 @@ docker –v
     
 7.  리눅스 부팅될 때 자동으로 도커가 실행될 수 있도록 서비스에 등록합니다
 
-    ```
+    ```s
     sudo systemctl enable docker && service docker start
     ```
 
 8.  리눅스에서 도커 서비스 상태를 확인합니다
 
-```
-service docker status
-```
+    ```s
+    service docker status
+    ```
     
 9.  정상적으로 동작하고 있는 것을 확인할 수 있습니다
     
@@ -96,10 +96,10 @@ service docker status
 
 ---
 
-<aside>
-💡 옵션이 너무 많은 경우 생략 → 각 명령어의 파라미터 —help 참조
+!!! Details
+    💡 옵션이 너무 많은 경우 생략 → 각 명령어의 파라미터 —help 참조
 
-</aside>
+
 
 ### 기본 명령어
 
@@ -141,10 +141,10 @@ service docker status
 
 1. docker를 쉽게 관리할 수 있는 GUI 도구인 portainer를 설치합니다
 2. portainer를 설치할 디렉토리를 생성합니다
-    
-```
-sudo mkdir -p /data/portainer
-```
+        
+    ```s
+    sudo mkdir -p /data/portainer
+    ```
 
 3.  portainer를 실행할 수 있도록 docker에 컨테이너 형태로 추가합니다
     
@@ -160,9 +160,9 @@ sudo mkdir -p /data/portainer
     
     portainer/portainer ← 이미지 사용
 
-```
-sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/portainer:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer
-```
+    ```s
+    sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/portainer:/data -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer
+    ```
     
 4. 명령에 대한 진행사항을 확인할 수 있습니다
     
@@ -197,9 +197,9 @@ sudo docker run --name portainer -p 9000:9000 -d --restart always -v /data/porta
     
 4. 도커는 항상 root 권한이 필요하니 sudo를 붙여서 명령해줍니다
 
-```
-sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
-```
+    ```s
+    sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
+    ```
 
 5. 로컬 시스템에서 컨테이너를 찾아보고 없으면 알아서 다운로드 → 컨테이너로드 까지 한 번에 실행됩니다
     
@@ -228,65 +228,65 @@ sudo docker run --rm -it -p 80:80 vulnerables/web-dvwa
 
 1. root 권한으로 docker-compose를 설치합니다
 
-```
-sudo apt install docker-compose
-```
+    ```s
+    sudo apt install docker-compose
+    ```
 
 2. YAML파일 작성을 위해 홈 디렉토리로 이동합니다
     
-```
-cd /home/{USER}
-```
+    ```s
+    cd /home/{USER}
+    ```
 
 3. 컴포즈를 위한 YAML파일을 생성(수정)합니다
     
-```
-sudo vi docker-compose.yml
-```
+    ```s
+    sudo vi docker-compose.yml
+    ```
 
 4. 다음과 같이 작성합니다. wordpress와 mysql5.7 이미지를 다운받고 컨테이너를 로드할 때 설정값도 같이 넣어줍니다
     
-```
-version: '3.1'
-services:
+    ```yaml
+    version: '3.1'
+    services:
+            wordpress:
+                    image: wordpress
+                    restart: always
+                    ports:
+                            - 8080:80
+                    environment:
+                            WORDPRESS_DB_HOST: db
+                            WORDPRESS_DB_USER: admin
+                            WORDPRESS_DB_PASSWORD: password
+                            WORDPRESS_DB_NAME: wordpress
+                    volumes:
+                            - wordpress:/var/www/html
+            db:
+                    image: mysql:5.7
+                    restart: always
+                    environment:
+                            MYSQL_DATABASE: wordpress
+                            MYSQL_USER: admin
+                            MYSQL_PASSWORD: password
+                            MYSQL_RANDOM_ROOT_PASSWORD: '1'
+                    volumes:
+                            - db:/var/lib/mysql
+    volumes:
         wordpress:
-                image: wordpress
-                restart: always
-                ports:
-                        - 8080:80
-                environment:
-                        WORDPRESS_DB_HOST: db
-                        WORDPRESS_DB_USER: admin
-                        WORDPRESS_DB_PASSWORD: password
-                        WORDPRESS_DB_NAME: wordpress
-                volumes:
-                        - wordpress:/var/www/html
         db:
-                image: mysql:5.7
-                restart: always
-                environment:
-                        MYSQL_DATABASE: wordpress
-                        MYSQL_USER: admin
-                        MYSQL_PASSWORD: password
-                        MYSQL_RANDOM_ROOT_PASSWORD: '1'
-                volumes:
-                        - db:/var/lib/mysql
-volumes:
-    wordpress:
-    db:
-```
+    ```
 
 5. docker-compose를 백그라운드에서 실행합니다
 
-```
-sudo docker-compose up -d
-```
+    ```s
+    sudo docker-compose up -d
+    ```
 
 6. 웹 브라우저를 열고 다음 주소로 이동합니다
 
-```
-localhost:8080
-```
+    ```s
+    localhost:8080
+    ```
 
 7. Wordpress와 MySQL이 잘 동작하는 것을 확인할 수 있습니다
     

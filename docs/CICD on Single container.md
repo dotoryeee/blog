@@ -17,15 +17,13 @@
 ### React setup
 
 1. 작업 디렉터리를 생성합니다
-
-    ```bash
+    ```s
     mkdir simple_app
     cd simple_app
     ```
         
 2. 현재 디렉터리에 react를 설치합니다
-
-    ```bash
+    ```s
     npx create-react-app ./
     ```
     
@@ -45,8 +43,7 @@
 
 1. 개발환경(dev)과 운영환경(prod)는 특성이 다를 수 있기 때문에 도커파일을 분리해야합니다
 2. 개발 환경의 도커파일을 생성합니다
-    
-    ```bash
+    ```s
     code dockerfile.dev
     ```
 
@@ -68,47 +65,39 @@
 ### Deploy container
 
 1. 이미지를 빌드해봅니다
-    
     !!! tip
         💡 도커 환경에서 node를 실행할 때는 로컬에 node_module가 필요하지 않습니다
         쓸데없이 빌드 시간만 길어지게 하는 node_module를 지우고 이미지를 빌드 합니다
         rm -rf node_modules
-        
 
     !!! warning
         💡 현재 도커파일 이름은 dockerfile이 아니므로 -f 파라메터로 지정해줍니다
     
-    
-    ```bash
+    ```s
     docker build -t dotoryeee/simple-app -f dockerfile.dev ./
     ```
     
 2. 생성이 완료되었으면 컨테이너로 돌려봅니다
-    
-    ```bash
+    ```s
     docker run -it -p 3000:3000 dotoryeee/simple-app
     ```
     
 3. 컨테이너 서버가 잘 실행되었습니다
-    
     ![CICD on Single container/Untitled%204.png](CICD on Single container/Untitled%204.png)
     
 
 ### Mapping volume
 
 1. 실험을 위해 app.js 내용을 살짝 변경해줍니다
-    
     ![CICD on Single container/Untitled%205.png](CICD on Single container/Untitled%205.png)
     
 2. 호스트에서 node_moules 폴더를 삭제했기 때문에 예외처리 해줍니다
-    
-    ```
+    ``` bash
     docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v /usr/src/app/node_modules -v $(pwd):/usr/src/app dotoryeee/simple-app
     ```
     
 1. 현재 WSL에서 작업 시 컨테이너 node_module 폴더 권한 에러(EACCESS)로 인해 다음과 같이 실행했습니다
-    
-    ```
+    ```s
     docker run -it -p 3000:3000 -e CHOKIDAR_USEPOLLING=true -v $(pwd):/usr/src/app dotoryeee/simple-app
     ```
     
@@ -116,11 +105,9 @@
 ### restart
 
 1. 코드 변경이 잘 적용되었습니다
-    
     ![CICD on Single container/Untitled%206.png](CICD on Single container/Untitled%206.png)
     
 2. 코드 편집 후 저장하면 새로고침조차 할 필요 없이 실시간으로 리액트에 적용됩니다
-    
     ![CICD on Single container/Untitled%207.png](CICD on Single container/Untitled%207.png)
     
 
@@ -133,7 +120,7 @@
 1. 이번에는 도커 실행 명령어 단축을 위해 compose를 사용합니다
 2. 컴포즈파일 작성을 시작합니다
     
-    ```bash
+    ```s
     code docker-compose.yml
     ```
 
@@ -156,7 +143,7 @@
     
 1. 컴포즈를 실행합니다
  
-    ```bash
+    ```s
     docker-compose up
     ```
  
@@ -169,7 +156,7 @@
 
 1. 도커에서 리액트를 테스트 하는 기본적인 명령어는 다음과 같습니다
 
-    ```bash
+    ```s
     docker run -it {IMAGE} npm run test
     ```
 
@@ -190,7 +177,7 @@
         
 3. 이번에는 재빌드 해야하니 build 명령을 추가해줍니다
 
-    ```bash
+    ```s
     docker-compose up --build
     ```
 
@@ -202,7 +189,7 @@
 1. 개발환경은 npm run start를 사용해 서버를 실행하지만 운영환경은 build후 Nginx를 이용합니다
 2. 도커파일 작성을 시작합니다
 
-    ```bash
+    ```s
     code dockerfile
     ```
 
@@ -241,13 +228,13 @@
         
 4. 작성이 완료되면 이미지 빌드를 시작합니다
 
-    ```bash
+    ```s
     docker build -t dotoryeee/test2 ./
     ```
 
 5. 이미지 생성이 완료되면 컨테이너를 실행해봅니다. nginx의 기본 포트는 80 입니다
 
-    ```bash
+    ```s
     docker run -it -p 7070:80 dotoryeee/test2
     ```
 
@@ -284,7 +271,7 @@
     - 언어설정에 generic에 대한 설명은 [이곳](https://docs.travis-ci.com/user/languages/minimal-and-generic/)에서 확인할 수 있습니다
     - — —coverage 옵션을 이용하면 콘솔에서 자세한 로그를 확인할 수 있습니다
 
-    ```bash
+    ```s
     code .travis.yml
     ```
             
@@ -339,7 +326,7 @@
     
 5. AWS에 배포를 위해 travis를 설정합니다. 당연히 yaml 파일로.
 
-    ```bash
+    ```s
     code .travis.yml
     ```
     

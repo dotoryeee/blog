@@ -43,9 +43,9 @@
     
 6. 다음 명령을 사용해 AWS Boto가 정상 작동하는 것을 확인합니다
 
-```
-aws --version // aws boto 버전 확인
-```
+    ```s
+    aws --version // aws boto 버전 확인
+    ```
     
     ![VPC Endpoint with Role/Untitled%206.png](VPC Endpoint with Role/Untitled%206.png)
     
@@ -55,9 +55,9 @@ aws --version // aws boto 버전 확인
     
     Output format은 JSON 입력하였습니다
 
-```
-aws configure
-```
+    ```s
+    aws configure
+    ```
     
     ![VPC Endpoint with Role/Untitled%207.png](VPC Endpoint with Role/Untitled%207.png)
     
@@ -87,10 +87,10 @@ aws configure
     
     다음 명령을 사용해 권한 부족으로 S3, DynamoDB 접속이 거부되는 것을 확인합니다
 
-```
-aws s3 ls // S3 목록 보기
-aws dynamodb list-tables // DynamoDB 목록 보기
-```
+    ```s
+    aws s3 ls // S3 목록 보기
+    aws dynamodb list-tables // DynamoDB 목록 보기
+    ```
 
     ![VPC Endpoint with Role/Untitled%2013.png](VPC Endpoint with Role/Untitled%2013.png)
     
@@ -142,25 +142,25 @@ rm ~/.aws/credentials
     
 22. 다음 명령으로 S3 버킷도 만들어 봅니다
     
-```
-aws s3 mb s3://mybucket
-```
+    ```s
+    aws s3 mb s3://mybucket
+    ```
 
 23. 다음 명령으로 DynamoDB 테이블도 만들어 봅니다
 
-```
-aws dynamodb create-table \
-    --table-name Music \
-    --attribute-definitions \
-        AttributeName=Artist,AttributeType=S \
-        AttributeName=SongTitle,AttributeType=S \
-    --key-schema \
-        AttributeName=Artist,KeyType=HASH \
-        AttributeName=SongTitle,KeyType=RANGE \
-    --billing-mode PAY_PER_REQUEST \
-    --stream-specification StreamEnabled=true,StreamViewType=NEW_AND_OLD_IMAGES \
-    --region us-east-2
-```
+    ```s
+    aws dynamodb create-table \
+        --table-name Music \
+        --attribute-definitions \
+            AttributeName=Artist,AttributeType=S \
+            AttributeName=SongTitle,AttributeType=S \
+        --key-schema \
+            AttributeName=Artist,KeyType=HASH \
+            AttributeName=SongTitle,KeyType=RANGE \
+        --billing-mode PAY_PER_REQUEST \
+        --stream-specification StreamEnabled=true,StreamViewType=NEW_AND_OLD_IMAGES \
+        --region us-east-2
+    ```
 
     [자습서: 전역 테이블 생성](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/V2globaltables.tutorial.html)
     
