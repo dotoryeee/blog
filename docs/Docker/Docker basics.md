@@ -19,49 +19,49 @@
 
 1. node를 초기화 합니다
     
-```
-npm init
-```
+    ```s
+    npm init
+    ```
     
     ![Docker basics/Untitled.png](Docker basics/Untitled.png)
     
 2. express 사용을 위해 package.json에 dependency를 추가합니다
 
-```
-"dependencies": {
-    "express": "4.17.1"
-    },
+    ```json
+    "dependencies": {
+        "express": "4.17.1"
+        },
     ```
     
 3. 간단한 Node앱을 준비해줍니다
     
-```
-code server.js
-```
+    ```s
+    code server.js
+    ```
 
-```
-const express = require('express');
+    ```js
+    const express = require('express');
 
-const PORT = 8080;
+    const PORT = 8080;
 
-const app = express();
-app.get('/', (req, res) => {
-    res.send("!docker with node test!")
-});
+    const app = express();
+    app.get('/', (req, res) => {
+        res.send("!docker with node test!")
+    });
 
-app.listen(PORT);
+    app.listen(PORT);
 
-console.log('Server START')
-```
+    console.log('Server START')
+    ```
 
 
 ### Dockerfile
 
 1. 도커파일 작성을 시작합니다
 
-```
-code Dockerfile
-```
+    ```s
+    code Dockerfile
+    ```
 
 2. 기본적인 dockerfile틀은 다음과 같습니다
     - node 10버전 사용
@@ -74,34 +74,34 @@ code Dockerfile
         
     - 이미지 로드 후 node server.js 명령 실행
 
-```
-FROM node:10
+    ```dockerfile
+    FROM node:10
 
-RUN npm install
+    RUN npm install
 
-CMD ["node", "server.js"]
-```
+    CMD ["node", "server.js"]
+    ```
     
 3. 하지만 이렇게 하면 package.json, server.js 파일이 컨테이너에 포함될 수 없기 떄문에 copy 명령을 추가합니다. 아래 두 개는 같은 명령입니다
     
-```
-FROM node:10
+    ```dockerfile
+    FROM node:10
 
-COPY ./ ./
+    COPY ./ ./
 
-RUN npm install
-CMD ["node", "server.js"]
-```
+    RUN npm install
+    CMD ["node", "server.js"]
+    ```
 
-```
-FROM node:10
+    ```dockerfile
+    FROM node:10
 
-COPY package.json ./
-COPY server.js ./
+    COPY package.json ./
+    COPY server.js ./
 
-RUN npm install
-CMD ["node", "server.js"]
-```
+    RUN npm install
+    CMD ["node", "server.js"]
+    ```
     
 
 ## Build Image
@@ -110,17 +110,17 @@ CMD ["node", "server.js"]
 
 1. (dotoryeee의 first_image)이름으로 이미지 빌드를 실행합니다
     
-```
-docker build -t dotoryeee/first_image ./
-```
-    
+    ```s
+    docker build -t dotoryeee/first_image ./
+    ```
+        
     ![Docker basics/Untitled%201.png](Docker basics/Untitled%201.png)
     
 2. 이미지가 잘 생성되었습니다
     
-```
-docker images
-```
+    ```s
+    docker images
+    ```
 
     ![Docker basics/Untitled%202.png](Docker basics/Untitled%202.png)
     
@@ -133,9 +133,9 @@ docker images
     
     호스트포트 5000과 컨테이너포트 8080을 매핑합니다
 
-```
-docker run -p 5000:8080 dotoryeee/first_image
-```
+    ```s
+    docker run -p 5000:8080 dotoryeee/first_image
+    ```
     
 2. {DOCKER HOST IP}:8080에 접속하면 서버를 확인할 수 있습니다
     
@@ -152,20 +152,20 @@ docker run -p 5000:8080 dotoryeee/first_image
     
 2. 때문에 작업 디렉토리를 별도로 분리하고 이미지를 새로 빌드합니다
 
-```
-FROM node:10
+    ```dockerfile
+    FROM node:10
 
-WORKDIR /usr/src/app
+    WORKDIR /usr/src/app
 
-COPY ./ ./
+    COPY ./ ./
 
-RUN npm install
-CMD ["node", "server.js"]
-```
+    RUN npm install
+    CMD ["node", "server.js"]
+    ```
 
-```
-docker build -t dotoryeee/first_image ./
-```
+    ```s
+    docker build -t dotoryeee/first_image ./
+    ```
     
 3. 이제 작업디렉토리가 변경되어 깔끔해졌습니다.
     
@@ -181,16 +181,16 @@ docker build -t dotoryeee/first_image ./
 3. 때문에 package.json만 따로 먼저 copy 해서 cache화 작업 후 npm install을 수행합니다
 4. 이를 구현하기 위해 dockerfile을 아래와 같이 수정하면 됩니다
     
-```
-FROM node:10
-WORKDIR /usr/src/app
+    ```dockerfile
+    FROM node:10
+    WORKDIR /usr/src/app
 
-COPY package.json ./
+    COPY package.json ./
 
-RUN npm install
-COPY ./ ./
-CMD ["node", "server.js"]
-```
+    RUN npm install
+    COPY ./ ./
+    CMD ["node", "server.js"]
+    ```
     
 5. dockerfile 작업 후 최초빌드시 6.7초가 소요되었습니다
     
@@ -206,19 +206,18 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
 
 ---
 
-<aside>
-💡 권한 에러 발생시 sudo chown -R yourusername:yourusername /path/to/node_modules
+!!! tip
+    💡 권한 에러 발생시 sudo chown -R yourusername:yourusername /path/to/node_modules
 
-</aside>
 
 1. 볼륨 매핑시 컨테이너 로드 명령은 다음과 같습니다
 
-```
-docker run -p 5000:8080 \
--v /usr/src/app/node_module \
--v $(pwd):/use/src/app \
--d dotoryeee/first_image
-```
+    ```s
+    docker run -p 5000:8080 \
+    -v /usr/src/app/node_module \
+    -v $(pwd):/use/src/app \
+    -d dotoryeee/first_image
+    ```
 
 2. 볼륨 매핑(참조) 부분에서 두 줄은 각각 특성이 다릅니다
 3. 3번 행은 환경변수에서 pwd(현재 작업중인 디렉터리) 위치를 가져와 컨테이너의 /src/app 폴더에 매핑하지만
@@ -234,77 +233,77 @@ docker run -p 5000:8080 \
 
 1. 작업용 디렉터리를 생성하고 노드를 초기화합니다
 
-```
-mkdir compose
-cd compose
-npm init
-```
+    ```s
+    mkdir compose
+    cd compose
+    npm init
+    ```
     
     ![Docker basics/Untitled%209.png](Docker basics/Untitled%209.png)
     
 2. 종속성에 express와 redis를 추가합니다
 
-```
-code package.json
-```
+    ```s
+    code package.json
+    ```
 
-```
-"dependencies": {
-    "express": "4.17.1"
-    "redis" : "3.0.2"
-    },
-```
+    ```json
+    "dependencies": {
+        "express": "4.17.1"
+        "redis" : "3.0.2"
+        },
+    ```
     
 3. 다음과 같이 서버를 작성해줍니다
 
-```
-code server.js
-```
+    ```s
+    code server.js
+    ```
 
-```
-const express = require("express");
-const redis = require("redis");
+    ```js
+    const express = require("express");
+    const redis = require("redis");
 
-const EXPRESS_PORT = 7070;
-const REDIS_PORT = 6379;
+    const EXPRESS_PORT = 7070;
+    const REDIS_PORT = 6379;
 
-//redis
-const client = redis.createClient({
-    //host값에 도커가 아닌 일반 환경에서는 https://redis-server.com 을 입력
-    //compose를 사용할 경우 docker-compose.yml에 명시한 컨테이너 이름을 입력
-    host: "redis-server";  
-    port: REDIS_PORT;
-})
-
-client.set("number", 0);
-
-//express
-app.get('/', (req, res) => {
-    client.get("number", (err, Number) => { //에러가 발생하지 않는다면
-        //숫자를 1씩 증가
-        client.set("number", parseInt(Number) + 1);
-        res.send(`현재 새로고침 카운트 : ${Number}`);
+    //redis
+    const client = redis.createClient({
+        //host값에 도커가 아닌 일반 환경에서는 https://redis-server.com 을 입력
+        //compose를 사용할 경우 docker-compose.yml에 명시한 컨테이너 이름을 입력
+        host: "redis-server";  
+        port: REDIS_PORT;
     })
-})
 
-const app = express();
-app.listen(EXPRESS_PORT);
-console.log('server is running');
-```
+    client.set("number", 0);
+
+    //express
+    app.get('/', (req, res) => {
+        client.get("number", (err, Number) => { //에러가 발생하지 않는다면
+            //숫자를 1씩 증가
+            client.set("number", parseInt(Number) + 1);
+            res.send(`현재 새로고침 카운트 : ${Number}`);
+        })
+    })
+
+    const app = express();
+    app.listen(EXPRESS_PORT);
+    console.log('server is running');
+    ```
 
 4. 현재는 compose를 위한 디렉터리를 따로 만들어 둔 상태이니 전체 파일을 패키징 합니다
-    
-```
-FROM node:10
+        
+    ```dockerfile
+    FROM node:10
 
-WORKDIR /usr/src/app
+    WORKDIR /usr/src/app
 
-COPY ./ ./
-    
-RUN npm install
+    COPY ./ ./
+        
+    RUN npm install
 
-CMD ["node", "server.js"]
-```
+    CMD ["node", "server.js"]
+    ```
 
 
 ## Docker compose YAML
@@ -320,28 +319,28 @@ CMD ["node", "server.js"]
     
 3. yaml 파일 작업을 시작합니다
     
-```
-vi docker-compose.yml
-```
-    
+    ```
+    vi docker-compose.yml
+    ```
+        
 4. 내용은 다음과 같습니다
 
-```
-version: "3"       #docker compose의 버전
-services:          #실행하려는 컨테이너 정의
-    redis-server:    #컨테이너 이름
-    image: "redis" #컨테이너가 사용하는 이미지
-    node-app:        #컨테이너 이름
-    build: .       #현재 위치에 있는 dockerfile 사용
-    ports:         #포트매핑
-    - "5000:7070"
-```
-    
+    ```yaml
+    version: "3"       #docker compose의 버전
+    services:          #실행하려는 컨테이너 정의
+        redis-server:    #컨테이너 이름
+        image: "redis" #컨테이너가 사용하는 이미지
+        node-app:        #컨테이너 이름
+        build: .       #현재 위치에 있는 dockerfile 사용
+        ports:         #포트매핑
+        - "5000:7070"
+    ```
+        
 5. 컴포즈를 시작합니다
 
-```
-docker-compose up
-```
+    ```s
+    docker-compose up
+    ```
     
 6. 컨테이너 두 대가 모두 로드되었습니다
     
@@ -353,8 +352,8 @@ docker-compose up
     
 8. 오타로 인해 에러가 발생했다던가 등의 이유로 인해 이미지를 강재로 재빌드 후 컴포즈를 실행하려면 다음과 같이 입력합니다
 
-```
-docker-compose up --build
-```
-    
+    ```s
+    docker-compose up --build
+    ```
+        
 9. 컨테이너 종료는 Ctrl + C를 입력하면 됩니다
