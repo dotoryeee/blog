@@ -2,8 +2,27 @@ site_name: dotoryeee's blog
 
 theme:
   name: material
+  font:
+    text: Changa
   features:
     - content.code.copy
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/gardengarden/
+    - icon: fontawesome/brands/github
+      link: https://github.com/dotoryeee
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/e_.garden/
+  analytics:
+    provider: google
+    property: G-22LC2P5RV5
+
+copyright: Copyright &copy; 2021 - 2023 Jeongwon Lee
 
 markdown_extensions:
   - admonition
