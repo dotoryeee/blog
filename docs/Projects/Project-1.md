@@ -37,7 +37,6 @@
 ---
 
 - 본 프로젝트는 서비스가 원활하게 동작할 수 있는 인프라를 구성하는데 중점을 두고있습니다. 프로그래밍을 최소화 하기 위해 잘 다룰 수 있는 언어인 Python을 사용하고,  빠르게 웹 서비스를 구동할 수 있는 Flask 프레임워크를 이용했습니다.
-- MSA를 구현해보기 위해 서비스 단위로 최대한 잘게 나눴습니다
 - CICD 솔루션으로 Cloudbase + public repository 무료 + multi container 사용가능 조건을 맞춰줄 수 있는 Travis CI를 채택하였습니다
 [https://djangostars.com/blog/continuous-integration-circleci-vs-travisci-vs-jenkins/](https://djangostars.com/blog/continuous-integration-circleci-vs-travisci-vs-jenkins/)
 - Apache와 Nginx중 비동기를 이용해 많은 동시접속 트래픽이 수용가능한 Nginx를 선택하였습니다 [https://kinsta.com/blog/nginx-vs-apache/](https://kinsta.com/blog/nginx-vs-apache/)
