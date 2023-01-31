@@ -20,7 +20,7 @@
     vi provider.tf
     ```
 
-    ```terraform title="provider.tf"
+    ```terraform title="provider.tf" linenums="1"
     provider "aws" {
         region = "ap-northeast-2"
     }
@@ -32,7 +32,7 @@
     vi vpc.tf
     ```
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_vpc" "terra-test" {
             cidr_block = "10.0.0.0/16"
             tags = {
@@ -105,7 +105,7 @@
     vi vpc.tf
     ```
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_vpc" "terra-test" {
             cidr_block = "10.0.0.0/16"
 

@@ -34,7 +34,7 @@
     vi init.tf
     ```
         
-    ``` terraform title="init.if"
+    ``` terraform title="init.if" linenums="1"
     provider "aws" {
         region = "ap-northeast-2" # Please use the default region ID
         version = "~> 2.49.0" # Please choose any version or delete this line if you want the latest version
@@ -102,7 +102,7 @@
 
 4. 백엔드로 S3를 사용하고 DynamoDB를 이용해 Lock 할 것을 명시합니다
 
-    ```terraform title="backend.tf"
+    ```terraform title="backend.tf" linenums="1"
     terraform {
         backend "s3" {
             bucket         = "ljw-terra-backend"
