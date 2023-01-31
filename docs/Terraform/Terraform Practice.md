@@ -71,7 +71,7 @@
     
 - 코드
     
-    ```terraform
+    ```terraform linenums="1"
     #---------------VPC-----------------
     resource "aws_vpc" "main" {
         cidr_block = "10.0.0.0/16"
@@ -202,7 +202,7 @@
 
 - terraform apply
 
-    ```json
+    ```json linenums="1"
     An execution plan has been generated and is shown below.
     Resource actions are indicated with the following symbols:
       + create
@@ -614,7 +614,7 @@
 - 코드
     - variables.tf
         
-    ```terraform title="variables.tf"
+    ```terraform title="variables.tf" linenums="1"
     variable "aws_region" {
       description = "region for AWS"
     }
@@ -646,7 +646,7 @@
 
         - terraform.tfvars
 
-    ```
+    ``` linenums="1"
     aws_region = "ap-northeast-2"
 
     vpc_name = "vpc_practice_02"
@@ -673,7 +673,7 @@
 
     - provider.tf
 
-    ```
+    ``` linenums="1"
     provider "aws" {
       region = var.aws_region
     }
@@ -681,7 +681,7 @@
 
     - vpc.tf
 
-    ```
+    ``` linenums="1"
     #------------VPC-------------
     resource "aws_vpc" "main" {
       cidr_block       = "10.0.0.0/16"
@@ -754,7 +754,7 @@
 
     - ec2.tf
 
-    ```
+    ``` linenums="1"
     #----------------SG---------------------
     resource "aws_security_group" "public_ec2" {
       vpc_id = aws_vpc.main.id
@@ -819,7 +819,7 @@
 
 - rds.tf
 
-    ```terraform title="rds.tf"
+    ```terraform title="rds.tf" linenums="1"
     #--------------Security Group----------------
     resource "aws_security_group" "rds" {
       vpc_id = aws_vpc.main.id
@@ -863,7 +863,7 @@
             
     - terraform apply
         
-    ```
+    ``` linenums="1"
     An execution plan has been generated and is shown below.
     Resource actions are indicated with the following symbols:
       + create

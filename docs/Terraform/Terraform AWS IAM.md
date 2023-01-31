@@ -112,7 +112,7 @@
     
 8. 코드는 다음과 같은 형태가 됩니다
         
-    ```terraform title="user_group.tf"
+    ```terraform title="user_group.tf" linenums="1"
     resource "aws_iam_group" "test_group"{
             name = "terra_group"
     }
@@ -156,7 +156,7 @@
 
 3. 역할 설정 코드는 권한 정책이 포함됩니다
     
-    ```terraform title="iam_role_hello.tf"
+    ```terraform title="iam_role_hello.tf" linenums="1"
     resource "aws_iam_role" "hello" {
             name                    = "hello-iam-role"
             path                    = "/"
@@ -210,7 +210,7 @@
     
     정책을 만든 후 Role에 매핑하는 구조가 됩니다
 
-    ```terraform title="iam_role_hello.tf"
+    ```terraform title="iam_role_hello.tf" linenums="1"
     resource "aws_iam_role_policy" "hello_s3"{
         name   = "hello-s3-download"
         role   = aws_iam_role.hello.id
@@ -268,7 +268,7 @@
     
     IAM user에 할당할 super-admin이라는 policy를 추가했습니다
 
-    ```terraform title="iam.tf"
+    ```terraform title="iam.tf" linenums="1"
     resource "aws_iam_user_policy" "art_devops_black" {
         name  = "super-admin"
         user  = aws_iam_user.gildong_hong.name
@@ -353,7 +353,7 @@
     ```
 
 
-![Terraform AWS IAM/Untitled%2021.png](Terraform AWS IAM/Untitled%2021.png)
+    ![Terraform AWS IAM/Untitled%2021.png](Terraform AWS IAM/Untitled%2021.png)
 
 
 ## Link

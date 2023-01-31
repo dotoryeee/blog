@@ -19,7 +19,7 @@
     vi vpc.tf
     ```
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_internet_gateway" "igw" {
     vpc_id = aws_vpc.terra-test.id
 
@@ -55,7 +55,7 @@
     vi VPC.tf
     ```
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_eip" "terraEIP" {
     vpc = true
 
@@ -117,7 +117,7 @@
 
 2. 두 개의 라우팅 테이블을 작성합니다
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_route_table" "public"{
     vpc_id = aws_vpc.terra-test.id
 
@@ -162,7 +162,7 @@
     
 서브넷id와 라우팅테이블id가 필요합니다
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_route_table_association" "public_association"{
     subnet_id = aws_subnet.public01.id
     route_table_id = aws_route_table.public.id
@@ -203,7 +203,7 @@
 
 2. 퍼블릭용 라우팅테이블 내에서 라우팅을 선언할 수도 있습니다(inner rule)
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     route { 
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
@@ -226,7 +226,7 @@
 
 5. 다음과 같이 private route table에 NAT 게이트웨이를 부착합니다
 
-    ```terraform title="vpc.tf"
+    ```terraform title="vpc.tf" linenums="1"
     resource "aws_route" "private_nat" {
     route_table_id = aws_route_table.private.id
     destination_cidr_block = "0.0.0.0/0"
