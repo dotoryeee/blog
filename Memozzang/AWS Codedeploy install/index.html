@@ -15,7 +15,7 @@
         <link rel="next" href="../JupyterLab/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -796,35 +796,35 @@
 
 
 
-<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">ruby</span><span class="o">-</span><span class="n">full</span><span class="w"> </span><span class="n">wget</span>
-
-<span class="n">cd</span><span class="w"> </span><span class="o">~/</span><span class="n">work</span>
-<span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">aws</span><span class="o">-</span><span class="n">codedeploy</span><span class="o">-</span><span class="n">cn</span><span class="o">-</span><span class="n">north</span><span class="m">-1</span><span class="n">.s3.cn</span><span class="o">-</span><span class="n">north</span><span class="m">-1</span><span class="n">.amazonaws.com.cn</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">install</span>
-<span class="n">chmod</span><span class="w"> </span><span class="o">+</span><span class="n">x</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">install</span><span class="w"> </span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">install</span><span class="w"> </span><span class="n">auto</span>
-
-<span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">~/</span><span class="n">work</span><span class="o">/</span><span class="n">install</span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">codedeploy</span><span class="o">-</span><span class="n">agent</span>
-
-<span class="n">sudo</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&quot;cat&lt;&lt;EOF &gt; /etc/codedeploy-agent/conf/codedeployagent.yml</span>
-<span class="s">---</span>
-<span class="s">:log_aws_wire: false</span>
-<span class="s">:log_dir: &#39;/var/log/aws/codedeploy-agent/&#39;</span>
-<span class="s">:pid_dir: &#39;/opt/codedeploy-agent/state/.pid/&#39;</span>
-<span class="s">:program_name: codedeploy-agent</span>
-<span class="s">:root_dir: &#39;/opt/codedeploy-agent/deployment-root&#39;</span>
-<span class="s">:verbose: false</span>
-<span class="s">:wait_between_runs: 1</span>
-<span class="s">:proxy_uri:</span>
-<span class="s">:max_revisions: 2</span>
-<span class="s">:enable_auth_policy: true</span>
-<span class="s">EOF&quot;</span>
-
-<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">codedeploy</span><span class="o">-</span><span class="n">agent.service</span>
-
-
-
-<span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">aws</span><span class="o">-</span><span class="n">codedeploy</span><span class="o">-</span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="n">.s3.ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="n">.amazonaws.com</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">install</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">ruby</span><span class="o">-</span><span class="n">full</span><span class="w"> </span><span class="n">wget</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">cd</span><span class="w"> </span><span class="o">~/</span><span class="n">work</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">aws</span><span class="o">-</span><span class="n">codedeploy</span><span class="o">-</span><span class="n">cn</span><span class="o">-</span><span class="n">north</span><span class="m">-1</span><span class="n">.s3.cn</span><span class="o">-</span><span class="n">north</span><span class="m">-1</span><span class="n">.amazonaws.com.cn</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">install</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">chmod</span><span class="w"> </span><span class="o">+</span><span class="n">x</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">install</span><span class="w"> </span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">sudo</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">install</span><span class="w"> </span><span class="n">auto</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">~/</span><span class="n">work</span><span class="o">/</span><span class="n">install</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">codedeploy</span><span class="o">-</span><span class="n">agent</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">sudo</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&quot;cat&lt;&lt;EOF &gt; /etc/codedeploy-agent/conf/codedeployagent.yml</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">---</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">:log_aws_wire: false</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">:log_dir: &#39;/var/log/aws/codedeploy-agent/&#39;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s">:pid_dir: &#39;/opt/codedeploy-agent/state/.pid/&#39;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s">:program_name: codedeploy-agent</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s">:root_dir: &#39;/opt/codedeploy-agent/deployment-root&#39;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s">:verbose: false</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s">:wait_between_runs: 1</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="s">:proxy_uri:</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="s">:max_revisions: 2</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="s">:enable_auth_policy: true</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="s">EOF&quot;</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">codedeploy</span><span class="o">-</span><span class="n">agent.service</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="n">wget</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">aws</span><span class="o">-</span><span class="n">codedeploy</span><span class="o">-</span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="n">.s3.ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="n">.amazonaws.com</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">install</span>
 </code></pre></div>
 
 

@@ -15,7 +15,7 @@
         <link rel="next" href="../../Memozzang/AWS%20CLI%20%EB%AA%A8%EB%91%A0/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -935,34 +935,34 @@
 <ol>
 <li>
 <p>yum util 패키지 설치</p>
-<div class="highlight"><pre><span></span><code><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">yum</span><span class="o">-</span><span class="n">utils</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">yum</span><span class="o">-</span><span class="n">utils</span>
 </code></pre></div>
 </li>
 <li>
 <p>docker를 위한 repo를 설정</p>
-<div class="highlight"><pre><span></span><code><span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span><span class="w"> </span><span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span><span class="o">=</span><span class="n">https</span><span class="o">://</span><span class="n">download.docker.com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">ce.repo</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span><span class="w"> </span><span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span><span class="o">=</span><span class="n">https</span><span class="o">://</span><span class="n">download.docker.com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">ce.repo</span>
 </code></pre></div>
 </li>
 <li>
 <p>docker-ce 설치</p>
-<div class="highlight"><pre><span></span><code><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="w"> </span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="w"> </span>
 </code></pre></div>
 </li>
 <li>
 <p>(이미 설치된 패키지 떄문에)설치 에러 발생시 allowerasing 옵션</p>
-<div class="highlight"><pre><span></span><code><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">dnf</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">nobest</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">dnf</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">nobest</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
 </code></pre></div>
 </li>
 <li>
 <p>docker를 실행</p>
-<div class="highlight"><pre><span></span><code><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">docker</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">docker</span>
 </code></pre></div>
 </li>
 <li>
 <p>docker 버전 확인</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">docker</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
 </code></pre></div>
 </li>
 </ol>
@@ -975,35 +975,35 @@
 —name : 컨테이너 이름
 -e : 환경변수 세팅
 -d : 백그라운드에서 컨테이너 실행</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
 </code></pre></div>
 <p>아래 스크린샷 처럼 우선 로컬에서 컨테이너를 찾아보고 없으면 도커허브에서 알아서 찾고 다운로드하여 컨테이너를 로드합니다</p>
 <p><img alt="Docker volume with MySQL/Untitled.png" src="Untitled.png" /></p>
 </li>
 <li>
 <p>다음 명령으로 현재 실행중인 컨테이너에 MySQL이 존재하는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">ps</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">ps</span>
 </code></pre></div>
 <p><img alt="Docker volume with MySQL/Untitled%201.png" src="Untitled%201.png" /></p>
 </li>
 <li>
 <p>db001컨테이너에 /bin/bash 셸을 통해 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
 </code></pre></div>
 <p><img alt="Docker volume with MySQL/Untitled%202.png" src="Untitled%202.png" /></p>
 </li>
 <li>
 <p>컨테이너에 접속되었으면 MySQL에 접속하고 데이터베이스 목록을 호출합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">databases</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">show</span><span class="w"> </span><span class="n">databases</span><span class="p">;</span>
 </code></pre></div>
 <p><img alt="Docker volume with MySQL/Untitled%203.png" src="Untitled%203.png" /></p>
 </li>
 <li>
 <p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 </ol>
@@ -1012,7 +1012,7 @@
 <ol>
 <li>
 <p>호스트에 MySQL 클라이언트를 설치합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">dnf</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">mysql</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">dnf</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">mysql</span>
 </code></pre></div>
 </li>
 <li>
@@ -1020,7 +1020,7 @@
 </li>
 <li>
 <p>컨테이너를 로드할 때 포트를 매칭해줍니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
 </code></pre></div>
 </li>
 <li>
@@ -1029,7 +1029,7 @@
 </li>
 <li>
 <p>도커 호스트 IP를 파라미터에 전달하여 MySQL을 실행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="p">{</span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="p">{</span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
@@ -1038,8 +1038,8 @@
 </li>
 <li>
 <p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 </ol>
@@ -1048,46 +1048,46 @@
 <ol>
 <li>
 <p>도커 호스트에 데이터 저장을 위한 디렉터리 생성</p>
-<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
 </code></pre></div>
 </li>
 <li>
 <p>작업이 가능하도록 디렉터리에 권한 부여</p>
-<div class="highlight"><pre><span></span><code><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
 </code></pre></div>
 </li>
 <li>
 <p>볼륨 옵션을 추가하여 컨테이너를 로드합니다</p>
 <p>이는 데이터 저장을 위해 생성했던 디렉터리와 컨테이너의 디렉터리가 공유되도록 설정(매핑)합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
 </code></pre></div>
 </li>
 <li>
 <p>컨테이너 로드 후 데이터 저장용 디렉터리로 이동하면 파일이 생성된 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
 </code></pre></div>
 <p><img alt="MAGIC" src="Untitled%206.png" /></p>
 <p>MAGIC</p>
 </li>
 <li>
 <p>stateful 구현 테스트를 위한 데이터를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="k">set</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
-<span class="n">use</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
-<span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">tt</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="nb">int</span><span class="p">);</span>
-<span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">tt</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tt</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="k">set</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">use</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">tt</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="nb">int</span><span class="p">);</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">tt</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tt</span><span class="p">;</span>
 </code></pre></div>
 <p><img alt="Docker volume with MySQL/Untitled%207.png" src="Untitled%207.png" /></p>
 </li>
 <li>
 <p>Stateful 테스트를 위해 컨테이너를 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 <li>
 <p>컨테이너를 다시 로드합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
 </code></pre></div>
 </li>
 <li>
@@ -1103,14 +1103,14 @@
 </li>
 <li>
 <p>다시 컨테이너를 제거합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 <li>
 <p>로그와 설정을 위한 디렉토리를 생성하고 권한을 부여합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
-<span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
 </code></pre></div>
 </li>
 <li>
@@ -1121,39 +1121,39 @@
 <p>server-id와 report_host 값은 유니크한 특성(고유값)을 가져야합니다</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code>[mysqld]
-log_bin                     = mysql-bin
-binlog_format               = ROW
-gtid_mode                   = ON
-enforce-gtid-consistency    = true
-server-id                   = 100
-log_slave_updates
-datadir                     = /var/lib/mysql
-socket                      = /var/lib/mysql/mysql.sock
-
-# Disabling symbolic-links is recommended to prevent assorted security risks
-symbolic-links              = 0
-
-log-error                   = /var/log/mysql/mysqld.log
-pid-file                    = /var/run/mysqld/mysqld.pid
-
-report_host                 = db001
-
-[mysqld_safe]
-pid-file                    = /var/run/mysqld/mysqld.pid
-socket                      = /var/lib/mysql/mysql.sock
-nice                        = 0
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>[mysqld]
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>log_bin                     = mysql-bin
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>binlog_format               = ROW
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>gtid_mode                   = ON
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>enforce-gtid-consistency    = true
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>server-id                   = 100
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>log_slave_updates
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>datadir                     = /var/lib/mysql
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>socket                      = /var/lib/mysql/mysql.sock
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a># Disabling symbolic-links is recommended to prevent assorted security risks
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>symbolic-links              = 0
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>
+<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>log-error                   = /var/log/mysql/mysqld.log
+<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>pid-file                    = /var/run/mysqld/mysqld.pid
+<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>
+<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>report_host                 = db001
+<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
+<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a>[mysqld_safe]
+<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>pid-file                    = /var/run/mysqld/mysqld.pid
+<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>socket                      = /var/lib/mysql/mysql.sock
+<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>nice                        = 0
 </code></pre></div>
 <p><a href="my.cnf">my.cnf</a></p>
 </li>
 <li>
 <p>다음 명령으로 데이터, 로그, 설정파일이 모두 매핑된 컨테이너를 실행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span><span class="o">:/</span><span class="n">etc</span><span class="o">/</span><span class="n">percona</span><span class="o">-</span><span class="n">server.conf.d</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span><span class="o">:/</span><span class="n">etc</span><span class="o">/</span><span class="n">percona</span><span class="o">-</span><span class="n">server.conf.d</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
 </code></pre></div>
 </li>
 <li>
 <p>로그폴더에 들어가보면 로그가 정상적으로 보이는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span>
 </code></pre></div>
 <p><img alt="Docker volume with MySQL/Untitled%2010.png" src="Untitled%2010.png" /></p>
 </li>

@@ -15,7 +15,7 @@
         <link rel="next" href="../Prometheus%20and%20Grafana/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -978,12 +978,12 @@
 <li>
 <p>오케스트레이터 컨테이너를 로드합니다(openarkcode/orchestrator)</p>
 <p>이전에 생성한 mybridge에 연결하며 호스트포트 3000에 매핑합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="w"> </span><span class="n">mybridge</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="o">-</span><span class="n">alias</span><span class="o">=</span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">openarkcode</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">:</span><span class="n">latest</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="w"> </span><span class="n">mybridge</span><span class="w"> </span><span class="o">--</span><span class="n">net</span><span class="o">-</span><span class="n">alias</span><span class="o">=</span><span class="n">orchestrator</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">openarkcode</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">:</span><span class="n">latest</span>
 </code></pre></div>
 </li>
 <li>
 <p>컨테이너가 잘 로드되었는지 확인합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">--</span><span class="n">format</span><span class="w"> </span><span class="s">&quot;table {{.ID}}\t{{.Names}}\t{{.Status}}&quot;</span>
 </code></pre></div>
 <p><img alt="Failover for HA/Untitled.png" src="Untitled.png" /></p>
 </li>
@@ -994,34 +994,34 @@
 <li>
 <p>이전의 작업을 이어서 하기 위해 DB컨테이너를 재시작 합니다</p>
 <p>컨테이너(도커 호스트)를 종료하지 않았다면 생략합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="n">db003</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="n">db003</span>
 </code></pre></div>
 </li>
 <li>
 <p>db001 SQL DB에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
 </li>
 <li>
 <p>오케스트레이터를 위한 MySQL 유저 생성합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;orc_client_password&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;orc_client_password&#39;</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>필요한 권한을 부여합니다 1</p>
-<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="n">SUPER</span><span class="p">,</span><span class="w"> </span><span class="n">PROCESS</span><span class="p">,</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">,</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="n">SUPER</span><span class="p">,</span><span class="w"> </span><span class="n">PROCESS</span><span class="p">,</span><span class="w"> </span><span class="n">REPLICATION</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">,</span><span class="w"> </span><span class="n">RELOAD</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>필요한 권한을 부여합니다 2</p>
-<div class="highlight"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">slave_master_info</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">mysql</span><span class="p">.</span><span class="n">slave_master_info</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">orc_client_user</span><span class="o">@</span><span class="s1">&#39;172.%&#39;</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>웹브라우저에서 호스트의 3000번 포트에 연결하여 오케스트레이터 GUI에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">http</span><span class="o">://</span><span class="p">{</span><span class="n">DOCKER</span><span class="w"> </span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span><span class="o">:</span><span class="m">3000</span>
-<span class="o">//</span><span class="n">EC2</span><span class="w"> </span>인스턴스를<span class="w"> </span>사용하는<span class="w"> </span>경우<span class="w"> </span>네트워크<span class="w"> </span>인바운드에<span class="w"> </span><span class="m">3000</span>번<span class="w"> </span>포트를<span class="w"> </span>열어줘야합니다
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">http</span><span class="o">://</span><span class="p">{</span><span class="n">DOCKER</span><span class="w"> </span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span><span class="o">:</span><span class="m">3000</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">//</span><span class="n">EC2</span><span class="w"> </span>인스턴스를<span class="w"> </span>사용하는<span class="w"> </span>경우<span class="w"> </span>네트워크<span class="w"> </span>인바운드에<span class="w"> </span><span class="m">3000</span>번<span class="w"> </span>포트를<span class="w"> </span>열어줘야합니다
 </code></pre></div>
 </li>
 </ol>
@@ -1058,7 +1058,7 @@
 <ol>
 <li>
 <p>장애상황을 만들기 위해 마스터DB 컨테이너(db001)을 정지합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 <li>
@@ -1088,13 +1088,13 @@
 <li>
 <p>터미널에서 직접 확인해볼수도 있습니다</p>
 <p>db002 SQL DB에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
 </li>
 <li>
 <p>slave 상태조회 명령을 실행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span>\<span class="n">G</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span>\<span class="n">G</span>
 </code></pre></div>
 </li>
 <li>
@@ -1107,7 +1107,7 @@
 <ol>
 <li>
 <p>기존에 Master였던 db001 컨테이너를 다시 구동합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db001</span>
 </code></pre></div>
 </li>
 <li>
@@ -1116,28 +1116,28 @@
 </li>
 <li>
 <p>db001 컨테이너의 MySQL에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
 </li>
 <li>
 <p>db001을 slave로 동작시키기 위해 read_only로 설정합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">read_only</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">read_only</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>db002 MASTER를 바라보도록 설정합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db002&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>slave로써의 동작을 시작합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">start</span><span class="w"> </span><span class="n">slave</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">start</span><span class="w"> </span><span class="n">slave</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>
 <p>slave 상태를 확인합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">show</span><span class="w"> </span><span class="n">slave</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="err">\</span><span class="k">G</span>
 </code></pre></div>
 </li>
 <li>
@@ -1159,28 +1159,28 @@
 <ol>
 <li>
 <p>오케스트레이터 컨테이너에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">orchestrator</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
 </code></pre></div>
 </li>
 <li>
 <p>오케스트레이터 설정 파일을 수정합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">orchestrator.conf.json</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">vi</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">orchestrator.conf.json</span>
 </code></pre></div>
 </li>
 <li>
 <p>JSON에 다음 값을 수정 합니다. db001, db002간의 Failover만 테스트 하기 위해 db003이 마스터로 승격되는 일이 발생하지 않도록 제외해둡니다.</p>
 <p>이대로 구현되면 db001 ↔ db002 간에 장애 발생시 번갈아가며 Master로 승격됩니다</p>
-<div class="highlight"><pre><span></span><code>&quot;RecoverMasterClusterFilters&quot;:[
-&quot;*&quot;
-],
-&quot;PromotionIgnoreHostnameFilters&quot;:[
-&quot;db003&quot;
-]
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>&quot;RecoverMasterClusterFilters&quot;:[
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>&quot;*&quot;
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>],
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>&quot;PromotionIgnoreHostnameFilters&quot;:[
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>&quot;db003&quot;
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>]
 </code></pre></div>
 </li>
 <li>
 <p>오케스트레이터 컨테이너를 재시작 합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">orchestrator</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">orchestrator</span>
 </code></pre></div>
 </li>
 <li>
@@ -1189,7 +1189,7 @@
 </li>
 <li>
 <p>db002 컨테이너를 중지하여 Fail-Over를 테스트합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db002</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db002</span>
 </code></pre></div>
 </li>
 <li>
@@ -1202,19 +1202,19 @@
 </li>
 <li>
 <p>페일오버가 잘 실행되었으면 복구를 위해 db002를 다시 로드합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db002</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">db002</span>
 </code></pre></div>
 </li>
 <li>
 <p>db002의 MySQL서버에 접속합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-<span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="n">db002</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
 </code></pre></div>
 </li>
 <li>
 <p>db001을 마스터로 바라보도록 db002를 slave로 설정합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-<span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">CHANGE</span><span class="w"> </span><span class="n">MASTER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">MASTER_HOST</span><span class="o">=</span><span class="s1">&#39;db001&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_USER</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_PASSWORD</span><span class="o">=</span><span class="s1">&#39;repl&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">MASTER_AUTO_POSITION</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">START</span><span class="w"> </span><span class="n">SLAVE</span><span class="p">;</span>
 </code></pre></div>
 </li>
 <li>

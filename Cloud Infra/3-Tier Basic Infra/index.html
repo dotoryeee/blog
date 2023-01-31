@@ -15,7 +15,7 @@
         <link rel="next" href="../API%20Gateway%20with%20Lambda/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -1112,7 +1112,7 @@
 </li>
 <li>
 <p>터미널 열어서 키페어파일 위치로 이동 후 다음 명령을 이용하여 접속</p>
-<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)
 </code></pre></div>
 </li>
 <li>
@@ -1245,13 +1245,13 @@
 </li>
 <li>
 <p>Bastion의 터미널에 다음과 같은 명령으로 Webserver에 접속합니다</p>
-<div class="highlight"><pre><span></span><code>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93
 </code></pre></div>
 </li>
 <li>
 <p>다음 에러 발생시 chmod를 적용합니다</p>
 <p><img alt="3-Tier Basic Infra/Untitled%2048.png" src="Untitled%2048.png" /></p>
-<div class="highlight"><pre><span></span><code>chmod 400 FINAL-KEY.pem
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>chmod 400 FINAL-KEY.pem
 </code></pre></div>
 </li>
 <li>
@@ -1303,14 +1303,14 @@
 </li>
 <li>
 <p>다음 명령을 이용해 Bastion Host에 MySQL을 설치합니다</p>
-<div class="highlight"><pre><span></span><code>sudo yum -y install mysql
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo yum -y install mysql
 </code></pre></div>
 </li>
 <li>
 <p>서버접속을 위해 다음 명령을 이용해 MySQL 을 사용합니다</p>
-<div class="highlight"><pre><span></span><code>mysql -h {DNS} -P {PORT} -u {USER} -p
-                         ↓(예시)
-mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysql -h {DNS} -P {PORT} -u {USER} -p
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                         ↓(예시)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p
 </code></pre></div>
 </li>
 <li>

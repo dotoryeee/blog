@@ -15,7 +15,7 @@
         <link rel="next" href="../Terraform%20Backend/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -927,40 +927,40 @@
 <ol>
 <li>
 <p>IAM 작업 디렉터리를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
-<span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
 </code></pre></div>
 </li>
 <li>
 <p>이제 자연스럽게 provider를 먼저 생성합니다</p>
 <p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
-<span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
 <p>IAM을 코딩하기 위한 파일을 생성합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">iam.tf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">iam.tf</span>
 </code></pre></div>
 </li>
 <li>
 <p>gildong.hong 유저를 생성하는 코드를 작성했습니다</p>
-<div class="highlight"><span class="filename">iam.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user&quot;</span><span class="w"> </span><span class="nv">&quot;gildong_hong&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gildong.hong&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><span class="filename">iam.tf</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user&quot;</span><span class="w"> </span><span class="nv">&quot;gildong_hong&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gildong.hong&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
 <p>테라폼 사용을 선언합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">init</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">init</span>
 </code></pre></div>
 </li>
 <li>
 <p>plan을 실행하면 문제가 없음을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
 </code></pre></div>
 <p><img alt="Terraform AWS IAM/Untitled.png" src="Untitled.png" /></p>
 </li>
@@ -985,21 +985,21 @@
 <li>순서는 그룹 생성 → 멤버십 생성 → '멤버십을 그룹에 연결' 입니다</li>
 <li>
 <p>그룹 생성 코드 작성을 시작합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
 </code></pre></div>
 </li>
 <li>
 <p>코드 내용을 다음처럼 필수요소만 넣어줍니다</p>
-<div class="highlight"><span class="filename">user_group.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
-<span class="p">}</span>
+<div class="highlight"><span class="filename">user_group.tf</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
 <p>plan해보고 문제 없으면 바로 apply 합니다</p>
 <p><img alt="Terraform AWS IAM/Untitled%203.png" src="Untitled%203.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
-<span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">plan</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
 </li>
 <li>
@@ -1012,25 +1012,37 @@
 </li>
 <li>
 <p>이번엔 그룹에 유저를 추가해봅니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">user_group.tf</span>
 </code></pre></div>
 </li>
 <li>
 <p>코드는 다음과 같은 형태가 됩니다</p>
-<div class="highlight"><span class="filename">user_group.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
-<span class="p">}</span>
-
-<span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group_membership&quot; &quot;terra_group&quot;</span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
-
-<span class="w">        </span><span class="na">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                </span><span class="nv">aws_iam_user.gildong_hong.name</span>
-<span class="w">        </span><span class="p">]</span>
-
-<span class="w">        </span><span class="na">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">user_group.tf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-11-10">10</a></span>
+<span class="normal"><a href="#__codelineno-11-11">11</a></span>
+<span class="normal"><a href="#__codelineno-11-12">12</a></span>
+<span class="normal"><a href="#__codelineno-11-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group&quot; &quot;test_group&quot;</span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terra_group&quot;</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="p">}</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_group_membership&quot; &quot;terra_group&quot;</span><span class="p">{</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">        </span><span class="na">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">                </span><span class="nv">aws_iam_user.gildong_hong.name</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="w">        </span><span class="na">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_group.test_group.name</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>plan에 문제가 없으니 바로 apply 합니다</p>
@@ -1055,31 +1067,49 @@
 </li>
 <li>
 <p>'hello' 이름을 가지는 역할생성을 시작합니다</p>
-<div class="highlight"><pre><span></span><code>vi iam_role_hello.tf
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>vi iam_role_hello.tf
 </code></pre></div>
 </li>
 <li>
 <p>역할 설정 코드는 권한 정책이 포함됩니다</p>
-<div class="highlight"><span class="filename">iam_role_hello.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_role&quot;</span><span class="w"> </span><span class="nv">&quot;hello&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-iam-role&quot;</span>
-<span class="w">        </span><span class="na">path</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/&quot;</span>
-<span class="w">        </span><span class="na">assume_role_policy</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
-<span class="sh">{</span>
-<span class="sh">        &quot;Version&quot; : &quot;2012-10-17&quot;,</span>
-<span class="sh">        &quot;Statement&quot; : [</span>
-<span class="sh">        {</span>
-<span class="sh">        &quot;Sid&quot; : &quot;&quot;,</span>
-<span class="sh">        &quot;Effect&quot; : &quot;Allow&quot;,</span>
-<span class="sh">        &quot;Principal&quot; : {</span>
-<span class="sh">                &quot;Service&quot; : &quot;ec2.amazonaws.com&quot;</span>
-<span class="sh">        },</span>
-<span class="sh">        &quot;Action&quot; : &quot;sts:AssumeRole&quot;</span>
-<span class="sh">        }</span>
-<span class="sh">        ]</span>
-<span class="sh">}</span>
-<span class="dl">EOF</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">iam_role_hello.tf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span>
+<span class="normal"><a href="#__codelineno-13-14">14</a></span>
+<span class="normal"><a href="#__codelineno-13-15">15</a></span>
+<span class="normal"><a href="#__codelineno-13-16">16</a></span>
+<span class="normal"><a href="#__codelineno-13-17">17</a></span>
+<span class="normal"><a href="#__codelineno-13-18">18</a></span>
+<span class="normal"><a href="#__codelineno-13-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_role&quot;</span><span class="w"> </span><span class="nv">&quot;hello&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">        </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-iam-role&quot;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">        </span><span class="na">path</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/&quot;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">        </span><span class="na">assume_role_policy</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="sh">{</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="sh">        &quot;Version&quot; : &quot;2012-10-17&quot;,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="sh">        &quot;Statement&quot; : [</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="sh">        {</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="sh">        &quot;Sid&quot; : &quot;&quot;,</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="sh">        &quot;Effect&quot; : &quot;Allow&quot;,</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="sh">        &quot;Principal&quot; : {</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="sh">                &quot;Service&quot; : &quot;ec2.amazonaws.com&quot;</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="sh">        },</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="sh">        &quot;Action&quot; : &quot;sts:AssumeRole&quot;</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="sh">        }</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="sh">        ]</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="sh">}</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="dl">EOF</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>plan은 성공적으로 마쳤습니다</p>
@@ -1087,7 +1117,7 @@
 </li>
 <li>
 <p>바로 apply 진행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
 </li>
 <li>
@@ -1104,38 +1134,62 @@
 </li>
 <li>
 <p>이번에는 Permission을 추가해봅니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">vi</span><span class="w"> </span><span class="n">iam_role_hello.tf</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">iam_role_hello.tf</span>
 </code></pre></div>
 </li>
 <li>
 <p>다음 내용을 추가합니다</p>
 <p>정책을 만든 후 Role에 매핑하는 구조가 됩니다</p>
-<div class="highlight"><span class="filename">iam_role_hello.tf</span><pre><span></span><code><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;</span><span class="p">{</span>
-<span class="w">    </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-s3-download&quot;</span>
-<span class="w">    </span><span class="na">role</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.id</span>
-<span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
-<span class="sh">{</span>
-<span class="sh">    &quot;Statement&quot; : [</span>
-<span class="sh">        {</span>
-<span class="sh">            &quot;Sid&quot; : &quot;AllowAppArtifactsReadAccess&quot;,</span>
-<span class="sh">            &quot;Action&quot; : [</span>
-<span class="sh">                &quot;s3:GetObject&quot;</span>
-<span class="sh">            ],</span>
-<span class="sh">            &quot;Resource&quot; : [</span>
-<span class="sh">            &quot;*&quot;</span>
-<span class="sh">            ],</span>
-<span class="sh">            &quot;Effect&quot; : &quot;Allow&quot;</span>
-<span class="sh">        }</span>
-<span class="sh">        ]</span>
-<span class="sh">}</span>
-<span class="dl">EOF</span>
-<span class="p">}</span>
-
-<span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_instance_profile&quot; &quot;hello&quot;</span><span class="p">{</span>
-<span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-profile&quot;</span>
-<span class="w">        </span><span class="na">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.name</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">iam_role_hello.tf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-16-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-16-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-16-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-16-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-16-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-16-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-16-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-16-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-16-10">10</a></span>
+<span class="normal"><a href="#__codelineno-16-11">11</a></span>
+<span class="normal"><a href="#__codelineno-16-12">12</a></span>
+<span class="normal"><a href="#__codelineno-16-13">13</a></span>
+<span class="normal"><a href="#__codelineno-16-14">14</a></span>
+<span class="normal"><a href="#__codelineno-16-15">15</a></span>
+<span class="normal"><a href="#__codelineno-16-16">16</a></span>
+<span class="normal"><a href="#__codelineno-16-17">17</a></span>
+<span class="normal"><a href="#__codelineno-16-18">18</a></span>
+<span class="normal"><a href="#__codelineno-16-19">19</a></span>
+<span class="normal"><a href="#__codelineno-16-20">20</a></span>
+<span class="normal"><a href="#__codelineno-16-21">21</a></span>
+<span class="normal"><a href="#__codelineno-16-22">22</a></span>
+<span class="normal"><a href="#__codelineno-16-23">23</a></span>
+<span class="normal"><a href="#__codelineno-16-24">24</a></span>
+<span class="normal"><a href="#__codelineno-16-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_role_policy&quot; &quot;hello_s3&quot;</span><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="w">    </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-s3-download&quot;</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3"></a><span class="w">    </span><span class="na">role</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.id</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5"></a><span class="sh">{</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6"></a><span class="sh">    &quot;Statement&quot; : [</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7"></a><span class="sh">        {</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8"></a><span class="sh">            &quot;Sid&quot; : &quot;AllowAppArtifactsReadAccess&quot;,</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9"></a><span class="sh">            &quot;Action&quot; : [</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10"></a><span class="sh">                &quot;s3:GetObject&quot;</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11"></a><span class="sh">            ],</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12"></a><span class="sh">            &quot;Resource&quot; : [</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13"></a><span class="sh">            &quot;*&quot;</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14"></a><span class="sh">            ],</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15"></a><span class="sh">            &quot;Effect&quot; : &quot;Allow&quot;</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16"></a><span class="sh">        }</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17"></a><span class="sh">        ]</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18"></a><span class="sh">}</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19"></a><span class="dl">EOF</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20"></a><span class="p">}</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21"></a>
+<a id="__codelineno-16-22" name="__codelineno-16-22"></a><span class="err">resource</span><span class="w"> </span><span class="s2">&quot;aws_iam_instance_profile&quot; &quot;hello&quot;</span><span class="p">{</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23"></a><span class="w">        </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello-profile&quot;</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24"></a><span class="w">        </span><span class="na">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_role.hello.name</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>plan에서 정책이 잘 추가되면 apply 진행합니다</p>
@@ -1160,34 +1214,54 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 <li>AWS가 제공하는 Policy가 매우 많지만, 그래도 Customer가 직접 컨트롤 하는 것이 타이트한 권한 관리가 가능하기 때문에 이를 권장합니다</li>
 <li>
 <p>따라서 이번엔 홍길동 유저에게 Customer Managed 권한을 부여해봅니다</p>
-<div class="highlight"><pre><span></span><code>vi iam.tf
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>vi iam.tf
 </code></pre></div>
 </li>
 <li>
 <p>다음 코드를 추가합니다</p>
 <p>IAM user에 할당할 super-admin이라는 policy를 추가했습니다</p>
-<div class="highlight"><span class="filename">iam.tf</span><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user_policy&quot;</span><span class="w"> </span><span class="nv">&quot;art_devops_black&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;super-admin&quot;</span>
-<span class="w">    </span><span class="na">user</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_user.gildong_hong.name</span>
-
-<span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
-<span class="sh">{</span>
-<span class="sh">    &quot;Version&quot;: &quot;2012-10-17&quot;,</span>
-<span class="sh">    &quot;Statement&quot;: [</span>
-<span class="sh">        {</span>
-<span class="sh">            &quot;Effect&quot;: &quot;Allow&quot;,</span>
-<span class="sh">            &quot;Action&quot;: [</span>
-<span class="sh">                &quot;*&quot;</span>
-<span class="sh">            ],</span>
-<span class="sh">            &quot;Resource&quot;: [</span>
-<span class="sh">                &quot;*&quot;</span>
-<span class="sh">            ]</span>
-<span class="sh">        }</span>
-<span class="sh">    ]</span>
-<span class="sh">}</span>
-<span class="dl">EOF</span>
-<span class="p">}</span>
-</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">iam.tf</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-18-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-18-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-18-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-18-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-18-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-18-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-18-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-18-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-18-10">10</a></span>
+<span class="normal"><a href="#__codelineno-18-11">11</a></span>
+<span class="normal"><a href="#__codelineno-18-12">12</a></span>
+<span class="normal"><a href="#__codelineno-18-13">13</a></span>
+<span class="normal"><a href="#__codelineno-18-14">14</a></span>
+<span class="normal"><a href="#__codelineno-18-15">15</a></span>
+<span class="normal"><a href="#__codelineno-18-16">16</a></span>
+<span class="normal"><a href="#__codelineno-18-17">17</a></span>
+<span class="normal"><a href="#__codelineno-18-18">18</a></span>
+<span class="normal"><a href="#__codelineno-18-19">19</a></span>
+<span class="normal"><a href="#__codelineno-18-20">20</a></span>
+<span class="normal"><a href="#__codelineno-18-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_iam_user_policy&quot;</span><span class="w"> </span><span class="nv">&quot;art_devops_black&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;super-admin&quot;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="w">    </span><span class="na">user</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_iam_user.gildong_hong.name</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="w">    </span><span class="na">policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">EOF</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="sh">{</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="sh">    &quot;Version&quot;: &quot;2012-10-17&quot;,</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8"></a><span class="sh">    &quot;Statement&quot;: [</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="sh">        {</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10"></a><span class="sh">            &quot;Effect&quot;: &quot;Allow&quot;,</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11"></a><span class="sh">            &quot;Action&quot;: [</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12"></a><span class="sh">                &quot;*&quot;</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13"></a><span class="sh">            ],</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14"></a><span class="sh">            &quot;Resource&quot;: [</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15"></a><span class="sh">                &quot;*&quot;</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16"></a><span class="sh">            ]</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17"></a><span class="sh">        }</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18"></a><span class="sh">    ]</span>
+<a id="__codelineno-18-19" name="__codelineno-18-19"></a><span class="sh">}</span>
+<a id="__codelineno-18-20" name="__codelineno-18-20"></a><span class="dl">EOF</span>
+<a id="__codelineno-18-21" name="__codelineno-18-21"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
 </li>
 <li>
 <p>테라폼에서 plan은 좋은 습관입니다</p>
@@ -1195,7 +1269,7 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 </li>
 <li>
 <p>이상 없으면 바로 적용해봅니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">apply</span>
 </code></pre></div>
 </li>
 <li>
@@ -1204,7 +1278,7 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 </li>
 <li>
 <p>그룹정책을 설정할 때는 aws iam user policy 대신 aws_iam_group_policy를 설정합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">aws_iam_group_policy</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">aws_iam_group_policy</span>
 </code></pre></div>
 </li>
 </ol>
@@ -1214,12 +1288,12 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 <li>EC2에 키를 직접 보관하는것을 보안상 좋지 않기 때문에 EC2에 역할을 할당해 쓰는것이 권장됩니다</li>
 <li>
 <p>다음 명령을 쓰면 AK, SK가 그대로 노출되는것을 볼 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">cat</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">cat</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
 </code></pre></div>
 </li>
 <li>
 <p>따라서 이 값을 모두 삭제하고</p>
-<div class="highlight"><pre><span></span><code><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="o">~/</span><span class="n">.aws</span><span class="o">/</span><span class="n">credentials</span>
 </code></pre></div>
 </li>
 <li>
@@ -1240,11 +1314,11 @@ EC2에 IAM Role을 할당하려면 이 리소스가 필요한, 테라폼만의 �
 </li>
 <li>
 <p>디렉터리 내 현재까지 작성된 모든 리소스를 보고 싶으면 다음 명령으로 조회할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">terraform</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">list</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">terraform</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">list</span>
 </code></pre></div>
+<p><img alt="Terraform AWS IAM/Untitled%2021.png" src="Untitled%2021.png" /></p>
 </li>
 </ol>
-<p><img alt="Terraform AWS IAM/Untitled%2021.png" src="Untitled%2021.png" /></p>
 <h2 id="link">Link</h2>
 <hr />
 <ul>

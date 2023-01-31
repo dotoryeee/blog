@@ -15,7 +15,7 @@
         <link rel="next" href="../Circle-CI%20basic/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -1098,13 +1098,13 @@
 <ol>
 <li>
 <p>작업 디렉터리를 생성합니다
-    <div class="highlight"><pre><span></span><code><span class="n">mkdir</span><span class="w"> </span><span class="n">simple_app</span>
-<span class="n">cd</span><span class="w"> </span><span class="n">simple_app</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">simple_app</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">simple_app</span>
 </code></pre></div></p>
 </li>
 <li>
 <p>현재 디렉터리에 react를 설치합니다
-    <div class="highlight"><pre><span></span><code><span class="n">npx</span><span class="w"> </span><span class="n">create</span><span class="o">-</span><span class="n">react</span><span class="o">-</span><span class="n">app</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">npx</span><span class="w"> </span><span class="n">create</span><span class="o">-</span><span class="n">react</span><span class="o">-</span><span class="n">app</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
 </code></pre></div></p>
 <p><img alt="CICD on Single container/Untitled%201.png" src="Untitled%201.png" /></p>
 </li>
@@ -1127,19 +1127,19 @@
 <li>개발환경(dev)과 운영환경(prod)는 특성이 다를 수 있기 때문에 도커파일을 분리해야합니다</li>
 <li>
 <p>개발 환경의 도커파일을 생성합니다
-    <div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">dockerfile.dev</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">code</span><span class="w"> </span><span class="n">dockerfile.dev</span>
 </code></pre></div></p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">node:alpine</span>
-
-<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/usr/src/app</span>
-
-<span class="k">COPY</span><span class="w"> </span>package.json<span class="w"> </span>./
-
-<span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>install
-
-<span class="k">COPY</span><span class="w"> </span>./<span class="w"> </span>./
-
-<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;npm&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">node:alpine</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/usr/src/app</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">COPY</span><span class="w"> </span>package.json<span class="w"> </span>./
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>install
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">COPY</span><span class="w"> </span>./<span class="w"> </span>./
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;npm&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
 </code></pre></div>
 </li>
 </ol>
@@ -1155,12 +1155,12 @@
 <p class="admonition-title">Warning</p>
 <p>💡 현재 도커파일 이름은 dockerfile이 아니므로 -f 파라메터로 지정해줍니다</p>
 </div>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">dockerfile.dev</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">dockerfile.dev</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
 </code></pre></div>
 </li>
 <li>
 <p>생성이 완료되었으면 컨테이너로 돌려봅니다
-    <div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span>
 </code></pre></div></p>
 </li>
 <li>
@@ -1176,12 +1176,12 @@
 </li>
 <li>
 <p>호스트에서 node_moules 폴더를 삭제했기 때문에 예외처리 해줍니다
-    <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>-e<span class="w"> </span><span class="nv">CHOKIDAR_USEPOLLING</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>-v<span class="w"> </span>/usr/src/app/node_modules<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/usr/src/app<span class="w"> </span>dotoryeee/simple-app
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>-e<span class="w"> </span><span class="nv">CHOKIDAR_USEPOLLING</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>-v<span class="w"> </span>/usr/src/app/node_modules<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/usr/src/app<span class="w"> </span>dotoryeee/simple-app
 </code></pre></div></p>
 </li>
 <li>
 <p>현재 WSL에서 작업 시 컨테이너 node_module 폴더 권한 에러(EACCESS)로 인해 다음과 같이 실행했습니다
-    <div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">CHOKIDAR_USEPOLLING</span><span class="o">=</span><span class="n">true</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">app</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3000</span><span class="o">:</span><span class="m">3000</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">CHOKIDAR_USEPOLLING</span><span class="o">=</span><span class="n">true</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">app</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">simple</span><span class="o">-</span><span class="n">app</span>
 </code></pre></div></p>
 </li>
 </ol>
@@ -1203,27 +1203,27 @@
 <li>이번에는 도커 실행 명령어 단축을 위해 compose를 사용합니다</li>
 <li>
 <p>컴포즈파일 작성을 시작합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">code</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="c1">#도커 컴포즈 버전</span>
-<span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="c1">#컴포즈에서 실행할 컨테이너들을 정의</span>
-<span class="w">    </span><span class="nt">react</span><span class="p">:</span><span class="w"> </span><span class="c1">#컨테이너 이름</span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="c1">#dockerfile 정보 ↓</span>
-<span class="w">        </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span><span class="w"> </span><span class="c1">#현재 위치에 있다</span>
-<span class="w">        </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockerfile.dev</span><span class="w"> </span><span class="c1">#파일이름</span>
-<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="c1">#컨테이너 포트 매핑</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
-<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="c1">#호스트와 볼륨 매핑</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/src/app/node_modules</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./:/usr/src/app</span>
-<span class="w">    </span><span class="nt">stdin_open</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1">#리액트 앱을 종료할 떄 필요한 옵션(없으면 리액트에서 버스 발생)</span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CHOKIDAR_USEPOLLING=true</span><span class="w"> </span><span class="c1">#리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="c1">#도커 컴포즈 버전</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="c1">#컴포즈에서 실행할 컨테이너들을 정의</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">react</span><span class="p">:</span><span class="w"> </span><span class="c1">#컨테이너 이름</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="c1">#dockerfile 정보 ↓</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span><span class="w"> </span><span class="c1">#현재 위치에 있다</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockerfile.dev</span><span class="w"> </span><span class="c1">#파일이름</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="c1">#컨테이너 포트 매핑</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3000:3000&quot;</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="c1">#호스트와 볼륨 매핑</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/src/app/node_modules</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./:/usr/src/app</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="nt">stdin_open</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1">#리액트 앱을 종료할 떄 필요한 옵션(없으면 리액트에서 버스 발생)</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CHOKIDAR_USEPOLLING=true</span><span class="w"> </span><span class="c1">#리액트에서 핫 리로딩(실시간 업데이트)를 위한 옵션</span>
 </code></pre></div>
 </li>
 <li>
 <p>컴포즈를 실행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span>
 </code></pre></div>
 </li>
 <li>
@@ -1235,25 +1235,25 @@
 <ol>
 <li>
 <p>도커에서 리액트를 테스트 하는 기본적인 명령어는 다음과 같습니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="p">{</span><span class="n">IMAGE</span><span class="p">}</span><span class="w"> </span><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">test</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="p">{</span><span class="n">IMAGE</span><span class="p">}</span><span class="w"> </span><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">test</span>
 </code></pre></div>
 </li>
 <li>
 <p>테스트도 소스코드를 핫 리로딩 할 수 있으면 매우 편리할 것입니다</p>
 <p>다음과 같이 컴포즈파일에 컨테이너를 추가해주면 됩니다</p>
-<div class="highlight"><pre><span></span><code><span class="nt">tests</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
-<span class="w">        </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile.dev</span>
-<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/src/app/node_modules</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./:/usr/src/app</span>
-<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;npm&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;run&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="p p-Indicator">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">tests</span><span class="p">:</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">        </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">        </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile.dev</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/src/app/node_modules</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./:/usr/src/app</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;npm&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;run&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 </li>
 <li>
 <p>이번에는 재빌드 해야하니 build 명령을 추가해줍니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">--</span><span class="n">build</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">--</span><span class="n">build</span>
 </code></pre></div>
 </li>
 </ol>
@@ -1263,7 +1263,7 @@
 <li>개발환경은 npm run start를 사용해 서버를 실행하지만 운영환경은 build후 Nginx를 이용합니다</li>
 <li>
 <p>도커파일 작성을 시작합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">dockerfile</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">code</span><span class="w"> </span><span class="n">dockerfile</span>
 </code></pre></div>
 </li>
 <li>
@@ -1271,41 +1271,41 @@
 <ul>
 <li>Builder stage : 빌드 파일을 생성합니다</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">node:alpine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder</span>
-<span class="c">#이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시</span>
-<span class="k">WORKDIR</span><span class="w"> </span><span class="s">&#39;/usr/src/app&#39;</span>
-<span class="k">COPY</span><span class="w"> </span>package.json<span class="w"> </span>./
-<span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>install
-<span class="k">COPY</span><span class="w"> </span>./<span class="w"> </span>./
-<span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
-<span class="c">#생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">node:alpine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">builder</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c">#이곳(as)부터 다음 FROM이 나올 떄 까지는 builder stage임을 명시</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">&#39;/usr/src/app&#39;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="k">COPY</span><span class="w"> </span>package.json<span class="w"> </span>./
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>install
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="k">COPY</span><span class="w"> </span>./<span class="w"> </span>./
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">RUN</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c">#생성된 빌드 파일은 /usr/src/app/build에 위치하게 됩니다</span>
 </code></pre></div>
 <ul>
 <li>Nginx stage : NginX를 가동하고 생성된 빌드 파일을 요청에 따라 제공합니다(Run stage)</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
-<span class="c">#nginx 베이스 이미지</span>
-<span class="k">EXPOSE</span><span class="w"> </span><span class="s">80</span>
-<span class="c">#AWS에 배포하기 위해 80포트 오픈</span>
-<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/src/app/build<span class="w"> </span>/usr/share/nginx/html
-<span class="c">#--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시</span>
-<span class="c">#/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c">#nginx 베이스 이미지</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="k">EXPOSE</span><span class="w"> </span><span class="s">80</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c">#AWS에 배포하기 위해 80포트 오픈</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/usr/src/app/build<span class="w"> </span>/usr/share/nginx/html
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c">#--from=builder : 다른 stage에 있는 파일을 복사할 때, 다른 stage 이름을 명시</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c">#/usr/src/app/build , /usr/share/nginx/html : builder stage에서 생성된 파일을 nginx 폴더에 복사</span>
 </code></pre></div>
 <ul>
 <li>참고 : dockerhub에서 제공하는 nginx 공식 설명</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
-<span class="k">COPY</span><span class="w"> </span>static-html-directory<span class="w"> </span>/usr/share/nginx/html
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">nginx</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">COPY</span><span class="w"> </span>static-html-directory<span class="w"> </span>/usr/share/nginx/html
 </code></pre></div>
 </li>
 <li>
 <p>작성이 완료되면 이미지 빌드를 시작합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">test2</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">test2</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
 </code></pre></div>
 </li>
 <li>
 <p>이미지 생성이 완료되면 컨테이너를 실행해봅니다. nginx의 기본 포트는 80 입니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">7070</span><span class="o">:</span><span class="m">80</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">test2</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">7070</span><span class="o">:</span><span class="m">80</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">test2</span>
 </code></pre></div>
 </li>
 <li>
@@ -1339,24 +1339,24 @@
 <li>언어설정에 generic에 대한 설명은 <a href="https://docs.travis-ci.com/user/languages/minimal-and-generic/">이곳</a>에서 확인할 수 있습니다</li>
 <li>— —coverage 옵션을 이용하면 콘솔에서 자세한 로그를 확인할 수 있습니다</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">.travis.yml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">code</span><span class="w"> </span><span class="n">.travis.yml</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="nt">sudo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">required</span>
-
-<span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
-
-<span class="nt">services</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
-
-<span class="nt">before_install</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo &quot;building image with dockerfile&quot;</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/test2 -f dockerfile.dev ./</span>
-
-<span class="nt">script</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker run -e CI=true dotoryeee/test2 npm run test -- --coverage</span>
-
-<span class="nt">after_success</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo &quot;TEST SUCCESS&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">sudo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">required</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nt">before_install</span><span class="p">:</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo &quot;building image with dockerfile&quot;</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t dotoryeee/test2 -f dockerfile.dev ./</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="nt">script</span><span class="p">:</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker run -e CI=true dotoryeee/test2 npm run test -- --coverage</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="nt">after_success</span><span class="p">:</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">echo &quot;TEST SUCCESS&quot;</span>
 </code></pre></div>
 </li>
 <li>
@@ -1392,22 +1392,22 @@
 </li>
 <li>
 <p>AWS에 배포를 위해 travis를 설정합니다. 당연히 yaml 파일로.</p>
-<div class="highlight"><pre><span></span><code><span class="n">code</span><span class="w"> </span><span class="n">.travis.yml</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">code</span><span class="w"> </span><span class="n">.travis.yml</span>
 </code></pre></div>
 </li>
 <li>
 <p>다음 내용을 추가하고 푸시해줍니다</p>
-<div class="highlight"><pre><span></span><code><span class="nt">deploy</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticbeanstalk</span>
-<span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ap-northeast-2&quot;</span>
-<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple-app&quot;</span>
-<span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Simpleapp-env&quot;</span><span class="w"> </span><span class="c1">#빈스톡 생성시 env 지정 가능</span>
-<span class="w">    </span><span class="nt">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elasticbeanstalk-ap-northeast-2-737382971423&quot;</span><span class="w"> </span><span class="c1">#빈스톡 생성시 자동으로 생성된 s3 이름</span>
-<span class="w">    </span><span class="nt">bucket_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple-app&quot;</span><span class="w"> </span><span class="c1">#app 이름과 동일하게 작성</span>
-<span class="w">    </span><span class="nt">on</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span><span class="w"> </span><span class="c1">#어떤 브랜치를 배포할 것 인가</span>
-<span class="w">    </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_ACCESS_KEY</span><span class="w"> </span><span class="c1">#트래비스에 등록된 환경변수</span>
-<span class="w">    </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_SECRET_ACCESS_KEY</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">deploy</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticbeanstalk</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nt">region</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ap-northeast-2&quot;</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple-app&quot;</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Simpleapp-env&quot;</span><span class="w"> </span><span class="c1">#빈스톡 생성시 env 지정 가능</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">    </span><span class="nt">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elasticbeanstalk-ap-northeast-2-737382971423&quot;</span><span class="w"> </span><span class="c1">#빈스톡 생성시 자동으로 생성된 s3 이름</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nt">bucket_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;simple-app&quot;</span><span class="w"> </span><span class="c1">#app 이름과 동일하게 작성</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">    </span><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">    </span><span class="nt">branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span><span class="w"> </span><span class="c1">#어떤 브랜치를 배포할 것 인가</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">    </span><span class="nt">access_key_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_ACCESS_KEY</span><span class="w"> </span><span class="c1">#트래비스에 등록된 환경변수</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">    </span><span class="nt">secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_SECRET_ACCESS_KEY</span>
 </code></pre></div>
 </li>
 <li>

@@ -15,7 +15,7 @@
         <link rel="next" href="../VPC%20Endpoint%20with%20Role/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -917,7 +917,7 @@
 </li>
 <li>
 <p>google cloud SDK(이하 SDK)에서 접속하기 위해 다음 명령을 실행합니다</p>
-<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">auth</span><span class="w"> </span><span class="n">application</span><span class="o">-</span><span class="n">default</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="p">{</span><span class="n">Project</span><span class="w"> </span><span class="n">ID</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">gcloud</span><span class="w"> </span><span class="n">auth</span><span class="w"> </span><span class="n">application</span><span class="o">-</span><span class="n">default</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="p">{</span><span class="n">Project</span><span class="w"> </span><span class="n">ID</span><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
@@ -970,18 +970,18 @@ SDK코드에 SQL구문을 삽입하여 실행하는 6.6코드를 실행해봅니
 </li>
 <li>
 <p>② SDK에 SQL구문 직접 실어보내기</p>
-<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">spanner</span><span class="w"> </span><span class="n">databases</span><span class="w"> </span><span class="n">ddl</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="o">-</span><span class="k">database</span><span class="w"> </span><span class="c1">--instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">gcloud</span><span class="w"> </span><span class="n">spanner</span><span class="w"> </span><span class="n">databases</span><span class="w"> </span><span class="n">ddl</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">test</span><span class="o">-</span><span class="k">database</span><span class="w"> </span><span class="c1">--instance=test-instance --ddl=&quot;ALTER TABLE employees ALTER COLUMN name STRING(MAX) NOT NULL;&quot;</span>
 </code></pre></div>
 </li>
 <li>
 <p>색인을 사용하기 위해 색인테이블을 생성합니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="Transaction on GCP Spanner/Untitled%2014.png" src="Untitled%2014.png" /></p>
 </li>
 <li>
 <p>색인 후 다시 데이터로 돌아가 추가 데이터를 가져오는 것을 비효율적이기 때문에 애초에 색인테이블에 다른 데이터도 추가로 삽입해둘 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="n">STORING</span><span class="w"> </span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">employees_by_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="n">STORING</span><span class="w"> </span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
