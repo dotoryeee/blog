@@ -1,15 +1,16 @@
 # ElasticSearch domain in VPC
 
+!!! tip
+    AWS에서 SaaS형태로 제공하는 ElasticSearch은 7.10까지만 지원하고, 이후 버전은 OpenSearch로만 생성할 수 있다
+
 ## 사전정보
 - AWS에서 SaaS 형태로 제공하는 ElasticSearch(이하 ES)의 경우 domain을 VPC내부 또는 외부에 생성할 수 있다
 - 보안을 위해 VPC 내부에 생성을 권고하는데, ES domain이 private subnet에 위치하는 경우 public subnet에 Nginx를 프록시 서버로 생성하고 redirection 해주어야 한다
 - Redirection시 cognito를 이용한 사용자인증 유무에 따라 Nginx 설정이 다르다(아래 참조)
-!!! tip
-    AWS에서 SaaS형태로 제공하는 ElasticSearch은 7.10까지만 지원하고, 이후 버전은 OpenSearch로만 생성할 수 있다
 
-1. 구성 아키텍처
-2. Nginx proxy config
+- Nginx proxy config
     1. Cognito를 사용하는 경우
+    ![with congito](ES Domain in VPC/2023-02-02_20-56-30.png)
     ```json title="/etc/nginx/conf.d/default.conf" linenums="1"
     server {
     listen 443;
@@ -65,13 +66,13 @@
     }
     }
     ```
-   작성 후 아래 명령을 이용하여 Config를 완성합니다
+    작성 후 아래 명령을 이용하여 Config를 완성합니다
     ```s
     sudo sed -i 's/my_domain_host/vpc-cognito-private-xxxxxxxxxx.us-east-1.es.amazonaws.com/' /etc/nginx/conf.d/default.conf
     sudo sed -i 's/my_cognito_host/dean-kumo-xxxxxxx.auth.us-east-1.amazoncognito.com/' /etc/nginx/conf.d/default.conf
     ```
-
     2. Cognito를 사용하지 않는 경우
+    ![without congito](ES Domain in VPC/2023-02-02_20-53-31.png)
     ```json title="/etc/nginx/conf.d/default.conf" linenums="1"
     server { # kibana domain
         listen 443;
