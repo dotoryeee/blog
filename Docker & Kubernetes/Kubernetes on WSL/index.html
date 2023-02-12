@@ -9,17 +9,17 @@
       
       
       
-        <link rel="prev" href="../3-Tier%20Basic%20Infra/">
+        <link rel="prev" href="../Docker%20volume%20with%20MySQL/">
       
       
-        <link rel="next" href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/">
+        <link rel="next" href="../../Memozzang/AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
     
     
       
-        <title>API Gateway with Lambda - dotoryeee's blog</title>
+        <title>Kubernetes on WSL - dotoryeee's blog</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#api-gateway-with-lambda" class="md-skip">
+        <a href="#kubernetes-on-wsl" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              API Gateway with Lambda
+              Kubernetes on WSL
             
           </span>
         </div>
@@ -209,16 +209,16 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
       
       
       
@@ -227,7 +227,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           Cloud Infra
@@ -240,7 +240,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../3-Tier%20Basic%20Infra/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/3-Tier%20Basic%20Infra/" class="md-nav__link">
         3-Tier 기본 인프라 구성
       </a>
     </li>
@@ -252,59 +252,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          API Gateway with Lambda
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/API%20Gateway%20with%20Lambda/" class="md-nav__link">
         API Gateway with Lambda
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    목적
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    실습
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -316,7 +268,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
         Access S3, DynamoDB with Lambda
       </a>
     </li>
@@ -330,7 +282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Failover%20for%20HA/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Failover%20for%20HA/" class="md-nav__link">
         Failover for HA
       </a>
     </li>
@@ -344,7 +296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/Transaction%20on%20GCP%20Spanner/" class="md-nav__link">
         Transaction on GCP Spanner
       </a>
     </li>
@@ -358,7 +310,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../VPC%20Endpoint%20with%20Role/" class="md-nav__link">
+      <a href="../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/" class="md-nav__link">
         VPC Endpoint with Role
       </a>
     </li>
@@ -471,16 +423,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-        
-      
-      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
       
       
       
@@ -489,7 +441,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Docker & Kubernetes
@@ -502,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/" class="md-nav__link">
+      <a href="../Docker%20Proxy%20Layer%20for%20MySQL/" class="md-nav__link">
         Docker Proxy Layer for MySQL
       </a>
     </li>
@@ -516,7 +468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Docker%20basics/" class="md-nav__link">
+      <a href="../Docker%20basics/" class="md-nav__link">
         Docker basics
       </a>
     </li>
@@ -530,7 +482,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Docker%20compose%20web%20GUI/" class="md-nav__link">
+      <a href="../Docker%20compose%20web%20GUI/" class="md-nav__link">
         Docker compose and web GUI
       </a>
     </li>
@@ -544,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/" class="md-nav__link">
+      <a href="../Docker%20volume%20with%20MySQL/" class="md-nav__link">
         Docker volume with MySQL
       </a>
     </li>
@@ -556,11 +508,66 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Kubernetes on WSL
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Kubernetes on WSL
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enable-kubernetes-option-on-docker-desktop" class="md-nav__link">
+    Enable kubernetes option on Docker Desktop
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-minikube-on-wsl2-ubuntu" class="md-nav__link">
+    Install minikube on WSL2 Ubuntu
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-kustomize" class="md-nav__link">
+    Install Kustomize
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -957,15 +964,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    목적
+  <a href="#enable-kubernetes-option-on-docker-desktop" class="md-nav__link">
+    Enable kubernetes option on Docker Desktop
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    실습
+  <a href="#install-minikube-on-wsl2-ubuntu" class="md-nav__link">
+    Install minikube on WSL2 Ubuntu
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-kustomize" class="md-nav__link">
+    Install Kustomize
   </a>
   
 </li>
@@ -986,156 +1000,42 @@
 
 
 
-<h1 id="api-gateway-with-lambda">API Gateway with Lambda</h1>
-<h2 id="_1">목적</h2>
-<hr />
-<ul>
-<li>API Gateway의 기초적인 사용법 확인</li>
-<li>API Gateway에 Lambda를 연결하여 동작 확인</li>
-<li>HTTP GET Parameter(매개변수) 전송과 응답 확인</li>
-<li>두 개의 Lambda Function을 생성하여 Root·Resource Page에 각각 적용하기</li>
-</ul>
-<h2 id="_2">실습</h2>
-<hr />
+<h1 id="kubernetes-on-wsl">Kubernetes on WSL</h1>
+<h2 id="enable-kubernetes-option-on-docker-desktop">Enable kubernetes option on Docker Desktop</h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Docker Desktop을 이용하는 경우 마우스 클릭 한 번으로 Kubernetes를 사용할 수 있습니다</p>
+</div>
 <ol>
-<li>
-<p>Lambda 동작에 필요한 권한을 부여하기 위해 Role 을 생성합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled.png" src="Untitled.png" /></p>
-</li>
-<li>
-<p>Lambda의 최소 권한인 CloudWatch 접근 권한을 부여합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%201.png" src="Untitled%201.png" /></p>
-</li>
-<li>
-<p>위 Role을 활용할 수 있는 Lambda를 생성합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%202.png" src="Untitled%202.png" /></p>
-<p><img alt="API Gateway with Lambda/Untitled%203.png" src="Untitled%203.png" /></p>
-</li>
-<li>
-<p>Root Page(/)에 적용할 첫 번째 Lambda Function의 코드는 다음과 같이 입력합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">json</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">myParam</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;myParam&#39;</span><span class="p">]</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;myFunction1 excuted&#39;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">return</span> <span class="p">{</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">myParam</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="p">}</span>
-</code></pre></div>
-<p><img alt="API Gateway with Lambda/Untitled%204.png" src="Untitled%204.png" /></p>
-</li>
-<li>
-<p>코드 작성을 완료하였으면 배포해줍니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%205.png" src="Untitled%205.png" /></p>
-</li>
-<li>
-<p>(/resource)페이지에 적용할 두 번째 함수도 같은 설정으로 생성합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%206.png" src="Untitled%206.png" /></p>
-</li>
-<li>
-<p>두번째 Lambda Function의 코드는 다음과 같이 입력합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">json</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">myParam</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;myParam&#39;</span><span class="p">]</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;myFunction2 excuted&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">return</span> <span class="p">{</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="s1">&#39;statusCode&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">myParam</span><span class="p">)</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">}</span>
-</code></pre></div>
-<p><img alt="API Gateway with Lambda/Untitled%207.png" src="Untitled%207.png" /></p>
-</li>
-<li>
-<p>마찬가지로 두 번쨰 코드도 작성을 완료하였으면 배포해줍니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%205.png" src="Untitled%205.png" /></p>
-</li>
-<li>
-<p>API Gateway를 생성합니다. 타입은 REST API로 설정합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%208.png" src="Untitled%208.png" /></p>
-</li>
-<li>
-<p>첫 API 이름은 평범하게 myAPI로 설정하겠습니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%209.png" src="Untitled%209.png" /></p>
-</li>
-<li>
-<p>루트페이지를 GET 할때 myFunction1을 호출합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2010.png" src="Untitled%2010.png" /></p>
-</li>
-<li>
-<p>/resource페이지를 GET 할 때 myFunction2를 호출합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2011.png" src="Untitled%2011.png" /></p>
-</li>
-<li>
-<p>페이지별 Function을 연결했으면 Integration Request 메뉴에서 GET 요청시 파라메터값을 가져올 수 있도록 설정해줍니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2012.png" src="Untitled%2012.png" /></p>
-</li>
-<li>
-<p>아래와 같이 템플릿을 설정하면 됩니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2013.png" src="Untitled%2013.png" /></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;myParam&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$input.params(&#39;myParam&#39;)&quot;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">}</span>
-</code></pre></div>
-</li>
-<li>
-<p>통합보고 경고가 뜨면 YES를 선택합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2014.png" src="Untitled%2014.png" /></p>
-</li>
-<li>
-<p>/resource 의 Request 에도 똑같이 적용합니다</p>
-</li>
-<li>
-<p>설정이 완료되면 API를 배포합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2015.png" src="Untitled%2015.png" /></p>
-</li>
-<li>
-<p>배포할 API이름은 testAPI로 설정하겠습니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2016.png" src="Untitled%2016.png" /></p>
-</li>
-<li>
-<p>배포가 완료되면 API가 적용된 DNS주소가 발생합니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2017.png" src="Untitled%2017.png" /></p>
-</li>
-<li>
-<p>해당 DNS는 HOST에서 바로 접근할 수 있습니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2018.png" src="Untitled%2018.png" /></p>
-</li>
-<li>
-<p>API가 Lambda를 잘 호출하는 것을 Cloudwatch에서 확인할 수 있습니다</p>
-<p><img alt="API Gateway with Lambda/Untitled%2019.png" src="Untitled%2019.png" /></p>
-</li>
-<li>
-<p>리눅스 터미널을 이용해 간편하게 API를 테스트 해봅시다</p>
-</li>
-<li>
-<p>curl 을 사용해 접근합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&#39;{DNS ADDRESS}&#39;</span>
-</code></pre></div>
-</li>
-<li>
-<p>접속이 가능하고 파라메터값이 없기 떄문에 리턴값도 없음을 확인할 수 있습니다</p>
-</li>
+<li>Run 'docker desktop' and turn on 'Enable Kubetnetes' option.
+    <img alt="enable_kubernetes_0" src="2023-02-12_14-40-41.png" /></li>
+<li>Click 'Apply &amp; Restart' for restart docker desktop</li>
+<li>약 15분 정도 경과 Kubetnetes관련 컨테이너 설치가 완료되면 후 좌측 하단에 Kubetnetes가 잘 활성화 된 것을 확인할 수 있습니다
+    <img alt="enable_kubetnetes_1" src="2023-02-12_14-57-43.png" />
+    <img alt="enable_kubetnetes_2" src="2023-02-12_14-59-46.png" /></li>
+<li>Docker desktop에서 Kubetnetes가 활성화 되면 바로 kubectl 명령이 사용 가능해집니다
+    <img alt="enable_kubernetes_3" src="2023-02-12_15-04-07.png" />
+    <img alt="enable_kubernetes_3" src="2023-02-12_15-05-43.png" /></li>
 </ol>
-<p><img alt="API Gateway with Lambda/Untitled%2020.png" src="Untitled%2020.png" /></p>
+<h2 id="install-minikube-on-wsl2-ubuntu">Install minikube on WSL2 Ubuntu</h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Minikube는 로컬에서 단일 노드로 Kubernetes를 실행할 수 있게 도와주는 툴입니다. Production환경에 적용하기엔 제약이 많지만, 테스트 및 학습 목적으로 사용하기엔 충분합니다.</p>
+</div>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>Docker Desktop의 경우 재직자수 250명 이상의 회사에서 사용하면 비용을 지불해야하므로(개인사용자는 해당없음) Minikube를 이용하여 Docker Desktop을 대체할 수 있습니다.</p>
+</div>
 <ol>
-<li>
-<p>curl 명령에 파라메터값도 같이 날려봅니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&#39;{DNS ADDRESS}?myParam=HELLO&#39;</span>
-</code></pre></div>
-</li>
-<li>
-<p>API가 파라메터값에 정상적으로 반응하는 것을 볼 수 있습니다</p>
-</li>
+<li></li>
 </ol>
-<p><img alt="API Gateway with Lambda/Untitled%2021.png" src="Untitled%2021.png" /></p>
+<h2 id="install-kustomize">Install Kustomize</h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Kubernetes 매니페스트파일(yaml) 파일의 효율적인 관리는 위해 Kustomize를 설치해봅니다</p>
+</div>
 <ol>
-<li>
-<p>/resource페이지도 정상적으로 반응하는 것을 볼 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&#39;{DNS ADDRESS}/resource?myParam=HELLO&#39;</span>
-</code></pre></div>
-</li>
+<li></li>
 </ol>
 
 
@@ -1165,7 +1065,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../3-Tier%20Basic%20Infra/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3-Tier 기본 인프라 구성" rel="prev">
+          <a href="../Docker%20volume%20with%20MySQL/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker volume with MySQL" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1174,20 +1074,20 @@
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                3-Tier 기본 인프라 구성
+                Docker volume with MySQL
               </div>
             </div>
           </a>
         
         
           
-          <a href="../Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-footer__link md-footer__link--next" aria-label="Next: Access S3, DynamoDB with Lambda" rel="next">
+          <a href="../../Memozzang/AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS Boto3 SDK 모둠" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                Access S3, DynamoDB with Lambda
+                AWS Boto3 SDK 모둠
               </div>
             </div>
             <div class="md-footer__button md-icon">
