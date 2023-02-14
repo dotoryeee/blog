@@ -4,7 +4,7 @@ https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuS
 
 https://www.data.go.kr/iim/api/selectAPIAcountView.do
 
-```python title="emergency_alert_to_slack.py"
+```python title="emergency_alert_to_slack.py" linenums="1"
 import requests
 import datetime
 
@@ -15,7 +15,7 @@ target_message_time = 720 #cron 주기로 사용 할 분(minutes) 값을 입력�
 target_location_ids = ["2", "21", "53", "74", "98", "104", "113", "119", "136", "162", "168", "179", "202", "217", "222", "238", "6474", "6474"]
 # location_id는 다음 문서를 참조: https://www.data.go.kr/data/15066113/fileData.do 
 
-slack_webhook_url = "https://hooks.slack.com/services/~~~~~~"
+slack_webhook_url = "https://hooks.slack.com/services/~~~~"
 
 def load_messages() -> list: 
     """
@@ -28,14 +28,14 @@ def load_messages() -> list:
 
 def time_str_to_obj(time_str: str) -> object:
     """
-    string type으로 제공되는 날짜데이터를 datetime Object로 변환한다
+    string type으로 제공되는 날짜데이터를 datetime object로 변환한다
     """
     time_obj = datetime.datetime.strptime(time_str, "%Y/%m/%d %H:%M:%S") #공공데이터 time format을 datetime object format으로 변환
     return time_obj
 
 def time_kst_to_utc(time_obj: object) -> object:
     """
-    KST-> UTC 연산을 위해 string type의 시간을 입력받아 datetime Object로 전환 후 KST -> UTC 연산 & 리턴
+    KST datetime object를 입력받아 UTC datetime object를 리턴
     """
     time_obj += datetime.timedelta(hours = -9) # KST -> UTC 연산
     return time_obj
@@ -50,7 +50,7 @@ def check_message_time(message_time: object) -> bool:
 
 def check_location_id(location_id: str) -> bool:
     """
-    미완성 함수. 함수 완성 후 마지막 행 return False로 변경 필요
+    location_id가 target_location_ids 리스트 내에 존재하는 경우에만 메세지 발송
     """
     if location_id in target_location_ids:
         return True
