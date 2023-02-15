@@ -18,12 +18,12 @@ import datetime
 
 auth_key = ""
 return_type = "json"
-request_row = "1000"
-target_message_time = 720 #cron 주기로 사용 할 분(minutes) 값을 입력한다. 1을 입력할 경우 최근 1분간 메시지만 전송한다.
+request_row = "100"
+target_message_time = 10 #cron 주기로 사용 할 분(minutes) 값을 입력한다. 1을 입력할 경우 최근 1분간 메시지만 전송한다.
 target_location_ids = ["2", "21", "53", "74", "98", "104", "113", "119", "136", "162", "168", "179", "202", "217", "222", "238", "6474", "6474"]
 # location_id는 다음 문서를 참조: https://www.data.go.kr/data/15066113/fileData.do 
 
-slack_webhook_url = "https://hooks.slack.com/services/~~~~~~~"
+slack_webhook_url = "https://hooks.slack.com/services/~~~~~~~~~~"
 
 def load_messages() -> list: 
     """
@@ -52,7 +52,7 @@ def check_message_time(message_time: object) -> bool:
     """
     target_message_time 변수값을 참조하여 지난 몇 분 사이에 생성된 메세지가 맞는지 검증한다 (timeWindow filtering)
     """
-    if datetime.datetime.now() - datetime.timedelta(minutes = target_message_time) < message_time:
+    if datetime.datetime.now() + datetime.timedelta(hours = 9) - datetime.timedelta(minutes = target_message_time) < message_time:
         return True
     return False
 
@@ -87,9 +87,7 @@ def lambda_handler(event, context):
     messages = load_messages()
     for message in messages:
         send_slack_message(message)
-    return {
-        "statusCode": 200
-    }
+
 ```
 
 5. AWS Lambda를 매 10분 마다 실행합니다
