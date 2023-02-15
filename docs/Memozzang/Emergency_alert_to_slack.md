@@ -1,11 +1,11 @@
 # 재난안전문자 API 활용하기
 
 ## 목적
-재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.
+재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.<br>
 때문에 재난문자 발생 시 Slack으로 알람을 쏴주도록 구성해보았습니다
 
 ## 절차
-1. 아래 사이트에서 재난문자 발생 내역으 확인할 수 있습니다<br>
+1. 아래 사이트에서 재난문자 발생 내역을 확인할 수 있습니다<br>
    https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679
 
 2. 아래 공공데이터 포털에서 재난문자 API 사용신청 후 인증키를 수령합니다<br>
@@ -18,12 +18,12 @@ import datetime
 
 auth_key = ""
 return_type = "json"
-request_row = "500"
-target_message_time = 60 #cron 주기로 사용 할 분(minutes) 값을 입력한다. 60을 입력할 경우 최근 60분간 메시지만 전송한다.
+request_row = "1000"
+target_message_time = 720 #cron 주기로 사용 할 분(minutes) 값을 입력한다. 1을 입력할 경우 최근 1분간 메시지만 전송한다.
 target_location_ids = ["2", "21", "53", "74", "98", "104", "113", "119", "136", "162", "168", "179", "202", "217", "222", "238", "6474", "6474"]
 # location_id는 다음 문서를 참조: https://www.data.go.kr/data/15066113/fileData.do 
 
-slack_webhook_url = "https://hooks.slack.com/services/~~~~"
+slack_webhook_url = "https://hooks.slack.com/services/~~~~~~~"
 
 def load_messages() -> list: 
     """
@@ -83,24 +83,54 @@ def send_slack_message(message: dict) -> None:
         }
         requests.post(slack_webhook_url, json=payload)
 
-def main():
+def lambda_handler(event, context):
     messages = load_messages()
     for message in messages:
         send_slack_message(message)
-    
-main()
+    return {
+        "statusCode": 200
+    }
 ```
 
-4. AWS Lambda에 함수를 생성하고 코드를 주입합니다
-    ![image_1](Emergency_alert_to_slack/1.PNG)
-
-5. AWS Lambda를 매 시간마다 실행합니다
+5. AWS Lambda를 매 10분 마다 실행합니다
     ![image_2](Emergency_alert_to_slack/2.PNG)
     ![image_3](Emergency_alert_to_slack/3.PNG)
 
-6. API 에러율이 너무 높습니다
+6. 공공데이터가 원래 그런건지 재난문자 API 에러율이 너무 높습니다<br>
+    API 자체의 호출 성공률이 낮습니다. 3번 실행하면 2번은 실패? 때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다
     ![image_4](Emergency_alert_to_slack/4.PNG)
     ![image_5](Emergency_alert_to_slack/5.PNG)
-    !!! warning
-        희한하게 API 호출 성공률이 낮습니다. 3번 실행하면 2번은 실패?
-        때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다
+
+7. CloudWatch를 이용해 확인해보니 requests 라이브러리가 없다고 합니다
+    ![image_6](Emergency_alert_to_slack/6.PNG)
+
+8. Local에 python3.9용 requests library를 다운로드하고 압축합니다
+    ```s
+    mkdir temp_for_download_module && cd temp_for_download_module
+
+    pip install \
+    --platform manylinux2014_x86_64 \
+    --target=emergency_alert_to_slack \
+    --implementation cp \
+    --python 3.9 \
+    --only-binary=:all: --upgrade \
+    requests
+    ```
+    ![image_6](Emergency_alert_to_slack/6.PNG)
+    ![image_7](Emergency_alert_to_slack/7.PNG)
+
+9. 작성했던 코드로 lambda_function.py로 저장해줍니다
+    ![image_8](Emergency_alert_to_slack/8.PNG)
+
+10. AWS Lambda -> Code 탭 > Upload from > .zip file 클릭 후 방금 생성한 압축파일을 업로드 해줍니다
+    ![image_10](Emergency_alert_to_slack/10.PNG)
+    ![image_11](Emergency_alert_to_slack/11.PNG)
+
+11. 잘 동작하는 구조는 다음과 같습니다
+    ![image_12](Emergency_alert_to_slack/12.PNG)
+
+12. Test 탭에서 'Test'버튼을 클릭했을 때 에러가 발생하지 않으면 다음과 같이 초록색 화면이 표시됩니다(에러나면 빨간색)
+    ![image_13](Emergency_alert_to_slack/13.PNG)
+
+13. Slack에 다음과 같이 메세지가 잘 전송됩니다
+    ![image_14](Emergency_alert_to_slack/14.PNG)
