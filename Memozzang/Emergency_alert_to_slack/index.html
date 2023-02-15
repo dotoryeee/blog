@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../Nextcloud/">
+        <link rel="prev" href="../AWS%20Codedeploy%20install/">
       
       
-        <link rel="next" href="../../Projects/Project-1/">
+        <link rel="next" href="../JupyterLab/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
@@ -601,6 +601,68 @@
               
   
   
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          재난안전문자 API 활용하기
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        재난안전문자 API 활용하기
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    목적
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    절차
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
   
     <li class="md-nav__item">
       <a href="../JupyterLab/" class="md-nav__link">
@@ -648,30 +710,6 @@
       <a href="../Nextcloud/" class="md-nav__link">
         Nextcloud
       </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        재난안전문자 API 활용하기
-      </a>
-      
     </li>
   
 
@@ -926,6 +964,28 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    목적
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    절차
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -941,8 +1001,21 @@
 
 
 <h1 id="api">재난안전문자 API 활용하기</h1>
-<p><a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679">https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679</a></p>
-<p><a href="https://www.data.go.kr/iim/api/selectAPIAcountView.do">https://www.data.go.kr/iim/api/selectAPIAcountView.do</a></p>
+<h2 id="_1">목적</h2>
+<p>재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.
+때문에 재난문자 발생 시 Slack으로 알람을 쏴주도록 구성해보았습니다</p>
+<h2 id="_2">절차</h2>
+<ol>
+<li>
+<p>아래 사이트에서 재난문자 발생 내역으 확인할 수 있습니다<br>
+   <a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679">https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679</a></p>
+</li>
+<li>
+<p>아래 공공데이터 포털에서 재난문자 API 사용신청 후 인증키를 수령합니다<br>
+   <a href="https://www.data.go.kr/iim/api/selectAPIAcountView.do">https://www.data.go.kr/iim/api/selectAPIAcountView.do</a></p>
+</li>
+<li>
+<p>API를 호출하고 Slack으로 메세지를 발송해주는 코드를 작성합니다
 <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">emergency_alert_to_slack.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
@@ -1023,8 +1096,8 @@
 <a id="__codelineno-0-3" name="__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">auth_key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">return_type</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">request_row</span> <span class="o">=</span> <span class="s2">&quot;1000&quot;</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">target_message_time</span> <span class="o">=</span> <span class="mi">720</span> <span class="c1">#cron 주기로 사용 할 분(minutes) 값을 입력한다. 1을 입력할 경우 최근 1분간 메시지만 전송한다.</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="n">request_row</span> <span class="o">=</span> <span class="s2">&quot;500&quot;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">target_message_time</span> <span class="o">=</span> <span class="mi">60</span> <span class="c1">#cron 주기로 사용 할 분(minutes) 값을 입력한다. 60을 입력할 경우 최근 60분간 메시지만 전송한다.</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">target_location_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;21&quot;</span><span class="p">,</span> <span class="s2">&quot;53&quot;</span><span class="p">,</span> <span class="s2">&quot;74&quot;</span><span class="p">,</span> <span class="s2">&quot;98&quot;</span><span class="p">,</span> <span class="s2">&quot;104&quot;</span><span class="p">,</span> <span class="s2">&quot;113&quot;</span><span class="p">,</span> <span class="s2">&quot;119&quot;</span><span class="p">,</span> <span class="s2">&quot;136&quot;</span><span class="p">,</span> <span class="s2">&quot;162&quot;</span><span class="p">,</span> <span class="s2">&quot;168&quot;</span><span class="p">,</span> <span class="s2">&quot;179&quot;</span><span class="p">,</span> <span class="s2">&quot;202&quot;</span><span class="p">,</span> <span class="s2">&quot;217&quot;</span><span class="p">,</span> <span class="s2">&quot;222&quot;</span><span class="p">,</span> <span class="s2">&quot;238&quot;</span><span class="p">,</span> <span class="s2">&quot;6474&quot;</span><span class="p">,</span> <span class="s2">&quot;6474&quot;</span><span class="p">]</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="c1"># location_id는 다음 문서를 참조: https://www.data.go.kr/data/15066113/fileData.do </span>
 <a id="__codelineno-0-10" name="__codelineno-0-10"></a>
@@ -1094,7 +1167,26 @@
 <a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="n">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 <a id="__codelineno-0-75" name="__codelineno-0-75"></a>
 <a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="n">main</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>AWS Lambda에 함수를 생성하고 코드를 주입합니다
+    <img alt="image_1" src="1.PNG" /></p>
+</li>
+<li>
+<p>AWS Lambda를 매 시간마다 실행합니다
+    <img alt="image_2" src="2.PNG" />
+    <img alt="image_3" src="3.PNG" /></p>
+</li>
+<li>
+<p>API 에러율이 너무 높습니다
+    <img alt="image_4" src="4.PNG" />
+    <img alt="image_5" src="5.PNG" />
+    !!! warning
+        희한하게 API 호출 성공률이 낮습니다. 3번 실행하면 2번은 실패?
+        때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다</p>
+</li>
+</ol>
 
 
   
@@ -1123,7 +1215,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../Nextcloud/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Nextcloud" rel="prev">
+          <a href="../AWS%20Codedeploy%20install/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AWS Codedeploy install" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1132,20 +1224,20 @@
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                Nextcloud
+                AWS Codedeploy install
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../Projects/Project-1/" class="md-footer__link md-footer__link--next" aria-label="Next: Project - 1" rel="next">
+          <a href="../JupyterLab/" class="md-footer__link md-footer__link--next" aria-label="Next: JupyterLab" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                Project - 1
+                JupyterLab
               </div>
             </div>
             <div class="md-footer__button md-icon">
