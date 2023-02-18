@@ -19,7 +19,7 @@
     
     
       
-        <title>ElasticSearch basic commands - dotoryeee's blog</title>
+        <title>ElasticSearch 정리 - dotoryeee's blog</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#elasticsearch-basic-commands" class="md-skip">
+        <a href="#elasticsearch" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ElasticSearch basic commands
+              ElasticSearch 정리
             
           </span>
         </div>
@@ -785,12 +785,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          ElasticSearch basic commands
+          ElasticSearch 정리
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        ElasticSearch basic commands
+        ElasticSearch 정리
       </a>
       
         
@@ -1054,7 +1054,11 @@
 
 
 
-<h1 id="elasticsearch-basic-commands">ElasticSearch basic commands</h1>
+<h1 id="elasticsearch">ElasticSearch 정리</h1>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>변경 가능한 변수 부분은 "garden" keyword를 포함하고 있다</p>
+</div>
 <h2 id="curl">cURL</h2>
 <ol>
 <li>클러스터 내부 인덱스 목록 조회
@@ -1062,7 +1066,9 @@
 </code></pre></div></li>
 <li>
 <p>bulk API 사용
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/x-ndjson&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">POST</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9200</span><span class="o">/</span>_<span class="n">bulk</span><span class="w"> </span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">binary</span><span class="w"> </span><span class="s">&quot;@./bulk_file&quot;</span>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/x-ndjson&quot;</span><span class="w"> </span>\
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">POST</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9200</span><span class="o">/</span>_<span class="n">bulk</span><span class="w"> </span>\
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">binary</span><span class="w"> </span><span class="s">&quot;@./bulk_file&quot;</span>
 </code></pre></div></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1087,7 +1093,7 @@
 <li>도큐먼트 아이디로 조회
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
 </code></pre></div></li>
-<li>DSL 쿼리를 이용한 조회 (예시)
+<li>DSL 쿼리를 이용한 조회 (전문검색예시)
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
@@ -1145,16 +1151,133 @@
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="s">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;token test&quot;</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">}</span>
 </code></pre></div></p>
-</li>
-</ol>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>정리하자면 "lee jeongwon"이라는 데이터를 text 타입으로 저장할 경우 jeongwon 키워드로 검색할 수 있지만,
-keyword타입으로 저장할 경우 jeongwon 키워드로 검색할 수 없고 "lee jeongwon" 전문을 키워드로 사용해야 검색할 수 있다</p>
+<p>정리하자면 "lee jeongwon"이라는 데이터를 text 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 있지만
+keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없고 "lee jeongwon" 전문을 키워드로 사용해야 검색할 수 있다</p>
 </div>
-<ol>
+</li>
+<li>
+<p>멀티필드 인덱스 생성 예시<br>
+   fields 매핑 파라미터를 사용해 하나의 필드를 여러 용도로 사용할 수 있다<br>
+   message 필드는 text타입이지만 keyword 타입도 가지게된다
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">multifield_index</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p">{</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="s">&quot;mappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">        </span><span class="s">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">            </span><span class="s">&quot;message&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">                </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">                </span><span class="s">&quot;fields&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">                    </span><span class="s">&quot;keyword&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">                        </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;keyword&quot;</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">                        </span><span class="p">}</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>멀티필드 인덱스 keyword쿼리 예시
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">multifield_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="s">&quot;term&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">            </span><span class="s">&quot;message.keyword&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;jeongwon&quot;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="p">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>인덱스 템플릿 조회</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>_index_template API는 ElasticSearch 7.8 이상에서 동작
+<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index-templates.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index-templates.html</a></p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">GET</span><span class="w"> </span>_<span class="n">index_template</span><span class="o">/*</span>
+</code></pre></div>
+</li>
+<li>
+<p>인덱스 템플릿 생성</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>ElasticSearch 7.8 이상에서</strong> 인덱스 생성 시 여러개의 인덱스 템플릿 패턴에 매칭되는 경우, priority값이 가장 높은 하나의 인덱스 템플릿이 적용된다</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">PUT</span><span class="w"> </span>_<span class="n">index_template</span><span class="o">/</span><span class="n">garden_template</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="s">&quot;index_patterns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;garden_*&quot;</span><span class="p">],</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="s">&quot;priority&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="s">&quot;template&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="s">&quot;settings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">        </span><span class="s">&quot;number_of_shards&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">3</span><span class="p">,</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">        </span><span class="s">&quot;number_of_replicas&quot;</span><span class="o">:</span><span class="m">1</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="s">&quot;mappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">        </span><span class="s">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">},</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">            </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;short&quot;</span><span class="p">},</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">            </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;keyword&quot;</span><span class="p">}</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="p">}</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>인덱스 템플릿 삭제</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>템플릿 생성/삭제시 기존 인덱스들은 영향받지 않는다. 이미 만들어진 인덱스가 변경되진 않는다.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">DELETE</span><span class="w"> </span>_<span class="n">index_template</span><span class="o">/</span><span class="n">garden_template</span>
+</code></pre></div>
+</li>
+<li>
+<p>다이나믹 매핑 예시 1<br>
+    -&gt; string을 포함하는 모든 필드가 text가 아닌 keyword 타입으로 매핑된다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">garden_test1</span><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="s">&quot;mappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">        </span><span class="s">&quot;dynamic_templates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">                </span><span class="s">&quot;garden_string_fields&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">                    </span><span class="s">&quot;match_mapping_type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">                    </span><span class="s">&quot;mapping&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;keyword&quot;</span><span class="p">}</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>다이나믹 매핑 예시 2<br>
+    -&gt; 필드 이름이 long으로 시작하면서 text로 끝나지 않는 필드들의 type을 long으로 매핑한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">garden_test2</span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="s">&quot;mappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">        </span><span class="s">&quot;dynamic_templates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">                </span><span class="s">&quot;garden_long_fields&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">                    </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;long_*&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">                    </span><span class="s">&quot;unmatch&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;*_text&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">                    </span><span class="s">&quot;mapping&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;long&quot;</span><span class="p">}</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>다이나믹 매핑에서 사용할 수 있는 조건식은 아래 페이지를 참조하자<br>
+    <a href="https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html">https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html</a></p>
+</li>
 <li></li>
 </ol>
+<hr />
+<p>참고: 엘라스틱 스택 개발부터 운영까지(책만)</p>
 
 
   
