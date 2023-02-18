@@ -1072,7 +1072,7 @@
 </code></pre></div></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>bulk_file은 json이 아닌 ndjson 문법임에 주의할 것</p>
+<p>bulk_file은 json이 아닌 ndjson 문법임에 주의할 것 (delimeter로 개행문자 \n을 사용)</p>
 </div>
 </li>
 </ol>
@@ -1144,13 +1144,21 @@
 </div>
 </li>
 <li>
-<p>text타입의 경우 ElasticSearch analyzer에 의해 토큰으로 분리 후 인덱싱되어, 향후 토큰(단어) 단위로 검색이 가능한데, token으로 잘 분리되었는지 analyze API를 사용해 확인해볼 수 있다
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">POST</span><span class="w"> </span>_<span class="n">analyze</span>
+<p>text타입의 경우 ElasticSearch analyzer에 의해 토큰으로 분리 후 인덱싱되어, 향후 토큰(단어) 단위로 검색이 가능한데, token으로 잘 분리되었는지 analyze API를 사용해 확인해볼 수 있다<br>
+    상세 내용은 13번 항목 참조</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">POST</span><span class="w"> </span>_<span class="n">analyze</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">{</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="s">&quot;analyzer&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;starndard&quot;</span><span class="p">,</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="s">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;token test&quot;</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="s">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;the token test&quot;</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">}</span>
-</code></pre></div></p>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">``</span>`<span class="n">s</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">POST</span><span class="w"> </span>_<span class="n">analyze</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="p">{</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="s">&quot;analyzer&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;stop&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="s">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;the token test&quot;</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="p">}</span>
+</code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>정리하자면 "lee jeongwon"이라는 데이터를 text 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 있지만
@@ -1273,6 +1281,48 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
 <li>
 <p>다이나믹 매핑에서 사용할 수 있는 조건식은 아래 페이지를 참조하자<br>
     <a href="https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html">https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html</a></p>
+</li>
+<li>
+<p>ElasticSearch Analyzer Flow</p>
+<pre class="mermaid"><code>graph LR
+  A[캐릭터 필터] --&gt; |문자열 변경/제거| B[토크나이저];
+  B --&gt; |문자열을 토큰으로 분리| C[토큰 필터];
+  C --&gt; |대소문자/형태소 분석 등| D[(인덱스에 저장)];</code></pre>
+<p>아래 링크 참조:<br>
+- <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html#analysis-analyzers">Built-in Analyzer</a><br>
+- <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-charfilters.html">Character filter list</a><br>
+- <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenizers.html">Tokenizer List</a><br>
+- <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenfilters.html">Token filter list</a><br></p>
+</li>
+<li>
+<p>Custom analyzer 예시<br></p>
+<ul>
+<li>캐릭터 필터: 사용 안함<br></li>
+<li>토크나이저: Elastic standard tokenizer<br></li>
+<li>토큰 필터: 소문자화 필터 사용 후 "garden"문자를 불용어로 처리하는 garden_stopwords 커스텀 필터 적용. garden_stopwords 필터링 리스트에 소문자만 필터링 되고 있으므로 lowercase filter -&gt; garden_stopwords 필터 적용하도록 <strong>순서 주의</strong><br></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">garden_analyzer</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p">{</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="s">&quot;settings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">        </span><span class="s">&quot;analysis&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">            </span><span class="s">&quot;filter&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">                </span><span class="s">&quot;garden_stopwords&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">                    </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;stop&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">                    </span><span class="s">&quot;stopwords&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;garden&quot;</span><span class="p">]</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">            </span><span class="s">&quot;analyzer&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">                </span><span class="s">&quot;garden_analyzer&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="w">                    </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;custom&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="w">                    </span><span class="s">&quot;char_filter&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="w">                    </span><span class="s">&quot;tokenizer&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;standard&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w">                    </span><span class="s">&quot;filter&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;lowercase&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;garden_stopwords&quot;</span><span class="p">]</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="p">}</span>
+</code></pre></div>
 </li>
 <li></li>
 </ol>
