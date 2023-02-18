@@ -18,7 +18,7 @@
 
     !!! warning
 
-        bulk_file은 json이 아닌 ndjson 문법임에 주의할 것
+        bulk_file은 json이 아닌 ndjson 문법임에 주의할 것 (delimeter로 개행문자 \n을 사용)
 
 ## Kibana Dev Tools
 ### 도큐먼트 
@@ -90,12 +90,21 @@
         전문 검색이 필요한경우 text 타입 사용(텍스트 분리 후 인덱싱 = 많은 메모리 사용량)<br>
         정렬/집계에 필요한 경우(범주형 데이터) keyword 타입 사용(원문 통째로 인덱싱)
 
-4. text타입의 경우 ElasticSearch analyzer에 의해 토큰으로 분리 후 인덱싱되어, 향후 토큰(단어) 단위로 검색이 가능한데, token으로 잘 분리되었는지 analyze API를 사용해 확인해볼 수 있다
+4. text타입의 경우 ElasticSearch analyzer에 의해 토큰으로 분리 후 인덱싱되어, 향후 토큰(단어) 단위로 검색이 가능한데, token으로 잘 분리되었는지 analyze API를 사용해 확인해볼 수 있다<br>
+    상세 내용은 13번 항목 참조
+
     ```s
     POST _analyze
     {
         "analyzer": "starndard",
-        "text": "token test"
+        "text": "the token test"
+    }
+
+    ```s
+    POST _analyze
+    {
+        "analyzer": "stop",
+        "text": "the token test"
     }
     ```
 
@@ -225,7 +234,53 @@
 12. 다이나믹 매핑에서 사용할 수 있는 조건식은 아래 페이지를 참조하자<br>
     [https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html](https://www.elastic.co/guide/en/elasticsearch/reference/master/dynamic-templates.html)
 
-13. 
+13. ElasticSearch Analyzer Flow
+    
+    ```mermaid
+    graph LR
+      A[캐릭터 필터] --> |문자열 변경/제거| B[토크나이저];
+      B --> |문자열을 토큰으로 분리| C[토큰 필터];
+      C --> |대소문자/형태소 분석 등| D[(인덱스에 저장)];
+    ```
+
+    아래 링크 참조:<br>
+    - [Built-in Analyzer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html#analysis-analyzers)<br>
+    - [Character filter list](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-charfilters.html)<br>
+    - [Tokenizer List](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenizers.html)<br>
+    - [Token filter list](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenfilters.html)<br>
+
+14. Custom analyzer 예시<br>
+    - 캐릭터 필터: 사용 안함<br>
+    - 토크나이저: Elastic standard tokenizer<br>
+    - 토큰 필터: 소문자화 필터 사용 후 "garden"문자를 불용어로 처리하는 garden_stopwords 커스텀 필터 적용. garden_stopwords 필터링 리스트에 소문자만 필터링 되고 있으므로 lowercase filter -> garden_stopwords 필터 적용하도록 **순서 주의**<br>
+
+    ```s
+    PUT garden_analyzer
+    {
+        "settings": {
+            "analysis": {
+                "filter": {
+                    "garden_stopwords": {
+                        "type": "stop",
+                        "stopwords": ["garden"]
+                    }
+                },
+                "analyzer": {
+                    "garden_analyzer": {
+                        "type": "custom",
+                        "char_filter": [],
+                        "tokenizer": "standard",
+                        "filter": ["lowercase", "garden_stopwords"]
+                    }
+                }
+            }
+        }
+    }
+    ```
+
+15. 
+
+
 
 ---
 참고: 엘라스틱 스택 개발부터 운영까지(책만)
