@@ -9,17 +9,17 @@
       
       
       
-        <link rel="prev" href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/">
+        <link rel="prev" href="../ES%20Domain%20in%20VPC/">
       
       
-        <link rel="next" href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/">
+        <link rel="next" href="../Prometheus%20and%20Grafana/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
     
     
       
-        <title>AWS Boto3 SDK 모둠 - dotoryeee's blog</title>
+        <title>ElasticSearch basic commands - dotoryeee's blog</title>
       
     
     
@@ -78,6 +78,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#elasticsearch-basic-commands" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -106,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWS Boto3 SDK 모둠
+              ElasticSearch basic commands
             
           </span>
         </div>
@@ -525,16 +530,16 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
       
       
       
@@ -543,7 +548,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Memozzang
@@ -554,19 +559,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../Memozzang/AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         AWS Boto3 SDK 모둠
       </a>
-      
     </li>
   
 
@@ -578,7 +575,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+      <a href="../../Memozzang/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         AWS CLI 모둠
       </a>
     </li>
@@ -592,7 +589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20Codedeploy%20install/" class="md-nav__link">
+      <a href="../../Memozzang/AWS%20Codedeploy%20install/" class="md-nav__link">
         AWS Codedeploy install
       </a>
     </li>
@@ -606,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Emergency_alert_to_slack/" class="md-nav__link">
+      <a href="../../Memozzang/Emergency_alert_to_slack/" class="md-nav__link">
         재난안전문자 API 활용하기
       </a>
     </li>
@@ -620,7 +617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../JupyterLab/" class="md-nav__link">
+      <a href="../../Memozzang/JupyterLab/" class="md-nav__link">
         JupyterLab
       </a>
     </li>
@@ -634,7 +631,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+      <a href="../../Memozzang/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         Linux command 모음
       </a>
     </li>
@@ -648,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+      <a href="../../Memozzang/Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         Naver cloud API호출 모둠
       </a>
     </li>
@@ -662,7 +659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Nextcloud/" class="md-nav__link">
+      <a href="../../Memozzang/Nextcloud/" class="md-nav__link">
         Nextcloud
       </a>
     </li>
@@ -733,16 +730,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-        
-      
-      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
       
       
       
@@ -751,7 +748,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_7">
           <span class="md-nav__icon md-icon"></span>
           SRE
@@ -764,7 +761,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../SRE/ES%20Domain%20in%20VPC/" class="md-nav__link">
+      <a href="../ES%20Domain%20in%20VPC/" class="md-nav__link">
         ElasticSearch domain in VPC
       </a>
     </li>
@@ -776,11 +773,79 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../SRE/ElasticSearch%20commands/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          ElasticSearch basic commands
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         ElasticSearch basic commands
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#curl" class="md-nav__link">
+    cURL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kibana-dev-tools" class="md-nav__link">
+    Kibana Dev Tools
+  </a>
+  
+    <nav class="md-nav" aria-label="Kibana Dev Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    도큐먼트
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    인덱스
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -792,7 +857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../SRE/Prometheus%20and%20Grafana/" class="md-nav__link">
+      <a href="../Prometheus%20and%20Grafana/" class="md-nav__link">
         Prometheus and Grafana
       </a>
     </li>
@@ -930,6 +995,50 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#curl" class="md-nav__link">
+    cURL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kibana-dev-tools" class="md-nav__link">
+    Kibana Dev Tools
+  </a>
+  
+    <nav class="md-nav" aria-label="Kibana Dev Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    도큐먼트
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    인덱스
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -945,108 +1054,106 @@
 
 
 
+<h1 id="elasticsearch-basic-commands">ElasticSearch basic commands</h1>
+<h2 id="curl">cURL</h2>
 <ol>
-<li>인스턴스 타입 변경
-    <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">changeInstanceType.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span>
-<span class="normal"><a href="#__codelineno-0-11">11</a></span>
-<span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span>
-<span class="normal"><a href="#__codelineno-0-18">18</a></span>
-<span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
-<span class="normal"><a href="#__codelineno-0-22">22</a></span>
-<span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span>
-<span class="normal"><a href="#__codelineno-0-25">25</a></span>
-<span class="normal"><a href="#__codelineno-0-26">26</a></span>
-<span class="normal"><a href="#__codelineno-0-27">27</a></span>
-<span class="normal"><a href="#__codelineno-0-28">28</a></span>
-<span class="normal"><a href="#__codelineno-0-29">29</a></span>
-<span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span>
-<span class="normal"><a href="#__codelineno-0-33">33</a></span>
-<span class="normal"><a href="#__codelineno-0-34">34</a></span>
-<span class="normal"><a href="#__codelineno-0-35">35</a></span>
-<span class="normal"><a href="#__codelineno-0-36">36</a></span>
-<span class="normal"><a href="#__codelineno-0-37">37</a></span>
-<span class="normal"><a href="#__codelineno-0-38">38</a></span>
-<span class="normal"><a href="#__codelineno-0-39">39</a></span>
-<span class="normal"><a href="#__codelineno-0-40">40</a></span>
-<span class="normal"><a href="#__codelineno-0-41">41</a></span>
-<span class="normal"><a href="#__codelineno-0-42">42</a></span>
-<span class="normal"><a href="#__codelineno-0-43">43</a></span>
-<span class="normal"><a href="#__codelineno-0-44">44</a></span>
-<span class="normal"><a href="#__codelineno-0-45">45</a></span>
-<span class="normal"><a href="#__codelineno-0-46">46</a></span>
-<span class="normal"><a href="#__codelineno-0-47">47</a></span>
-<span class="normal"><a href="#__codelineno-0-48">48</a></span>
-<span class="normal"><a href="#__codelineno-0-49">49</a></span>
-<span class="normal"><a href="#__codelineno-0-50">50</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">##############################################</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">TARGET_INSTANCE_IDs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;i-0351fd54bd47a17db&quot;</span><span class="p">]</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">TARGET_INSTANCE_TYPE</span> <span class="o">=</span> <span class="s2">&quot;t2.nano&quot;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="c1">##############################################</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="kn">import</span> <span class="nn">boto3</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;ec2&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">def</span> <span class="nf">stopInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trying to STOP INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="n">waiter</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s2">&quot;instance_stopped&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="n">waiter</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>        <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># 인스턴스 정지 성공</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : STOP INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>        <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="k">def</span> <span class="nf">modifyInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">modify_instance_attribute</span><span class="p">(</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27"></a>            <span class="n">InstanceId</span><span class="o">=</span><span class="n">instanceID</span><span class="p">,</span> <span class="n">Attribute</span><span class="o">=</span><span class="s2">&quot;instanceType&quot;</span><span class="p">,</span> <span class="n">Value</span><span class="o">=</span><span class="n">TARGET_INSTANCE_TYPE</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="p">)</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2"> INSTANCE CHANGED TO </span><span class="si">{</span><span class="n">TARGET_INSTANCE_TYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : CHANGE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2"> INSTANCE TYPE&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="k">def</span> <span class="nf">startInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">start_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : RESTART </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : START INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">for</span> <span class="n">instanceID</span> <span class="ow">in</span> <span class="n">TARGET_INSTANCE_IDs</span><span class="p">:</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="n">isStop</span> <span class="o">=</span> <span class="n">stopInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>  <span class="c1"># isStop는 인스턴스 정지 성공 유무 표시용</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a>        <span class="k">if</span> <span class="n">isStop</span><span class="p">:</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a>            <span class="n">modifyInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a>            <span class="n">startInstance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="n">main</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div></li>
+<li>클러스터 내부 인덱스 목록 조회
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&quot;localhost:9200/_cat/indices?v&quot;</span>
+</code></pre></div></li>
+<li>
+<p>bulk API 사용
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/x-ndjson&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">POST</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9200</span><span class="o">/</span>_<span class="n">bulk</span><span class="w"> </span><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">binary</span><span class="w"> </span><span class="s">&quot;@./bulk_file&quot;</span>
+</code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>bulk_file은 json이 아닌 ndjson 문법임에 주의할 것</p>
+</div>
+</li>
+</ol>
+<h2 id="kibana-dev-tools">Kibana Dev Tools</h2>
+<h3 id="_1">도큐먼트</h3>
+<ol>
+<li>도큐먼트 삽입
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">29</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;male&quot;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+</code></pre></div>
+    도큐먼트 삽입으로 인해서 ljw_index가 신규 생성됨 -&gt; ljw_index 인덱스 정보 확인
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span>
+</code></pre></div></li>
+<li>도큐먼트 조회<ol>
+<li>도큐먼트 아이디로 조회
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
+</code></pre></div></li>
+<li>DSL 쿼리를 이용한 조회 (예시)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
+</code></pre></div></li>
+</ol>
+</li>
+<li>도큐먼트 업데이트
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">POST</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">update</span><span class="o">/</span><span class="m">1</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="s">&quot;doc&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;jeongwon&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
+</code></pre></div></li>
+<li>도큐먼트 삭제
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">DELETE</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span>
+</code></pre></div></li>
+</ol>
+<h3 id="_2">인덱스</h3>
+<ol>
+<li>클러스터 내부 인덱스 목록 조회
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">GET</span><span class="w"> </span>_<span class="n">cat</span><span class="o">/</span><span class="n">indices</span><span class="o">?</span><span class="n">v</span>
+</code></pre></div></li>
+<li>인덱스 매핑 확인
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">mapping</span>
+</code></pre></div></li>
+<li>
+<p>인덱스 명시적 매핑 (ljw_index 인덱스의 gender 필드 타입을 keyword로 변경하는 예시)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">{</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="s">&quot;mappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="s">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">            </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;keyword&quot;</span><span class="p">}</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">}</span>
+</code></pre></div>
+    Data type 참조: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html">ElasticSearch data mapping type</a></p>
+<div class="admonition note">
+<p class="admonition-title">텍스트 데이터의 두 가지 타입(text, keyword)의 특성</p>
+<p>전문 검색이 필요한경우 text 타입 사용(텍스트 분리 후 인덱싱 = 많은 메모리 사용량)<br>
+정렬/집계에 필요한 경우(범주형 데이터) keyword 타입 사용(원문 통째로 인덱싱)</p>
+</div>
+</li>
+<li>
+<p>text타입의 경우 ElasticSearch analyzer에 의해 토큰으로 분리 후 인덱싱되어, 향후 토큰(단어) 단위로 검색이 가능한데, token으로 잘 분리되었는지 analyze API를 사용해 확인해볼 수 있다
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">POST</span><span class="w"> </span>_<span class="n">analyze</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">{</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="s">&quot;analyzer&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;starndard&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="s">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;token test&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">}</span>
+</code></pre></div></p>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>정리하자면 "lee jeongwon"이라는 데이터를 text 타입으로 저장할 경우 jeongwon 키워드로 검색할 수 있지만,
+keyword타입으로 저장할 경우 jeongwon 키워드로 검색할 수 없고 "lee jeongwon" 전문을 키워드로 사용해야 검색할 수 있다</p>
+</div>
+<ol>
+<li></li>
 </ol>
 
 
@@ -1076,7 +1183,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Kubernetes on WSL" rel="prev">
+          <a href="../ES%20Domain%20in%20VPC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ElasticSearch domain in VPC" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1085,20 +1192,20 @@
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                Kubernetes on WSL
+                ElasticSearch domain in VPC
               </div>
             </div>
           </a>
         
         
           
-          <a href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS CLI 모둠" rel="next">
+          <a href="../Prometheus%20and%20Grafana/" class="md-footer__link md-footer__link--next" aria-label="Next: Prometheus and Grafana" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                AWS CLI 모둠
+                Prometheus and Grafana
               </div>
             </div>
             <div class="md-footer__button md-icon">
