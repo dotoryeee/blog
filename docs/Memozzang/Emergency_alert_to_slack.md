@@ -94,8 +94,8 @@ def lambda_handler(event, context):
     ![image_2](Emergency_alert_to_slack/2.PNG)
     ![image_3](Emergency_alert_to_slack/3.PNG)
 
-6. 공공데이터가 원래 그런건지 재난문자 API 에러율이 너무 높습니다<br>
-    API 자체의 호출 성공률이 낮습니다. 3번 실행하면 2번은 실패? 때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다
+6. 재난문자 API 에러율이 너무 높습니다<br>
+    API 자체의 호출 성공률이 낮습니다. 10번 실행하면 1번은 실패? 때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다
     ![image_4](Emergency_alert_to_slack/4.PNG)
     ![image_5](Emergency_alert_to_slack/5.PNG)
 
