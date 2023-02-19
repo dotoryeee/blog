@@ -784,67 +784,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          ElasticSearch 정리
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         ElasticSearch 정리
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#curl" class="md-nav__link">
-    cURL
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kibana-dev-tools" class="md-nav__link">
-    Kibana Dev Tools
-  </a>
-  
-    <nav class="md-nav" aria-label="Kibana Dev Tools">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    도큐먼트
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    인덱스
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -998,48 +940,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#curl" class="md-nav__link">
-    cURL
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kibana-dev-tools" class="md-nav__link">
-    Kibana Dev Tools
-  </a>
-  
-    <nav class="md-nav" aria-label="Kibana Dev Tools">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    도큐먼트
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    인덱스
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1059,72 +959,72 @@
 <p class="admonition-title">Tip</p>
 <p>변경 가능한 변수 부분은 "garden" keyword를 포함하고 있다</p>
 </div>
-<h2 id="curl">cURL</h2>
 <ol>
-<li>클러스터 내부 인덱스 목록 조회
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&quot;localhost:9200/_cat/indices?v&quot;</span>
+<li>도큐먼트 삽입
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">29</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;male&quot;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</code></pre></div>
+    도큐먼트 삽입으로 인해서 ljw_index가 신규 생성됨 -&gt; ljw_index 인덱스 정보 확인
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span>
+</code></pre></div></li>
+<li>도큐먼트 조회<ol>
+<li>도큐먼트 아이디로 조회
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
+</code></pre></div></li>
+<li>DSL 쿼리를 이용한 조회 예시. match를 사용해 전문 검색하는 예시로 역인덱싱된 garden term을 검색하는 중이다.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span>
+</code></pre></div></li>
+</ol>
+</li>
+<li>도큐먼트 업데이트
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">POST</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">update</span><span class="o">/</span><span class="m">1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="s">&quot;doc&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;jeongwon&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
 </code></pre></div></li>
 <li>
-<p>bulk API 사용
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/x-ndjson&quot;</span><span class="w"> </span>\
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">POST</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9200</span><span class="o">/</span>_<span class="n">bulk</span><span class="w"> </span>\
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">binary</span><span class="w"> </span><span class="s">&quot;@./bulk_file&quot;</span>
+<p>도큐먼트 삭제
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">DELETE</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>클러스터 내부 인덱스 목록 조회
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">GET</span><span class="w"> </span>_<span class="n">cat</span><span class="o">/</span><span class="n">indices</span><span class="o">?</span><span class="n">v</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>클러스터 내부 인덱스 목록 조회(cURL)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="s">&quot;localhost:9200/_cat/indices?v&quot;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>bulk API 사용(cURL)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/x-ndjson&quot;</span><span class="w"> </span>\
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">POST</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9200</span><span class="o">/</span>_<span class="n">bulk</span><span class="w"> </span>\
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">binary</span><span class="w"> </span><span class="s">&quot;@./bulk_file&quot;</span>
 </code></pre></div></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>bulk_file은 json이 아닌 ndjson 문법임에 주의할 것 (delimeter로 개행문자 \n을 사용)</p>
 </div>
 </li>
-</ol>
-<h2 id="kibana-dev-tools">Kibana Dev Tools</h2>
-<h3 id="_1">도큐먼트</h3>
-<ol>
-<li>도큐먼트 삽입
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w">  </span><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">29</span><span class="p">,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;male&quot;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
-</code></pre></div>
-    도큐먼트 삽입으로 인해서 ljw_index가 신규 생성됨 -&gt; ljw_index 인덱스 정보 확인
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span>
-</code></pre></div></li>
-<li>도큐먼트 조회<ol>
-<li>도큐먼트 아이디로 조회
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
-</code></pre></div></li>
-<li>DSL 쿼리를 이용한 조회 (전문검색예시)
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
-</code></pre></div></li>
-</ol>
-</li>
-<li>도큐먼트 업데이트
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">POST</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">update</span><span class="o">/</span><span class="m">1</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="s">&quot;doc&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;jeongwon&quot;</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
-</code></pre></div></li>
-<li>도큐먼트 삭제
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">DELETE</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span>
-</code></pre></div></li>
-</ol>
-<h3 id="_2">인덱스</h3>
-<ol>
-<li>클러스터 내부 인덱스 목록 조회
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">GET</span><span class="w"> </span>_<span class="n">cat</span><span class="o">/</span><span class="n">indices</span><span class="o">?</span><span class="n">v</span>
-</code></pre></div></li>
-<li>인덱스 매핑 확인
+<li>
+<p>인덱스 매핑 확인
     <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">mapping</span>
-</code></pre></div></li>
+</code></pre></div></p>
+</li>
 <li>
 <p>인덱스 명시적 매핑 (ljw_index 인덱스의 gender 필드 타입을 keyword로 변경하는 예시)
     <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span>
@@ -1324,10 +1224,209 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
 <a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="p">}</span>
 </code></pre></div>
 </li>
+<li>
+<p>엘라스틱서치 검색은 2종류로 나뉜다</p>
+<ol>
+<li>쿼리 컨텍스트: 연관성에 따른 스코어 결과를 제공</li>
+<li>필터 컨텍스트: Yes or No 결과를 제공 - 캐시O 스코어링X 검색이 빠르다</li>
+</ol>
+</li>
+<li>
+<p>쿼리 컨텍스트 검색 예시<br>
+    garden_index 인덱스에서 message에 "garden" term이 존재하는 document를 검색하는 예시</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">garden_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="p">{</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">            </span><span class="s">&quot;message&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>필터 컨텍스트 검색 예시</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">garden_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="p">{</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">        </span><span class="s">&quot;bool&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">            </span><span class="s">&quot;filter&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">                </span><span class="s">&quot;term&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">                    </span><span class="s">&quot;day_of_week&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;friday&quot;</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>ElasticSearch에서 Query를 사용하는 방법은 2가지이다<br></p>
+<ol>
+<li>Query String: URI를 이용한 간결한 쿼리</li>
+<li>Query DSL (Domain Specific Language): JSON 기반의 복잡한 쿼리</li>
+</ol>
+</li>
+<li>
+<p>Query String 예시</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">garden_index</span><span class="o">/</span>_<span class="n">search</span><span class="o">?</span><span class="n">q</span><span class="o">=</span><span class="n">name</span><span class="o">:</span><span class="n">garden</span>
+</code></pre></div>
+</li>
+<li>
+<p>Query DSL 예시</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">            </span><span class="s">&quot;message.keyword&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>Query 컨텍스트의 경우 BM25 알고리즘에 의해 Document 별로 스코어링 후 가장 유사한 Docu를 찾아내는데, 아래와 같이 explain 옵션을 사용할 경우 각 Docu에 대한 스코어링 상세 내역을 알 수 있다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">            </span><span class="s">&quot;message.keyword&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">    </span><span class="s">&quot;explain&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">true</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>인덱스 Rollover API</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Rollover API를 사용해 인덱스의 생명주기를 관리할 수 있다</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ol>
+<li>Rollover API로 관리하고자 하는 인덱스의 이름은 반드시 -&lt;숫자&gt; 형태로 끝나야한다</li>
+<li>위와 같이 rollover API를 요청하는 경우 "rollover-garden" alias를 가지는 인덱스 중 하나의 인덱스만 "is_write_index"를 true로 설정할 수 있다.</li>
+</ol>
+</div>
+<div class="highlight"><span class="filename">인덱스 생성 시 alias(별칭) 부여</span><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">garden</span><span class="m">-001</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="p">{</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="s">&quot;aliases&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">        </span><span class="s">&quot;rollover-garden&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">            </span><span class="s">&quot;is_write_index&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">true</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">rollover API 요청</span><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">POST</span><span class="w"> </span><span class="n">rollover</span><span class="o">-</span><span class="n">garden</span><span class="o">/</span>_<span class="n">rollover</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="p">{</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="s">&quot;conditions&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">        </span><span class="s">&quot;max_age&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;14d&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">        </span><span class="s">&quot;max_docs&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">        </span><span class="s">&quot;max_size&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;10gb&quot;</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>Index Health status</p>
+<table>
+<thead>
+<tr>
+<th align="left">Status</th>
+<th align="left">Primary shard</th>
+<th align="left">Replica shard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>GREEN</code></td>
+<td align="left"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7Z"/></svg></span> Healthy</td>
+<td align="left"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7Z"/></svg></span> Healthy</td>
+</tr>
+<tr>
+<td align="left"><code>YELLOW</code></td>
+<td align="left"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7Z"/></svg></span> Healthy</td>
+<td align="left"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg></span> Fail</td>
+</tr>
+<tr>
+<td align="left"><code>RED</code></td>
+<td align="left"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg></span> Fail</td>
+<td align="left">-</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>싱글노드인 경우 Replica shard가 할당되지 않은 인덱스들은 YELLOW 상태로 표시된다</p>
+</div>
+</li>
+<li>
+<p>ElasticSearch node role은 elasticsearch.yml에서 변경할 수 있다</p>
+<table>
+<thead>
+<tr>
+<th>Node role</th>
+<th>node.roles value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master node</td>
+<td>[ master ]</td>
+</tr>
+<tr>
+<td>Voting-only data node</td>
+<td>[ data, master, voting_only ]</td>
+</tr>
+<tr>
+<td>Voting-only master node</td>
+<td>[ master, voting_only ]</td>
+</tr>
+<tr>
+<td>Data node</td>
+<td>[ data ]</td>
+</tr>
+<tr>
+<td>Content data node</td>
+<td>[ data_content ]</td>
+</tr>
+<tr>
+<td>Hot data node</td>
+<td>[ data_hot ]</td>
+</tr>
+<tr>
+<td>Warm data node</td>
+<td>[ data_warm ]</td>
+</tr>
+<tr>
+<td>Cold data node</td>
+<td>[ data_cold ]</td>
+</tr>
+<tr>
+<td>Frozen data node</td>
+<td>[ data_frozen ]</td>
+</tr>
+<tr>
+<td>Ingest node</td>
+<td>[ ingest ]</td>
+</tr>
+<tr>
+<td>Coordinating only node</td>
+<td>[ ]</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>투표전용노드를 생성할 때 master node / date node 상관없이 node.roles value에 반드시 <code>master</code>가 포함되어야 한다</p>
+</div>
+<p>이 외에 remote-eligible node, Machine learning node, Transform node 등도 존재한다. 다음 링크 참조 : <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html">ElasticSearch node roles</a></p>
+</li>
 <li></li>
 </ol>
 <hr />
-<p>참고: 엘라스틱 스택 개발부터 운영까지(책만)</p>
+<p>참고: <br>
+1. 엘라스틱 스택 개발부터 운영까지(책만)<br>
+2. 리눅스 리소스 제한 해제 가이드: <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html</a><br>
+3. </p>
 
 
   
