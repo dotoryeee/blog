@@ -1,8 +1,5 @@
 # ElasticSearch domain in VPC
 
-!!! tip
-    AWS에서 SaaS형태로 제공하는 ElasticSearch은 7.10까지만 지원하고, 이후 버전은 OpenSearch로만 생성할 수 있다
-
 ## 사전정보
 - AWS에서 SaaS 형태로 제공하는 ElasticSearch(이하 ES)의 경우 domain을 VPC내부 또는 외부에 생성할 수 있다
 - 보안을 위해 VPC 내부에 생성을 권고하는데, ES domain이 private subnet에 위치하는 경우 public subnet에 Nginx를 프록시 서버로 생성하고 redirection 해주어야 한다
@@ -116,4 +113,10 @@
     }
     ```
 
-출처: https://aws.amazon.com/premiumsupport/knowledge-center/opensearch-outside-vpc-nginx/?nc1=h_ls
+- AWS Lambda in VPC + API Gateway를 활용하는 방법
+    1. 
+
+---
+출처: <br>
+1. [Nginx ES-Prowy with EC2](https://aws.amazon.com/premiumsupport/knowledge-center/opensearch-outside-vpc-nginx/?nc1=h_ls)<br>
+2. [AWS Lambda in VPC + API Gateway](https://github.com/listentolearn/aws-opensearch-proxy)
