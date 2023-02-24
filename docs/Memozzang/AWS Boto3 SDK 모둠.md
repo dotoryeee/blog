@@ -9,8 +9,7 @@
 
     ec2 = boto3.client("ec2")
 
-
-    def stopInstance(instanceID):
+    def stop_instance(instanceID):
         try:
             ec2.stop_instances(InstanceIds=[instanceID])
             print(f"trying to STOP INSTANCE {instanceID}...", end="")
@@ -23,7 +22,7 @@
             return False
 
 
-    def modifyInstance(instanceID):
+    def modify_instance_type(instanceID):
         try:
             ec2.modify_instance_attribute(
                 InstanceId=instanceID, Attribute="instanceType", Value=TARGET_INSTANCE_TYPE
@@ -33,7 +32,7 @@
             print(f"FAILED : CHANGE {instanceID} INSTANCE TYPE")
 
 
-    def startInstance(instanceID):
+    def start_instance(instanceID):
         try:
             ec2.start_instances(InstanceIds=[instanceID])
             print(f"SUCCESS : RESTART {instanceID}")
@@ -43,10 +42,10 @@
 
     def main():
         for instanceID in TARGET_INSTANCE_IDs:
-            isStop = stopInstance(instanceID)  # isStop는 인스턴스 정지 성공 유무 표시용
+            isStop = stop_instance(instanceID)  # isStop는 인스턴스 정지 성공 유무 표시용
             if isStop:
-                modifyInstance(instanceID)
-                startInstance(instanceID)
+                modify_instance_type(instanceID)
+                start_instance(instanceID)
 
 
     main()

@@ -413,14 +413,8 @@
 
     이 외에 remote-eligible node, Machine learning node, Transform node 등도 존재한다. 다음 링크 참조 : [ElasticSearch node roles](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html)
 
-31. 
-
-
-
-
 
 ---
 참고: <br>
 1. 엘라스틱 스택 개발부터 운영까지(책만)<br>
 2. 리눅스 리소스 제한 해제 가이드: [https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html)<br>
-3. 
