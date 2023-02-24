@@ -20,7 +20,7 @@
     time_stamp = str(int(time.time() * 1000))
 
 
-    def makeSignature():
+    def make_signature():
         secret_key = bytes(SECRET_KEY, "UTF-8")
         message = method + " " + uri + "\n" + time_stamp + "\n" + ACCESS_KEY
         message = bytes(message, "UTF-8")
@@ -31,7 +31,7 @@
 
 
     def main():
-        signKey = makeSignature()
+        signKey = make_signature()
         headers = {
             "x-ncp-iam-access-key": ACCESS_KEY,
             "x-ncp-apigw-timestamp": time_stamp,
@@ -88,7 +88,7 @@
     time_stamp = str(int(time.time() * 1000))
 
 
-    def makeSignature():
+    def make_signature():
         secret_key = bytes(SECRET_KEY, "UTF-8")
         message = method + " " + uri + "\n" + time_stamp + "\n" + ACCESS_KEY
         message = bytes(message, "UTF-8")
@@ -100,7 +100,7 @@
 
     def main():
         # print(f"REQUEST {url + uri}")
-        signKey = makeSignature()
+        signKey = make_signature()
         headers = {
             "x-ncp-iam-access-key": ACCESS_KEY,
             "x-ncp-apigw-timestamp": time_stamp,
@@ -146,7 +146,7 @@
     time_stamp = str(int(time.time() * 1000))
 
 
-    def makeSignature():
+    def make_signature():
         secret_key = bytes(SECRET_KEY, "UTF-8")
         message = method + " " + uri + "\n" + time_stamp + "\n" + ACCESS_KEY
         message = bytes(message, "UTF-8")
@@ -158,7 +158,7 @@
 
     def main():
         # print(f"REQUEST {url + uri}")
-        signKey = makeSignature()
+        signKey = make_signature()
         headers = {
             "x-ncp-iam-access-key": ACCESS_KEY,
             "x-ncp-apigw-timestamp": time_stamp,
@@ -201,7 +201,7 @@
     time_stamp = str(int(time.time() * 1000))
 
 
-    def makeSignature():
+    def make_signature():
         secret_key = bytes(SECRET_KEY, "UTF-8")
         message = method + " " + uri + "\n" + time_stamp + "\n" + ACCESS_KEY
         message = bytes(message, "UTF-8")
@@ -213,7 +213,7 @@
 
     def main():
         # print(f"REQUEST {url + uri}")
-        signKey = makeSignature()
+        signKey = make_signature()
         headers = {
             "x-ncp-iam-access-key": ACCESS_KEY,
             "x-ncp-apigw-timestamp": time_stamp,
