@@ -12,7 +12,7 @@
         <link rel="prev" href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/">
       
       
-        <link rel="next" href="../Nextcloud/">
+        <link rel="next" href="../Python%20basics/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
@@ -612,20 +612,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../JupyterLab/" class="md-nav__link">
-        JupyterLab
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         Linux command 모음
       </a>
@@ -662,8 +648,22 @@
   
   
     <li class="md-nav__item">
-      <a href="../Nextcloud/" class="md-nav__link">
-        Nextcloud
+      <a href="../Python%20basics/" class="md-nav__link">
+        Python 정리
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_compose_templates/" class="md-nav__link">
+        Docker compose 모음
       </a>
     </li>
   
@@ -1024,7 +1024,7 @@
 <a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="n">time_stamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19"></a>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">def</span> <span class="nf">makeSignature</span><span class="p">():</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">def</span> <span class="nf">make_signature</span><span class="p">():</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">secret_key</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">method</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">uri</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">time_stamp</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ACCESS_KEY</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
@@ -1035,7 +1035,7 @@
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a>
 <a id="__codelineno-0-30" name="__codelineno-0-30"></a>
 <a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">makeSignature</span><span class="p">()</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">make_signature</span><span class="p">()</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34"></a>        <span class="s2">&quot;x-ncp-iam-access-key&quot;</span><span class="p">:</span> <span class="n">ACCESS_KEY</span><span class="p">,</span>
 <a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="s2">&quot;x-ncp-apigw-timestamp&quot;</span><span class="p">:</span> <span class="n">time_stamp</span><span class="p">,</span>
@@ -1147,7 +1147,7 @@
 <a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="n">time_stamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 <a id="__codelineno-1-26" name="__codelineno-1-26"></a>
 <a id="__codelineno-1-27" name="__codelineno-1-27"></a>
-<a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="k">def</span> <span class="nf">makeSignature</span><span class="p">():</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="k">def</span> <span class="nf">make_signature</span><span class="p">():</span>
 <a id="__codelineno-1-29" name="__codelineno-1-29"></a>    <span class="n">secret_key</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
 <a id="__codelineno-1-30" name="__codelineno-1-30"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">method</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">uri</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">time_stamp</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ACCESS_KEY</span>
 <a id="__codelineno-1-31" name="__codelineno-1-31"></a>    <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
@@ -1159,7 +1159,7 @@
 <a id="__codelineno-1-37" name="__codelineno-1-37"></a>
 <a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <a id="__codelineno-1-39" name="__codelineno-1-39"></a>    <span class="c1"># print(f&quot;REQUEST {url + uri}&quot;)</span>
-<a id="__codelineno-1-40" name="__codelineno-1-40"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">makeSignature</span><span class="p">()</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">make_signature</span><span class="p">()</span>
 <a id="__codelineno-1-41" name="__codelineno-1-41"></a>    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-1-42" name="__codelineno-1-42"></a>        <span class="s2">&quot;x-ncp-iam-access-key&quot;</span><span class="p">:</span> <span class="n">ACCESS_KEY</span><span class="p">,</span>
 <a id="__codelineno-1-43" name="__codelineno-1-43"></a>        <span class="s2">&quot;x-ncp-apigw-timestamp&quot;</span><span class="p">:</span> <span class="n">time_stamp</span><span class="p">,</span>
@@ -1259,7 +1259,7 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24"></a><span class="n">time_stamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 <a id="__codelineno-2-25" name="__codelineno-2-25"></a>
 <a id="__codelineno-2-26" name="__codelineno-2-26"></a>
-<a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="k">def</span> <span class="nf">makeSignature</span><span class="p">():</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="k">def</span> <span class="nf">make_signature</span><span class="p">():</span>
 <a id="__codelineno-2-28" name="__codelineno-2-28"></a>    <span class="n">secret_key</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">method</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">uri</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">time_stamp</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ACCESS_KEY</span>
 <a id="__codelineno-2-30" name="__codelineno-2-30"></a>    <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
@@ -1271,7 +1271,7 @@
 <a id="__codelineno-2-36" name="__codelineno-2-36"></a>
 <a id="__codelineno-2-37" name="__codelineno-2-37"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <a id="__codelineno-2-38" name="__codelineno-2-38"></a>    <span class="c1"># print(f&quot;REQUEST {url + uri}&quot;)</span>
-<a id="__codelineno-2-39" name="__codelineno-2-39"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">makeSignature</span><span class="p">()</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">make_signature</span><span class="p">()</span>
 <a id="__codelineno-2-40" name="__codelineno-2-40"></a>    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-2-41" name="__codelineno-2-41"></a>        <span class="s2">&quot;x-ncp-iam-access-key&quot;</span><span class="p">:</span> <span class="n">ACCESS_KEY</span><span class="p">,</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42"></a>        <span class="s2">&quot;x-ncp-apigw-timestamp&quot;</span><span class="p">:</span> <span class="n">time_stamp</span><span class="p">,</span>
@@ -1366,7 +1366,7 @@
 <a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="n">time_stamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 <a id="__codelineno-3-22" name="__codelineno-3-22"></a>
 <a id="__codelineno-3-23" name="__codelineno-3-23"></a>
-<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="k">def</span> <span class="nf">makeSignature</span><span class="p">():</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="k">def</span> <span class="nf">make_signature</span><span class="p">():</span>
 <a id="__codelineno-3-25" name="__codelineno-3-25"></a>    <span class="n">secret_key</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
 <a id="__codelineno-3-26" name="__codelineno-3-26"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">method</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">uri</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">time_stamp</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">ACCESS_KEY</span>
 <a id="__codelineno-3-27" name="__codelineno-3-27"></a>    <span class="n">message</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
@@ -1378,7 +1378,7 @@
 <a id="__codelineno-3-33" name="__codelineno-3-33"></a>
 <a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <a id="__codelineno-3-35" name="__codelineno-3-35"></a>    <span class="c1"># print(f&quot;REQUEST {url + uri}&quot;)</span>
-<a id="__codelineno-3-36" name="__codelineno-3-36"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">makeSignature</span><span class="p">()</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36"></a>    <span class="n">signKey</span> <span class="o">=</span> <span class="n">make_signature</span><span class="p">()</span>
 <a id="__codelineno-3-37" name="__codelineno-3-37"></a>    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
 <a id="__codelineno-3-38" name="__codelineno-3-38"></a>        <span class="s2">&quot;x-ncp-iam-access-key&quot;</span><span class="p">:</span> <span class="n">ACCESS_KEY</span><span class="p">,</span>
 <a id="__codelineno-3-39" name="__codelineno-3-39"></a>        <span class="s2">&quot;x-ncp-apigw-timestamp&quot;</span><span class="p">:</span> <span class="n">time_stamp</span><span class="p">,</span>
@@ -1443,13 +1443,13 @@
         
         
           
-          <a href="../Nextcloud/" class="md-footer__link md-footer__link--next" aria-label="Next: Nextcloud" rel="next">
+          <a href="../Python%20basics/" class="md-footer__link md-footer__link--next" aria-label="Next: Python 정리" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                Nextcloud
+                Python 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
