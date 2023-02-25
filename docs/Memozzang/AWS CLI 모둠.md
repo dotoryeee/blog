@@ -57,7 +57,8 @@
     ```
 
 ## S3
-1. `~/test/ 디렉터리의 모든 txt파일을 s3://my-bucket/test/ 에 업로드 하기
+1. `~/test/` 디렉터리의 txt파일만 전부 s3://my-bucket/test/ 에 업로드 하기
     ```s
-    aws s3 cp ~/test/ s3://my-bucket/test/ --recursive --exclude "*" --include "*.txt"
+    aws s3 cp ~/test/ s3://my-bucket/test/ \
+    --recursive --exclude "*" --include "*.txt"
     ```
