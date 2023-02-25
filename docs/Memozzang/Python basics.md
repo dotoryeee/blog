@@ -32,17 +32,17 @@
 3. 훌륭한 코드란? -> 읽기 쉽고 이해하기 쉬운 코드
     1. 동료 개발자가 쉽게 이해할 수 있는지
     2. 팀에 새로 온보딩 하는 사람도 빠르게 이해하고 효과적으로 작업할 수 있는지
-    3. 표준을 준수하도록 반복적으로 검사하고 CI 빌드 과정에 포함해야 한다
 4. 파이썬 코드 검증 도구
-   1. mypy
-   2. pylint
-   3. flake8
-   4. black
+    1. mypy
+    2. pylint
+    3. flake8
+    4. black
 5. PR시 불필요한 논쟁을 줄이기 위해 코딩 컨벤션을 강제하고 자동 포매팅 도구를 설정한다
-   1. flake8 (PEP-8만 준수하면 됨, 엄격하지 않음)
-   2. black (변수 타입이 중간에 변하면 안됨, 후행 쉼표 강제 등 매우 엄격)
-6. Makefile을 이용한 자동 검사 설정 예시
-    ```s
+    1. flake8 (PEP-8만 준수하면 됨, 엄격하지 않음)
+    2. black (변수 타입이 중간에 변하면 안됨, 후행 쉼표 강제 등 매우 엄격)
+6. 표준을 준수하도록 위 과정을 CI 빌드 과정에 포함해야 한다
+7. Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)
+    ```s title="checklist"
     .PHONY: typehint
     typehint:
         mypy ./
@@ -59,6 +59,12 @@
     clean: find ./ type -f -name "*.pyc" -exec rm -rf {} \;
     ```
 
+    ```s
+    make checklist
+    ```
+8. 
+
 
 ---
-참고: 파이썬 클린코드 2nd Edition(터닝포인트)
+참고: 파이썬 클린코드 2nd Edition(터닝포인트)<br>
+.PHONY: [https://jusths.tistory.com/226](https://jusths.tistory.com/226)<br>
