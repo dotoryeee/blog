@@ -988,19 +988,24 @@
 <li>훌륭한 코드란? -&gt; 읽기 쉽고 이해하기 쉬운 코드<ol>
 <li>동료 개발자가 쉽게 이해할 수 있는지</li>
 <li>팀에 새로 온보딩 하는 사람도 빠르게 이해하고 효과적으로 작업할 수 있는지</li>
-<li>표준을 준수하도록 반복적으로 검사하고 CI 빌드 과정에 포함해야 한다</li>
 </ol>
 </li>
-<li>파이썬 코드 검증 도구</li>
+<li>파이썬 코드 검증 도구<ol>
 <li>mypy</li>
 <li>pylint</li>
 <li>flake8</li>
 <li>black</li>
-<li>PR시 불필요한 논쟁을 줄이기 위해 코딩 컨벤션을 강제하고 자동 포매팅 도구를 설정한다</li>
+</ol>
+</li>
+<li>PR시 불필요한 논쟁을 줄이기 위해 코딩 컨벤션을 강제하고 자동 포매팅 도구를 설정한다<ol>
 <li>flake8 (PEP-8만 준수하면 됨, 엄격하지 않음)</li>
 <li>black (변수 타입이 중간에 변하면 안됨, 후행 쉼표 강제 등 매우 엄격)</li>
-<li>Makefile을 이용한 자동 검사 설정 예시
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typehint</span>
+</ol>
+</li>
+<li>표준을 준수하도록 위 과정을 CI 빌드 과정에 포함해야 한다</li>
+<li>
+<p>Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)
+    <div class="highlight"><span class="filename">checklist</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typehint</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">typehint</span><span class="o">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">mypy</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
@@ -1014,7 +1019,11 @@
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="n">clean</span><span class="o">:</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="s">&quot;*.pyc&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">exec</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span>\<span class="p">;</span>
-</code></pre></div></li>
+</code></pre></div></p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">make</span><span class="w"> </span><span class="n">checklist</span>
+</code></pre></div>
+8. </p>
+</li>
 </ol>
 <hr />
 <p>참고: 파이썬 클린코드 2<sup>nd</sup> Edition(터닝포인트)</p>
