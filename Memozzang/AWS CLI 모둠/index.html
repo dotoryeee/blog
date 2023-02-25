@@ -1114,8 +1114,9 @@
 </ol>
 <h2 id="s3">S3</h2>
 <ol>
-<li>`~/test/ 디렉터리의 모든 txt파일을 s3://my-bucket/test/ 에 업로드 하기
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">~/</span><span class="n">test</span><span class="o">/</span><span class="w"> </span><span class="n">s3</span><span class="o">://</span><span class="n">my</span><span class="o">-</span><span class="n">bucket</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="w"> </span><span class="o">--</span><span class="n">recursive</span><span class="w"> </span><span class="o">--</span><span class="n">exclude</span><span class="w"> </span><span class="s">&quot;*&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">include</span><span class="w"> </span><span class="s">&quot;*.txt&quot;</span>
+<li><code>~/test/</code> 디렉터리의 txt파일만 전부 s3://my-bucket/test/ 에 업로드 하기
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">~/</span><span class="n">test</span><span class="o">/</span><span class="w"> </span><span class="n">s3</span><span class="o">://</span><span class="n">my</span><span class="o">-</span><span class="n">bucket</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="w"> </span>\
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">--</span><span class="n">recursive</span><span class="w"> </span><span class="o">--</span><span class="n">exclude</span><span class="w"> </span><span class="s">&quot;*&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">include</span><span class="w"> </span><span class="s">&quot;*.txt&quot;</span>
 </code></pre></div></li>
 </ol>
 
