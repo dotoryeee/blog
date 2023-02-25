@@ -1004,8 +1004,9 @@
 </li>
 <li>표준을 준수하도록 위 과정을 CI 빌드 과정에 포함해야 한다</li>
 <li>
-<p>Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)
-    <div class="highlight"><span class="filename">checklist</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typehint</span>
+<p>Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)<br>
+   Makefile을 활용하여  CI도구가 가능한 적은 설정 옵션을 가지게 한다.</p>
+<div class="highlight"><span class="filename">checklist</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typehint</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">typehint</span><span class="o">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">mypy</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
@@ -1018,15 +1019,72 @@
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="n">black</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="m">79</span><span class="w"> </span><span class="n">.</span><span class="o">/*</span><span class="n">.py</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="n">clean</span><span class="o">:</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="s">&quot;*.pyc&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">exec</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span>\<span class="p">;</span>
-</code></pre></div></p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">make</span><span class="w"> </span><span class="n">checklist</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="n">clean</span><span class="o">:</span><span class="w"> </span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="n">find</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="s">&quot;*.pyc&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">exec</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span>\<span class="p">;</span>
 </code></pre></div>
-8. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">make</span><span class="w"> </span><span class="n">checklist</span>
+</code></pre></div>
+</li>
+<li>
+<p><code>Magic method</code>는 python에서 특수한 동작을 수행하기 위해 예약한 메서드로 이중 언더바로 둘러싸여있다(<code>__len__</code> 등)</p>
+</li>
+<li>
+<p>Context manager (with구문) 사용 (PEP-343)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">process</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">finally</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></p>
+<p>위와 동일한 기능을 pythonic하게 구현할 수 있다
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">process</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</code></pre></div>
+예외가 발생해도 블록이 완료되면 파일이 자동으로 닫힌다</p>
+</li>
+<li>
+<p>Context manager는 블록 전/후로 로직을 분리함으로써 관심사를 분리하고 독립적으로 유지되어야하는 코드를 분리하는 좋은 방법이다.</p>
+</li>
+<li>with문은  <code>__enter__</code> method를 호출하고 context가 종료되면 <code>__exit__</code> method를 호출한다</li>
+<li>
+<p>Context manager를 활용한 postgre DB backup example
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span> <span class="nf">stop_database</span><span class="p">():</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;systemctl stop postgresql&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">def</span> <span class="nf">start_database</span><span class="p">():</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;systemctl start postgresql&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">class</span> <span class="nc">DBHandler</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="n">stop_database</span><span class="p">()</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">):</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="sd">        __exit__함수는 블록에서 발생한 예외를 파라미터로 받는다. 블록에 예외가 없으면 모두 None 이다.</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="sd">        __exit__함수는 특별한 작업을 할 필요가 없다면 아무것도 반환하지 않아도 된다.</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="sd">        __exit__에서 True로 반환하지 않도록 주의해야한다. True를 반환하는 경우 잠재적으로 발생한 예외를 호출자에게 전파하지 않고 멈추는 것을 뜻하기 때문이다.</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="n">start_database</span><span class="p">()</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="k">def</span> <span class="nf">db_backup</span><span class="p">():</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;pg_dump database&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="sd">    main함수는 db_backup함수에 오류가 발생하더라도 __exit__ 함수를 호출한다</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    <span class="k">with</span> <span class="n">DBHandler</span><span class="p">():</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>        <span class="n">db_backup</span><span class="p">()</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>contextlib 모듈 사용 <a href="https://docs.python.org/3/library/contextlib.html">Python &gt;= 3.5</a></p>
 </li>
 </ol>
 <hr />
-<p>참고: 파이썬 클린코드 2<sup>nd</sup> Edition(터닝포인트)</p>
+<p>참고: 파이썬 클린코드 2<sup>nd</sup> Edition(터닝포인트)<br>
+.PHONY: <a href="https://jusths.tistory.com/226">https://jusths.tistory.com/226</a><br></p>
 
 
   
