@@ -52,16 +52,20 @@ def check_message_time(message_time: object) -> bool:
     """
     target_message_time 변수값을 참조하여 지난 몇 분 사이에 생성된 메세지가 맞는지 검증한다 (timeWindow filtering)
     """
-    if datetime.datetime.now() + datetime.timedelta(hours = 9) - datetime.timedelta(minutes = target_message_time) < message_time:
+    target_time = datetime.datetime.now() + datetime.timedelta(hours=9) - datetime.timedelta(minutes = target_message_time)
+    if target_time < message_time:
         return True
     return False
 
 def check_location_id(location_id: str) -> bool:
     """
     location_id가 target_location_ids 리스트 내에 존재하는 경우에만 메세지 발송
+    공공API에서 제공되는 Location_id는 string일 수도 있고 List일 수도 있어서 (랜덤) split 처리함
     """
-    if location_id in target_location_ids:
-        return True
+    location_ids = location_id.split(',')
+    for location_id in location_ids:
+        if location_id in target_location_ids:
+            return True
     return False
 
 def send_slack_message(message: dict) -> None:
@@ -76,18 +80,18 @@ def send_slack_message(message: dict) -> None:
     if check_message_time(kst_time) & check_location_id(message["location_id"]):
         kst_msg = f"KST: {kst_time}"
         utc_msg = f"UTC: {utc_time}"
-        location_msg = f"발송지역: {message['location_name']}"
-        emergency_msg = message["msg"].replace("\n", "")
+        # location_msg = f"발송지역: {message['location_name']}"
+        emergency_msg = message["msg"].replace("\n", "").split(".")[0]
         payload={
-            "text": f"{kst_msg} | {utc_msg} {chr(92)}n{location_msg} {chr(92)}n {emergency_msg}".replace("\\n", "\n")
+            "text": f"{kst_msg} | {utc_msg} {chr(92)}n {emergency_msg}".replace("\\n", "\n")
         }
-        requests.post(slack_webhook_url, json=payload)
+        # requests.post(slack_webhook_url, json=payload)
+        print(payload)
 
 def lambda_handler(event, context):
     messages = load_messages()
     for message in messages:
         send_slack_message(message)
-
 ```
 
 5. AWS Lambda를 매 10분 마다 실행합니다
