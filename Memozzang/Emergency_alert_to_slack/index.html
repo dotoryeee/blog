@@ -15,7 +15,7 @@
         <link rel="next" href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -1103,7 +1103,12 @@
 <span class="normal"><a href="#__codelineno-0-71">71</a></span>
 <span class="normal"><a href="#__codelineno-0-72">72</a></span>
 <span class="normal"><a href="#__codelineno-0-73">73</a></span>
-<span class="normal"><a href="#__codelineno-0-74">74</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">requests</span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span>
+<span class="normal"><a href="#__codelineno-0-76">76</a></span>
+<span class="normal"><a href="#__codelineno-0-77">77</a></span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">requests</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">datetime</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">auth_key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -1142,41 +1147,46 @@
 <a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">    target_message_time 변수값을 참조하여 지난 몇 분 사이에 생성된 메세지가 맞는지 검증한다 (timeWindow filtering)</span>
 <a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span> <span class="o">=</span> <span class="mi">9</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">target_message_time</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">message_time</span><span class="p">:</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="k">def</span> <span class="nf">check_location_id</span><span class="p">(</span><span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">    location_id가 target_location_ids 리스트 내에 존재하는 경우에만 메세지 발송</span>
-<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-48" name="__codelineno-0-48"></a>    <span class="k">if</span> <span class="n">location_id</span> <span class="ow">in</span> <span class="n">target_location_ids</span><span class="p">:</span>
-<a id="__codelineno-0-49" name="__codelineno-0-49"></a>        <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a>
-<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="k">def</span> <span class="nf">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="sd">    slack webhook을 이용해 slack channel로 메세시 발신하는 함수</span>
-<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">    backslash parsing때문에 코드가 좀 어지럽습니다</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">    참고: chr92 = backslash</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="n">kst_time</span> <span class="o">=</span> <span class="n">time_str_to_obj</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;create_date&#39;</span><span class="p">])</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59"></a>    <span class="n">utc_time</span> <span class="o">=</span> <span class="n">time_kst_to_utc</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60"></a>
-<a id="__codelineno-0-61" name="__codelineno-0-61"></a>    <span class="k">if</span> <span class="n">check_message_time</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">check_location_id</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;location_id&quot;</span><span class="p">]):</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62"></a>        <span class="n">kst_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;KST: </span><span class="si">{</span><span class="n">kst_time</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="n">utc_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;UTC: </span><span class="si">{</span><span class="n">utc_time</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="n">location_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;발송지역: </span><span class="si">{</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;location_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="n">emergency_msg</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="n">payload</span><span class="o">=</span><span class="p">{</span>
-<a id="__codelineno-0-67" name="__codelineno-0-67"></a>            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kst_msg</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">utc_msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">92</span><span class="p">)</span><span class="si">}</span><span class="s2">n</span><span class="si">{</span><span class="n">location_msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">92</span><span class="p">)</span><span class="si">}</span><span class="s2">n </span><span class="si">{</span><span class="n">emergency_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="p">}</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">slack_webhook_url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>    <span class="n">messages</span> <span class="o">=</span> <span class="n">load_messages</span><span class="p">()</span>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="n">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="n">target_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">target_message_time</span><span class="p">)</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">if</span> <span class="n">target_time</span> <span class="o">&lt;</span> <span class="n">message_time</span><span class="p">:</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="k">def</span> <span class="nf">check_location_id</span><span class="p">(</span><span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">    location_id가 target_location_ids 리스트 내에 존재하는 경우에만 메세지 발송</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="sd">    공공API에서 제공되는 Location_id는 string일 수도 있고 List일 수도 있어서 (랜덤) split 처리함</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="n">location_ids</span> <span class="o">=</span> <span class="n">location_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>    <span class="k">for</span> <span class="n">location_id</span> <span class="ow">in</span> <span class="n">location_ids</span><span class="p">:</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>        <span class="k">if</span> <span class="n">location_id</span> <span class="ow">in</span> <span class="n">target_location_ids</span><span class="p">:</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a>            <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>    <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="k">def</span> <span class="nf">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">    slack webhook을 이용해 slack channel로 메세시 발신하는 함수</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">    backslash parsing때문에 코드가 좀 어지럽습니다</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="sd">    참고: chr92 = backslash</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="n">kst_time</span> <span class="o">=</span> <span class="n">time_str_to_obj</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;create_date&#39;</span><span class="p">])</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="n">utc_time</span> <span class="o">=</span> <span class="n">time_kst_to_utc</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="k">if</span> <span class="n">check_message_time</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">check_location_id</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;location_id&quot;</span><span class="p">]):</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="n">kst_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;KST: </span><span class="si">{</span><span class="n">kst_time</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a>        <span class="n">utc_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;UTC: </span><span class="si">{</span><span class="n">utc_time</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="c1"># location_msg = f&quot;발송지역: {message[&#39;location_name&#39;]}&quot;</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">emergency_msg</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="n">payload</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kst_msg</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">utc_msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">92</span><span class="p">)</span><span class="si">}</span><span class="s2">n </span><span class="si">{</span><span class="n">emergency_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="p">}</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="c1"># requests.post(slack_webhook_url, json=payload)</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="n">messages</span> <span class="o">=</span> <span class="n">load_messages</span><span class="p">()</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="n">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div></p>
 </li>
 <li>
