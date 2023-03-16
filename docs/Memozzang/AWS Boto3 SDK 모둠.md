@@ -50,4 +50,43 @@
 
     main()
     ```
+2. AMI해제 후 연관 snapshot 삭제
+    ```py title="remove_ami_and_snapshots.py" linenums="1"
+    import boto3
+
+    DRYRUN = False
+    target_region = 'ap-southeast-1'
+    target_ami_ids = [
+                #AMI IDs
+            ]
+
+    ec2 = boto3.client('ec2', region_name=target_region)
+    images = ec2.describe_images(ImageIds=target_ami_ids)
+
+    def remove_snapshots(snapshot_ids):
+        for snapshot_id in snapshot_ids:
+            try:
+                print('|remove', snapshot_id, end=':')
+                ec2.delete_snapshot(SnapshotId=snapshot_id, DryRun=DRYRUN)
+                print('success', end='')
+            except:
+                print('fail')
+        print()
+
+    for target_image in images['Images']:
+        print('remove ',target_image['ImageId'], end=':')
+        try:
+            ec2.deregister_image(ImageId=target_image['ImageId'], DryRun=DRYRUN)
+            print('success', end='')
+            snapshot_ids=[]
+            for block_devices in target_image['BlockDeviceMappings']:
+                try: #AMI 삭제 성공 시 Snapshot 제거 대상 리스트에 append
+                    snapshot_ids.append(block_devices['Ebs']['SnapshotId'])
+                except:
+                    pass
+            remove_snapshots(snapshot_ids)
+        except:
+            print('fail')
+    ```
+3. 
 
