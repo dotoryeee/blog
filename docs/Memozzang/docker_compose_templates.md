@@ -70,3 +70,18 @@
           container_name: "jupyter-notebook"
           restart: always
     ```
+3. Selenium crawler
+    ```s title="Dockerfile"
+    FROM python:latest
+    RUN mkdir /app/temp
+    WORKDIR /app/temp
+    RUN apt update -y; apt install wget unzip -y
+    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb
+    RUN apt install -f ./google-chrome-unstable_112.0.5615.20-1_amd64.deb
+    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
+    RUN unzip ./chromedriver_linux64.zip -d /app
+    COPY requirements.txt ./app/temp
+    RUN pip install --no-cache-dir -r /app/temp/requirements.txt
+    COPY app ./app
+    CMD [ "python", "app/main.py" ]
+    ```

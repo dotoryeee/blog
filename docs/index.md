@@ -3,14 +3,13 @@
 ---
 ## Study TODO List
 
-- [ ] Kubernetes 강의 수강
-- [ ] Kafka 강의 수강
+- [ ] Kubernetes 학습
+- [ ] Kafka 학습
 - [ ] Certification
     - [ ] AWS SOA
-    - [ ] AWS SAP
+    - [ ] AWS SAP - 진행중
     - [ ] K8S 자격증 아무거나
-- [ ] Python 클린코드 읽어보기
-- [ ] Python 소프트웨어 아키텍처 읽어보기
+- [ ] Python 클린코드 학습
 - [ ] Speak 공부 매일 하기
 
 - 취미: 자동화로 할 일 없애기
