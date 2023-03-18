@@ -1,5 +1,5 @@
 1. 인스턴스 타입 변경
-    ```python title="changeInstanceType.py" linenums="1"
+    ```python title="change_instance_type.py" linenums="1"
     ##############################################
     TARGET_INSTANCE_IDs = ["i-0351fd54bd47a17db"]
     TARGET_INSTANCE_TYPE = "t2.nano"
@@ -9,48 +9,85 @@
 
     ec2 = boto3.client("ec2")
 
-    def stop_instance(instanceID):
+    def stop_instance(instance_id):
         try:
-            ec2.stop_instances(InstanceIds=[instanceID])
-            print(f"trying to STOP INSTANCE {instanceID}...", end="")
+            ec2.stop_instances(InstanceIds=[instance_id])
+            print(f"trying to STOP INSTANCE {instance_id}...", end="")
             waiter = ec2.get_waiter("instance_stopped")
-            waiter.wait(InstanceIds=[instanceID])
+            waiter.wait(InstanceIds=[instance_id])
             print(f"SUCCESS")
             return True  # 인스턴스 정지 성공
         except:
-            print(f"FAILED : STOP INSTANCE {instanceID}")
+            print(f"FAILED : STOP INSTANCE {instance_id}")
             return False
 
 
-    def modify_instance_type(instanceID):
+    def modify_instance_type(instance_id):
         try:
             ec2.modify_instance_attribute(
-                InstanceId=instanceID, Attribute="instanceType", Value=TARGET_INSTANCE_TYPE
+                InstanceId=instance_id, Attribute="instanceType", Value=TARGET_INSTANCE_TYPE
             )
-            print(f"SUCCESS : {instanceID} INSTANCE CHANGED TO {TARGET_INSTANCE_TYPE}")
+            print(f"SUCCESS : {instance_id} INSTANCE CHANGED TO {TARGET_INSTANCE_TYPE}")
         except:
-            print(f"FAILED : CHANGE {instanceID} INSTANCE TYPE")
+            print(f"FAILED : CHANGE {instance_id} INSTANCE TYPE")
 
 
-    def start_instance(instanceID):
+    def start_instance(instance_id):
         try:
-            ec2.start_instances(InstanceIds=[instanceID])
-            print(f"SUCCESS : RESTART {instanceID}")
+            ec2.start_instances(InstanceIds=[instance_id])
+            print(f"SUCCESS : RESTART {instance_id}")
         except:
-            print(f"FAILED : START INSTANCE {instanceID}")
+            print(f"FAILED : START INSTANCE {instance_id}")
 
 
     def main():
-        for instanceID in TARGET_INSTANCE_IDs:
-            isStop = stop_instance(instanceID)  # isStop는 인스턴스 정지 성공 유무 표시용
-            if isStop:
-                modify_instance_type(instanceID)
-                start_instance(instanceID)
+        for instance_id in TARGET_INSTANCE_IDs:
+            is_stopped = stop_instance(instance_id)  # is_stopped는 인스턴스 정지 성공 유무 표시용
+            if is_stopped:
+                modify_instance_type(instance_id)
+                start_instance(instance_id)
 
 
     main()
     ```
-2. AMI해제 후 연관 snapshot 삭제
+2. Target group deregister후 instance stop하기
+   ```py
+    import boto3
+    from botocore.exceptions import ClientError
+
+    TARGET_INSTANCE_IDs = ["i-0f8e23d613b7d62f0"]
+    TARGET_GROUP_ARN = "arn:aws:elasticloadbalancing:ap-northeast-2:737382971423:targetgroup/testTG/36174c22e12f595e"
+
+    elb = boto3.client("elbv2")
+    ec2 = boto3.client("ec2")
+
+
+    def detach_instance(TGarn, instance_id):
+        try:
+            response = elb.deregister_targets(
+                TargetGroupArn=TGarn, 
+                Targets=[{"Id": instance_id}], 
+            )
+            print(response)
+            return response
+        except:
+            raise Exception("ERROR : FAIL TO DETACH INSTANCE FORM TARGET GROUP")
+
+
+    def stop_instance(instance_id):
+        try:
+            response = ec2.stop_instances(InstanceIds=instance_id, DryRun=False)
+            print(f"STOP SUCCESS : {response}")
+        except ClientError as e:
+            print(f"ERROR : {e}")
+
+
+    def main():
+        for instance in TARGET_INSTANCE_IDs:
+            detach_instance(TARGET_GROUP_ARN, instance)
+        stop_instance(TARGET_INSTANCE_IDs)
+    ```
+3. AMI해제 후 연관 snapshot 삭제
     ```py title="remove_ami_and_snapshots.py" linenums="1"
     import boto3
 
@@ -88,5 +125,5 @@
         except:
             print('fail')
     ```
-3. 
+4. 
 

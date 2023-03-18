@@ -71,7 +71,7 @@
           restart: always
     ```
 3. Selenium crawler
-    ```s title="Dockerfile"
+    ```dockerfile title="Dockerfile"
     FROM python:latest
     RUN mkdir /app/temp
     WORKDIR /app/temp
@@ -80,8 +80,7 @@
     RUN apt install -f ./google-chrome-unstable_112.0.5615.20-1_amd64.deb
     RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
     RUN unzip ./chromedriver_linux64.zip -d /app
-    COPY requirements.txt ./app/temp
-    RUN pip install --no-cache-dir -r /app/temp/requirements.txt
     COPY app ./app
-    CMD [ "python", "app/main.py" ]
+    RUN pip install -r /app/temp/requirements.txt --no-cache-dir
+    CMD [ "python", "/app/app.py" ]
     ```
