@@ -575,20 +575,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20Codedeploy%20install/" class="md-nav__link">
-        AWS Codedeploy install
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         ELK error 모음
       </a>
@@ -649,6 +635,13 @@
         <li class="md-nav__item">
   <a href="#tar" class="md-nav__link">
     tar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sudo-sh-c-cat-etccodedeploy-agentconfcodedeployagentyml" class="md-nav__link">
+    sudo sh -c "cat&lt; /etc/codedeploy-agent/conf/codedeployagent.yml
   </a>
   
 </li>
@@ -978,6 +971,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sudo-sh-c-cat-etccodedeploy-agentconfcodedeployagentyml" class="md-nav__link">
+    sudo sh -c "cat&lt; /etc/codedeploy-agent/conf/codedeployagent.yml
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1006,7 +1006,32 @@
 <li>consul agent(server, client 모두) 로그 확인
     <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">sudo</span><span class="w"> </span><span class="n">journalctl</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">consul.service</span><span class="w"> </span><span class="o">-</span><span class="n">r</span>
 </code></pre></div></li>
-<li></li>
+<li>
+<p>install AWS CodeDeploy agent<br>
+   CodeDeploy endpoint 사용 시 enable_auth_policy설정이 필요하므로 Codedeploy agent 설치 후 config 수정 -&gt; agent restart가 필요합니다
+    ```s
+    sudo apt update &amp;&amp; sudo apt install -y ruby-full wget</p>
+<p>cd ~/work
+wget <a href="https://aws-codedeploy-ap-northeast-2.s3.ap-northeast-2.amazonaws.com/latest/install">https://aws-codedeploy-ap-northeast-2.s3.ap-northeast-2.amazonaws.com/latest/install</a>
+chmod +x ./install 
+sudo ./install auto</p>
+<p>rm -rf ~/work/install
+sudo systemctl stop codedeploy-agent</p>
+<h2 id="sudo-sh-c-cat-etccodedeploy-agentconfcodedeployagentyml">sudo sh -c "cat&lt;<EOF > /etc/codedeploy-agent/conf/codedeployagent.yml</h2>
+<p>:log_aws_wire: false
+:log_dir: '/var/log/aws/codedeploy-agent/'
+:pid_dir: '/opt/codedeploy-agent/state/.pid/'
+:program_name: codedeploy-agent
+:root_dir: '/opt/codedeploy-agent/deployment-root'
+:verbose: false
+:wait_between_runs: 1
+:proxy_uri:
+:max_revisions: 2
+:enable_auth_policy: true
+EOF"</p>
+<p>sudo systemctl restart codedeploy-agent.service
+<code></code></p>
+</li>
 </ol>
 
 

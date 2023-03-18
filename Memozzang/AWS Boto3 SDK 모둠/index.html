@@ -578,20 +578,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20Codedeploy%20install/" class="md-nav__link">
-        AWS Codedeploy install
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         ELK error 모음
       </a>
@@ -947,7 +933,7 @@
 
 <ol>
 <li>인스턴스 타입 변경
-    <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">changeInstanceType.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+    <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">change_instance_type.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
@@ -1004,49 +990,79 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7"></a>
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;ec2&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="k">def</span> <span class="nf">stop_instance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="k">def</span> <span class="nf">stop_instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">):</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trying to STOP INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instance_id</span><span class="p">])</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;trying to STOP INSTANCE </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14"></a>        <span class="n">waiter</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">get_waiter</span><span class="p">(</span><span class="s2">&quot;instance_stopped&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="n">waiter</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>        <span class="n">waiter</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instance_id</span><span class="p">])</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-17" name="__codelineno-0-17"></a>        <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># 인스턴스 정지 성공</span>
 <a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : STOP INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : STOP INSTANCE </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a>        <span class="k">return</span> <span class="kc">False</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21"></a>
 <a id="__codelineno-0-22" name="__codelineno-0-22"></a>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">def</span> <span class="nf">modify_instance_type</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="k">def</span> <span class="nf">modify_instance_type</span><span class="p">(</span><span class="n">instance_id</span><span class="p">):</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="k">try</span><span class="p">:</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">modify_instance_attribute</span><span class="p">(</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>            <span class="n">InstanceId</span><span class="o">=</span><span class="n">instanceID</span><span class="p">,</span> <span class="n">Attribute</span><span class="o">=</span><span class="s2">&quot;instanceType&quot;</span><span class="p">,</span> <span class="n">Value</span><span class="o">=</span><span class="n">TARGET_INSTANCE_TYPE</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a>            <span class="n">InstanceId</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">Attribute</span><span class="o">=</span><span class="s2">&quot;instanceType&quot;</span><span class="p">,</span> <span class="n">Value</span><span class="o">=</span><span class="n">TARGET_INSTANCE_TYPE</span>
 <a id="__codelineno-0-27" name="__codelineno-0-27"></a>        <span class="p">)</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2"> INSTANCE CHANGED TO </span><span class="si">{</span><span class="n">TARGET_INSTANCE_TYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> INSTANCE CHANGED TO </span><span class="si">{</span><span class="n">TARGET_INSTANCE_TYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : CHANGE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2"> INSTANCE TYPE&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : CHANGE </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2"> INSTANCE TYPE&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31"></a>
 <a id="__codelineno-0-32" name="__codelineno-0-32"></a>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="k">def</span> <span class="nf">start_instance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">):</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="k">def</span> <span class="nf">start_instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">):</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">start_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instanceID</span><span class="p">])</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : RESTART </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">start_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="p">[</span><span class="n">instance_id</span><span class="p">])</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SUCCESS : RESTART </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : START INSTANCE </span><span class="si">{</span><span class="n">instanceID</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED : START INSTANCE </span><span class="si">{</span><span class="n">instance_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-39" name="__codelineno-0-39"></a>
 <a id="__codelineno-0-40" name="__codelineno-0-40"></a>
 <a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="k">for</span> <span class="n">instanceID</span> <span class="ow">in</span> <span class="n">TARGET_INSTANCE_IDs</span><span class="p">:</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>        <span class="n">isStop</span> <span class="o">=</span> <span class="n">stop_instance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>  <span class="c1"># isStop는 인스턴스 정지 성공 유무 표시용</span>
-<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="k">if</span> <span class="n">isStop</span><span class="p">:</span>
-<a id="__codelineno-0-45" name="__codelineno-0-45"></a>            <span class="n">modify_instance_type</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>
-<a id="__codelineno-0-46" name="__codelineno-0-46"></a>            <span class="n">start_instance</span><span class="p">(</span><span class="n">instanceID</span><span class="p">)</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="k">for</span> <span class="n">instance_id</span> <span class="ow">in</span> <span class="n">TARGET_INSTANCE_IDs</span><span class="p">:</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>        <span class="n">is_stopped</span> <span class="o">=</span> <span class="n">stop_instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>  <span class="c1"># is_stopped는 인스턴스 정지 성공 유무 표시용</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="k">if</span> <span class="n">is_stopped</span><span class="p">:</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a>            <span class="n">modify_instance_type</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>            <span class="n">start_instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">)</span>
 <a id="__codelineno-0-47" name="__codelineno-0-47"></a>
 <a id="__codelineno-0-48" name="__codelineno-0-48"></a>
 <a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="n">main</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div></li>
-<li>AMI해제 후 연관 snapshot 삭제
-    <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">remove_ami_and_snapshots.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<li>
+<p>Target group deregister후 instance stop하기
+   ```py
+    import boto3
+    from botocore.exceptions import ClientError</p>
+<p>TARGET_INSTANCE_IDs = ["i-0f8e23d613b7d62f0"]
+TARGET_GROUP_ARN = "arn:aws:elasticloadbalancing:ap-northeast-2:737382971423:targetgroup/testTG/36174c22e12f595e"</p>
+<p>elb = boto3.client("elbv2")
+ec2 = boto3.client("ec2")</p>
+<p>def detach_instance(TGarn, instance_id):
+    try:
+        response = elb.deregister_targets(
+            TargetGroupArn=TGarn, 
+            Targets=[{"Id": instance_id}], 
+        )
+        print(response)
+        return response
+    except:
+        raise Exception("ERROR : FAIL TO DETACH INSTANCE FORM TARGET GROUP")</p>
+<p>def stop_instance(instance_id):
+    try:
+        response = ec2.stop_instances(InstanceIds=instance_id, DryRun=False)
+        print(f"STOP SUCCESS : {response}")
+    except ClientError as e:
+        print(f"ERROR : {e}")</p>
+<p>def main():
+    for instance in TARGET_INSTANCE_IDs:
+        detach_instance(TARGET_GROUP_ARN, instance)
+    stop_instance(TARGET_INSTANCE_IDs)
+```
+3. AMI해제 후 연관 snapshot 삭제
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">remove_ami_and_snapshots.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
@@ -1115,8 +1131,9 @@
 <a id="__codelineno-1-33" name="__codelineno-1-33"></a>        <span class="n">remove_snapshots</span><span class="p">(</span><span class="n">snapshot_ids</span><span class="p">)</span>
 <a id="__codelineno-1-34" name="__codelineno-1-34"></a>    <span class="k">except</span><span class="p">:</span>
 <a id="__codelineno-1-35" name="__codelineno-1-35"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div></li>
-<li></li>
+</code></pre></div></td></tr></table></div>
+4. </p>
+</li>
 </ol>
 
 
