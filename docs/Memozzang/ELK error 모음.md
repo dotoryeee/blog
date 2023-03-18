@@ -1,6 +1,6 @@
 # ELK error 모음
 
-
+## 1
 ### 증상
 - Error message<br>
   **Elastic Kibana did not load properly. Check the server output for more information**
@@ -13,7 +13,7 @@ Nginx 설정파일에서 proxy_buffer 부분을 수정합니다
 - AS-IS
     ```s
     proxy_buffer_size 128k;
-	proxy_buffers 4 256k;
+	proxy_buffers 4 256k; (AWS에서 제공하는 ES-Proxy용 nginx 템플릿 기본값)
 	proxy_busy_buffers_size 256k;
     ```
 - TO-BE
@@ -22,13 +22,9 @@ Nginx 설정파일에서 proxy_buffer 부분을 수정합니다
 	proxy_buffers 8 1024k;
 	proxy_busy_buffers_size 1024k;
     ```
-
-### 원인
-
-
-
+## 2
 ### 증상
-- Filebeat가 삭제된 로그 파일을 계속 핸들링하고있어 시스템에서 로그가 삭제되었지만 (ls 명령어 사용지 파일이 삭제되어 보이지 않는 상태) lsof 명령 사용 시 filebeat에서 계속 파일을 물고있어 시스템 용량 확보가 불가능함
+- Filebeat가 삭제된 로그 파일을 계속 핸들링하고있어 시스템에서 로그가 삭제되었지만 (ls 명령어 사용지 파일이 삭제되어 보이지 않는 상태) lsof 명령으로 확인했을 때 filebeat에서 계속 파일을 물고있어 시스템 용량 확보가 불가능함
 
 ### 해결방법
 filebeat의 버그로 6.8.4 / 7.4.1 이후로 업그레이드 해야합니다
