@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/">
+        <link rel="prev" href="../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/">
       
       
         <link rel="next" href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/">
@@ -479,20 +479,6 @@
     <li class="md-nav__item">
       <a href="../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/" class="md-nav__link">
         Docker volume with MySQL
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/" class="md-nav__link">
-        Kubernetes on WSL
       </a>
     </li>
   
@@ -1031,109 +1017,114 @@
 <a id="__codelineno-0-48" name="__codelineno-0-48"></a>
 <a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="n">main</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div></li>
-<li>
-<p>Target group deregister후 instance stop하기
-   ```py
-    import boto3
-    from botocore.exceptions import ClientError</p>
-<p>TARGET_INSTANCE_IDs = ["i-0f8e23d613b7d62f0"]
-TARGET_GROUP_ARN = "arn:aws:elasticloadbalancing:ap-northeast-2:737382971423:targetgroup/testTG/36174c22e12f595e"</p>
-<p>elb = boto3.client("elbv2")
-ec2 = boto3.client("ec2")</p>
-<p>def detach_instance(TGarn, instance_id):
-    try:
-        response = elb.deregister_targets(
-            TargetGroupArn=TGarn, 
-            Targets=[{"Id": instance_id}], 
-        )
-        print(response)
-        return response
-    except:
-        raise Exception("ERROR : FAIL TO DETACH INSTANCE FORM TARGET GROUP")</p>
-<p>def stop_instance(instance_id):
-    try:
-        response = ec2.stop_instances(InstanceIds=instance_id, DryRun=False)
-        print(f"STOP SUCCESS : {response}")
-    except ClientError as e:
-        print(f"ERROR : {e}")</p>
-<p>def main():
-    for instance in TARGET_INSTANCE_IDs:
-        detach_instance(TARGET_GROUP_ARN, instance)
-    stop_instance(TARGET_INSTANCE_IDs)
-```
-3. AMI해제 후 연관 snapshot 삭제
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">remove_ami_and_snapshots.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-1-10">10</a></span>
-<span class="normal"><a href="#__codelineno-1-11">11</a></span>
-<span class="normal"><a href="#__codelineno-1-12">12</a></span>
-<span class="normal"><a href="#__codelineno-1-13">13</a></span>
-<span class="normal"><a href="#__codelineno-1-14">14</a></span>
-<span class="normal"><a href="#__codelineno-1-15">15</a></span>
-<span class="normal"><a href="#__codelineno-1-16">16</a></span>
-<span class="normal"><a href="#__codelineno-1-17">17</a></span>
-<span class="normal"><a href="#__codelineno-1-18">18</a></span>
-<span class="normal"><a href="#__codelineno-1-19">19</a></span>
-<span class="normal"><a href="#__codelineno-1-20">20</a></span>
-<span class="normal"><a href="#__codelineno-1-21">21</a></span>
-<span class="normal"><a href="#__codelineno-1-22">22</a></span>
-<span class="normal"><a href="#__codelineno-1-23">23</a></span>
-<span class="normal"><a href="#__codelineno-1-24">24</a></span>
-<span class="normal"><a href="#__codelineno-1-25">25</a></span>
-<span class="normal"><a href="#__codelineno-1-26">26</a></span>
-<span class="normal"><a href="#__codelineno-1-27">27</a></span>
-<span class="normal"><a href="#__codelineno-1-28">28</a></span>
-<span class="normal"><a href="#__codelineno-1-29">29</a></span>
-<span class="normal"><a href="#__codelineno-1-30">30</a></span>
-<span class="normal"><a href="#__codelineno-1-31">31</a></span>
-<span class="normal"><a href="#__codelineno-1-32">32</a></span>
-<span class="normal"><a href="#__codelineno-1-33">33</a></span>
-<span class="normal"><a href="#__codelineno-1-34">34</a></span>
-<span class="normal"><a href="#__codelineno-1-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">boto3</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">DRYRUN</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="n">target_region</span> <span class="o">=</span> <span class="s1">&#39;ap-southeast-1&#39;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="n">target_ami_ids</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6"></a>            <span class="c1">#AMI IDs</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7"></a>        <span class="p">]</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;ec2&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">target_region</span><span class="p">)</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="n">images</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">describe_images</span><span class="p">(</span><span class="n">ImageIds</span><span class="o">=</span><span class="n">target_ami_ids</span><span class="p">)</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="k">def</span> <span class="nf">remove_snapshots</span><span class="p">(</span><span class="n">snapshot_ids</span><span class="p">):</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13"></a>    <span class="k">for</span> <span class="n">snapshot_id</span> <span class="ow">in</span> <span class="n">snapshot_ids</span><span class="p">:</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14"></a>        <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;|remove&#39;</span><span class="p">,</span> <span class="n">snapshot_id</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16"></a>            <span class="n">ec2</span><span class="o">.</span><span class="n">delete_snapshot</span><span class="p">(</span><span class="n">SnapshotId</span><span class="o">=</span><span class="n">snapshot_id</span><span class="p">,</span> <span class="n">DryRun</span><span class="o">=</span><span class="n">DRYRUN</span><span class="p">)</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18"></a>        <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20"></a>    <span class="nb">print</span><span class="p">()</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21"></a>
-<a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="k">for</span> <span class="n">target_image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">[</span><span class="s1">&#39;Images&#39;</span><span class="p">]:</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;remove &#39;</span><span class="p">,</span><span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;ImageId&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">deregister_image</span><span class="p">(</span><span class="n">ImageId</span><span class="o">=</span><span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;ImageId&#39;</span><span class="p">],</span> <span class="n">DryRun</span><span class="o">=</span><span class="n">DRYRUN</span><span class="p">)</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27"></a>        <span class="n">snapshot_ids</span><span class="o">=</span><span class="p">[]</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28"></a>        <span class="k">for</span> <span class="n">block_devices</span> <span class="ow">in</span> <span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;BlockDeviceMappings&#39;</span><span class="p">]:</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29"></a>            <span class="k">try</span><span class="p">:</span> <span class="c1">#AMI 삭제 성공 시 Snapshot 제거 대상 리스트에 append</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30"></a>                <span class="n">snapshot_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block_devices</span><span class="p">[</span><span class="s1">&#39;Ebs&#39;</span><span class="p">][</span><span class="s1">&#39;SnapshotId&#39;</span><span class="p">])</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31"></a>            <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32"></a>                <span class="k">pass</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33"></a>        <span class="n">remove_snapshots</span><span class="p">(</span><span class="n">snapshot_ids</span><span class="p">)</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34"></a>    <span class="k">except</span><span class="p">:</span>
-<a id="__codelineno-1-35" name="__codelineno-1-35"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-4. </p>
-</li>
+<li>Target group deregister후 instance stop하기
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">boto3</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">TARGET_INSTANCE_IDs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;i-0f8e23d613b7d62f0&quot;</span><span class="p">]</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">TARGET_GROUP_ARN</span> <span class="o">=</span> <span class="s2">&quot;arn:aws:elasticloadbalancing:ap-northeast-2:737382971423:targetgroup/testTG/36174c22e12f595e&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">elb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;elbv2&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;ec2&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">def</span> <span class="nf">detach_instance</span><span class="p">(</span><span class="n">TGarn</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">):</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">elb</span><span class="o">.</span><span class="n">deregister_targets</span><span class="p">(</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>            <span class="n">TargetGroupArn</span><span class="o">=</span><span class="n">TGarn</span><span class="p">,</span> 
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>            <span class="n">Targets</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;Id&quot;</span><span class="p">:</span> <span class="n">instance_id</span><span class="p">}],</span> 
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="p">)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        <span class="k">return</span> <span class="n">response</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">except</span><span class="p">:</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;ERROR : FAIL TO DETACH INSTANCE FORM TARGET GROUP&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="k">def</span> <span class="nf">stop_instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">):</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">stop_instances</span><span class="p">(</span><span class="n">InstanceIds</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">DryRun</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;STOP SUCCESS : </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR : </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">TARGET_INSTANCE_IDs</span><span class="p">:</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        <span class="n">detach_instance</span><span class="p">(</span><span class="n">TARGET_GROUP_ARN</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="n">stop_instance</span><span class="p">(</span><span class="n">TARGET_INSTANCE_IDs</span><span class="p">)</span>
+</code></pre></div></li>
+<li>AMI해제 후 연관 snapshot 삭제
+    <div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">remove_ami_and_snapshots.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span>
+<span class="normal"><a href="#__codelineno-2-24">24</a></span>
+<span class="normal"><a href="#__codelineno-2-25">25</a></span>
+<span class="normal"><a href="#__codelineno-2-26">26</a></span>
+<span class="normal"><a href="#__codelineno-2-27">27</a></span>
+<span class="normal"><a href="#__codelineno-2-28">28</a></span>
+<span class="normal"><a href="#__codelineno-2-29">29</a></span>
+<span class="normal"><a href="#__codelineno-2-30">30</a></span>
+<span class="normal"><a href="#__codelineno-2-31">31</a></span>
+<span class="normal"><a href="#__codelineno-2-32">32</a></span>
+<span class="normal"><a href="#__codelineno-2-33">33</a></span>
+<span class="normal"><a href="#__codelineno-2-34">34</a></span>
+<span class="normal"><a href="#__codelineno-2-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">boto3</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">DRYRUN</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="n">target_region</span> <span class="o">=</span> <span class="s1">&#39;ap-southeast-1&#39;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="n">target_ami_ids</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>            <span class="c1">#AMI IDs</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>        <span class="p">]</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="n">ec2</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;ec2&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">target_region</span><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="n">images</span> <span class="o">=</span> <span class="n">ec2</span><span class="o">.</span><span class="n">describe_images</span><span class="p">(</span><span class="n">ImageIds</span><span class="o">=</span><span class="n">target_ami_ids</span><span class="p">)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="k">def</span> <span class="nf">remove_snapshots</span><span class="p">(</span><span class="n">snapshot_ids</span><span class="p">):</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a>    <span class="k">for</span> <span class="n">snapshot_id</span> <span class="ow">in</span> <span class="n">snapshot_ids</span><span class="p">:</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a>        <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;|remove&#39;</span><span class="p">,</span> <span class="n">snapshot_id</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a>            <span class="n">ec2</span><span class="o">.</span><span class="n">delete_snapshot</span><span class="p">(</span><span class="n">SnapshotId</span><span class="o">=</span><span class="n">snapshot_id</span><span class="p">,</span> <span class="n">DryRun</span><span class="o">=</span><span class="n">DRYRUN</span><span class="p">)</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a>        <span class="k">except</span><span class="p">:</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19"></a>            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20"></a>    <span class="nb">print</span><span class="p">()</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21"></a>
+<a id="__codelineno-2-22" name="__codelineno-2-22"></a><span class="k">for</span> <span class="n">target_image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">[</span><span class="s1">&#39;Images&#39;</span><span class="p">]:</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23"></a>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;remove &#39;</span><span class="p">,</span><span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;ImageId&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25"></a>        <span class="n">ec2</span><span class="o">.</span><span class="n">deregister_image</span><span class="p">(</span><span class="n">ImageId</span><span class="o">=</span><span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;ImageId&#39;</span><span class="p">],</span> <span class="n">DryRun</span><span class="o">=</span><span class="n">DRYRUN</span><span class="p">)</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27"></a>        <span class="n">snapshot_ids</span><span class="o">=</span><span class="p">[]</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28"></a>        <span class="k">for</span> <span class="n">block_devices</span> <span class="ow">in</span> <span class="n">target_image</span><span class="p">[</span><span class="s1">&#39;BlockDeviceMappings&#39;</span><span class="p">]:</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29"></a>            <span class="k">try</span><span class="p">:</span> <span class="c1">#AMI 삭제 성공 시 Snapshot 제거 대상 리스트에 append</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30"></a>                <span class="n">snapshot_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block_devices</span><span class="p">[</span><span class="s1">&#39;Ebs&#39;</span><span class="p">][</span><span class="s1">&#39;SnapshotId&#39;</span><span class="p">])</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31"></a>            <span class="k">except</span><span class="p">:</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32"></a>                <span class="k">pass</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33"></a>        <span class="n">remove_snapshots</span><span class="p">(</span><span class="n">snapshot_ids</span><span class="p">)</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34"></a>    <span class="k">except</span><span class="p">:</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35"></a>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div></li>
+<li></li>
 </ol>
 
 
@@ -1163,7 +1154,7 @@ ec2 = boto3.client("ec2")</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../Docker%20%26%20Kubernetes/Kubernetes%20on%20WSL/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Kubernetes on WSL" rel="prev">
+          <a href="../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker volume with MySQL" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1172,7 +1163,7 @@ ec2 = boto3.client("ec2")</p>
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                Kubernetes on WSL
+                Docker volume with MySQL
               </div>
             </div>
           </a>
