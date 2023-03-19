@@ -51,7 +51,7 @@
     main()
     ```
 2. Target group deregister후 instance stop하기
-   ```py
+    ```py
     import boto3
     from botocore.exceptions import ClientError
 

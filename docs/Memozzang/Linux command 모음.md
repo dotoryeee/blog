@@ -6,7 +6,7 @@
     -newerat 2023-01-01 ! -newerat 2023-02-01 \
     -exec tar rf 202301.tar {} \;```
     ```
-2. consul agent(server, client 모두) 로그 확인
+2. systemd에 등록된 consul 데몬 로그 확인
     ```s
     sudo journalctl -u consul.service -r
     ```
@@ -38,5 +38,5 @@
     EOF"
 
     sudo systemctl restart codedeploy-agent.service
-```
     ```
+4. 
