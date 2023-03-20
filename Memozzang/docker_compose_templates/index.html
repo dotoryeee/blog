@@ -15,7 +15,7 @@
         <link rel="next" href="../../Projects/Project-1/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0d440cfe.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
@@ -995,18 +995,27 @@
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
 </code></pre></div>
 3. Selenium crawler
-<div class="highlight"><span class="filename">Dockerfile</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:latest</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>/app/temp
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app/temp</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="p">;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wget<span class="w"> </span>unzip<span class="w"> </span>-y
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">RUN</span><span class="w"> </span>wget<span class="w"> </span>http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-f<span class="w"> </span>./google-chrome-unstable_112.0.5615.20-1_amd64.deb
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">RUN</span><span class="w"> </span>wget<span class="w"> </span>https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">RUN</span><span class="w"> </span>unzip<span class="w"> </span>./chromedriver_linux64.zip<span class="w"> </span>-d<span class="w"> </span>/app
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">COPY</span><span class="w"> </span>app<span class="w"> </span>./app
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>/app/temp/requirements.txt<span class="w"> </span>--no-cache-dir
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/app/app.py&quot;</span><span class="w"> </span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">~/</span><span class="n">app</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">cat</span><span class="o">&lt;&lt;</span><span class="n">EOF</span><span class="w"> </span><span class="o">&gt;~/</span><span class="n">app</span><span class="o">/</span><span class="n">requirements.txt</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">requests</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">selenium</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">EOF</span>
 </code></pre></div></p>
+<p><div class="highlight"><span class="filename">Dockerfile</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:latest</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>app/temp
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">app</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span>-y<span class="p">;</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wget<span class="w"> </span>unzip<span class="w"> </span>-y
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">RUN</span><span class="w"> </span>wget<span class="w"> </span>http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb<span class="w"> </span>-O<span class="w"> </span>./temp/google_chrome.deb
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">RUN</span><span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-f<span class="w"> </span>./temp/google_chrome.deb<span class="w"> </span>-y
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">RUN</span><span class="w"> </span>wget<span class="w"> </span>https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip<span class="w"> </span>-P<span class="w"> </span>./temp
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">RUN</span><span class="w"> </span>unzip<span class="w"> </span>./temp/chromedriver_linux64.zip<span class="w"> </span>-d<span class="w"> </span>./
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">RUN</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>./temp
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="k">COPY</span><span class="w"> </span>app/requirements.txt<span class="w"> </span>./
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>--no-cache-dir
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/app/app.py&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div>
+4. </p>
 </li>
 </ol>
 
