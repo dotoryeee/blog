@@ -10,6 +10,7 @@ Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하�
     cat<<EOF >~/app/requirements.txt
     requests
     selenium
+    jinja2
     EOF
     ```
 
@@ -31,13 +32,14 @@ Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하�
 
     ```s title="실행 명령"
     # Dockerfile이 존재하는 위치에서
-    docker build -t scrapper:0.1 ./
-    docker run --rm --name selenium -v ~/app:/app scrapper:0.1
+    docker build -t scrapper:0.2 ./
+    docker run --rm --name selenium -v ~/app:/app scrapper:0.2
     ```
 - Datadog dashboard 접속 및 데이터 크롤링을 위한 Python 코드 작성
     ```py title="crawling_datadog_dashboard"
     import logging
     import warnings
+    import jinja2
     from time import sleep
     from selenium import webdriver
     from selenium.webdriver.common.by import By
@@ -49,6 +51,9 @@ Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하�
 
     #chrome driver 설정
     chrome_driver_path = "app/chromedriver"
+
+    #report template file name
+    report_template_file_name = "report.j2"
 
     #로거 설정
     logger = logging.getLogger()
@@ -79,10 +84,10 @@ Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하�
     def connect_webpage(address: str) -> None:
         try:
             chrome_driver.get(address)
-            logger.info(f"{address}_connected")
+            logger.info(f"'{address}'_connected")
             sleep(5)
         except:
-            logger.error(f"fail_connect_{address}")
+            logger.error(f"fail_connect_'{address}'")
 
     def find_and_click(xpath: str) -> None:
         try:
@@ -114,46 +119,77 @@ Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하�
                 EC.presence_of_element_located((By.XPATH , xpath))
             )
             logger.info(f"'{xpath}'_found")
-            value = element.get_attribute('innerText')
-            print(element.get_attribute('innerHTML'))
-            print(element.get_attribute('innerText'))
-            print(element.text)
+            value = element.text
             logger.info(f"get_'{xpath}'_value")
         except:
             logger.error(f"'{xpath}'_not_found")
             close_chrome_driver()
         return value
 
+    def make_report(data_dict: dict) -> object:
+        print(data_dict)
+        try:
+            logger.info("start_rendereing_report")
+            file_loader = jinja2.FileSystemLoader("./")
+            env = jinja2.Environment(loader=file_loader)
+            template = env.get_template(report_template_file_name)
+            output = template.render(data=data_dict)
+            logger.info("rendering_finished")
+            logger.info("saving_rendered_report")
+            with open('rendered_report.html', 'w') as f:
+                f.write(output)
+            logger.info("save_report_complete")
+            return output
+        except Exception as e:
+            logger.error(f"rendereing_report_fail: {e}")
+
     def main():
-        #datadog 접속
-        connect_webpage("https://www.datadoghq.com/")
+        data_dict = {}
+        try:
+            #datadog 접속
+            connect_webpage("https://www.datadoghq.com/")
 
-        #로그인버튼 클릭 시도
-        find_and_click('/html/body/div[2]/nav/div/div[1]/ul[2]/li[3]/a/span')
+            #로그인버튼 클릭 시도
+            find_and_click('/html/body/div[2]/nav/div/div[1]/ul[2]/li[3]/a/span')
 
-        #ID 채우기
-        find_and_fill("/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/div[1]/div/div/div/input", "")
+            #ID 채우기
+            find_and_fill("/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/div[1]/div/div/div/input", "")
 
-        #PW 채우기
-        find_and_fill("/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/div[2]/div/div/div/input", "")
+            #PW 채우기
+            find_and_fill("/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/div[2]/div/div/div/input", "")
 
-        #로그인 시도 버튼 클릭
-        find_and_click('/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/button')
+            #로그인 시도 버튼 클릭
+            find_and_click('/html/body/div[1]/div/div[2]/div[1]/div[2]/div[6]/form/button')
 
-        #타켓 서비스로 전환
-        connect_webpage("https://app.datadoghq.com/api/v2/switch_to_user/*******service id*******")
+            #타켓 서비스로 전환
+            connect_webpage("https://app.datadoghq.com/api/v2/switch_to_user/")
 
-        #타겟 dashboard 입장
-        connect_webpage("https://app.datadoghq.com/dashboard/age-zdu-8q9/*********dashboard id*********")
+            #타겟 dashboard 입장
+            connect_webpage("https://app.datadoghq.com/dashboard/")
 
-        sleep(10)
-        crwaling_value("***target xpath")
-        print(crwaling_value)
+            sleep(10) # wait 10s for dashboard loading
 
-        #chrome_driver 종료
-        close_chrome_driver()
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            data_dict[""] = crwaling_value("")
+            
+            #report rendering
+            make_report(data_dict)
 
-    main()
+        finally:
+            #chrome_driver 종료
+            close_chrome_driver()
+
+    if __name__ == "__main__":
+        main()
+
+
+
     ```
     ![cralwing_value](Datadog_dashboard_crawling/2023-03-20_12-59-19.png)
     데이터를 잘 가져오고 있습니다(12)
