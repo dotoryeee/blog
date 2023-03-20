@@ -71,16 +71,27 @@
           restart: always
     ```
 3. Selenium crawler
+    ```s
+    mkdir ~/app
+    cat<<EOF >~/app/requirements.txt
+    requests
+    selenium
+    EOF
+    ```
+
     ```dockerfile title="Dockerfile"
     FROM python:latest
-    RUN mkdir /app/temp
-    WORKDIR /app/temp
+    RUN mkdir -p app/temp
+    WORKDIR app
     RUN apt update -y; apt install wget unzip -y
-    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb
-    RUN apt install -f ./google-chrome-unstable_112.0.5615.20-1_amd64.deb
-    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
-    RUN unzip ./chromedriver_linux64.zip -d /app
-    COPY app ./app
-    RUN pip install -r /app/temp/requirements.txt --no-cache-dir
+    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb
+    RUN apt install -f ./temp/google_chrome.deb -y
+    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip -P ./temp
+    RUN unzip ./temp/chromedriver_linux64.zip -d ./
+    RUN rm -rf ./temp
+    RUN pip install --upgrade pip
+    COPY app/requirements.txt ./
+    RUN pip install -r requirements.txt --no-cache-dir
     CMD [ "python", "/app/app.py" ]
     ```
+4. 
