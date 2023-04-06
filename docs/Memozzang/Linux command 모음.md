@@ -39,4 +39,8 @@
 
     sudo systemctl restart codedeploy-agent.service
     ```
-4. 
+4. git branch 분기 확인
+    ```s
+    git log --all --decorate --oneline --graph
+    ```
+

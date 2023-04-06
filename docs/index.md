@@ -2,7 +2,7 @@
 
 ---
 ## Interested in
-- AWS, SRE, ElasticSearch, Loki, Managing large logs, Infra automation, Python, JAVA
+- AWS, SRE, ElasticSearch, Loki, Managing large logs, Infra automation, Python
 
 ## Certification goals
 - [ ] AWS SOA
