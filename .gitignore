@@ -1,2 +1,4 @@
 site/
 *.deb
+*.hcl
+.terraform/
