@@ -19,8 +19,6 @@ extra:
       link: https://www.linkedin.com/in/gardengarden/
     - icon: fontawesome/brands/github
       link: https://github.com/dotoryeee
-    - icon: fontawesome/brands/instagram
-      link: https://www.instagram.com/e_.garden/
   analytics:
     provider: google
     property: G-22LC2P5RV5
