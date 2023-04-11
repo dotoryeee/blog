@@ -94,4 +94,19 @@
     RUN pip install -r requirements.txt --no-cache-dir
     CMD [ "python", "/app/app.py" ]
     ```
-4. 
+4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
+    ```dockerfile title="Dockerfile"
+    FROM ubuntu:22
+    RUN apt update -y; apt install wget alien
+    RUN wget https://download.oracle.com/otn_software/linux/instantclient/219000/oracle-instantclient-basic-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN wget https://download.oracle.com/otn_software/linux/instantclient/219000/oracle-instantclient-sqlplus-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN wget https://download.oracle.com/otn_software/linux/instantclient/219000/oracle-instantclient-devel-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN sudo alien -i oracle-instantclient-basic-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN sudo alien -i oracle-instantclient-sqlplus-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN sudo alien -i oracle-instantclient-devel-21.9.0.0.0-1.el8.x86_64.rpm
+    RUN sudo sh -c "echo /usr/lib/oracle/21/client64/lib > /etc/ld.so.conf.d/oracle.conf"
+    RUN sudo ldconfig
+    RUN rm -rf *rpm
+    CMD ["sqlplus"]
+    ```
+5.     
