@@ -44,3 +44,7 @@
     git log --all --decorate --oneline --graph
     ```
 
+5. Logstash 처리량 확인
+    ```s
+    curl localhost:9600/_node/stats/pipelines | jq '.pipelines[].events'
+    ```
