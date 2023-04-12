@@ -2,3 +2,6 @@ site/
 *.deb
 *.hcl
 .terraform/
+.tfstate
+.backup
+kubeconfig*

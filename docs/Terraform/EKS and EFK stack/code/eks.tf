@@ -3,7 +3,7 @@ module "eks" {
   version = "17.0.0"
 
   cluster_name = "garden-eks"
-  cluster_version = 1.25
+  cluster_version = 1.26
   subnets      = module.vpc.private_subnets
 
   tags = {
@@ -16,21 +16,19 @@ module "eks" {
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
     disk_size = 30
+    instance_type = "t3.micro" 
   }
 
   node_groups = {
     master = {
-      desired_capacity = 3
+      desired_capacity = 1
       max_capacity     = 3
-      min_capacity     = 3
-      instance_type    = "t2.micro"
+      min_capacity     = 1
     }
     data = {
       desired_capacity = 3
       max_capacity     = 3
       min_capacity     = 3
-      instance_type    = "t2.micro"
     }
   }
 }
-
