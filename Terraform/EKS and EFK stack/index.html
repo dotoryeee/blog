@@ -875,13 +875,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#error" class="md-nav__link">
-    Error
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1007,13 +1000,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#error" class="md-nav__link">
-    Error
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1038,7 +1024,8 @@
   <img alt="instance_list" src="Screenshot%202023-04-12%20at%2010.54.46%20PM.png" /></li>
 <li>아래 에러를 해결하기 위해 kubernetes.tf 파일을 추가하였다
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Post</span><span class="w"> </span><span class="s">&quot;http://localhost/api/v1/namespaces/kube-system/configmaps&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">dial</span><span class="w"> </span><span class="n">tcp</span><span class="w"> </span><span class="p">[</span><span class="o">::</span><span class="m">1</span><span class="p">]</span><span class="o">:</span><span class="m">80</span><span class="o">:</span><span class="w"> </span><span class="n">connect</span><span class="o">:</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">refused</span>
-</code></pre></div></li>
+</code></pre></div>
+  <img alt="configmap_error" src="Screenshot%202023-04-12%20at%2012.23.26%20AM%20copy.png" /></li>
 <li></li>
 </ol>
 <h2 id="eks-terraform">EKS클러스터 배포 Terraform 코드</h2>
@@ -1093,7 +1080,7 @@
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="nb">node_groups_defaults</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="na">ami_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;AL2_x86_64&quot;</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="na">disk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="na">instance_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t3.micro&quot;</span><span class="w"> </span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="na">instance_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;t3.micro&quot;</span><span class="p">]</span><span class="w"> </span>
 <a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
 <a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">  </span><span class="nb">node_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
@@ -1130,19 +1117,14 @@
 <a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">  </span><span class="na">token</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="nv">data.aws_eks_cluster_auth.default.token</span>
 <a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="error">Error</h2>
 <ul>
-<li>증상
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="w"> </span><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Post</span><span class="w"> </span><span class="s">&quot;http://localhost/api/v1/namespaces/kube-system/configmaps&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">dial</span><span class="w"> </span><span class="n">tcp</span><span class="w"> </span><span class="p">[</span><span class="o">::</span><span class="m">1</span><span class="p">]</span><span class="o">:</span><span class="m">80</span><span class="o">:</span><span class="w"> </span><span class="n">connect</span><span class="o">:</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">refused</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│<span class="w">   </span><span class="n">with</span><span class="w"> </span><span class="n">module.eks.kubernetes_config_map.aws_auth</span><span class="p">[</span><span class="m">0</span><span class="p">],</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│<span class="w">   </span><span class="n">on</span><span class="w"> </span><span class="n">.terraform</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="n">eks</span><span class="o">/</span><span class="n">aws_auth.tf</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="m">63</span><span class="p">,</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="s">&quot;kubernetes_config_map&quot;</span><span class="w"> </span><span class="s">&quot;aws_auth&quot;</span><span class="o">:</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│<span class="w">   </span><span class="m">63</span><span class="o">:</span><span class="w"> </span><span class="n">resource</span><span class="w"> </span><span class="s">&quot;kubernetes_config_map&quot;</span><span class="w"> </span><span class="s">&quot;aws_auth&quot;</span><span class="w"> </span><span class="p">{</span>
-</code></pre></div></li>
-<li>원인
-missing roles/permissions in your aws-auth configmap <a href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/add-user-role.html">참조</a></li>
+<li>EKS cluster 배포 후 kubectl로 제어할 수 있도록 설정
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">eks</span><span class="w"> </span><span class="n">list</span><span class="o">-</span><span class="n">clusters</span><span class="w">  </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">xargs</span><span class="w"> </span><span class="o">-</span><span class="n">I</span><span class="p">{}</span><span class="w"> </span><span class="n">aws</span><span class="w"> </span><span class="n">eks</span><span class="w"> </span><span class="n">update</span><span class="o">-</span><span class="n">kubeconfig</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+  <img alt="handling_eks_with_kubectl" src="Screenshot%202023-04-12%20at%2011.34.11%20PM.png" />
+  설정 후 kubectl 정상 동작 확인
+  <img alt="load_eks_nodes" src="Screenshot%202023-04-12%20at%2011.36.17%20PM.png" /></li>
 </ul>
-<p><img alt="error1" src="Screenshot%202023-04-12%20at%2012.23.26%20AM.png" /></p>
 
 
   
