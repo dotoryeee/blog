@@ -1035,9 +1035,16 @@
 <a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
 <a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">codedeploy</span><span class="o">-</span><span class="n">agent.service</span>
 </code></pre></div></li>
-<li>git branch 분기 확인
+<li>
+<p>git branch 분기 확인
     <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">git</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">--</span><span class="n">all</span><span class="w"> </span><span class="o">--</span><span class="n">decorate</span><span class="w"> </span><span class="o">--</span><span class="n">oneline</span><span class="w"> </span><span class="o">--</span><span class="n">graph</span>
-</code></pre></div></li>
+</code></pre></div></p>
+</li>
+<li>
+<p>Logstash 처리량 확인
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9600</span><span class="o">/</span>_<span class="n">node</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">pipelines</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;.pipelines[].events&#39;</span>
+</code></pre></div></p>
+</li>
 </ol>
 
 
