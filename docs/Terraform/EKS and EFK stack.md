@@ -9,6 +9,7 @@
   ```s
   Error: Post "http://localhost/api/v1/namespaces/kube-system/configmaps": dial tcp [::1]:80: connect: connection refused
   ```
+  ![configmap_error](EKS and EFK stack/Screenshot 2023-04-12 at 12.23.26 AM copy.png)
 4. 
 
 
@@ -70,7 +71,7 @@ module "eks" {
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
     disk_size = 30
-    instance_type = "t3.micro" 
+    instance_types = ["t3.micro"] 
   }
 
   node_groups = {
@@ -110,18 +111,10 @@ provider "kubernetes" {
 }
 ```
 
-
-## Error
-- 증상
-```s
- Error: Post "http://localhost/api/v1/namespaces/kube-system/configmaps": dial tcp [::1]:80: connect: connection refused
-│
-│   with module.eks.kubernetes_config_map.aws_auth[0],
-│   on .terraform/modules/eks/aws_auth.tf line 63, in resource "kubernetes_config_map" "aws_auth":
-│   63: resource "kubernetes_config_map" "aws_auth" {
-```
-- 원인
-missing roles/permissions in your aws-auth configmap [참조](https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/add-user-role.html)
-
-![error1](EKS and EFK stack/Screenshot 2023-04-12 at 12.23.26 AM.png)
-
+- EKS cluster 배포 후 kubectl로 제어할 수 있도록 설정
+  ```s
+  aws eks list-clusters  --query clusters --output text | xargs -I{} aws eks update-kubeconfig --name {}
+  ```
+  ![handling_eks_with_kubectl](EKS and EFK stack/Screenshot 2023-04-12 at 11.34.11 PM.png)
+  설정 후 kubectl 정상 동작 확인
+  ![load_eks_nodes](EKS and EFK stack/Screenshot 2023-04-12 at 11.36.17 PM.png)
