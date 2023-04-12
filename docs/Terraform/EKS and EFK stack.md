@@ -10,6 +10,6 @@
 │   63: resource "kubernetes_config_map" "aws_auth" {
 ```
 - 원인
-missing roles/permissions in your aws-auth configmap [참조](https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1723)
+missing roles/permissions in your aws-auth configmap [참조](https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/add-user-role.html)
 
 ![error1](EKS and EFK stack/Screenshot 2023-04-12 at 12.23.26 AM.png)
