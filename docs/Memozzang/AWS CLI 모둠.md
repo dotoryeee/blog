@@ -1,5 +1,18 @@
 ## EC2
 
+### etc
+1. Mac에서 AWS CLI output이 자동으로 닫히지 않을 때<br>
+   -> 원인: Pager 설정 때문에 자동으로 닫히지 않음, 아래 커맨드를 사용하여 pager 비활성화
+   ```s
+   echo "cli_pager = " >> ~/.aws/config
+   ```
+
+### EKS
+1. 연습용 EKS Cluster 생성 후 kubectl로 제어할 수 있도록 설정
+   ```s
+   aws eks list-clusters  --query clusters --output text | xargs -I{} aws eks update-kubeconfig --name {}
+   ```
+
 ### Instances
 1. `Running` 상태인 인스턴스들의 인스턴스 ID만 찾기
     ```s

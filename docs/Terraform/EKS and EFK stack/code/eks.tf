@@ -15,8 +15,9 @@ module "eks" {
 
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
-    disk_size = 30
-    instance_type = "t3.micro" 
+    disk_size = 20
+    instance_types = ["t3.micro"]
+    capacity_type  = "ON_DEMAND"  #[ON_DEMAND, SPOT]
   }
 
   node_groups = {
@@ -32,3 +33,4 @@ module "eks" {
     }
   }
 }
+
