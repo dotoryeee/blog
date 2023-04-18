@@ -48,7 +48,7 @@
     # Update Ubuntu
     RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && sed -i 's/security.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
     # Install Nanum for Korean Font
-    RUN apt-get update && apt-get -y upgrade && apt-get install -y fonts-nanum* && fc-cache -fv && rm -fr ~/.cache/matplotlib
+    RUN apt-get update && apt-get -y upgrade && apt-get install -y fonts-nanum && fc-cache -fv && rm -fr ~/.cache/matplotlib
     ```
 
     ```yaml title="docker-compose.yml"
@@ -60,7 +60,7 @@
             dockerfile: ./Dockerfile
           user: root
           environment:
-            - GRANT_SUDO=yes
+            - GRANT_SUDO=1
             - JUPYTER_ENABLE_LAB=yes
             - JUPYTER_TOKEN=papapassword
           volumes:
@@ -81,19 +81,44 @@
 
     ```dockerfile title="Dockerfile"
     FROM python:latest
-    RUN mkdir -p app/temp
+    RUN mkdir -p app/temp && \
+        apt update -y; apt install wget unzip -y && \
+        wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb && \
+        apt install -f ./temp/google_chrome.deb -y && \
+        wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip -P ./temp && \
+        unzip ./temp/chromedriver_linux64.zip -d ./ && \
+        rm -rf ./temp && \
+        pip install --upgrade pip && \
+        COPY app/requirements.txt ./ && \
+        pip install -r requirements.txt --no-cache-dir
     WORKDIR app
-    RUN apt update -y; apt install wget unzip -y
-    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb
-    RUN apt install -f ./temp/google_chrome.deb -y
-    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip -P ./temp
-    RUN unzip ./temp/chromedriver_linux64.zip -d ./
-    RUN rm -rf ./temp
+    CMD [ "python", "/app/app.py" ]
+    ```
+    아래는 테스트 필요
+    ```dockerfile title="Dockerfile-multistage"
+    # Builder stage
+    FROM python:latest AS builder
+    RUN mkdir -p /temp
+    WORKDIR /temp
+    RUN apt update -y && apt install wget unzip -y
+    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./google_chrome.deb
+    RUN apt install -f ./google_chrome.deb -y
+    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
+    RUN unzip chromedriver_linux64.zip
+
+    # Final stage
+    FROM python:latest
+    RUN mkdir -p /app
+    WORKDIR /app
+    COPY --from=builder /temp/chromedriver /app/
+    COPY --from=builder /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 /usr/lib/x86_64-linux-gnu/libXcomposite.so.1 /usr/lib/x86_64-linux-gnu/
+    COPY requirements.txt ./
     RUN pip install --upgrade pip
-    COPY app/requirements.txt ./
     RUN pip install -r requirements.txt --no-cache-dir
     CMD [ "python", "/app/app.py" ]
     ```
+    Google Chrome에서 사용하는 라이브러리 복사(libxcb.so.1, libxkbcommon.so.0, libXcomposite.so.1)
+    
 4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
     ```dockerfile title="Dockerfile"
     FROM ubuntu:22
@@ -109,4 +134,3 @@
     RUN rm -rf *rpm
     CMD ["sqlplus"]
     ```
-5.     
