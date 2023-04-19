@@ -1,0 +1,1343 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Emergency_alert_to_slack/">
+      
+      
+        <link rel="next" href="../Kubectl%20%EB%AA%85%EB%A0%B9%EC%96%B4/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.6">
+    
+    
+      
+        <title>JVM Options - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-22LC2P5RV5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#jvm-options" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JVM Options
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        맨땅에 헤딩 전문
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Cloud Infra
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cloud Infra
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/3-Tier%20Basic%20Infra/" class="md-nav__link">
+        3-Tier 기본 인프라 구성
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/API%20Gateway%20with%20Lambda/" class="md-nav__link">
+        API Gateway with Lambda
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/Access%20S3%2C%20DynamoDB%20with%20Lambda/" class="md-nav__link">
+        Access S3, DynamoDB with Lambda
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/Failover%20for%20HA/" class="md-nav__link">
+        Failover for HA
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/" class="md-nav__link">
+        VPC Endpoint with Role
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          DevOps
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          DevOps
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/CICD%20on%20Single%20container/" class="md-nav__link">
+        CICD on Single container
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/Circle-CI%20basic/" class="md-nav__link">
+        Circle-CI Basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DevOps/Multi%20container%20CICD/" class="md-nav__link">
+        Multi container CICD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Docker & Kubernetes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Docker & Kubernetes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/" class="md-nav__link">
+        Docker Proxy Layer for MySQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker%20%26%20Kubernetes/Docker%20basics/" class="md-nav__link">
+        Docker basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker%20%26%20Kubernetes/Docker%20compose%20web%20GUI/" class="md-nav__link">
+        Docker compose and web GUI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/" class="md-nav__link">
+        Docker volume with MySQL
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Memozzang
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Memozzang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        AWS Boto3 SDK 모둠
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        AWS CLI 모둠
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Datadog_dashboard_crawling/" class="md-nav__link">
+        Datadog dashboard crawling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        ELK error 모음
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Emergency_alert_to_slack/" class="md-nav__link">
+        재난안전문자 API 활용하기
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          JVM Options
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        JVM Options
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-options_1" class="md-nav__link">
+    JVM options 정리
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cms-gc-g1-gc" class="md-nav__link">
+    CMS GC에서 G1 GC로 전환할 때 주의할 점
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#g1-gc-zgc" class="md-nav__link">
+    G1 GC에서 ZGC로 전환시 장단점
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Kubectl%20%EB%AA%85%EB%A0%B9%EC%96%B4/" class="md-nav__link">
+        Kubectl 명령어 메모
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        Linux command 모음
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        Naver cloud API호출 모둠
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Python%20basics/" class="md-nav__link">
+        Python 정리
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker_compose_templates/" class="md-nav__link">
+        Docker compose 모음
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Projects/Project-1/" class="md-nav__link">
+        Project - 1
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          SRE
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          SRE
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SRE/ES%20Domain%20in%20VPC/" class="md-nav__link">
+        ElasticSearch domain in VPC
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SRE/ElasticSearch%20basics/" class="md-nav__link">
+        ElasticSearch 정리
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SRE/Prometheus%20HA%20with%20Thanos/" class="md-nav__link">
+        Prometheus with Thanos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../SRE/Prometheus%20and%20Grafana/" class="md-nav__link">
+        Prometheus and Grafana
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          TODO
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          TODO
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TODO/EKS%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%20heapdump%20%EC%83%9D%EC%84%B1/" class="md-nav__link">
+        EKS환경에서 heapdump 생성
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TODO/JVM%20monitoring/" class="md-nav__link">
+        JVM monitoring
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Terraform
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Terraform
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/EKS%20and%20EFK%20stack/" class="md-nav__link">
+        deploy EKS and EFK
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20AWS%20IAM/" class="md-nav__link">
+        Terraform AWS IAM
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20Backend/" class="md-nav__link">
+        Terraform Backend
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20Practice/" class="md-nav__link">
+        Terraform Practice
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20deploy%20VPC%20and%20Subnet/" class="md-nav__link">
+        Terraform deploy VPC and Subnet
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Terraform/Terraform%20deploy%20VPC/" class="md-nav__link">
+        Terraform deploy VPC
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-options_1" class="md-nav__link">
+    JVM options 정리
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cms-gc-g1-gc" class="md-nav__link">
+    CMS GC에서 G1 GC로 전환할 때 주의할 점
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#g1-gc-zgc" class="md-nav__link">
+    G1 GC에서 ZGC로 전환시 장단점
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="jvm-options">JVM Options</h1>
+<h2 id="jvm-options_1">JVM options 정리</h2>
+<ul>
+<li>
+<p>Xms<br>
+Xms 옵션은 JVM이 시작될 때 사용할 초기 메모리 크기를 지정합니다. 이 옵션을 지정하면 JVM이 시작될 때 할당하는 메모리 크기를 제한할 수 있습니다. -Xms 값을 지정하지 않으면 JVM이 기본값으로 설정한 초기 메모리 크기를 사용합니다.</p>
+</li>
+<li>
+<p>Xmx<br>
+-Xmx 옵션은 JVM에서 사용할 최대 메모리 크기를 지정합니다. 이 옵션을 지정하면 JVM이 사용할 수 있는 메모리 크기를 제한할 수 있습니다. -Xmx 값을 지정하지 않으면 JVM이 기본값으로 설정한 최대 메모리 크기를 사용합니다.</p>
+</li>
+<li>
+<p>Xmn<br>
+-Xmn 옵션은 Young 영역에 할당할 메모리 크기를 지정합니다. Young 영역은 객체가 처음 생성될 때 할당되는 영역으로, 일반적으로 Short-lived 객체가 위치합니다. <br>
+-Xmn 값이 너무 작으면 Young 영역에서 GC가 너무 자주 발생하여 성능이 저하될 수 있습니다. 반대로, -Xmn 값이 너무 크면 Old 영역에 할당할 메모리가 부족하여 OutOfMemoryError가 발생할 수 있습니다. 예를 들어, -Xmn1G 옵션을 사용하면 JVM이 1GB의 메모리를 Young 영역에 할당합니다.</p>
+</li>
+<li>
+<p>XX:MaxPermSize<br>
+-XX:MaxPermSize 옵션은 JVM이 사용할 수 있는 최대 Permanent 영역의 크기를 지정합니다. Permanent 영역은 클래스, 메서드, 상수 풀 등을 저장하는 영역으로, Java 8부터는 Metaspace 영역으로 대체되었습니다.<br>
+XX:MaxPermSize 값을 지정하지 않으면 JVM이 기본값으로 설정한 최대 Permanent 영역 크기를 사용합니다.
+예를 들어, -XX:MaxPermSize512m 옵션을 사용하면 JVM이 최대 512MB의 Permanent 영역 메모리를 사용합니다.</p>
+</li>
+<li>
+<p>XX:PermSize<br>
+-XX:PermSize 옵션은 JVM이 사용할 Permanent 영역의 초기 크기를 지정합니다. 이 옵션을 사용하여 Permanent 영역이 너무 작거나 너무 크지 않도록 조절할 수 있습니다.<br>
+XX:PermSize 및 -XX:MaxPermSize 옵션은 JDK 8 이전 버전에서만 사용됩니다. PermGen 메모리 영역에서 클래스 메타데이터를 저장하고 있습니다. PermGen 영역은 Java 8에서 제거되었고, 클래스 메타데이터는 Metaspace 영역으로 이동했습니다. 따라서 Java 8 이상의 버전에서는 이 옵션을 사용할 필요가 없습니다.</p>
+</li>
+<li>
+<p>XX:MaxDirectMemorySize<br>
+-XX:MaxDirectMemorySize 옵션은 Direct 메모리 크기를 제한하는 데 사용됩니다. Direct 메모리는 JVM의 heap이 아닌 운영 체제에서 할당되는 메모리로, NIO와 같은 기술에서 사용됩니다.</p>
+</li>
+<li>
+<p>XX:+UseCompressedOops<br>
+-XX:+UseCompressedOops 옵션은 64비트 JVM에서 작은 객체를 저장할 때 메모리를 절약하는 데 사용됩니다. 객체의 포인터가 32비트 정수로 저장됩니다.</p>
+</li>
+<li>
+<p>XX:+UseG1GC<br>
+-XX:+UseG1GC 옵션은 Java 7부터 도입된 새로운 가비지 컬렉터인 G1(Garbage First)을 사용하도록 지정하는 데 사용됩니다. G1 GC는 대규모 힙 크기에 대해 최적화되어 있으며, 전체 힙 또는 일부 영역에서 가비지 수집을 수행할 수 있습니다.</p>
+</li>
+<li>
+<p>XX:+UseConcMarkSweepGC<br>
+-XX:+UseConcMarkSweepGC 옵션은 Java 6 이전에 사용된 가비지 컬렉터 중 하나인 CMS(Concurrent Mark and Sweep)를 사용하도록 지정하는 데 사용됩니다. 이 가비지 컬렉터는 중단 시간을 최소화하고 응답성을 향상시키기 위해 설계되었습니다. 하지만 최근에는 G1 GC와 같은 새로운 가비지 컬렉터가 도입되면서 사용되지 않는 추세입니다.</p>
+</li>
+<li>
+<p>XX:ThreadStackSize<br>
+-XX:ThreadStackSize 옵션은 스레드 스택의 크기를 지정하는 데 사용됩니다. 기본값은 운영 체제에 따라 다르며, 이 값이 작으면 스택 오버플로우가 발생할 수 있습니다.</p>
+</li>
+<li>
+<p>XX:MaxTenuringThreshold<br>
+-XX:MaxTenuringThreshold 옵션은 새로 생성된 객체가 Survivor 영역에 남아 있는 시간을 제어하는 데 사용됩니다. 이 옵션은 G1 GC에서 자주 사용됩니다.</p>
+</li>
+</ul>
+<h2 id="cms-gc-g1-gc">CMS GC에서 G1 GC로 전환할 때 주의할 점</h2>
+<ul>
+<li>
+<p>-Xmn, -XX:NewRatio을 사용하지 않는다.<br>
+G1 GC는 young 영역과 old 영역이 동시에 존재하지 않고, 전체 heap을 몇 개의 영역으로 분할하고 각 영역에 대해 young, mixed, old 단계를 수행하므로, young 영역에 대한 크기 설정 옵션인 -Xmn, -XX:NewRatio는 사용할 수 없습니다.</p>
+</li>
+<li>
+<p>-XX:+UseG1GC 옵션을 추가한다.<br>
+G1 GC를 사용하기 위해서는 -XX:+UseG1GC 옵션을 추가해야 합니다. 이 옵션을 추가하지 않으면 기존의 CMS GC가 사용됩니다.</p>
+</li>
+<li>
+<p>-XX:MaxGCPauseMillis 옵션을 적절히 설정한다.<br>
+G1 GC의 주요 목표 중 하나는 일괄 처리 시간을 최소화하는 것입니다. 이를 위해 -XX:MaxGCPauseMillis 옵션을 사용하여 GC 일괄 처리 시간의 최대 지연 시간을 설정할 수 있습니다. 이 값은 애플리케이션의 성능 요구 사항에 따라 조정되어야 합니다.</p>
+</li>
+<li>
+<p>-XX:G1HeapRegionSize 옵션을 적절히 설정한다.<br>
+G1 GC에서는 전체 heap을 일정한 크기의 region으로 분할합니다. 이때 region의 크기는 -XX:G1HeapRegionSize 옵션을 통해 설정할 수 있습니다. 이 값을 적절히 설정하면 young 영역의 크기와 관련이 있으며, 성능에 영향을 미칩니다.</p>
+</li>
+<li>
+<p>-XX:InitiatingHeapOccupancyPercent 옵션을 적절히 설정한다.<br>
+G1 GC에서는 일괄 처리 작업을 수행하기 전에 old 영역의 사용률을 모니터링합니다. 이때 사용되는 옵션이 XX:InitiatingHeapOccupancyPercent입니다. 이 값을 적절히 설정하여 old 영역의 수집이 필요한 시점을 조절할 수 있습니다.</p>
+</li>
+<li>
+<p>-XX:ConcGCThreads 옵션을 적절히 설정한다.<br>
+G1 GC에서는 수집 작업과 일괄 처리 작업을 병렬로 처리합니다. 이때 사용되는 스레드 수는 -XX:ConcGCThreads 옵션을 통해 설정할 수 있습니다. 이 값을 적절히 조정하여 병렬 처리의 성능을 개선할 수 있습니다.</p>
+</li>
+</ul>
+<h2 id="g1-gc-zgc">G1 GC에서 ZGC로 전환시 장단점</h2>
+<ul>
+<li>
+<p>Pros<br></p>
+<ul>
+<li>Pause time가 짧아집니다: zgc는 큰 힙 사이즈에서도 수 밀리 초에서 최대 수십 밀리 초로 Pause time을 제어할 수 있습니다.</li>
+<li>Scalability가 향상됩니다: zgc는 대규모 시스템에서 수천 개의 CPU 및 수백 기가바이트의 힙 사이즈를 지원합니다.</li>
+<li>GC throughput이 향상됩니다: zgc는 메모리 압축 과정에서 CPU를 덜 사용하기 때문에 다른 GC보다 더 높은 처리량을 얻을 수 있습니다.</li>
+<li>Concurrent 수행 작업에 대한 응답성이 높아집니다: zgc는 애플리케이션에서 동시 작업과 GC 작업을 모두 처리하기 때문에, 다른 GC보다 애플리케이션의 응답성이 높아집니다.</li>
+</ul>
+</li>
+<li>
+<p>Cons<br></p>
+<ul>
+<li>메모리 오버헤드가 발생합니다: zgc는 매우 큰 메모리 영역을 관리하기 때문에 메모리 오버헤드가 발생할 수 있습니다.</li>
+<li>성능이 약간 저하될 수 있습니다: zgc는 Concurrent GC라는 특성 때문에, 힙의 특정 영역이 여러 번 GC되는 상황이 발생할 수 있으며, 이는 약간의 성능 저하를 초래할 수 있습니다.</li>
+<li>따라서 zgc를 사용할 때는 힙 사이즈가 큰 애플리케이션에서 Pause time을 제어하고, 응답성을 높이기 위해 사용하는 것이 좋습니다. 하지만 메모리 오버헤드와 성능 저하에 대한 주의가 필요합니다.</li>
+</ul>
+</li>
+</ul>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../Emergency_alert_to_slack/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 재난안전문자 API 활용하기" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                재난안전문자 API 활용하기
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Kubectl%20%EB%AA%85%EB%A0%B9%EC%96%B4/" class="md-footer__link md-footer__link--next" aria-label="Next: Kubectl 명령어 메모" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Kubectl 명령어 메모
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Jeongwon Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+    
+  </body>
+</html>
