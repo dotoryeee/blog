@@ -55,7 +55,7 @@
 
 3. S3에 데이터 저장을 위한 Loki config 생성
     ```yaml title="loki-config/local-config.yaml"
-    auth_enabled: false # Loki에서 인증 사용 여부를 설정합니다. 이 설정이 true로 되어 있다면, Loki는 AWS IAM 또는 Google OAuth를 통해 인증을 수행하게 됩니다.
+    auth_enabled: false # Loki자체 인증 사용 여부
 
     server:
         http_listen_port: 3100
