@@ -1,5 +1,8 @@
 # LogQL 모음 for Loki
 
+!!! warning
+    테스트 및 확인 추가 필요
+
 1. 단일 레이블로 로그 검색:
     ```s
     {app="my-app"}

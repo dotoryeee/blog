@@ -3,6 +3,9 @@
 !!! notice
     파이썬 코드 작성 후 타인과 공유하다보니 클린코드의 필요성을 느껴 공부한것을 기억할 겸 정리했습니다
 
+!!! warning
+    아직 책을 읽으며 정리하는 중 입니다
+
 1. PEP-8 Naming style 요약 [PEP-8 원문](https://peps.python.org/pep-0008/#descriptive-naming-styles)
     - `_single_leading_underscore`: weak “internal use” indicator. E.g. from M import * does not import objects whose names start with an underscore
     - `single_trailing_underscore_`: used by convention to avoid conflicts with Python keyword, e.g.

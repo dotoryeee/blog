@@ -1,5 +1,8 @@
 # KQL 모음 for kibana
 
+!!! warning
+    테스트 및 확인 추가 필요
+
 1. 다중 필드로 로그 필터링:
     ```s
     app: "my-app" AND environment: "production"
