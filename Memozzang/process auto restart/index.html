@@ -19,7 +19,7 @@
     
     
       
-        <title>서비스 자동 재시작 - dotoryeee's blog</title>
+        <title>Process restart automation - dotoryeee's blog</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#process-restart-automation" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              서비스 자동 재시작
+              Process restart automation
             
           </span>
         </div>
@@ -685,12 +685,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          서비스 자동 재시작
+          Process restart automation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        서비스 자동 재시작
+        Process restart automation
       </a>
       
         
@@ -709,21 +709,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     목적
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     설명
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     코드
   </a>
   
@@ -1157,21 +1157,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     목적
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     설명
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     코드
   </a>
   
@@ -1192,23 +1192,24 @@
                   
 
 
-<h1 id="_1">서비스 자동 재시작</h1>
-<h2 id="_2">목적</h2>
-<div class="highlight"><pre><span></span><code>memory leak 이슈에 개발쪽 대응이 안 되고 있어서 자동으로 서비스를 재시작 하는 파이썬 코드를
-</code></pre></div>
-<h2 id="_3">설명</h2>
-<div class="highlight"><pre><span></span><code>0. python3.4 부터 호환 가능하도록 작성했습니다.
-1. 서비스명을 argument 형태로 입력받습니다.
-2. 현재 메모리 사용량을 확인합니다. /proc/meminfo를 활용합니다. free나 top등의 명령을 이용하도 되지만 datadog에서 확인했을때 동일한 usage를 확인할 수 있는 방법은 /proc/meminfo를 열어보는 것 밖에 없었습니다
-3. 1번에서 입력받은 서비스가 현재 동작중인지 확인합니다. argument설정 에러로 현재 동작중이지도 않은 서비스를 실행시킬수도 있기 때문입니다.
-3. 1번에서 입력받은 서비스들을 stop &amp; start 합니다
-4. process가 잘 올라왔는지 검증합니다. /proc/&lt;pid&gt; 를 이용해 확인합니다
-5. 서비스로그에서 추가 검증이 가능한 경우 로그도 검증합니다
-</code></pre></div>
-<h2 id="_4">코드</h2>
-<div class="highlight"><pre><span></span><code>1. 반출 불가능 한 정보는 제거하기위해 일부 삭제 또는 수정하였습니다.
-2. 로직은 지속적으로 개선 중입니다.
-</code></pre></div>
+<h1 id="process-restart-automation">Process restart automation</h1>
+<h2 id="_1">목적</h2>
+<p>memory leak 이슈에 일단 자동으로 대응하기 서비스를 재시작 하는 파이썬 코드를 작성했습니다.</p>
+<h2 id="_2">설명</h2>
+<ol>
+<li>python3.4 부터 호환 가능하도록 작성했습니다.</li>
+<li>서비스명을 argument 형태로 입력받습니다.</li>
+<li>현재 메모리 사용량을 확인합니다. /proc/meminfo를 활용합니다. free나 top등의 명령을 이용하도 되지만 datadog에서 확인했을때 동일한 usage를 확인할 수 있는 방법은 /proc/meminfo를 열어보는 것 밖에 없었습니다</li>
+<li>1번에서 입력받은 서비스가 현재 동작중인지 확인합니다. argument설정 에러로 현재 동작중이지도 않은 서비스를 실행시킬수도 있기 때문입니다.</li>
+<li>1번에서 입력받은 서비스들을 stop &amp; start 합니다</li>
+<li>process가 잘 올라왔는지 검증합니다. /proc/<pid> 를 이용해 확인합니다</li>
+<li>서비스로그에서 추가 검증이 가능한 경우 로그도 검증합니다</li>
+</ol>
+<h2 id="_3">코드</h2>
+<ol>
+<li>반출 불가능 한 정보는 제거하기위해 일부 삭제 또는 수정하였습니다.</li>
+<li>로직은 지속적으로 개선 중입니다.</li>
+</ol>
 <div class="highlight"><span class="filename">restart_process.py</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">subprocess</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">logging</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span> <span class="nn">os</span>
