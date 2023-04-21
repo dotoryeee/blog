@@ -9,17 +9,17 @@
       
       
       
-        <link rel="prev" href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/">
+        <link rel="prev" href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/">
       
       
-        <link rel="next" href="../docker_compose_templates/">
+        <link rel="next" href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.6">
     
     
       
-        <title>Python 정리 - dotoryeee's blog</title>
+        <title>Python 환경 관리: alternatives, poetry, conda - dotoryeee's blog</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#python" class="md-skip">
+        <a href="#python-alternatives-poetry-conda" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Python 정리
+              Python 환경 관리: alternatives, poetry, conda
             
           </span>
         </div>
@@ -619,36 +619,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../Kubectl%20%EB%AA%85%EB%A0%B9%EC%96%B4/" class="md-nav__link">
-        Kubectl 명령어 메모
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         Linux command 모음
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
-        Naver cloud API호출 모둠
       </a>
     </li>
   
@@ -671,9 +643,23 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Python 정리
+        Python 환경 관리: alternatives, poetry, conda
       </a>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        Naver cloud API호출 모둠
+      </a>
     </li>
   
 
@@ -922,6 +908,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../TODO/Kubectl%20%EB%AA%85%EB%A0%B9%EC%96%B4/" class="md-nav__link">
+        Kubectl 명령어 메모
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TODO/Python%20basics/" class="md-nav__link">
+        Python 정리
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../TODO/logQL%20%EB%AA%A8%EB%93%AC/" class="md-nav__link">
         LogQL 모음 for Loki
       </a>
@@ -1090,158 +1104,43 @@
                   
 
 
-<h1 id="python">Python 정리</h1>
-<div class="admonition notice">
-<p class="admonition-title">Notice</p>
-<p>파이썬 코드 작성 후 타인과 공유하다보니 클린코드의 필요성을 느껴 공부한것을 기억할 겸 정리했습니다</p>
-</div>
+<h1 id="python-alternatives-poetry-conda">Python 환경 관리: alternatives, poetry, conda</h1>
 <ol>
-<li>PEP-8 Naming style 요약 <a href="https://peps.python.org/pep-0008/#descriptive-naming-styles">PEP-8 원문</a><ul>
-<li><code>_single_leading_underscore</code>: weak “internal use” indicator. E.g. from M import * does not import objects whose names start with an underscore</li>
-<li><code>single_trailing_underscore_</code>: used by convention to avoid conflicts with Python keyword, e.g.
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">tkinter</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;ClassName&#39;</span><span class="p">)</span>
-</code></pre></div></li>
-<li><code>__double_leading_underscore</code>: when naming a class attribute, invokes name mangling (inside class FooBar, __boo becomes _FooBar__boo; see below).</li>
-<li><code>__double_leading_and_trailing_underscore__</code>: “magic” objects or attributes that live in user-controlled namespaces. E.g. <code>__init__</code>, <code>__import__</code> or <code>__file__</code>. Never invent such names; only use them as documented.</li>
+<li>
+<p>alternatives (심볼링 링크 자동화)</p>
+<ul>
+<li>장점:
+    간단한 방식으로 시스템 전체에서 사용할 Python 버전을 쉽게 변경할 수 있습니다.</li>
+<li>단점:
+    프로젝트별 가상 환경을 지원하지 않아, 여러 프로젝트에서 서로 다른 종속성을 가진 경우 관리가 어렵습니다.</li>
 </ul>
 </li>
-<li>PEP-8 Naming Convetions 요약 <a href="https://peps.python.org/pep-0008/#naming-conventions">PEP-8 원문</a><ul>
-<li>단일 문자로 ‘l’ (lowercase letter el), ‘O’ (uppercase letter oh), or ‘I’ (uppercase letter eye) 사용 금지</li>
-<li>classNames: CamelCase</li>
-<li>Type Variable Names: </li>
-<li>Exception Names: </li>
-<li>Global Variable Names: </li>
-<li>Function and Variable Names: </li>
-<li>Function and Method Arguments: </li>
-<li>Method Names and Instance Variables: </li>
-<li>Constants: </li>
+<li>
+<p>poetry (가상환경)
+    파이썬 내부의 venv를 사용해 가상환경을 생성하고 pip를 이용해 pypi에서 패키지를 가져옵니다.</p>
+<ul>
+<li>장점:
+    프로젝트별 가상 환경을 지원하여 서로 다른 종속성을 가진 프로젝트를 관리할 수 있습니다.
+    종속성의 버전을 자동으로 관리하며, 메타데이터와 종속성을 선언하는 pyproject.toml 파일을 사용하여 명시적으로 종속성을 기록합니다.
+    프로젝트별 가상 환경 관리를 자동으로 지원합니다.</li>
+<li>단점:
+    Python 버전 관리 기능이 약합니다. 별도의 버전 관리 도구를 함께 사용해야 할 수도 있습니다.
+    기존의 requirements.txt로 종속성을 관리할 수 없습니다 (import는 가능 poetry import requirements.txt)</li>
 </ul>
 </li>
-<li>DataClass<ul>
-<li>Python &lt; 3.6
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span> <span class="nc">Human</span><span class="p">:</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
-</code></pre></div></li>
-<li>Python &gt;= 3.7
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nd">@dataclass</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">class</span> <span class="nc">Human</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
-</code></pre></div></li>
+<li>
+<p>conda (가상환경)
+    anaconda 자체 가상화 환경을 사용하고, conda 자체 저장소(anaconda cloud)를 사용해 패키지를 가져옵니다. (conda config --add channels <channel_name>로 외부 저장소를 추가할 수도 있음)</p>
+<ul>
+<li>장점:
+    다양한 프로그래밍 언어의 패키지 및 종속성을 관리할 수 있습니다. (Python 외에 R, Ruby 등 사용가능)
+    프로젝트별 가상 환경을 지원하며, 서로 다른 종속성을 가진 프로젝트를 쉽게 관리할 수 있습니다.</li>
+<li>단점:
+    conda는 패키지 설치시 conda install 명령으로 설치해야 하지만 conda에서 지원하지 않는 패키지의 경우, pip와 함께 사용해야 할 수도 있어 관리가 복잡해집니다(의존성 충돌 발생 가능성 up). pip를 사용하고자 하는 경우 conda install pip로 pip 추가 후 pip install <package> 를 사용합니다.
+    일부 패키지는 conda에서 사용할 수 없을 수도 있고, 최신버전을 사용하지 못 할 수도 있습니다.</li>
 </ul>
 </li>
-<li>Docstring
-    함수 생성 바로 아랫줄에 " 3개를 사용하여 Docstring을 생성합니다
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">make_alert</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="sd">    Docstring here</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="sd">    string타입을 message를 입력받아 화면에 출력합니다</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</code></pre></div></li>
-<li>훌륭한 코드란? -&gt; 읽기 쉽고 이해하기 쉬운 코드<ol>
-<li>동료 개발자가 쉽게 이해할 수 있는지</li>
-<li>팀에 새로 온보딩 하는 사람도 빠르게 이해하고 효과적으로 작업할 수 있는지</li>
 </ol>
-</li>
-<li>파이썬 코드 검증 도구<ol>
-<li>mypy</li>
-<li>pylint</li>
-<li>flake8</li>
-<li>black</li>
-</ol>
-</li>
-<li>PR시 불필요한 논쟁을 줄이기 위해 코딩 컨벤션을 강제하고 자동 포매팅 도구를 설정한다<ol>
-<li>flake8 (PEP-8만 준수하면 됨, 엄격하지 않음)</li>
-<li>black (변수 타입이 중간에 변하면 안됨, 후행 쉼표 강제 등 매우 엄격)</li>
-</ol>
-</li>
-<li>표준을 준수하도록 위 과정을 CI 빌드 과정에 포함해야 한다</li>
-<li>
-<p>Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)<br>
-   Makefile을 활용하여  CI도구가 가능한 적은 설정 옵션을 가지게 한다.</p>
-<div class="highlight"><span class="filename">checklist</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">typehint</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">typehint</span><span class="o">:</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">mypy</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">test</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">test</span><span class="o">:</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="n">pytest</span><span class="w"> </span><span class="n">.</span><span class="o">/</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">black</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">black</span><span class="o">:</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">black</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="m">79</span><span class="w"> </span><span class="n">.</span><span class="o">/*</span><span class="n">.py</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="n">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="n">clean</span><span class="o">:</span><span class="w"> </span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="n">find</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="s">&quot;*.pyc&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">exec</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">rf</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span>\<span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">make</span><span class="w"> </span><span class="n">checklist</span>
-</code></pre></div>
-</li>
-<li>
-<p><code>Magic method</code>는 python에서 특수한 동작을 수행하기 위해 예약한 메서드로 이중 언더바로 둘러싸여있다(<code>__len__</code> 등)</p>
-</li>
-<li>
-<p>Context manager (with구문) 사용 (PEP-343)
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">process</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">finally</span><span class="p">:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div></p>
-<p>위와 동일한 기능을 pythonic하게 구현할 수 있다
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">process</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</code></pre></div>
-예외가 발생해도 블록이 완료되면 파일이 자동으로 닫힌다</p>
-</li>
-<li>
-<p>Context manager는 블록 전/후로 로직을 분리함으로써 관심사를 분리하고 독립적으로 유지되어야하는 코드를 분리하는 좋은 방법이다.</p>
-</li>
-<li>with문은  <code>__enter__</code> method를 호출하고 context가 종료되면 <code>__exit__</code> method를 호출한다</li>
-<li>
-<p>Context manager를 활용한 postgre DB backup example
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">stop_database</span><span class="p">():</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;systemctl stop postgresql&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">def</span> <span class="nf">start_database</span><span class="p">():</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;systemctl start postgresql&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">class</span> <span class="nc">DBHandler</span><span class="p">:</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="n">stop_database</span><span class="p">()</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="k">return</span> <span class="bp">self</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">):</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="sd">        __exit__함수는 블록에서 발생한 예외를 파라미터로 받는다. 블록에 예외가 없으면 모두 None 이다.</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="sd">        __exit__함수는 특별한 작업을 할 필요가 없다면 아무것도 반환하지 않아도 된다.</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="sd">        __exit__에서 True로 반환하지 않도록 주의해야한다. True를 반환하는 경우 잠재적으로 발생한 예외를 호출자에게 전파하지 않고 멈추는 것을 뜻하기 때문이다.</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>        <span class="n">start_database</span><span class="p">()</span>
-<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
-<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="k">def</span> <span class="nf">db_backup</span><span class="p">():</span>
-<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;pg_dump database&quot;</span><span class="p">)</span>
-<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>
-<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="sd">    main함수는 db_backup함수에 오류가 발생하더라도 __exit__ 함수를 호출한다</span>
-<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>    <span class="k">with</span> <span class="n">DBHandler</span><span class="p">():</span>
-<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>        <span class="n">db_backup</span><span class="p">()</span>
-</code></pre></div></p>
-</li>
-<li>
-<p>contextlib 모듈 사용 <a href="https://docs.python.org/3/library/contextlib.html">Python &gt;= 3.5</a></p>
-</li>
-</ol>
-<hr />
-<p>참고: 파이썬 클린코드 2<sup>nd</sup> Edition(터닝포인트)<br>
-.PHONY: <a href="https://jusths.tistory.com/226">https://jusths.tistory.com/226</a><br></p>
 
 
   
@@ -1270,7 +1169,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Naver cloud API호출 모둠" rel="prev">
+          <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Linux command 모음" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1279,20 +1178,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Naver cloud API호출 모둠
+                Linux command 모음
               </div>
             </div>
           </a>
         
         
           
-          <a href="../docker_compose_templates/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker compose 모음" rel="next">
+          <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-footer__link md-footer__link--next" aria-label="Next: Naver cloud API호출 모둠" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Docker compose 모음
+                Naver cloud API호출 모둠
               </div>
             </div>
             <div class="md-footer__button md-icon">
