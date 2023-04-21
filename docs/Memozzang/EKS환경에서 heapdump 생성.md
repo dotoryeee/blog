@@ -1,4 +1,4 @@
-# EKS에서 배포된 JVM의 Heap Dump 추출
+# K8S에 배포된 JVM Heap Dump 생성
 
 - 명령어
 ```s
