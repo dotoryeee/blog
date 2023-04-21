@@ -1239,7 +1239,3 @@ user_data 사용시 terraform init 다시 해야 함
         
         [Troubleshooting swarm service create](https://forums.docker.com/t/troubleshooting-swarm-service-create/55161)
         
-    - 발표용 ppt
-        
-        [개인플젝.pptx](Project-1.pptx)
-        
