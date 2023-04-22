@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 import logging
 from . import services
-# from .models import Post
+from .models import PostCreate 
 
 logger = logging.getLogger('post_server_logger')
 router = APIRouter()
@@ -15,10 +15,11 @@ def get_all_posts():
     """
     return services.get_all_posts()
 
-@router.put("/posts")
-def create_post(post):
+@router.post("/posts")
+def create_post(post: PostCreate):  
     logger.debug("new request: POST /posts")
     """
     게시글 생성 엔드포인트
     """
     return services.create_post(post)
+

@@ -2,6 +2,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text
 from .database import Base
 from datetime import datetime
+from pydantic import BaseModel
 
 # sqlalchemy의 모델 클래스인 Base 클래스를 상속받아서 Post 모델 클래스를 정의합니다
 class Post(Base):
@@ -12,3 +13,7 @@ class Post(Base):
     content = Column(Text, nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow) 
 
+# 사용자로부터 입력받은 Post를 담을 모델
+class PostCreate(BaseModel):
+    title: str
+    content: str
