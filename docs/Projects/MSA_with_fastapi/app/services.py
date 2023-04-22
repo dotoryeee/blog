@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from . import models
-from .models import Post
 from .database import SessionLocal
 import logging
 
@@ -14,7 +13,7 @@ def get_db():
     db = SessionLocal() #SessionLocal은 sessionmaker 인스턴스
     logger.debug("created: new DB connection")
     # try:
-    #     yield db 적용 실패
+    #     yield db # 적용 실패
     # finally: #호출하는 쪽의 with 구문이 종료되면 finally구문이 실행됨(db session 종료)
     #     logger.debug("closing DB connection")
     #     db.close()
@@ -29,15 +28,15 @@ def get_all_posts():
         logger.debug("created: get all posts")
         return db.query(models.Post).all()
 
-def create_post(post: Post):
-    """
-    게시글 생성을 위한 함수
-    """
-    with get_db() as db:
+
+def create_post(post_request: models.PostCreate): 
+    with get_db() as db: # with 구문을 사용해 연결이 끝나면 자동으로 종료
+        logger.debug(post_request)
+        post_instance = models.Post(**post_request.dict()) # post_request.dict로 PostCreate 모델 인스턴스의 데이터를 dict로 변환하고 이를 Post 모델 인스턴스 생성에 사용
         logger.debug("created: insert new post to DB")
-        db.add(post)
+        db.add(post_instance)
         db.commit()
         logger.debug("return: db.commit")
-        db.refresh(post)
+        db.refresh(post_instance)
         logger.debug("return: db.refresh")
-        return post
+        return post_instance
