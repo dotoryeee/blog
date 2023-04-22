@@ -1,27 +1,45 @@
-const postList = document.getElementById("post-list");
+const BASE_URL = "http://localhost:8000";
 
-async function getPosts() {
-  const response = await fetch("http://localhost:8000/posts");
-  const data = await response.json();
-  return data;
+function getPosts() {
+    fetch(`${BASE_URL}/posts`)
+        .then(response => response.json())
+        .then(posts => {
+            const postList = document.querySelector("#post-list");
+            postList.innerHTML = "";
+            for (let post of posts) {
+                const row = document.createElement("tr");
+                const titleCell = document.createElement("td");
+                titleCell.textContent = post.title;
+                const contentCell = document.createElement("td");
+                contentCell.textContent = post.content;
+                row.appendChild(titleCell);
+                row.appendChild(contentCell);
+                postList.appendChild(row);
+            }
+        });
 }
 
-function renderPost(post) {
-  const item = document.createElement("li");
-  const title = document.createElement("a");
-  title.textContent = post.title;
-  title.href = `/posts/${post.id}`;
-  item.appendChild(title);
-  return item;
+function submitPost() {
+    const title = document.querySelector("#title").value;
+    const content = document.querySelector("#content").value;
+    const post = { title, content };
+    fetch(`${BASE_URL}/posts`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(post)
+    })
+        .then(response => response.json())
+        .then(post => {
+            getPosts();
+        });
 }
 
-async function renderPosts() {
-  const posts = await getPosts();
-  postList.innerHTML = "";
-  posts.forEach(post => {
-    const item = renderPost(post);
-    postList.appendChild(item);
-  });
-}
+const form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitPost();
+});
 
-renderPosts();
+getPosts();

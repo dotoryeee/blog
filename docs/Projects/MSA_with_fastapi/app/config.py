@@ -1,4 +1,7 @@
 from pydantic import BaseSettings
+import logging
+
+logger = logging.getLogger('post_server_logger')
 
 class Settings(BaseSettings):
     db_username: str
