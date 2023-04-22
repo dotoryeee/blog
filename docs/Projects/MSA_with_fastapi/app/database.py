@@ -5,7 +5,10 @@ from .config import settings
 db_url = f"mysql+mysqlconnector://{settings.db_username}:{settings.db_password}@{settings.db_host}/{settings.db_name}"
 
 engine = create_engine(
-    db_url, pool_size=10, max_overflow=20, pool_pre_ping=True
+    db_url,
+    pool_size=5, # 최소 커넥션
+    max_overflow=10, # 최대 커넥션
+    pool_pre_ping=True # 커넥션 풀에서 커넥션을 가져오기 전에 ping을 한 번 날려서 유효한지 확인하고 에러 방지
 )
 metadata = MetaData()
 Base = declarative_base(metadata=metadata)
