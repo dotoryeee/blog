@@ -22,7 +22,6 @@ SessionLocal = sessionmaker(bind=engine)
 metadata.bind = engine
  
 def initialize():
-    # Post 클래스를 이용하여 데이터베이스 schema 생성
     try:
         logger.debug("creating: new table")
         Base.metadata.create_all(engine)

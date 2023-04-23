@@ -1,9 +1,9 @@
 version: '3'
 services:
-  # main_app:
+  # post_server:
   #   build:
   #     context: .
-  #     dockerfile: Dockerfile
+  #     dockerfile: Dockerfilel.post_server
   #   ports:
   #     - "8000:8000"
   #   environment:
@@ -11,10 +11,10 @@ services:
   #     - db_password=${DB_PASSWORD}
   #     - db_host=${DB_HOST}
   #     - db_name=${DB_NAME}
-  # comments_app:
+  # comment_server:
   #   build:
   #     context: .
-  #     dockerfile: Dockerfile.comments
+  #     dockerfile: Dockerfile.comment_server
   #   ports:
   #     - "8001:8001"
   #   environment:

@@ -1,4 +1,5 @@
 # 앱의 진입점, FastAPI 인스턴스를 생성하고 라우팅을 설정하는 역할
+# uvicorn post_server.main:app --host 0.0.0.0 --port 8000
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from . import controllers, database
