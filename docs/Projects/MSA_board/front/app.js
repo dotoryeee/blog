@@ -1,12 +1,13 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://localhost";
 
 // 모든 post 가져오기
 function getPosts() {
     // 게시물 목록을 요청하는 fetch API 호출
-    fetch(`${BASE_URL}/posts`)
+    fetch(`${BASE_URL}:8000/posts`)
         // 응답 객체를 JSON 형태로 파싱
         .then(response => response.json())
         // 파싱된 게시물 데이터를 이용하여 화면에 출력
+        // .then(json => console.log(json))
         .then(posts => {
             // 게시물 목록을 출력할 DOM 요소를 선택
             const postList = document.querySelector("#post-list");
@@ -32,7 +33,8 @@ function getPosts() {
                 postList.appendChild(row);
             }
         });
-}
+        renderComments();
+    }
 
 
 // 새로운 post 등록
@@ -44,7 +46,7 @@ function submitPost() {
     // 제목과 내용을 포함한 객체 생성
     const post = { title, content };
     // 게시물 추가 요청을 위한 fetch API 호출
-    fetch(`${BASE_URL}/posts`, {
+    fetch(`${BASE_URL}:8000/posts`, {
         method: "POST", // HTTP 메소드 설정
         headers: {
             "Content-Type": "application/json" // 요청 헤더 설정
@@ -62,7 +64,7 @@ function submitPost() {
 // post에 해당하는 comment 가져오기
 function getComments(postId) {
     // postId에 해당하는 댓글을 API에서 가져오기 위해 fetch 요청 수행
-    return fetch(`${BASE_URL}:8081/comment?postId=${postId}`)
+    return fetch(`${BASE_URL}:8001/comments?postId=${postId}`)
         .then(response => response.json()); // 응답을 JSON 형태로 변환하여 반환
 }
 
@@ -84,7 +86,7 @@ function createCommentElement(comment) {
  *  -> API 호출 실패시 comment는 빈 배열로 전달
  */
 async function getPostsWithComments() {
-    const posts = await fetch(`${BASE_URL}/posts`).then(response => response.json());
+    const posts = await fetch(`${BASE_URL}:8000/posts`).then(response => response.json());
     for (let post of posts) {
         try {
             post.comments = await getComments(post.id);
@@ -96,35 +98,50 @@ async function getPostsWithComments() {
     return posts;
 }
 
-// post과 comment을 함께 렌더링
-function renderPost(post) {
-    // 새로운 행(row) 엘리먼트를 생성
+async function renderPost(post) {
     const row = document.createElement("tr");
-    // 제목 셀(title cell) 엘리먼트를 생성
     const titleCell = document.createElement("td");
-    // 제목 셀에 게시물의 제목 텍스트를 추가
-    titleCell.textContent = post.title;
-    // 내용 셀(content cell) 엘리먼트를 생성
     const contentCell = document.createElement("td");
-    // 내용 셀에 게시물의 내용 텍스트를 추가
-    contentCell.textContent = post.content;
-    // 댓글 셀(comments cell) 엘리먼트를 생성
     const commentsCell = document.createElement("td");
-    // 게시물의 댓글 목록을 순회하며 댓글 엘리먼트를 생성하고 댓글 셀에 추가
+    const commentForm = document.createElement("form");
+    const commentInput = document.createElement("input");
+    const commentText = document.createTextNode("Add a comment");
+    commentInput.type = "text";
+    commentInput.name = "comment";
+    commentInput.placeholder = "Add a comment";
+    commentForm.appendChild(commentInput);
+    commentForm.appendChild(commentText); // 텍스트 노드 추가
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Post";
+    commentForm.appendChild(submitButton);
+    commentsCell.appendChild(commentForm);
     for (let comment of post.comments) {
         const commentElement = createCommentElement(comment);
         commentsCell.appendChild(commentElement);
     }
-    // 제목 셀, 내용 셀, 댓글 셀을 행에 추가
     row.appendChild(titleCell);
     row.appendChild(contentCell);
     row.appendChild(commentsCell);
-    // 완성된 행(row) 엘리먼트 반환
+    console.log(row)
     return row;
 }
 
-
-// comment rendering
+async function submitComment(postId, content) {
+    const comment = { postId, content };
+    try {
+      await fetch(`${BASE_URL}:8001/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comment),
+      });
+    } catch (error) {
+      console.error(`Error submitting comment:`, error);
+    }
+}
+  
 async function renderComments() {
     // post 목록 DOM 요소 찾기
     const postList = document.querySelector("#post-list");
@@ -133,11 +150,14 @@ async function renderComments() {
     // post와 comment를 포함한 post 목록 가져오기
     const posts = await getPostsWithComments();
     // post와 comment를 함께 출력
-    for (let post of posts) {
-    const row = renderPost(post);
-    postList.appendChild(row);
-        }
+    for (const post of posts) {
+        const row = await renderPost(post);
+        // 새로운 row를 HTML 문자열로 변환하여 postList에 추가
+        postList.innerHTML += row.outerHTML;
     }
+}
+
+
     
     // form submit event listener
     const form = document.querySelector("form");
