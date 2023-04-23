@@ -53,8 +53,11 @@ async function renderComments(postId, row) {
     const comments = await getComments(postId);
     const commentsTd = document.createElement("td");
     const commentsUl = document.createElement("ul"); 
+    commentsUl.classList.add("list-group");
+
     for (const comment of comments) {
       const commentLi = document.createElement("li");
+      commentLi.className = "list-group-item"; 
       commentLi.textContent = comment.comment;
       commentsUl.appendChild(commentLi);
     }
@@ -71,7 +74,7 @@ async function renderComments(postId, row) {
     
     const addCommentButton = document.createElement("button");
     addCommentButton.type = "submit";
-    addCommentButton.className = "btn btn-primary";
+    addCommentButton.className = "btn btn-primary ms-2";
     addCommentButton.textContent = "ADD";
     
     row.appendChild(commentsTd);
@@ -104,7 +107,7 @@ async function submitComment(postId, content) {
     } catch (error) {
       console.error(`error submitting comment:`, error);
     }
-  }
+}
   
 
 // post에 해당하는 comment 가져오기
