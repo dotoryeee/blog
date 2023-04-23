@@ -13,7 +13,7 @@ class Comment(Base):
     comment = Column(Text, nullable=False) 
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# 사용자로부터 입력받은 Post를 담을 모델
+# 사용자로부터 입력받은 comment를 담을 모델 
 class CommentCreate(BaseModel):
     title: str
     post_number: int

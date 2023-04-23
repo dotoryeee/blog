@@ -8,18 +8,18 @@ logger = logging.getLogger('post_server_logger')
 router = APIRouter()
 
 @router.get("/comments")
-def get_all_comments():
-    logger.debug("new request: GET /comments")
+def get_comments(postId: int=None):
+    logger.debug(f"new request: GET /comments/postId={postId}")
     """
     게시글 전체 조회 엔드포인트
     """
-    return services.get_all_posts()
+    return None if postId is None else services.get_comments(postId)
 
 @router.post("/comments")
-def create_comment(post: CommentCreate):  
-    logger.debug("new request: POST /comments")
+def create_comment(postId: int, comment: CommentCreate):  
+    logger.debug(f"new request: POST /comments/postId={postId}")
     """
     게시글 생성 엔드포인트
     """
-    return services.create_comment(comment)
+    return services.create_comment(postId, comment)
 
