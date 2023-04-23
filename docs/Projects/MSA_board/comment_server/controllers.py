@@ -17,7 +17,7 @@ def get_comments(postId: int=None):
 
 @router.post("/comments")
 def create_comment(postId: int, comment: CommentCreate):  
-    logger.debug(f"new request: POST /comments/postId={postId}")
+    logger.debug(f"new request: POST /comments")
     """
     게시글 생성 엔드포인트
     """
