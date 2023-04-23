@@ -1,0 +1,9 @@
+FROM python:3.11
+
+WORKDIR /post_server
+
+COPY ./post_server /post_server
+
+RUN pip install -r requirements.txt
+
+CMD ["uvicorn", "post_server.main:app", "--host", "0.0.0.0", "--port", "8000"]

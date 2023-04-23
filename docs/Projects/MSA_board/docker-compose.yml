@@ -1,0 +1,36 @@
+version: '3'
+services:
+  # post_server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfilel.post_server
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - db_username=${DB_USERNAME}
+  #     - db_password=${DB_PASSWORD}
+  #     - db_host=${DB_HOST}
+  #     - db_name=${DB_NAME}
+  # comment_server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.comment_server
+  #   ports:
+  #     - "8001:8001"
+  #   environment:
+  #     - db_username=${DB_USERNAME}
+  #     - db_password=${DB_PASSWORD}
+  #     - db_host=${DB_HOST}
+  #     - db_name=${DB_NAME}
+  db:   
+    image: mysql:8
+    # restart: always
+    # volumes: 
+    #   - ./mysqldata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
