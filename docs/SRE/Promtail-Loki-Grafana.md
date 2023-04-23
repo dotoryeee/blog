@@ -54,7 +54,7 @@
     ```
 
 3. S3에 데이터 저장을 위한 Loki config 생성
-    ```yaml title="loki-config/local-config.yaml"
+    ```yaml title="loki-config/config.yaml"
     auth_enabled: false # Loki자체 인증 사용 여부
 
     server:
@@ -82,7 +82,7 @@
 
     schema_config:
         configs:
-            - from: 2023-04-19
+            - from: 2023-04-19 #스키마 설정이 적용되는 시작 날짜
             store: aws
             object_store: s3
             schema: v11
@@ -142,7 +142,7 @@
     services:
     loki:
         image: grafana/loki:2.3.0
-        command: -config.file=/etc/loki/local-config.yaml
+        command: -config.file=/etc/loki-config/config.yaml
         volumes:
         - ./loki-config:/etc/loki/
         ports:

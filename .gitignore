@@ -5,3 +5,5 @@ site/
 .tfstate
 .backup
 kubeconfig*
+__pycache__
+*.pyc
