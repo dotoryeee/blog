@@ -51,12 +51,61 @@ function submitPost() {
 
 async function renderComments(postId, row) {
     const comments = await getComments(postId);
+    const commentsTd = document.createElement("td");
+    const commentsUl = document.createElement("ul"); 
     for (const comment of comments) {
-        const commentCell = document.createElement("td");
-        commentCell.textContent = comment.comment;
-        row.appendChild(commentCell);
+      const commentLi = document.createElement("li");
+      commentLi.textContent = comment.comment;
+      commentsUl.appendChild(commentLi);
     }
+    
+    const addCommentCell = document.createElement("td"); 
+    
+    const addCommentForm = document.createElement("form");
+    addCommentForm.classList.add("d-flex", "flex-row", "form");
+    
+    const addCommentInput = document.createElement("input");
+    addCommentInput.type = "text";
+    addCommentInput.className = "form-control";
+    addCommentInput.placeholder = "Add new comment";
+    
+    const addCommentButton = document.createElement("button");
+    addCommentButton.type = "submit";
+    addCommentButton.className = "btn btn-primary";
+    addCommentButton.textContent = "ADD";
+    
+    row.appendChild(commentsTd);
+    commentsTd.appendChild(commentsUl);
+    commentsUl.appendChild(addCommentCell);
+    addCommentCell.appendChild(addCommentForm);
+    addCommentForm.appendChild(addCommentInput);
+    addCommentForm.appendChild(addCommentButton);
+    
+    // row.appendChild(addCommentCell);
+
+    addCommentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const content = addCommentInput.value;
+        submitComment(postId, content);
+        renderComments(postId, row); // 새로고침
+    });
 }
+
+async function submitComment(postId, content) {
+    const comment = { postId, comment: content };
+    try {
+      await fetch(`${BASE_URL}:8001/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comment),
+      });
+    } catch (error) {
+      console.error(`error submitting comment:`, error);
+    }
+  }
+  
 
 // post에 해당하는 comment 가져오기
 async function getComments(postId) {
