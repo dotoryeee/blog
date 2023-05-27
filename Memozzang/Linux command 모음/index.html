@@ -15,7 +15,7 @@
         <link rel="next" href="../Managing%20python%20environment/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.6">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
     
     
       
@@ -23,10 +23,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -69,7 +69,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
   
     
     
@@ -77,11 +77,6 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
-      
-        
-        <a href="#tar" class="md-skip">
-          Skip to content
-        </a>
       
     </div>
     <div data-md-component="announce">
@@ -119,6 +114,8 @@
         </div>
       </div>
     </div>
+    
+      
     
     
     
@@ -626,38 +623,9 @@
       
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Linux command 모음
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         Linux command 모음
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tar" class="md-nav__link">
-    tar
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -700,6 +668,20 @@
     <li class="md-nav__item">
       <a href="../docker_compose_templates/" class="md-nav__link">
         Docker compose 모음
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../get_realip_from_haproxy/" class="md-nav__link">
+        Haproxy LB 사용시 real IP 가져오기
       </a>
     </li>
   
@@ -1172,21 +1154,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#tar" class="md-nav__link">
-    tar
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1202,7 +1169,6 @@
 
   <h1>Linux command 모음</h1>
 
-<h2 id="tar">tar</h2>
 <ol>
 <li>23-01-01 ~ 23-01-13 사이에 생성된 *.log 파일 tar 압축하기
     <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">sudo</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="w"> </span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="s">&quot;*.log&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">type</span><span class="w"> </span><span class="n">f</span><span class="w"> </span>\
@@ -1248,6 +1214,17 @@
 <li>
 <p>Logstash 처리량 확인
     <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="w"> </span><span class="n">localhost</span><span class="o">:</span><span class="m">9600</span><span class="o">/</span>_<span class="n">node</span><span class="o">/</span><span class="n">stats</span><span class="o">/</span><span class="n">pipelines</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;.pipelines[].events&#39;</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>한글 Windows에서 압축한 파일 Mac OS에서 압축풀기(Illegal byte sequence 에러 발생 시)
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">unzip_files</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">*</span><span class="n">.zip</span><span class="p">;</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">ditto</span><span class="w"> </span><span class="o">-</span><span class="n">Vxk</span><span class="w"> </span><span class="o">--</span><span class="n">sequesterRsrc</span><span class="w"> </span><span class="o">--</span><span class="n">rsrc</span><span class="w"> </span><span class="o">$</span><span class="n">f</span><span class="w"> </span><span class="n">.</span><span class="o">/</span><span class="n">unzip_files</span><span class="p">;</span><span class="w"> </span><span class="n">done</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>모든 Python library upgrade 하기
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">pip</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">--</span><span class="n">outdated</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">awk</span><span class="w"> </span><span class="s">&#39;{ print $1 }&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">xarge</span><span class="w"> </span><span class="o">-</span><span class="n">I</span><span class="p">{}</span><span class="w"> </span><span class="n">pip3</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">upgrade</span><span class="w"> </span><span class="p">{}</span>
 </code></pre></div></p>
 </li>
 </ol>
@@ -1366,7 +1343,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
       
     
   </body>
