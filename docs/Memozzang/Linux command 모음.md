@@ -1,5 +1,3 @@
-## tar
-
 1. 23-01-01 ~ 23-01-13 사이에 생성된 *.log 파일 tar 압축하기
     ```s
     sudo find ./ -name "*.log" -type f \
@@ -47,4 +45,15 @@
 5. Logstash 처리량 확인
     ```s
     curl localhost:9600/_node/stats/pipelines | jq '.pipelines[].events'
+    ```
+
+6. 한글 Windows에서 압축한 파일 Mac OS에서 압축풀기(Illegal byte sequence 에러 발생 시)
+    ```s
+    mkdir ./unzip_files
+    for f in *.zip; do ditto -Vxk --sequesterRsrc --rsrc $f ./unzip_files; done
+    ```
+
+7. 모든 Python library upgrade 하기
+    ```s
+    pip list --outdated | awk '{ print $1 }' | xarge -I{} pip3 install --upgrade {}
     ```
