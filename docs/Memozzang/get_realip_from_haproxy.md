@@ -1,6 +1,6 @@
-# Haproxy LB 사용시 real IP 가져오기
+# Layer7 LB 사용시 real IP 가져오기
 
-1. NHN Cloud의 경우 Load balancer가 Haproxy로 구성되어있다 (AWS는 Nginx)
+1. Load balancer에서 HTTP protocol기반 routing을 사용하면 기본적으로 Client IP를 확인할 수 없다.
 2. 현재 생성된 Load balancer의 Private IP가 10.0.1.48이다
     ![image1](./get_realip_from_haproxy/Screenshot%202023-05-27%20at%2010.06.26%20PM.png)
 3. Client web browser -> Load Balancer -> Nginx instance로 접속하면 nginx의 access log에 client의 IP가 아닌 Load balancer의 IP가 기록된다
