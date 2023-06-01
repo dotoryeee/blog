@@ -19,7 +19,7 @@
     
     
       
-        <title>Haproxy LB 사용시 real IP 가져오기 - dotoryeee's blog</title>
+        <title>Layer7 LB 사용시 real IP 가져오기 - dotoryeee's blog</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#haproxy-lb-real-ip" class="md-skip">
+        <a href="#layer7-lb-real-ip" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Haproxy LB 사용시 real IP 가져오기
+              Layer7 LB 사용시 real IP 가져오기
             
           </span>
         </div>
@@ -687,7 +687,7 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Haproxy LB 사용시 real IP 가져오기
+        Layer7 LB 사용시 real IP 가져오기
       </a>
       
     </li>
@@ -1176,9 +1176,9 @@
                   
 
 
-<h1 id="haproxy-lb-real-ip">Haproxy LB 사용시 real IP 가져오기</h1>
+<h1 id="layer7-lb-real-ip">Layer7 LB 사용시 real IP 가져오기</h1>
 <ol>
-<li>NHN Cloud의 경우 Load balancer가 Haproxy로 구성되어있다 (AWS는 Nginx)</li>
+<li>Load balancer에서 HTTP protocol기반 routing을 사용하면 기본적으로 Client IP를 확인할 수 없다.</li>
 <li>현재 생성된 Load balancer의 Private IP가 10.0.1.48이다
     <img alt="image1" src="Screenshot%202023-05-27%20at%2010.06.26%20PM.png" /></li>
 <li>Client web browser -&gt; Load Balancer -&gt; Nginx instance로 접속하면 nginx의 access log에 client의 IP가 아닌 Load balancer의 IP가 기록된다
