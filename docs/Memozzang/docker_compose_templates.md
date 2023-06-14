@@ -74,8 +74,10 @@
     ```s
     mkdir ~/app
     cat<<EOF >~/app/requirements.txt
-    requests
-    selenium
+    selenium==4.4.3
+    jinja2
+    boto3
+    webdriver-manager
     EOF
     ```
 
@@ -84,12 +86,11 @@
 
     RUN mkdir -p /app/temp && \
         cd /app && \
-        apt-get update -y; apt-get install wget unzip -y && \
+        apt-get update -y; apt-get install wget -y && \
         wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb && \
-        apt-get install -f ./temp/google_chrome.deb -y && \
-        wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip -P ./temp && \
-        unzip ./temp/chromedriver_linux64.zip -d ./ && \
-        rm -rf ./temp && \
+        apt-get install -f /app/temp/google_chrome.deb -y && \
+        apt-get auto-clean; rm -rf /var/lib/apt/lists/* && \
+        rm -rf /app/temp && \
         pip install --upgrade pip
 
     COPY requirements.txt /app
@@ -98,6 +99,22 @@
     WORKDIR /app
 
     CMD [ "python", "/app/app.py" ]
+    ```
+
+    ```py title="app.py"
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+
+    options = webdriver.ChromeOptions()
+    options.add_argument("--remote-debugging-port=9222")
+    options.add_argument("--display-dev-shm-usage")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--headless")
+    options.add_argument("window-size=1600x900")
+
+    service = Service(ChromeDriverManager().install())
+    browser = webdriver.Chrome(service=service, options=options)
     ```
  
 4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
