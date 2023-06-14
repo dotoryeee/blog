@@ -80,45 +80,26 @@
     ```
 
     ```dockerfile title="Dockerfile"
-    FROM python:latest
-    RUN mkdir -p app/temp && \
-        apt update -y; apt install wget unzip -y && \
+    FROM python:3.11
+
+    RUN mkdir -p /app/temp && \
+        cd /app && \
+        apt-get update -y; apt-get install wget unzip -y && \
         wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb && \
-        apt install -f ./temp/google_chrome.deb -y && \
+        apt-get install -f ./temp/google_chrome.deb -y && \
         wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip -P ./temp && \
         unzip ./temp/chromedriver_linux64.zip -d ./ && \
         rm -rf ./temp && \
-        pip install --upgrade pip && \
-        COPY app/requirements.txt ./ && \
-        pip install -r requirements.txt --no-cache-dir
-    WORKDIR app
-    CMD [ "python", "/app/app.py" ]
-    ```
-    아래는 테스트 필요
-    ```dockerfile title="Dockerfile-multistage"
-    # Builder stage
-    FROM python:latest AS builder
-    RUN mkdir -p /temp
-    WORKDIR /temp
-    RUN apt update -y && apt install wget unzip -y
-    RUN wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./google_chrome.deb
-    RUN apt install -f ./google_chrome.deb -y
-    RUN wget https://chromedriver.storage.googleapis.com/112.0.5615.28/chromedriver_linux64.zip
-    RUN unzip chromedriver_linux64.zip
+        pip install --upgrade pip
 
-    # Final stage
-    FROM python:latest
-    RUN mkdir -p /app
+    COPY requirements.txt /app
+    RUN pip install -r /app/requirements.txt --no-cache-dir
+
     WORKDIR /app
-    COPY --from=builder /temp/chromedriver /app/
-    COPY --from=builder /usr/lib/x86_64-linux-gnu/libxcb.so.1 /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0 /usr/lib/x86_64-linux-gnu/libXcomposite.so.1 /usr/lib/x86_64-linux-gnu/
-    COPY requirements.txt ./
-    RUN pip install --upgrade pip
-    RUN pip install -r requirements.txt --no-cache-dir
+
     CMD [ "python", "/app/app.py" ]
     ```
-    Google Chrome에서 사용하는 라이브러리 복사(libxcb.so.1, libxkbcommon.so.0, libXcomposite.so.1)
-    
+ 
 4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
     ```dockerfile title="Dockerfile"
     FROM ubuntu:22
