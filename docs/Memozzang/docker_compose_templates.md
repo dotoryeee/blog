@@ -74,7 +74,7 @@
     ```s
     mkdir ~/app
     cat<<EOF >~/app/requirements.txt
-    selenium==4.4.3
+    selenium==4.9.1
     jinja2
     boto3
     webdriver-manager
@@ -84,19 +84,30 @@
     ```dockerfile title="Dockerfile"
     FROM python:3.11
 
+    RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
+        sed -i 's/security.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse" >> /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://archive.ubuntu.com/ubuntu bionic-security main restricted universe multiverse" >> /etc/apt/sources.list && \
+        echo "deb [trusted=yes] http://archive.ubuntu.com/ubuntu bionic-updates main restricted universe multiverse" >> /etc/apt/sources.list
+
     RUN mkdir -p /app/temp && \
         cd /app && \
-        apt-get update -y; apt-get install wget -y && \
-        wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-unstable/google-chrome-unstable_112.0.5615.20-1_amd64.deb -O ./temp/google_chrome.deb && \
+        apt-get update --allow-unauthenticated; apt-get install wget language-pack-ko fonts-nanum fonts-nanum-extra -y && \
+        locale-gen ko_KR.UTF-8 && \
+        fc-cache -fv && \
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O ./temp/google_chrome.deb && \
         apt-get install -f /app/temp/google_chrome.deb -y && \
         apt-get auto-clean; rm -rf /var/lib/apt/lists/* && \
         rm -rf /app/temp && \
         pip install --upgrade pip
 
     COPY requirements.txt /app
+
     RUN pip install -r /app/requirements.txt --no-cache-dir
 
     WORKDIR /app
+
+    ENV DISPLAY=:99
 
     CMD [ "python", "/app/app.py" ]
     ```
@@ -107,14 +118,16 @@
     from webdriver_manager.chrome import ChromeDriverManager
 
     options = webdriver.ChromeOptions()
-    options.add_argument("--remote-debugging-port=9222")
     options.add_argument("--display-dev-shm-usage")
+    options.add_experimental_option("excludeSwitches", ["enable-logging"]) #for hide selenium INFO log (eg. DevTools listening ## port)
     options.add_argument("--no-sandbox")
     options.add_argument("--headless")
-    options.add_argument("window-size=1600x900")
-
+    options.add_argument("--ignore-ssl-errors")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("window-size=1200x2100")
     service = Service(ChromeDriverManager().install())
     browser = webdriver.Chrome(service=service, options=options)
+
     ```
  
 4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
