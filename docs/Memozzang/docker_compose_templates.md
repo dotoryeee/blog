@@ -144,5 +144,37 @@
     RUN ldconfig
     RUN rm -rf *rpm
     CMD ["sqlplus"]
-
     ```
+
+    ```bash title="아래 5번과 함께 사용하는 예시"
+    docker run -it --rm --network=ubuntu_default -v `pwd`:/opt sqlplus:latest sqlplus system/me@db:1521/xepdb1
+    ```
+
+
+5. Tomcat with oracle-xe:18
+  ```yaml title="docker-compose.yml"
+    version: '3'
+    services:
+      db:
+        image: gvenzl/oracle-xe:18
+        environment:
+          - ORACLE_DATABASE=xe
+          - ORACLE_PASSWORD=me
+        ports:
+          - 1521:1521
+        volumes:
+          - oracle-data:/opt/oracle/oradata
+        restart: always
+      tomcat:
+        image: tomcat:8
+        depends_on:
+          - db
+        ports:
+          - 80:8080
+        volumes:
+          - ./:/usr/local/tomcat/webapps/
+        command: sh -c 'catalina.sh start && tail -f /usr/local/tomcat/logs/catalina.out'
+        restart: unless-stopped
+    volumes:
+      oracle-data:
+  ```
