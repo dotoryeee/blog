@@ -57,3 +57,33 @@
     ```s
     pip list --outdated | awk '{ print $1 }' | xarge -I{} pip3 install --upgrade {}
     ```
+8. exit 0으로 종료될 때 까지 max_attempts만큼 command 실행하기
+    ```bash
+    #!/bin/bash
+
+    # maximum number of attempts
+    max_attempts=5
+
+    # counter for the attempts
+    count=0
+
+    while [ $count -le $max_attempts ]
+    do
+    
+    <command here>
+    
+    # Check if command was successful (exit status 0)
+    if [ $? -eq 0 ]
+    then
+        echo "Command executed successfully"
+        exit 0
+    else
+        echo "Attempt $count Failed. Trying again in 5 seconds..."
+        count=$((count+1))
+        sleep 5
+    fi
+    done
+
+    echo "Command failed after $max_attempts attempts."
+    exit 1
+    ```
