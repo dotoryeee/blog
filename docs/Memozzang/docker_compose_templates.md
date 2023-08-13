@@ -129,7 +129,7 @@
     browser = webdriver.Chrome(service=service, options=options)
 
     ```
- 
+
 4. ubuntu기반 oracleDB 21용 sqlplus Dockerfile 생성
     ```dockerfile title="Dockerfile"
     FROM ubuntu:22.04
@@ -149,7 +149,6 @@
     ```bash title="아래 5번과 함께 사용하는 예시"
     docker run -it --rm --network=ubuntu_default -v `pwd`:/opt sqlplus:latest sqlplus system/me@db:1521/xepdb1
     ```
-
 
 5. Tomcat with oracle-xe:18
   ```yaml title="docker-compose.yml"
