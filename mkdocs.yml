@@ -25,6 +25,17 @@ extra:
 
 copyright: Copyright &copy; 2023 Jeongwon Lee
 
+plugins:
+  - blog:
+      blog_dir: blog
+      post_date_format: medium
+      post_excerpt_separator: <!-- more -->
+      archive_date_format: MMMM yyyy
+      post_readtime_words_per_minute: 150
+      archive_url_date_format: yyyy/MM
+      pagination_format: "$link_first $link_previous ~2~ $link_next $link_last"
+      
+
 markdown_extensions:
   - admonition
   - pymdownx.arithmatex
