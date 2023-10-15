@@ -1,0 +1,1569 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../api-gateway-with-lambda/">
+      
+      
+        <link rel="next" href="../../../../2021/04/14/2021-toy-1/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+    
+    
+      
+        <title>3-Tier 기본 인프라 구성 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.35e1ed30.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-22LC2P5RV5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3-tier" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3-Tier 기본 인프라 구성
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    맨땅에 헤딩 전문
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    April 2021
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    September 1993
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    project
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CICD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/study/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ElasticSearch
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prometheus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grafana/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Terraform
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    메모장
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            메모장
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS Boto3 SDK 모둠
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS CLI 모둠
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Datadog_dashboard_crawling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Datadog dashboard crawling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/EKS%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%20heapdump%20%EC%83%9D%EC%84%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    K8S에 배포된 JVM Heap Dump 생성
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ELK error 모음
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Emergency_alert_to_slack/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    재난안전문자 API 활용하기
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux command 모음
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Managing%20python%20environment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python 환경 관리: alternatives, poetry, conda
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Naver cloud API호출 모둠
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker compose 모음
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/process%20auto%20restart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Process restart automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    개념도
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#todo" class="md-nav__link">
+    TODO
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vpc" class="md-nav__link">
+    VPC
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ec2-instance" class="md-nav__link">
+    EC2 Instance
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bastion-host" class="md-nav__link">
+    Bastion Host 접속
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elb" class="md-nav__link">
+    ELB 만들기
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#auto-scaling" class="md-nav__link">
+    Auto Scaling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bastion-host_1" class="md-nav__link">
+    Bastion Host → 웹 서버 접속
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdsmysql" class="md-nav__link">
+    RDS(MySQL)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#db" class="md-nav__link">
+    DB동작 확인
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-workbench" class="md-nav__link">
+    MySQL workbench
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jetbrains-datagrip" class="md-nav__link">
+    Jetbrains DataGrip
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>Jeongwon Lee</strong><br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="1993-09-17 00:00:00" class="md-ellipsis">Sep 17, 1993</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/aws/">AWS</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              9 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="3-tier">3-Tier 기본 인프라 구성</h1>
+<h2 id="_1">개념도</h2>
+<hr />
+<p><img alt="3-Tier Basic Infra/Untitled.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled.png" /></p>
+<h2 id="todo">TODO</h2>
+<hr />
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
+</ul>
+<!-- more -->
+<h2 id="vpc">VPC</h2>
+<hr />
+<ol>
+<li>
+<p>VPC 생성</p>
+<p><img alt="3-Tier Basic Infra/Untitled%201.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%201.png" /></p>
+</li>
+<li>
+<p>서브넷 생성(public 2ea, private 2ea)</p>
+<p><img alt="3-Tier Basic Infra/screencapture-ap-northeast-2-console-aws-amazon-vpc-home-2021-01-12-13_14_32.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/screencapture-ap-northeast-2-console-aws-amazon-vpc-home-2021-01-12-13_14_32.png" /></p>
+</li>
+<li>
+<p>서브넷 확인</p>
+<p><img alt="3-Tier Basic Infra/Untitled%202.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%202.png" /></p>
+</li>
+<li>
+<p>퍼블릭서브넷의 public-IP 자동할당 사용</p>
+<p><img alt="3-Tier Basic Infra/Untitled%203.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%203.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%204.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%204.png" /></p>
+<p>→ 퍼블릭서브넷(총 2개)에 모두 적용</p>
+</li>
+<li>
+<p>라우팅테이블 생성</p>
+<p><img alt="3-Tier Basic Infra/Untitled%205.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%205.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%206.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%206.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%207.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%207.png" /></p>
+<p>→ VPC당 IGW는 1개 이므로 public route table은 1개, private route table은 2개 생성</p>
+</li>
+<li>
+<p>IGW 생성</p>
+<p><img alt="3-Tier Basic Infra/Untitled%208.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%208.png" /></p>
+</li>
+<li>
+<p>IGW를 VPC에 attach</p>
+<p><img alt="3-Tier Basic Infra/Untitled%209.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%209.png" /></p>
+</li>
+<li>
+<p>Final-Public-RT의 라우트 설정</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2010.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2010.png" /></p>
+</li>
+<li>
+<p>private서브넷에는 NAT gateway 생성 후 할당(요금 발생으로 인해 실습X)</p>
+</li>
+<li>
+<p>라우팅테이블을 서브넷에 연결</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2011.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2011.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2012.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2012.png" /></p>
+<p>→ Final-Public-02도 마찬가지로 Final-Public-RT에 연결</p>
+<p>→ Final-Private-01, Final-Private-02 은 각각 Final-Private-01-RT, Final-Private-02-RT 연결</p>
+</li>
+</ol>
+<h2 id="ec2-instance">EC2 Instance</h2>
+<hr />
+<ol>
+<li>
+<p>SSH접속을 위한 Key pair 생성</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2013.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2013.png" /></p>
+<p>→ putty 쓰려면 ppk선택(범용성이 떨어져 권장하지 않음)</p>
+</li>
+<li>
+<p>Bastion Host 용 SG(보안그룹) 생성</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2014.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2014.png" /></p>
+</li>
+<li>
+<p>Bastion Host Instance 생성 * 2ea</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2015.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2015.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2016.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2016.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2017.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2017.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2018.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2018.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2019.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2019.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2020.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2020.png" /></p>
+<p>→ VPC, Subnet, SG 만 알맞게 조절</p>
+</li>
+<li>
+<p>이전에 생성한 키페어 선택</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2021.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2021.png" /></p>
+</li>
+<li>
+<p>같은 작업을 반복하여 Bastion-Host(2c) 생성</p>
+</li>
+</ol>
+<h2 id="bastion-host">Bastion Host 접속</h2>
+<hr />
+<ol>
+<li>
+<p>Bastion Host(2a)의 public IP 할당을 확인</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2022.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2022.png" /></p>
+</li>
+<li>
+<p>터미널 열어서 키페어파일 위치로 이동 후 다음 명령을 이용하여 접속</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh -i FINAL-KEY.pem [ec2-user@13.125.83.172](mailto:ec2-user@13.125.83.172)
+</code></pre></div>
+</li>
+<li>
+<p>SSH 최초 접속시 hash 값 확인 → yes 입력</p>
+</li>
+<li>
+<p>접속 확인(bastion host 정상작동)</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2023.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2023.png" /></p>
+</li>
+</ol>
+<h2 id="elb">ELB 만들기</h2>
+<hr />
+<ol>
+<li>
+<p>LoadBalancer(internet Facing)를 위한 SG(보안그룹)을 생성해줍니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2024.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2024.png" /></p>
+<p>→ internetFacing이기 때문에 모든 포트를 오픈해줍니다</p>
+</li>
+<li>
+<p>WebServer를 위한 SG를 생성합니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2025.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2025.png" /></p>
+<p>→ 보안그룹체이닝을 이용하여 ELB에게만 HTTP포트를 오픈해줍니다</p>
+</li>
+<li>
+<p>좌측 메뉴의 Load Balancing → Target Groups에서 새로운 Target Group을 생성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2026.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2026.png" /></p>
+<p>→ VPC만 설정하고 다른 부분은 기본값으로 진행합니다</p>
+</li>
+<li>
+<p>일단 인스턴스 추가 없이 생성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2027.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2027.png" /></p>
+</li>
+<li>
+<p>Load Balancing → Load Balancers에서 새 LB를 생성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2028.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2028.png" /></p>
+</li>
+<li>
+<p>Internet-Facing LB 이므로 퍼블릭서브넷에 생성해줍니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2029.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2029.png" /></p>
+</li>
+<li>
+<p>이전에 생성해둔 LB용 SG를 선택합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2030.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2030.png" /></p>
+</li>
+<li>
+<p>Target Group도 사전에 만들어둔 TG-21-01-12를 선택합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2031.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2031.png" /></p>
+</li>
+</ol>
+<h2 id="auto-scaling">Auto Scaling</h2>
+<hr />
+<ol>
+<li>
+<p>EC2 좌측 메뉴 Auto Scaling → Launch Configuration 에서 새로 작성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2032.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2032.png" /></p>
+</li>
+<li>
+<p>이름을 할당하고 AMI를 선택해줍니다. 미리 만들어둔 AMI가 없으면 새로 만들면 됩니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2033.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2033.png" /></p>
+<p>→ 웹 서버용 SG를 선택하고 키페어도 연결해줍니다</p>
+</li>
+<li>
+<p>좌측메뉴 Auto Scaling Groups을 진입하고 Create Auto Scaling Group을 클릭합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2034.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2034.png" /></p>
+</li>
+<li>
+<p>오토스케일러 이름을 할당하고 Launch Configuration을 선택해줍니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2035.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2035.png" /></p>
+<p>→ 목록에 안 보이면 밑줄 친 부분을 누르면 됩니다</p>
+</li>
+<li>
+<p>오토스케일을 적용할 서브넷(private)을 선택합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2036.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2036.png" /></p>
+</li>
+<li>
+<p>이 전에 만들어둔 로드밸런서를 사용합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2037.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2037.png" /></p>
+</li>
+<li>
+<p>목표, 최소, 최대 인스턴스 개수와 스케일링 정책을 작성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2038.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2038.png" /></p>
+</li>
+<li>
+<p>스케일러에 의해 시작된 인스턴스에 붙일 태그를 작성합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2039.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2039.png" /></p>
+</li>
+<li>
+<p>EC2 인스턴스에 들어가보면 2-4의 목표값인 '2개'만큼 인스턴스가 실행되어있습니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2040.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2040.png" /></p>
+</li>
+<li>
+<p>ELB의 DNS 주소를 찾아봅니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2041.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2041.png" /></p>
+</li>
+<li>
+<p>해당 DNS주소에 접속하면 웹서버로 진입할 수 있습니다</p>
+</li>
+<li>
+<p>사전에 생성해둔 서버 화면이 표시됩니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2042.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2042.png" /></p>
+<p>→ 화면에선 AZ 메타정보(2a)를 확인해볼 수 있습니다</p>
+</li>
+<li>
+<p>라운드로빈 방식의 LB이기 때문에 접속을 할 때 마다 서버가 변경됩니다.</p>
+<p>새로고침을 하면 다른 AZ(2c)의 웹서버에 접속된 걸 확인할 수 있습니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2043.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2043.png" /></p>
+</li>
+</ol>
+<h2 id="bastion-host_1">Bastion Host → 웹 서버 접속</h2>
+<hr />
+<ol>
+<li>
+<p>SSH로 Bastion host에 접속합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2044.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2044.png" /></p>
+</li>
+<li>
+<p>PEM키 파일을 Bastion 에 다운로드합니다</p>
+<p>단순 실습을 위해 AWS S3에 업로드 후 wget을 이용하여 다운로드 하였습니다</p>
+<p>나중에 현장에서 이렇게 일 하면 안됩니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2045.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2045.png" /></p>
+</li>
+<li>
+<p>Webserver SG에 bastion host 를 위한 SSH 포트를 개방합니다</p>
+<p>체이닝된 source SG는 FINAL-SG-Bastion입니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2046.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2046.png" /></p>
+</li>
+<li>
+<p>스케일러에 의해 생성된 서버의 내부 IP를 찾습니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2047.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2047.png" /></p>
+</li>
+<li>
+<p>Bastion의 터미널에 다음과 같은 명령으로 Webserver에 접속합니다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ssh -i FINAL-KEY.pem ec2-user@10.77.3.93
+</code></pre></div>
+</li>
+<li>
+<p>다음 에러 발생시 chmod를 적용합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2048.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2048.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>chmod 400 FINAL-KEY.pem
+</code></pre></div>
+</li>
+<li>
+<p>재접속 하면 정상적으로 WebServer에 연결된 것을 볼 수 있습니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2049.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2049.png" /></p>
+</li>
+</ol>
+<h2 id="rdsmysql">RDS(MySQL)</h2>
+<hr />
+<ol>
+<li>
+<p>DB서버를 위한 SG를 생성합니다</p>
+<p>BastionHost와 WebServer에서 3306포트를 접속할 수 있도록 SG체이닝을 넣어줍니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2050.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2050.png" /></p>
+</li>
+<li>
+<p>AWS RDS페이지에서 DB에 사용할 서브넷 설정을 생성합니다.</p>
+<p>DB는 private 서브넷에 상주하는 것을 생각하고 알맞게 체크하면 됩니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2051.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2051.png" /></p>
+</li>
+<li>
+<p>AWS RDS페이지에서 Create database를 선택합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2052.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2052.png" /></p>
+</li>
+<li>
+<p>MySQL을 선택합니다</p>
+<p>학습용이니 하단의 Free Tier제한 옵션도 선택해줍니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2053.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2053.png" /></p>
+</li>
+<li>
+<p>subnet, SG를 잘 선택해주고 DB관련한 값을 알맞게 적어줍니다</p>
+<p>/* </p>
+<p>DB식별자 : dbdb(x) → mydb</p>
+<p>Master User : DBadmin</p>
+<p>Password : DB-password</p>
+<p>DatabaseName : lab</p>
+<p>*/</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2054.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2054.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2055.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2055.png" /></p>
+<p><img alt="3-Tier Basic Infra/Untitled%2056.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2056.png" /></p>
+</li>
+</ol>
+<h2 id="db">DB동작 확인</h2>
+<hr />
+<ol>
+<li>
+<p>SSH를 이용해 Bastion Host에 접속합니다.</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2057.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2057.png" /></p>
+</li>
+<li>
+<p>다음 명령을 이용해 Bastion Host에 MySQL을 설치합니다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo yum -y install mysql
+</code></pre></div>
+</li>
+<li>
+<p>서버접속을 위해 다음 명령을 이용해 MySQL 을 사용합니다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysql -h {DNS} -P {PORT} -u {USER} -p
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>                         ↓(예시)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>mysql -h mydb.cnr20hoyd3cu.ap-northeast-2.rds.amazonaws.com -P 3306 -u DBadmin -p
+</code></pre></div>
+</li>
+<li>
+<p>'MySQL&gt;' 이 뜨면 접속 성공한 것입니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2058.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2058.png" /></p>
+</li>
+</ol>
+<h2 id="mysql-workbench">MySQL workbench</h2>
+<hr />
+<ol>
+<li>
+<p>MySQL Workbench 다운로드 &amp; 실행</p>
+<p><a href="https://dev.mysql.com/downloads/workbench/">MySQL :: Download MySQL Workbench</a></p>
+</li>
+<li>
+<p>Basiton Host 사용시 아래와 같이 입력</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2059.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2059.png" /></p>
+</li>
+<li>
+<p>올바르게 작성된 예시</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2060.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2060.png" /></p>
+</li>
+<li>
+<p>OK누르면 비밀번호 입력창이 뜹니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2061.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2061.png" /></p>
+</li>
+<li>
+<p>접속 완료하였습니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2062.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2062.png" /></p>
+</li>
+</ol>
+<h2 id="jetbrains-datagrip">Jetbrains DataGrip</h2>
+<hr />
+<ol>
+<li>
+<p>DataGrip을 실행합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2063.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2063.png" /></p>
+</li>
+<li>
+<p>MySQL 연결을 새로 만듭니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2064.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2064.png" /></p>
+</li>
+<li>
+<p>SSH를 선택하고 터널링 설정을 엽니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2065.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2065.png" /></p>
+</li>
+<li>
+<p>BastionHost의 정보를 입력해줍니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2066.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2066.png" /></p>
+</li>
+<li>
+<p>General로 돌아와서 host, port, User, password 입력합니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2067.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2067.png" /></p>
+</li>
+<li>
+<p>접속에 성공하였습니다</p>
+<p><img alt="3-Tier Basic Infra/Untitled%2068.png" src="../../../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled%2068.png" /></p>
+</li>
+</ol>
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../api-gateway-with-lambda/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Gateway with Lambda">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                API Gateway with Lambda
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../../2021/04/14/2021-toy-1/" class="md-footer__link md-footer__link--next" aria-label="Next: 2021-Toy-1">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2021-Toy-1
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Jeongwon Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>
