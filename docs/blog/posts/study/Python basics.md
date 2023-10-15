@@ -1,6 +1,6 @@
 ---
 draft: true
-date: 2021-05-01
+date: 1993-09-17
 authors:
   - dotoryeee
 categories:
@@ -22,6 +22,7 @@ categories:
         ```
     - `__double_leading_underscore`: when naming a class attribute, invokes name mangling (inside class FooBar, __boo becomes _FooBar__boo; see below).
     - `__double_leading_and_trailing_underscore__`: “magic” objects or attributes that live in user-controlled namespaces. E.g. `__init__`, `__import__` or `__file__`. Never invent such names; only use them as documented.
+<!-- more -->
 2. PEP-8 Naming Convetions 요약 [PEP-8 원문](https://peps.python.org/pep-0008/#naming-conventions)
     - 단일 문자로 ‘l’ (lowercase letter el), ‘O’ (uppercase letter oh), or ‘I’ (uppercase letter eye) 사용 금지
     - classNames: CamelCase

@@ -1,6 +1,6 @@
 ---
 draft: true
-date: 2021-05-01
+date: 1993-09-17
 authors:
   - dotoryeee
 categories:
@@ -10,7 +10,7 @@ categories:
 # JVM Options
 
 ## JVM options 정리
-
+<!-- more -->
 - Xms<br>
 Xms 옵션은 JVM 시작 시 할당할 초기 메모리 크기를 설정합니다. 이 옵션을 사용하면 시작 시 할당되는 메모리 크기를 제한할 수 있습니다. 값을 지정하지 않으면 JVM이 설정한 기본 초기 메모리 크기를 사용합니다.
 

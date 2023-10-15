@@ -1,6 +1,6 @@
 ---
 draft: true
-date: 2021-05-01
+date: 1993-09-17
 authors:
   - dotoryeee
 categories:
@@ -30,7 +30,7 @@ categories:
     - 단점
         - 미들웨어 지원 부족: Nginx는 다양한 미들웨어를 지원하는 Apache와 비교하면 상대적으로 지원이 부족합니다.
         - Windows 지원: Nginx는 Windows 지원이 상대적으로 부족합니다. 이는 Apache와 비교해 Windows 환경에서의 사용성이 떨어지는 단점으로 작용할 수 있습니다
-
+<!-- more -->
 - httpd Event MPM (httpd 2.4부터 추가된 모드 / 하나의 요청에 다중 스레드 처리)
     - 장점
         - 이벤트 기반 비동기 처리 방식으로 고성능 웹서버로 유명함

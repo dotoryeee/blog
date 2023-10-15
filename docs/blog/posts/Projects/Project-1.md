@@ -1,4 +1,12 @@
-# (2021) Toy-1
+---
+draft: false
+date: 2021-04-14
+authors:
+  - dotoryeee
+categories:
+  - project
+---
+# 2021-Toy-1
 
 !!! tip
     💡 유형 : 개인 토이 프로젝트
@@ -31,7 +39,7 @@
     
     ![Project-1/Untitled%202.png](Project-1/Untitled%202.png)
     
-
+<!-- more -->
 ## 각 기술들의 선택 이유
 
 ---
