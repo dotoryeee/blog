@@ -16,3 +16,4 @@ __pycache__
 *.tfvars
 *.tfvars.json
 
+.DS_Store
