@@ -1105,228 +1105,7 @@
 <h3 id="_1"><a class="toclink" href="../../../2023/01/01/api/#_1">목적</a></h3>
 <p>재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.<br>
 때문에 재난문자 발생 시 Slack으로 알람을 쏴주도록 구성해보았습니다</p>
-<h3 id="_2"><a class="toclink" href="../../../2023/01/01/api/#_2">절차</a></h3>
-<ol>
-<li>
-<p>아래 사이트에서 재난문자 발생 내역을 확인할 수 있습니다<br>
-   <a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679">https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679</a></p>
-</li>
-<li>
-<p>아래 공공데이터 포털에서 재난문자 API 사용신청 후 인증키를 수령합니다<br>
-   <a href="https://www.data.go.kr/iim/api/selectAPIAcountView.do">https://www.data.go.kr/iim/api/selectAPIAcountView.do</a></p>
-</li>
-<li>
-<p>API를 호출하고 Slack으로 메세지를 발송해주는 코드를 작성합니다
-<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">emergency_alert_to_slack.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-2-10">10</a></span>
-<span class="normal"><a href="#__codelineno-2-11">11</a></span>
-<span class="normal"><a href="#__codelineno-2-12">12</a></span>
-<span class="normal"><a href="#__codelineno-2-13">13</a></span>
-<span class="normal"><a href="#__codelineno-2-14">14</a></span>
-<span class="normal"><a href="#__codelineno-2-15">15</a></span>
-<span class="normal"><a href="#__codelineno-2-16">16</a></span>
-<span class="normal"><a href="#__codelineno-2-17">17</a></span>
-<span class="normal"><a href="#__codelineno-2-18">18</a></span>
-<span class="normal"><a href="#__codelineno-2-19">19</a></span>
-<span class="normal"><a href="#__codelineno-2-20">20</a></span>
-<span class="normal"><a href="#__codelineno-2-21">21</a></span>
-<span class="normal"><a href="#__codelineno-2-22">22</a></span>
-<span class="normal"><a href="#__codelineno-2-23">23</a></span>
-<span class="normal"><a href="#__codelineno-2-24">24</a></span>
-<span class="normal"><a href="#__codelineno-2-25">25</a></span>
-<span class="normal"><a href="#__codelineno-2-26">26</a></span>
-<span class="normal"><a href="#__codelineno-2-27">27</a></span>
-<span class="normal"><a href="#__codelineno-2-28">28</a></span>
-<span class="normal"><a href="#__codelineno-2-29">29</a></span>
-<span class="normal"><a href="#__codelineno-2-30">30</a></span>
-<span class="normal"><a href="#__codelineno-2-31">31</a></span>
-<span class="normal"><a href="#__codelineno-2-32">32</a></span>
-<span class="normal"><a href="#__codelineno-2-33">33</a></span>
-<span class="normal"><a href="#__codelineno-2-34">34</a></span>
-<span class="normal"><a href="#__codelineno-2-35">35</a></span>
-<span class="normal"><a href="#__codelineno-2-36">36</a></span>
-<span class="normal"><a href="#__codelineno-2-37">37</a></span>
-<span class="normal"><a href="#__codelineno-2-38">38</a></span>
-<span class="normal"><a href="#__codelineno-2-39">39</a></span>
-<span class="normal"><a href="#__codelineno-2-40">40</a></span>
-<span class="normal"><a href="#__codelineno-2-41">41</a></span>
-<span class="normal"><a href="#__codelineno-2-42">42</a></span>
-<span class="normal"><a href="#__codelineno-2-43">43</a></span>
-<span class="normal"><a href="#__codelineno-2-44">44</a></span>
-<span class="normal"><a href="#__codelineno-2-45">45</a></span>
-<span class="normal"><a href="#__codelineno-2-46">46</a></span>
-<span class="normal"><a href="#__codelineno-2-47">47</a></span>
-<span class="normal"><a href="#__codelineno-2-48">48</a></span>
-<span class="normal"><a href="#__codelineno-2-49">49</a></span>
-<span class="normal"><a href="#__codelineno-2-50">50</a></span>
-<span class="normal"><a href="#__codelineno-2-51">51</a></span>
-<span class="normal"><a href="#__codelineno-2-52">52</a></span>
-<span class="normal"><a href="#__codelineno-2-53">53</a></span>
-<span class="normal"><a href="#__codelineno-2-54">54</a></span>
-<span class="normal"><a href="#__codelineno-2-55">55</a></span>
-<span class="normal"><a href="#__codelineno-2-56">56</a></span>
-<span class="normal"><a href="#__codelineno-2-57">57</a></span>
-<span class="normal"><a href="#__codelineno-2-58">58</a></span>
-<span class="normal"><a href="#__codelineno-2-59">59</a></span>
-<span class="normal"><a href="#__codelineno-2-60">60</a></span>
-<span class="normal"><a href="#__codelineno-2-61">61</a></span>
-<span class="normal"><a href="#__codelineno-2-62">62</a></span>
-<span class="normal"><a href="#__codelineno-2-63">63</a></span>
-<span class="normal"><a href="#__codelineno-2-64">64</a></span>
-<span class="normal"><a href="#__codelineno-2-65">65</a></span>
-<span class="normal"><a href="#__codelineno-2-66">66</a></span>
-<span class="normal"><a href="#__codelineno-2-67">67</a></span>
-<span class="normal"><a href="#__codelineno-2-68">68</a></span>
-<span class="normal"><a href="#__codelineno-2-69">69</a></span>
-<span class="normal"><a href="#__codelineno-2-70">70</a></span>
-<span class="normal"><a href="#__codelineno-2-71">71</a></span>
-<span class="normal"><a href="#__codelineno-2-72">72</a></span>
-<span class="normal"><a href="#__codelineno-2-73">73</a></span>
-<span class="normal"><a href="#__codelineno-2-74">74</a></span>
-<span class="normal"><a href="#__codelineno-2-75">75</a></span>
-<span class="normal"><a href="#__codelineno-2-76">76</a></span>
-<span class="normal"><a href="#__codelineno-2-77">77</a></span>
-<span class="normal"><a href="#__codelineno-2-78">78</a></span>
-<span class="normal"><a href="#__codelineno-2-79">79</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">requests</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">datetime</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="n">auth_key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="n">return_type</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="n">request_row</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="n">target_message_time</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">#cron 주기로 사용 할 분(minutes) 값을 입력한다. 1을 입력할 경우 최근 1분간 메시지만 전송한다.</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="n">target_location_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;21&quot;</span><span class="p">,</span> <span class="s2">&quot;53&quot;</span><span class="p">,</span> <span class="s2">&quot;74&quot;</span><span class="p">,</span> <span class="s2">&quot;98&quot;</span><span class="p">,</span> <span class="s2">&quot;104&quot;</span><span class="p">,</span> <span class="s2">&quot;113&quot;</span><span class="p">,</span> <span class="s2">&quot;119&quot;</span><span class="p">,</span> <span class="s2">&quot;136&quot;</span><span class="p">,</span> <span class="s2">&quot;162&quot;</span><span class="p">,</span> <span class="s2">&quot;168&quot;</span><span class="p">,</span> <span class="s2">&quot;179&quot;</span><span class="p">,</span> <span class="s2">&quot;202&quot;</span><span class="p">,</span> <span class="s2">&quot;217&quot;</span><span class="p">,</span> <span class="s2">&quot;222&quot;</span><span class="p">,</span> <span class="s2">&quot;238&quot;</span><span class="p">,</span> <span class="s2">&quot;6474&quot;</span><span class="p">,</span> <span class="s2">&quot;6474&quot;</span><span class="p">]</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="c1"># location_id는 다음 문서를 참조: https://www.data.go.kr/data/15066113/fileData.do </span>
-<a id="__codelineno-2-10" name="__codelineno-2-10"></a>
-<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="n">slack_webhook_url</span> <span class="o">=</span> <span class="s2">&quot;https://hooks.slack.com/services/~~~~~~~~~~&quot;</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12"></a>
-<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="k">def</span> <span class="nf">load_messages</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span> 
-<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="sd">    https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679 의 데이터 호출하는 함수</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="sd">    https://www.data.go.kr/data/3058822/openapi.do API 사용</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="sd">    auth_key: 이정원 계정의 인증키</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-19" name="__codelineno-2-19"></a>    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;http://apis.data.go.kr/1741000/DisasterMsg3/getDisasterMsg1List?ServiceKey=</span><span class="si">{</span><span class="n">auth_key</span><span class="si">}</span><span class="s1">&amp;type=</span><span class="si">{</span><span class="n">return_type</span><span class="si">}</span><span class="s1">&amp;numOfRows=</span><span class="si">{</span><span class="n">request_row</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-20" name="__codelineno-2-20"></a>    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;DisasterMsg&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;row&quot;</span><span class="p">]</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21"></a>
-<a id="__codelineno-2-22" name="__codelineno-2-22"></a><span class="k">def</span> <span class="nf">time_str_to_obj</span><span class="p">(</span><span class="n">time_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24"></a><span class="sd">    string type으로 제공되는 날짜데이터를 datetime object로 변환한다</span>
-<a id="__codelineno-2-25" name="__codelineno-2-25"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-26" name="__codelineno-2-26"></a>    <span class="n">time_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_str</span><span class="p">,</span> <span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span> <span class="c1">#공공데이터 time format을 datetime object format으로 변환</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27"></a>    <span class="k">return</span> <span class="n">time_obj</span>
-<a id="__codelineno-2-28" name="__codelineno-2-28"></a>
-<a id="__codelineno-2-29" name="__codelineno-2-29"></a><span class="k">def</span> <span class="nf">time_kst_to_utc</span><span class="p">(</span><span class="n">time_obj</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
-<a id="__codelineno-2-30" name="__codelineno-2-30"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-31" name="__codelineno-2-31"></a><span class="sd">    KST datetime object를 입력받아 UTC datetime object를 리턴</span>
-<a id="__codelineno-2-32" name="__codelineno-2-32"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-33" name="__codelineno-2-33"></a>    <span class="n">time_obj</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9</span><span class="p">)</span> <span class="c1"># KST -&gt; UTC 연산</span>
-<a id="__codelineno-2-34" name="__codelineno-2-34"></a>    <span class="k">return</span> <span class="n">time_obj</span>
-<a id="__codelineno-2-35" name="__codelineno-2-35"></a>
-<a id="__codelineno-2-36" name="__codelineno-2-36"></a><span class="k">def</span> <span class="nf">check_message_time</span><span class="p">(</span><span class="n">message_time</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<a id="__codelineno-2-37" name="__codelineno-2-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-38" name="__codelineno-2-38"></a><span class="sd">    target_message_time 변수값을 참조하여 지난 몇 분 사이에 생성된 메세지가 맞는지 검증한다 (timeWindow filtering)</span>
-<a id="__codelineno-2-39" name="__codelineno-2-39"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-40" name="__codelineno-2-40"></a>    <span class="n">target_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span> <span class="o">=</span> <span class="n">target_message_time</span><span class="p">)</span>
-<a id="__codelineno-2-41" name="__codelineno-2-41"></a>    <span class="k">if</span> <span class="n">target_time</span> <span class="o">&lt;</span> <span class="n">message_time</span><span class="p">:</span>
-<a id="__codelineno-2-42" name="__codelineno-2-42"></a>        <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-2-43" name="__codelineno-2-43"></a>    <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-2-44" name="__codelineno-2-44"></a>
-<a id="__codelineno-2-45" name="__codelineno-2-45"></a><span class="k">def</span> <span class="nf">check_location_id</span><span class="p">(</span><span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<a id="__codelineno-2-46" name="__codelineno-2-46"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-47" name="__codelineno-2-47"></a><span class="sd">    location_id가 target_location_ids 리스트 내에 존재하는 경우에만 메세지 발송</span>
-<a id="__codelineno-2-48" name="__codelineno-2-48"></a><span class="sd">    공공API에서 제공되는 Location_id는 string일 수도 있고 List일 수도 있어서 (랜덤) split 처리함</span>
-<a id="__codelineno-2-49" name="__codelineno-2-49"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-50" name="__codelineno-2-50"></a>    <span class="n">location_ids</span> <span class="o">=</span> <span class="n">location_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
-<a id="__codelineno-2-51" name="__codelineno-2-51"></a>    <span class="k">for</span> <span class="n">location_id</span> <span class="ow">in</span> <span class="n">location_ids</span><span class="p">:</span>
-<a id="__codelineno-2-52" name="__codelineno-2-52"></a>        <span class="k">if</span> <span class="n">location_id</span> <span class="ow">in</span> <span class="n">target_location_ids</span><span class="p">:</span>
-<a id="__codelineno-2-53" name="__codelineno-2-53"></a>            <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-2-54" name="__codelineno-2-54"></a>    <span class="k">return</span> <span class="kc">False</span>
-<a id="__codelineno-2-55" name="__codelineno-2-55"></a>
-<a id="__codelineno-2-56" name="__codelineno-2-56"></a><span class="k">def</span> <span class="nf">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-2-57" name="__codelineno-2-57"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-2-58" name="__codelineno-2-58"></a><span class="sd">    slack webhook을 이용해 slack channel로 메세시 발신하는 함수</span>
-<a id="__codelineno-2-59" name="__codelineno-2-59"></a><span class="sd">    backslash parsing때문에 코드가 좀 어지럽습니다</span>
-<a id="__codelineno-2-60" name="__codelineno-2-60"></a><span class="sd">    참고: chr92 = backslash</span>
-<a id="__codelineno-2-61" name="__codelineno-2-61"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-2-62" name="__codelineno-2-62"></a>    <span class="n">kst_time</span> <span class="o">=</span> <span class="n">time_str_to_obj</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;create_date&#39;</span><span class="p">])</span>
-<a id="__codelineno-2-63" name="__codelineno-2-63"></a>    <span class="n">utc_time</span> <span class="o">=</span> <span class="n">time_kst_to_utc</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span>
-<a id="__codelineno-2-64" name="__codelineno-2-64"></a>
-<a id="__codelineno-2-65" name="__codelineno-2-65"></a>    <span class="k">if</span> <span class="n">check_message_time</span><span class="p">(</span><span class="n">kst_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">check_location_id</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;location_id&quot;</span><span class="p">]):</span>
-<a id="__codelineno-2-66" name="__codelineno-2-66"></a>        <span class="n">kst_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;KST: </span><span class="si">{</span><span class="n">kst_time</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-2-67" name="__codelineno-2-67"></a>        <span class="n">utc_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;UTC: </span><span class="si">{</span><span class="n">utc_time</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-2-68" name="__codelineno-2-68"></a>        <span class="c1"># location_msg = f&quot;발송지역: {message[&#39;location_name&#39;]}&quot;</span>
-<a id="__codelineno-2-69" name="__codelineno-2-69"></a>        <span class="n">emergency_msg</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="s2">&quot;msg&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-2-70" name="__codelineno-2-70"></a>        <span class="n">payload</span><span class="o">=</span><span class="p">{</span>
-<a id="__codelineno-2-71" name="__codelineno-2-71"></a>            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kst_msg</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">utc_msg</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="mi">92</span><span class="p">)</span><span class="si">}</span><span class="s2">n </span><span class="si">{</span><span class="n">emergency_msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-72" name="__codelineno-2-72"></a>        <span class="p">}</span>
-<a id="__codelineno-2-73" name="__codelineno-2-73"></a>        <span class="c1"># requests.post(slack_webhook_url, json=payload)</span>
-<a id="__codelineno-2-74" name="__codelineno-2-74"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-<a id="__codelineno-2-75" name="__codelineno-2-75"></a>
-<a id="__codelineno-2-76" name="__codelineno-2-76"></a><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-<a id="__codelineno-2-77" name="__codelineno-2-77"></a>    <span class="n">messages</span> <span class="o">=</span> <span class="n">load_messages</span><span class="p">()</span>
-<a id="__codelineno-2-78" name="__codelineno-2-78"></a>    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-<a id="__codelineno-2-79" name="__codelineno-2-79"></a>        <span class="n">send_slack_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div></p>
-</li>
-<li>
-<p>AWS Lambda를 매 10분 마다 실행합니다
-    <img alt="image_2" src="../../../Python/Emergency_alert_to_slack/2.PNG" />
-    <img alt="image_3" src="../../../Python/Emergency_alert_to_slack/3.PNG" /></p>
-</li>
-<li>
-<p>함수를 자주 실행하면 API throttling에 걸리기 때문에 Lambda 설정에서 코드 재실행을 2회까지 허용합니다
-    <img alt="image_4" src="../../../Python/Emergency_alert_to_slack/4.PNG" />
-    <img alt="image_5" src="../../../Python/Emergency_alert_to_slack/5.PNG" /></p>
-</li>
-<li>
-<p>CloudWatch를 이용해 확인해보니 requests 라이브러리가 없다고 합니다
-    <img alt="image_6" src="../../../Python/Emergency_alert_to_slack/6.PNG" /></p>
-</li>
-<li>
-<p>Local에 python3.9용 requests library를 다운로드하고 압축합니다
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">temp_for_download_module</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">temp_for_download_module</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span>\
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">--</span><span class="n">platform</span><span class="w"> </span><span class="n">manylinux2014_x86_64</span><span class="w"> </span>\
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">emergency_alert_to_slack</span><span class="w"> </span>\
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="o">--</span><span class="n">implementation</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span>\
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">--</span><span class="n">python</span><span class="w"> </span><span class="m">3.9</span><span class="w"> </span>\
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">--</span><span class="n">only</span><span class="o">-</span><span class="n">binary</span><span class="o">=:</span><span class="n">all</span><span class="o">:</span><span class="w"> </span><span class="o">--</span><span class="n">upgrade</span><span class="w"> </span>\
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">requests</span>
-</code></pre></div>
-    <img alt="image_6" src="../../../Python/Emergency_alert_to_slack/6.PNG" />
-    <img alt="image_7" src="../../../Python/Emergency_alert_to_slack/7.PNG" /></p>
-</li>
-<li>
-<p>작성했던 코드로 lambda_function.py로 저장해줍니다
-    <img alt="image_8" src="../../../Python/Emergency_alert_to_slack/8.PNG" /></p>
-</li>
-<li>
-<p>AWS Lambda -&gt; Code 탭 &gt; Upload from &gt; .zip file 클릭 후 방금 생성한 압축파일을 업로드 해줍니다
-    <img alt="image_10" src="../../../Python/Emergency_alert_to_slack/10.PNG" />
-    <img alt="image_11" src="../../../Python/Emergency_alert_to_slack/11.PNG" /></p>
-</li>
-<li>
-<p>잘 동작하는 구조는 다음과 같습니다
-    <img alt="image_12" src="../../../Python/Emergency_alert_to_slack/12.PNG" /></p>
-</li>
-<li>
-<p>Test 탭에서 'Test'버튼을 클릭했을 때 에러가 발생하지 않으면 다음과 같이 초록색 화면이 표시됩니다(에러나면 빨간색)
-    <img alt="image_13" src="../../../Python/Emergency_alert_to_slack/13.PNG" /></p>
-</li>
-<li>
-<p>Slack에 다음과 같이 메세지가 잘 전송됩니다
-    <img alt="image_14" src="../../../Python/Emergency_alert_to_slack/14.PNG" /></p>
-</li>
-</ol>
+
     <nav class="md-post__action">
       <a href="../../../2023/01/01/api/">
         Continue reading
@@ -1371,41 +1150,15 @@
   <div class="md-post__content md-typeset">
     <h2 id="python-alternatives-poetry-conda"><a class="toclink" href="../../../2023/01/01/python-alternatives-poetry-conda/">Python 환경 관리: alternatives, poetry, conda</a></h2>
 <ol>
-<li>
-<p>alternatives (심볼링 링크 자동화)</p>
-<ul>
+<li>alternatives (심볼링 링크 자동화)<ul>
 <li>장점:<br>
     간단한 방식으로 시스템 전체에서 사용할 Python 버전을 쉽게 변경할 수 있습니다.</li>
 <li>단점:<br>
     프로젝트별 가상 환경을 지원하지 않아, 여러 프로젝트에서 서로 다른 종속성을 가진 경우 관리가 어렵습니다.</li>
 </ul>
 </li>
-<li>
-<p>poetry (가상환경)<br>
-    파이썬 내부의 venv를 사용해 가상환경을 생성하고 pip를 이용해 pypi에서 패키지를 가져옵니다.</p>
-<ul>
-<li>장점:<br>
-    프로젝트별 가상 환경을 지원하여 서로 다른 종속성을 가진 프로젝트를 관리할 수 있습니다.<br>
-    종속성의 버전을 자동으로 관리하며, 메타데이터와 종속성을 선언하는 pyproject.toml 파일을 사용하여 명시적으로 종속성을 기록합니다.<br>
-    프로젝트별 가상 환경 관리를 자동으로 지원합니다.</li>
-<li>단점:<br>
-    Python 버전 관리 기능이 약합니다. 별도의 버전 관리 도구를 함께 사용해야 할 수도 있습니다.<br>
-    기존의 requirements.txt로 종속성을 관리할 수 없습니다 (import는 가능 poetry import requirements.txt)</li>
-</ul>
-</li>
-<li>
-<p>conda (가상환경)<br>
-    anaconda 자체 가상화 환경을 사용하고, conda 자체 저장소(anaconda cloud)를 사용해 패키지를 가져옵니다. (conda config --add channels <channel_name>로 외부 저장소를 추가할 수도 있음)</p>
-<ul>
-<li>장점:<br>
-    다양한 프로그래밍 언어의 패키지 및 종속성을 관리할 수 있습니다. (Python 외에 R, Ruby 등 사용가능)<br>
-    프로젝트별 가상 환경을 지원하며, 서로 다른 종속성을 가진 프로젝트를 쉽게 관리할 수 있습니다.</li>
-<li>단점:<br>
-    conda는 패키지 설치시 conda install 명령으로 설치해야 하지만 conda에서 지원하지 않는 패키지의 경우, pip와 함께 사용해야 할 수도 있어 관리가 복잡해집니다(의존성 충돌 발생 가능성 up).<br>
-    일부 패키지는 conda에서 사용할 수 없을 수도 있고, 최신버전을 사용하지 못 할 수도 있습니다.</li>
-</ul>
-</li>
 </ol>
+
     <nav class="md-post__action">
       <a href="../../../2023/01/01/python-alternatives-poetry-conda/">
         Continue reading
@@ -1445,6 +1198,10 @@
         
       </ul>
       
+        <span class="md-draft">
+          Draft
+        </span>
+      
     </div>
   </header>
   <div class="md-post__content md-typeset">
@@ -1453,21 +1210,6 @@
 <p class="admonition-title">Notice</p>
 <p>파이썬 코드 작성 후 타인과 공유하다보니 클린코드의 필요성을 느껴 공부한것을 기억할 겸 정리했습니다</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>아직 책을 읽으며 정리하는 중 입니다</p>
-</div>
-<ol>
-<li>PEP-8 Naming style 요약 <a href="https://peps.python.org/pep-0008/#descriptive-naming-styles">PEP-8 원문</a><ul>
-<li><code>_single_leading_underscore</code>: weak “internal use” indicator. E.g. from M import * does not import objects whose names start with an underscore</li>
-<li><code>single_trailing_underscore_</code>: used by convention to avoid conflicts with Python keyword, e.g.
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">tkinter</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;ClassName&#39;</span><span class="p">)</span>
-</code></pre></div></li>
-<li><code>__double_leading_underscore</code>: when naming a class attribute, invokes name mangling (inside class FooBar, __boo becomes _FooBar__boo; see below).</li>
-<li><code>__double_leading_and_trailing_underscore__</code>: “magic” objects or attributes that live in user-controlled namespaces. E.g. <code>__init__</code>, <code>__import__</code> or <code>__file__</code>. Never invent such names; only use them as documented.</li>
-</ul>
-</li>
-</ol>
 
     <nav class="md-post__action">
       <a href="../../../2023/01/01/python/">

@@ -1124,16 +1124,7 @@
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
 </code></pre></div></li>
 </ul>
-<h3 id="2"><a class="toclink" href="../../1993/09/17/elk-error/#2">2</a></h3>
-<h4 id="_3"><a class="toclink" href="../../1993/09/17/elk-error/#_3">증상</a></h4>
-<ul>
-<li>Filebeat가 삭제된 로그 파일을 계속 핸들링하고있어 시스템에서 로그가 삭제되었지만 (ls 명령어 사용지 파일이 삭제되어 보이지 않는 상태) lsof 명령으로 확인했을 때 filebeat에서 계속 파일을 물고있어 시스템 용량 확보가 불가능함</li>
-</ul>
-<h4 id="_4"><a class="toclink" href="../../1993/09/17/elk-error/#_4">해결방법</a></h4>
-<p>filebeat의 버그로 6.8.4 / 7.4.1 이후로 업그레이드 해야합니다</p>
-<h4 id="_5"><a class="toclink" href="../../1993/09/17/elk-error/#_5">원인</a></h4>
-<p>filebeat에서 close_timeout이 기본적으로 5minutes인데, 5분이 지나도 파일이 닫히지 않아 검색해보니 github issue로 등록된 것을 확인했습니다 <a href="http://github.com/elastic/beats/pulls?q=13907">issue #13907</a><br>
-해당 버그에 대응하는 filebeat 버전은 <a href="https://www.elastic.co/guide/en/beats/libbeat/6.8/release-notes-6.8.4.html#_bugfixes_11">6.8.4</a> 또는 <a href="https://www.elastic.co/guide/en/beats/libbeat/7.17/release-notes-7.4.1.html0">7.4.1</a> 입니다.</p>
+
     <nav class="md-post__action">
       <a href="../../1993/09/17/elk-error/">
         Continue reading
