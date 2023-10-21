@@ -9,25 +9,25 @@
       
       
       
-        <link rel="prev" href="../Datadog_dashboard_crawling/">
+        <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/">
+        <link rel="next" href="../api/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
-        <title>K8S에 배포된 JVM Heap Dump 생성 - dotoryeee's blog</title>
+        <title>Python 환경 관리: alternatives, poetry, conda - dotoryeee's blog</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.35e1ed30.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -46,7 +46,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#k8s-jvm-heap-dump" class="md-skip">
+        <a href="#python-alternatives-poetry-conda" class="md-skip">
           Skip to content
         </a>
       
@@ -97,9 +97,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+    <a href="../../../../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              K8S에 배포된 JVM Heap Dump 생성
+              Python 환경 관리: alternatives, poetry, conda
             
           </span>
         </div>
@@ -144,7 +144,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -153,9 +155,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+    <a href="../../../../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     dotoryeee's blog
@@ -169,7 +171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -186,20 +188,20 @@
       
   
   
+    
+  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -213,7 +215,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Blog
@@ -224,9 +226,11 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../blog/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -284,7 +288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2023/10/" class="md-nav__link">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -304,7 +308,47 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2021/04/" class="md-nav__link">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    February 2023
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    January 2023
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -324,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/1993/09/" class="md-nav__link">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -390,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/study/" class="md-nav__link">
+      <a href="../../../../category/study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -410,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/kubernetes/" class="md-nav__link">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -430,7 +474,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/database/" class="md-nav__link">
+      <a href="../../../../category/database/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -450,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/cloudnet/" class="md-nav__link">
+      <a href="../../../../category/cloudnet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -470,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/terraform/" class="md-nav__link">
+      <a href="../../../../category/terraform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -490,347 +534,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/project/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    project
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/aws/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    AWS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/docker/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    docker
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/nhncloud/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    NHNcloud
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/loadbalancer/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    LoadBalancer
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/cicd/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    CICD
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/devops/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    DevOps
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/sre/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    SRE
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/elasticsearch/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ElasticSearch
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/prometheus/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Prometheus
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/thanos/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Thanos
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/grafana/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Grafana
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/promtail/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Promtail
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/loki/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Loki
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/java/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    java
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/nginx/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    nginx
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/httpd/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    httpd
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../blog/category/python/" class="md-nav__link">
+      <a href="../../../../category/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,7 +554,347 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/kibana/" class="md-nav__link">
+      <a href="../../../../category/project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    project
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nhncloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NHNcloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/loadbalancer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoadBalancer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CICD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ElasticSearch
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prometheus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/thanos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Thanos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grafana/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/promtail/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Promtail
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/loki/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Loki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nginx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nginx
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/httpd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    httpd
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kibana/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -883,20 +927,20 @@
       
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -910,7 +954,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             메모장
@@ -923,27 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20Boto3%20SDK%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    AWS Boto3 SDK 모둠
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -963,97 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Datadog_dashboard_crawling/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Datadog dashboard crawling
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    K8S에 배포된 JVM Heap Dump 생성
-  </span>
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    ELK error 모음
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Emergency_alert_to_slack/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    재난안전문자 API 활용하기
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1073,71 +1007,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../Managing%20python%20environment/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Python 환경 관리: alternatives, poetry, conda
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Naver%20cloud%20API%ED%98%B8%EC%B6%9C%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Naver cloud API호출 모둠
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../docker_compose_templates/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Docker compose 모음
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../process%20auto%20restart/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Process restart automation
   </span>
   
 
@@ -1162,6 +1036,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -1181,41 +1057,140 @@
             
           
           
-            <div class="md-content" data-md-component="content">
-              <article class="md-content__inner md-typeset">
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
                 
-                  
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>Jeongwon Lee</strong><br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2023-01-01 00:00:00" class="md-ellipsis">Jan 1, 2023</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/python/">Python</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              2 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
 
 
-<h1 id="k8s-jvm-heap-dump">K8S에 배포된 JVM Heap Dump 생성</h1>
+<h1 id="python-alternatives-poetry-conda">Python 환경 관리: alternatives, poetry, conda</h1>
+<ol>
+<li>
+<p>alternatives (심볼링 링크 자동화)</p>
 <ul>
-<li>명령어
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">jmap</span><span class="w"> </span><span class="o">-</span><span class="n">dump</span><span class="o">:</span><span class="n">live</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">file</span><span class="o">=/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="m">1234</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;:/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="n">heapdump.hprof</span>
-</code></pre></div></li>
-<li>옵션 설명<ul>
-<li>kubectl exec <pod_name>: 특정 파드에 접근하고 명령을 실행</li>
-<li>--: kubectl exec 명령어 옵션과 파드 내에서 실행할 명령어를 구분</li>
-<li>jmap: JVM memory map tool name</li>
-<li>-dump: jmap의 heap dump 생성 옵션</li>
-<li>live: GC에 의에 회수되지 않은 live object'만' 포함해서 덤프 생성. memory leak 분석에 용이해짐.</li>
-<li>format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.</li>
-<li>file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성</li>
-<li>1234: jmap으로 덤프 생성할 PID 입력</li>
+<li>장점:<br>
+    간단한 방식으로 시스템 전체에서 사용할 Python 버전을 쉽게 변경할 수 있습니다.</li>
+<li>단점:<br>
+    프로젝트별 가상 환경을 지원하지 않아, 여러 프로젝트에서 서로 다른 종속성을 가진 경우 관리가 어렵습니다.</li>
 </ul>
 </li>
+<li>
+<p>poetry (가상환경)<br>
+    파이썬 내부의 venv를 사용해 가상환경을 생성하고 pip를 이용해 pypi에서 패키지를 가져옵니다.</p>
+<ul>
+<li>장점:<br>
+    프로젝트별 가상 환경을 지원하여 서로 다른 종속성을 가진 프로젝트를 관리할 수 있습니다.<br>
+    종속성의 버전을 자동으로 관리하며, 메타데이터와 종속성을 선언하는 pyproject.toml 파일을 사용하여 명시적으로 종속성을 기록합니다.<br>
+    프로젝트별 가상 환경 관리를 자동으로 지원합니다.</li>
+<li>단점:<br>
+    Python 버전 관리 기능이 약합니다. 별도의 버전 관리 도구를 함께 사용해야 할 수도 있습니다.<br>
+    기존의 requirements.txt로 종속성을 관리할 수 없습니다 (import는 가능 poetry import requirements.txt)</li>
 </ul>
+</li>
+<li>
+<p>conda (가상환경)<br>
+    anaconda 자체 가상화 환경을 사용하고, conda 자체 저장소(anaconda cloud)를 사용해 패키지를 가져옵니다. (conda config --add channels <channel_name>로 외부 저장소를 추가할 수도 있음)</p>
+<ul>
+<li>장점:<br>
+    다양한 프로그래밍 언어의 패키지 및 종속성을 관리할 수 있습니다. (Python 외에 R, Ruby 등 사용가능)<br>
+    프로젝트별 가상 환경을 지원하며, 서로 다른 종속성을 가진 프로젝트를 쉽게 관리할 수 있습니다.</li>
+<li>단점:<br>
+    conda는 패키지 설치시 conda install 명령으로 설치해야 하지만 conda에서 지원하지 않는 패키지의 경우, pip와 함께 사용해야 할 수도 있어 관리가 복잡해집니다(의존성 충돌 발생 가능성 up).<br>
+    일부 패키지는 conda에서 사용할 수 없을 수도 있고, 최신버전을 사용하지 못 할 수도 있습니다.</li>
+</ul>
+</li>
+</ol>
+
+
+  
 
 
   
 
 
 
+      
+    </article>
+  </div>
 
-                
-              </article>
-            </div>
-          
           
         </div>
         
@@ -1231,10 +1206,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../Datadog_dashboard_crawling/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Datadog dashboard crawling">
+          <a href="../python/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Python 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1244,20 +1221,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Datadog dashboard crawling
+                Python 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../ELK%20error%20%EB%AA%A8%EC%9D%8C/" class="md-footer__link md-footer__link--next" aria-label="Next: ELK error 모음">
+          <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: 재난안전문자 공공 API 활용하기">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ELK error 모음
+                재난안전문자 공공 API 활용하기
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1321,10 +1298,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer"], "search": "../../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.aecac24b.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.aecac24b.min.js"></script>
       
     
   </body>
