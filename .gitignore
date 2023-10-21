@@ -13,7 +13,7 @@ __pycache__
 **/.terraform/*
 *.tfstate
 *.tfstate.*
-*.tfvars
+# *.tfvars
 *.tfvars.json
 
 .DS_Store
