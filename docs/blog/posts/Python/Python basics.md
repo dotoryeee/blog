@@ -1,5 +1,5 @@
 ---
-draft: false
+draft: true
 date: 2023-01-01
 authors:
   - dotoryeee
@@ -10,7 +10,7 @@ categories:
 
 !!! notice
     파이썬 코드 작성 후 타인과 공유하다보니 클린코드의 필요성을 느껴 공부한것을 기억할 겸 정리했습니다
-
+<!-- more -->
 !!! warning
     아직 책을 읽으며 정리하는 중 입니다
 

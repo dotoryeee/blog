@@ -11,7 +11,7 @@ categories:
 ## 목적
 재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.<br>
 때문에 재난문자 발생 시 Slack으로 알람을 쏴주도록 구성해보았습니다
-
+<!-- more -->
 ## 절차
 1. 아래 사이트에서 재난문자 발생 내역을 확인할 수 있습니다<br>
    https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/sfc/dis/disasterMsgList.jsp?menuSeq=679
