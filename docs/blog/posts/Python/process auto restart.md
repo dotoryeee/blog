@@ -1,3 +1,11 @@
+---
+draft: false
+date: 2023-02-01
+authors:
+  - dotoryeee
+categories:
+  - Python
+---
 # Process restart automation
 
 ## 목적

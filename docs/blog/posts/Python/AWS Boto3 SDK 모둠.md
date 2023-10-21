@@ -1,3 +1,12 @@
+---
+draft: false
+date: 1993-09-17
+authors:
+  - dotoryeee
+categories:
+  - Python
+---
+# Boto3 사용 예시
 1. 인스턴스 타입 변경
     ```python title="change_instance_type.py" linenums="1"
     ##############################################
