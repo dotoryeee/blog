@@ -1,3 +1,11 @@
+---
+draft: false
+date: 2023-01-01
+authors:
+  - dotoryeee
+categories:
+  - Python
+---
 # Python 환경 관리: alternatives, poetry, conda
 
 1. alternatives (심볼링 링크 자동화)

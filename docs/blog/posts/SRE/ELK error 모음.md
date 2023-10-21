@@ -1,3 +1,11 @@
+---
+draft: false
+date: 1993-09-17
+authors:
+  - dotoryeee
+categories:
+  - ElasticSearch
+---
 # ELK error 모음
 
 ## 1

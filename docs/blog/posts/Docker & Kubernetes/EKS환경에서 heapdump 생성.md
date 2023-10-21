@@ -1,3 +1,11 @@
+---
+draft: false
+date: 1993-09-17
+authors:
+  - dotoryeee
+categories:
+  - Kubernetes
+---
 # K8S에 배포된 JVM Heap Dump 생성
 
 - 명령어

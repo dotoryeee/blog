@@ -1,4 +1,12 @@
-# 재난안전문자 API 활용하기
+---
+draft: false
+date: 2023-01-01
+authors:
+  - dotoryeee
+categories:
+  - Python
+---
+# 재난안전문자 공공 API 활용하기
 
 ## 목적
 재난문자 발생 시점마다 트래픽이 튀어서 광범위로 발송되는 재난문자 발생 시점 파악이 필요했습니다.<br>
