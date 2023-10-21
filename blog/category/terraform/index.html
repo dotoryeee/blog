@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../kibana/">
+        <link rel="prev" href="../cloudnet/">
       
       
-        <link rel="next" href="../../archive/2023/10/">
+        <link rel="next" href="../project/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -468,6 +468,36 @@
                 
   
   
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Terraform
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
     <li class="md-nav__item">
       <a href="../project/" class="md-nav__link">
@@ -844,36 +874,6 @@
 
               
             
-              
-                
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Terraform
-  </span>
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1201,7 +1201,58 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+          <time datetime="2023-10-22 00:00:00">Oct 22, 2023</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="./" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              10 min read
+            
+          </li>
+        
+      </ul>
+      
+        <span class="md-draft">
+          Draft
+        </span>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="deploy-eks-and-efk"><a class="toclink" href="../../2023/10/22/deploy-eks-and-efk/">deploy EKS and EFK</a></h2>
+<p>EKS 구성 및 아래 스택을 추가 구성합니다<br>
+1. Prometheus + Grafana<br>
+2. Logstash + OpenSearch + Cognito + Nginx Proxy</p>
+
+    <nav class="md-post__action">
+      <a href="../../2023/10/22/deploy-eks-and-efk/">
+        Continue reading
+      </a>
+    </nav>
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-10-21 00:00:00">Oct 21, 2023</time></li>
         
           <li class="md-meta__item">
             in
@@ -1221,22 +1272,11 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="deploy-eks-and-efk"><a class="toclink" href="../../1993/09/17/deploy-eks-and-efk/">deploy EKS and EFK</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/deploy-eks-and-efk/#_1">주의할 점</a></h3>
-<ol>
-<li>node instance type을 명시하지 않을경우 m4.large가 provision된다</li>
-<li>각 AZ에서 사용자가 요청한 인스턴스타입을 지원하지않는 경우, 해당 인스턴스타입을 지원하는 타 AZ에 추가 provisioning하여 desired capacity를 맞추려 한다. Seoul지역 b-AZ에서 m4.large 인스턴스를 지원하지 않아 b-AZ의 할당량이 a-AZ와 c-AZ에 배포되었다.
-  <img alt="instance_health_issue" src="../../Terraform/EKS%20and%20EFK%20stack/Screenshot%202023-04-12%20at%2010.53.25%20PM.png" />
-  <img alt="instance_list" src="../../Terraform/EKS%20and%20EFK%20stack/Screenshot%202023-04-12%20at%2010.54.46%20PM.png" /></li>
-<li>아래 에러를 해결하기 위해 kubernetes.tf 파일을 추가하였다
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Post</span><span class="w"> </span><span class="s">&quot;http://localhost/api/v1/namespaces/kube-system/configmaps&quot;</span><span class="o">:</span><span class="w"> </span><span class="n">dial</span><span class="w"> </span><span class="n">tcp</span><span class="w"> </span><span class="p">[</span><span class="o">::</span><span class="m">1</span><span class="p">]</span><span class="o">:</span><span class="m">80</span><span class="o">:</span><span class="w"> </span><span class="n">connect</span><span class="o">:</span><span class="w"> </span><span class="n">connection</span><span class="w"> </span><span class="n">refused</span>
-</code></pre></div>
-  <img alt="configmap_error" src="../../Terraform/EKS%20and%20EFK%20stack/Screenshot%202023-04-12%20at%2012.23.26%20AM%20copy.png" /></li>
-<li></li>
-</ol>
+    <h2 id="basis-eks-cluster-w-terraform"><a class="toclink" href="../../2023/10/21/basis-eks-cluster-w-terraform/">basis EKS cluster w/ terraform</a></h2>
+<p>K8S 연습을 위한 최소한의 EKS cluter 구축 terraform 코드입니다.</p>
 
     <nav class="md-post__action">
-      <a href="../../1993/09/17/deploy-eks-and-efk/">
+      <a href="../../2023/10/21/basis-eks-cluster-w-terraform/">
         Continue reading
       </a>
     </nav>
@@ -1573,7 +1613,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../kibana/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Kibana">
+          <a href="../cloudnet/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Cloudnet@">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1583,20 +1623,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Kibana
+                Cloudnet@
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../archive/2023/10/" class="md-footer__link md-footer__link--next" aria-label="Next: October 2023">
+          <a href="../project/" class="md-footer__link md-footer__link--next" aria-label="Next: project">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                October 2023
+                project
               </div>
             </div>
             <div class="md-footer__button md-icon">
