@@ -30,6 +30,7 @@ Nginx 설정파일에서 proxy_buffer 부분을 수정합니다
 	proxy_buffers 8 1024k;
 	proxy_busy_buffers_size 1024k;
     ```
+<!-- more -->
 ## 2
 ### 증상
 - Filebeat가 삭제된 로그 파일을 계속 핸들링하고있어 시스템에서 로그가 삭제되었지만 (ls 명령어 사용지 파일이 삭제되어 보이지 않는 상태) lsof 명령으로 확인했을 때 filebeat에서 계속 파일을 물고있어 시스템 용량 확보가 불가능함

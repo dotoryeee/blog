@@ -7,6 +7,7 @@ categories:
   - Python
 ---
 # Naver cloud API 호출 예시
+<!-- more -->
 1. 인스턴스 리스트 확인
     ```python title="API_instanceList.py " linenums="1"
     import requests

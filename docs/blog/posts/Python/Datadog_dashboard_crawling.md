@@ -10,6 +10,7 @@ categories:
 
 ## 목적
 Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하여 dashboard를 직접 긁어 report를 렌더링 하기로 했습니다
+<!-- more -->
 
 ## 방법
 - Python + Selenium 구동을 위한 Docker file 생성
