@@ -1144,7 +1144,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              1 min read
+                              2 min read
                             
                           </span>
                         </div>
@@ -1168,7 +1168,6 @@
 <hr />
 <h2 id="_1">목표</h2>
 <ol>
-<li>IaC를 이용한 EKS cluster 배포</li>
 <li>Kubectl 명령의 흐름</li>
 <li>CSI</li>
 <li>PV/PVC</li>
@@ -1183,11 +1182,22 @@
 <hr />
 <h2 id="_2">실습</h2>
 <ol>
-<li>
-<p>IaC를 이용한 EKS cluster 배포</p>
-</li>
-<li>
-<p>Kubectl 명령의 흐름</p>
+<li>Kubectl 명령의 흐름
+    <img alt="출처:https://devocean.sk.com/blog/techBoardDetail.do?ID=163578" src="../../../../Docker%20%26%20Kubernetes/doik2/EKS-arch.png" /><br>
+    출처: <a href="https://devocean.sk.com/blog/techBoardDetail.do?ID=163578">https://devocean.sk.com/blog/techBoardDetail.do?ID=163578</a><br>
+    AWS EKS cluter 구축 시 Contorl plane은 무조건 AWS에서 관리하는 VPC에 provisioning되며, worker node만 사용자의 VPC에 구성된다.<br>
+    참고: Control plane의 앞단에는 무조건 ALB가 아닌 NLB가 배포된다.
+    <br>
+    클러스터 관리자가 Kubectl을 이용해 베포 명령 시 아래와 같은 순서로 명령어가 전달된다.<br><ol>
+<li>Kubectl은 kubeconfig에 저장된 인증 정보를 로드한다.</li>
+<li>Kubectl명령은 AWS에서 관리하는 NLB에 도달한다.</li>
+<li>NLB 뒷단에 배치된 Control plane의 API Server에 명령이 전달된다.</li>
+<li>API Server는 변경사항을 etcd에 기록합니다.</li>
+<li>controller manager는 변경사항을 감지하고 desired state를 유지하기 위해 각종 컨트롤러(Node, Replication, Endpoint, Service Account, Namespace 등)를 동작시킵니다.</li>
+<li>Scheduler는 새로운 pod가 위치할 적절한 노드를 예약합니다.</li>
+<li>Scheduler가 노드에 pod를 할당하면 kubelet이 감지하고 pod배포를 진행합니다.</li>
+<li>kubelet은 CRI -&gt; container runtime을 이용해 pod배포를 진행합니다.</li>
+</ol>
 </li>
 <li>
 <p>CSI</p>
