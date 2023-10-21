@@ -17,9 +17,9 @@ categories:
 3. PV/PVC
 4. CNI
 5. Sercice
-6. ExternalDNS
-7. CoreDNS
-8. StatefulSet / HeadlessService
+6. Ingress
+7. ExternalDNS
+8. CoreDNS
 <!-- more -->
 
 ---
@@ -43,10 +43,12 @@ categories:
     1. CSI를 사용하는 이유: Kubernetes 프로젝트 소스 코드에 있는 Kubernetes ‘in-tree’ 스토리지 드라이버 드라이버를 대체합니다. [출처](https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/ebs-csi-migration-faq.html)
     2. AWS EKS사용 시 CSI를 사용하는 이유: CSI를 사용하면 EBS, EFS, FSx for Lustre 등 AWS의 다양한 스토리지 서비스를 EKS cluster에 쉽게 통합할 수 있습니다. 또한 pod의 볼륨을 동적으로 provisioning할 수 있습니다.
 3. PV/PVC
-      1. EKS+CSI+PV architecture ![](./doik2/eks-csi-pv.png)<br>
+      1. EKS+CSI+PV architecture 1 ![](./doik2/eks-csi-pv.png)<br>
       출처: https://itnext.io/amazon-eks-add-ons-a-curated-set-of-software-for-managing-your-kubernetes-clusters-bca8f620d55e
-      2. PV: EBS, EFS등 Storage를 클러스터 리소스로 표현한 것입니다. Storage가 어떤 시스템에 위치하고 있는지, 어떻게 접근할 수 있는지, 용량의 크기나 등의 정보를 포함합니다.
-      3. PVC: PV와 PVC는 1:1로 바인딩 할 수 있으며 PV는 실제 스토리지를, PVC는 스토리지 요청 후 수령한 PV를 사용할 수 있는 티켓/토큰으로 비유할 수 있습니다.
+      2. EKS+CSI+PV architecture 2 ![](./doik2/k8s-csi-pv.png)<br>
+      출처: https://www.oreilly.com/library/view/production-kubernetes/9781492092292/ch04.html
+      3. PV: EBS, EFS등 Storage를 클러스터 리소스로 표현한 것입니다. Storage가 어떤 시스템에 위치하고 있는지, 어떻게 접근할 수 있는지, 용량의 크기나 등의 정보를 포함합니다.
+      4. PVC: PV와 PVC는 1:1로 바인딩 할 수 있으며 PV는 실제 스토리지를, PVC는 스토리지 요청 후 수령한 PV를 사용할 수 있는 티켓/토큰으로 비유할 수 있습니다.
 4. CNI
       1. AWS에서 VPC CNI를 제공함으로 EKS는 이를 pod의 네트워크 통신을 지원합니다(동일 노드 내 pod, 다른 노드간의 pod, 외부 트래픽과 pod, AWS 서비스와 pod 등)
       2. pod에 IP를 할당해주는 원리입니다. 이때 VPC CNI의 경우 pod와 worker node의 네트워크 대역이 동일하기 때문에 pod<->worker node간에 별도의 network overlay나 NAT GW없이 직접 통신이 가능합니다.(VPC CIDR의 IP를 pod에 직접 할당)
