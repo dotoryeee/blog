@@ -1618,33 +1618,7 @@
 <li>Locust를 이용한 서버 부하 테스트</li>
 <li>Chaos engineering, OpenTelemetry, pinpoint APM 등등</li>
 </ul>
-<h3 id="structure"><a class="toclink" href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#structure">Structure</a></h3>
-<ul>
-<li>2개의 Backend API Server를 **MSA 아키텍쳐를 적용**해 분리하였습니다.</li>
-<li>각 API Server는 **MVC 패턴**에 따라 코드를 작성하여 유지보수 효율성을 높였고, SQLAlchemy ORM을 사용해 DB로 데이터를 전송합니다.</li>
-</ul>
-<h3 id="todo"><a class="toclink" href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#todo">TODO</a></h3>
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 게시판 글을 담당할 post_server API server 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 댓글을 담당할 comment_server API server 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 시연 가능한 간단한 Frontend page (bootstrap 사용)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Terraform 코드 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> atlantis를 사용한 인프라 CI/CD</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> ElasticSearch 또는 Loki를 이용한 로그 통합 수집</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> AWS EKS에서 comment_server blue/green 배포</li>
-</ul>
-<h3 id="key-features"><a class="toclink" href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#key-features">Key Features</a></h3>
-<ul>
-<li></li>
-</ul>
-<h3 id="results-implications"><a class="toclink" href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#results-implications">Results &amp; Implications</a></h3>
-<ul>
-<li></li>
-</ul>
-<h3 id="conclusion"><a class="toclink" href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#conclusion">Conclusion</a></h3>
-<ul>
-<li></li>
-</ul>
+
     <nav class="md-post__action">
       <a href="../../../../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/">
         Continue reading
@@ -1705,29 +1679,7 @@
 <li>또한 로그를 잘 관리 하더라도 장애발생 시 빠른 대응을 위한 로그 분석 체계는 별개의 문제입니다.</li>
 <li>따라서 장애 발생 전 이상 탐지 시스템 구축을 하거나, 장애 발생 시 빠른 원인 파악을 위한 로그 수집 체계 구성과 분석 방법을 고민해보고자 합니다. </li>
 </ul>
-<h3 id="tech-and-tools"><a class="toclink" href="../../../../../1993/09/17/improve-anomally-detection-with-log/#tech-and-tools">Tech and tools</a></h3>
-<ul>
-<li>ELK와 AWS Athena를 최대한 활용 해보겠습니다</li>
-</ul>
-<h3 id="structure"><a class="toclink" href="../../../../../1993/09/17/improve-anomally-detection-with-log/#structure">Structure</a></h3>
-<ul>
-<li>프로젝트의 전체적인 구조 </li>
-</ul>
-<h3 id="key-features"><a class="toclink" href="../../../../../1993/09/17/improve-anomally-detection-with-log/#key-features">Key Features</a></h3>
-<ul>
-<li>로그 수집: 서비스에서 발생하는 로그를 효과적으로 수집하는 방법</li>
-<li>로그 저장: 수집된 로그를 안전하게 저장하고 검색 가능한 형태로 관리하는 방법</li>
-<li>로그 분석: 저장된 로그를 분석하여 이상 감지 및 장애 원인 파악에 활용하는 방법</li>
-<li>로그 모니터링: 로그 분석 결과를 시각화하여 실시간 모니터링 및 알림 시스템 구축</li>
-</ul>
-<h3 id="results-implications"><a class="toclink" href="../../../../../1993/09/17/improve-anomally-detection-with-log/#results-implications">Results &amp; Implications</a></h3>
-<ul>
-<li>Results and insights</li>
-</ul>
-<h3 id="conclusion"><a class="toclink" href="../../../../../1993/09/17/improve-anomally-detection-with-log/#conclusion">Conclusion</a></h3>
-<ul>
-<li>Message for wrapping up the post</li>
-</ul>
+
     <nav class="md-post__action">
       <a href="../../../../../1993/09/17/improve-anomally-detection-with-log/">
         Continue reading
