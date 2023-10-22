@@ -22,3 +22,4 @@ kubectl cp <pod_name>:/tmp/heapdump.hprof heapdump.hprof
     - format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.
     - file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성
     - 1234: jmap으로 덤프 생성할 PID 입력
+<!-- more -->

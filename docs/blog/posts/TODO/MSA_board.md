@@ -19,7 +19,7 @@ github link: [dotoryeee/MSA_board_app](https://github.com/dotoryeee/MSA_board_ap
 - ELK, EFK, Loki등 중앙화된 로그 관리
 - Locust를 이용한 서버 부하 테스트
 - Chaos engineering, OpenTelemetry, pinpoint APM 등등
-
+<!-- more -->
 ## Structure
 - 2개의 Backend API Server를 **MSA 아키텍쳐를 적용**해 분리하였습니다.
 - 각 API Server는 **MVC 패턴**에 따라 코드를 작성하여 유지보수 효율성을 높였고, SQLAlchemy ORM을 사용해 DB로 데이터를 전송합니다.

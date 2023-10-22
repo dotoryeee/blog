@@ -30,6 +30,7 @@ plugins:
       blog_dir: blog
       post_date_format: medium
       post_excerpt_separator: <!-- more -->
+      post_excerpt: required
       archive_date_format: MMMM yyyy
       post_readtime_words_per_minute: 150
       archive_url_date_format: yyyy/MM

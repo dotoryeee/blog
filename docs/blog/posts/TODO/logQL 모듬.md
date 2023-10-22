@@ -21,6 +21,7 @@ categories:
     ```s
     {app="my-app", environment="production"}
     ```
+<!-- more -->
 3. 문자열이 포함된 로그 검색:
     ```s
     {app="my-app"} |~ "error"
