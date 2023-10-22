@@ -14,6 +14,7 @@ theme:
     primary: deep orange
 
 extra:
+  homepage: https://dotoryeee.github.io
   social:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/gardengarden/
@@ -31,7 +32,7 @@ plugins:
       post_date_format: medium
       post_excerpt_separator: <!-- more -->
       post_excerpt: required
-      archive_date_format: MMMM yyyy
+      archive_date_format: yyyy MMMM
       post_readtime_words_per_minute: 150
       archive_url_date_format: yyyy/MM
       pagination_format: "$link_first $link_previous ~2~ $link_next $link_last"
