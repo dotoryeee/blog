@@ -1219,9 +1219,9 @@
 </li>
 <li>MySQL Cluster(NDB cluster)
     <img alt="NDB-Cluster" src="../../../../Docker%20%26%20Kubernetes/doik2/ndb-cluster.png" /><br> 출처: <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-overview.html">https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-overview.html</a><ol>
-<li>Data Node: 실제 데이터를 저장하며, 여러 대의 Data Node가 분산되어 있어 고가용성과 확장성을 제공합니다.</li>
-<li>SQL Node: 클라이언트의 SQL 요청을 처리하며, 데이터를 Data Node에서 읽고 씁니다.</li>
-<li>Management Node: 클러스터의 구성과 상태를 관리하며, Data Node와 SQL Node의 연결을 조정합니다.</li>
+<li>Data Node: 실제 데이터를 저장하며는 Data node는 여러 노드로 가 분산되어 있어 HA를 제공하고 Scale-Out이 가능하다..</li>
+<li>SQL Node: 클라이언트의 SQL 요청을 처리하며, 데이터를 Data Node에서 읽고 쓴다.</li>
+<li>Management Node: 클러스터의 구성과 상태를 관리하며, Data Node와 SQL Node의 연결을 관리한다.</li>
 </ol>
 </li>
 </ol>
