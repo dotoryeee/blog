@@ -1164,7 +1164,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              3 min read
+                              5 min read
                             
                           </span>
                         </div>
@@ -1189,8 +1189,8 @@
 <h2 id="_1">목차</h2>
 <ol>
 <li>Kubernetes operator</li>
-<li>MySQL 8.0과 InnoDB Cluster</li>
-<li>MySQL Operator for Kubernetes 개념</li>
+<li>MySQL 구성</li>
+<li>MySQL Operator for Kubernetes</li>
 <li>MySQL Operator for Kubernetes 배포</li>
 <li>테스트를 위한 Wordpress 배포</li>
 <li>장애 테스트</li>
@@ -1203,33 +1203,73 @@
 <h2 id="_2">실습</h2>
 <ol>
 <li>Kubernetes Operator<ol>
-<li>Kubernetes(이하 k8s)의 operator는 3가지 요소로 구성되어 있다.</li>
+<li>Kubernetes(이하 k8s)의 operator는 3가지 요소로 구성되어 있다.<br>
+<img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/crd-cd-operator.webp" /><br>출처: <a href="https://betterprogramming.pub/write-tests-for-your-kubernetes-operator-d3d6a9530840">betterprogramming.pub</a></li>
 <li>CRD: Custom Resource Definition<br> operator를 사용하기 위해 먼저 k8s API를 확장하여 새로운 리소스 유형을 정의하는 CRD는 YAML형식의 파일로 새로운 Object의 Scheme를 정의한다.</li>
 <li>CR: Custom Resource<br> 앞서 정의한 CRD를 기반으로 생성할 수 있는 custom object로, 어플리케이션 상태, 구성, metadata를 저장하는데 사용한다. 당연히 YAML이다.</li>
 <li>Operator Controller<br> Operator의 로직을 담고 있는 컴포넌트이고, k8s api server와 직접 통신하여 CR의 상태를 감지하다가 생성, 업데이트, 삭제 등 실제 작업을 수행한다.</li>
 </ol>
 </li>
-<li>MySQL 8.0과 InnoDB Cluster<ol>
-<li>MySQL구성은 Primary-Secondary구조와 Cluster구조를 사용할 수 있다. P-S구조의 경우 읽기에 대한 scale out만 지원하지만, Cluster구조의 경우 읽기와 쓰기 모두 scale out할 수 있다.</li>
+<li>MySQL 구성<ol>
+<li>MySQL구성은 Primary-Secondary구성과 NDB Cluster, InnoDB Cluster를 사용할 수 있다.</li>
 <li>MySQL Primary Secondary replication<ol>
 <li>Primary: 모든 쓰기(INSERT, UPDATE, DELETE) 작업을 처리하고, 데이터 변경이 발생하면 변경사항을 바이너리 로그에 기록한다.</li>
 <li>Secondary: Primary 서버에서 발생한 변경사항을 복제하여 동기화하며, 읽기전용 복제본을 제공함으로써 읽기 작업에 대한 부하를 분산시켜준다.</li>
 <li>replication: Primary의 바이너리 로그에서 변경사항을 읽고 Secondary 이를 재실행하여 데이터를 동기화한다.</li>
 </ol>
 </li>
-<li>MySQL Cluster(NDB cluster)
-    <img alt="NDB-Cluster" src="../../../../Docker%20%26%20Kubernetes/doik2/ndb-cluster.png" /><br> 출처: <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-overview.html">https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-overview.html</a><ol>
-<li>Data Node: 실제 데이터를 저장하며는 Data node는 여러 노드로 가 분산되어 있어 HA를 제공하고 Scale-Out이 가능하다..</li>
+<li>MySQL NDB Cluster
+    <img alt="NDB-Cluster" src="../../../../Docker%20%26%20Kubernetes/doik2/ndb-cluster.png" /><br> 출처: <a href="https://dev.mysql.com/doc/refman/8.0/en/mysql-cluster-overview.html">dev.mysql.com</a><ol>
+<li>구성요소<ol>
+<li>Data Node: 실제 데이터를 저장하며는 Data node는 여러 노드로 분산되어 있어 HA를 제공하고 Scale-Out이 가능하다.</li>
 <li>SQL Node: 클라이언트의 SQL 요청을 처리하며, 데이터를 Data Node에서 읽고 쓴다.</li>
-<li>Management Node: 클러스터의 구성과 상태를 관리하며, Data Node와 SQL Node의 연결을 관리한다.</li>
+<li>Management Node: 클러스터의 구성과 상태를 관리하며, Data Node와 SQL Node의 연결을 관리한다</li>
+</ol>
+</li>
+<li>특징<ol>
+<li>NDB Cluster는 빠른 읽기/쓰기와 Scaling 용이성에 초점을 맞추고 있다.</li>
+<li>NDB (Network Database) 스토리지 엔진을 사용한다.</li>
+<li>데이터는 여러 Data Node에 자동으로 분산되어 저장된다.</li>
+<li>데이터는 주로 메모리에 저장되며, 디스크에도 백업된다.</li>
+<li>메모리 기반 스토리지와 데이터 분산으로 인해 높은 읽기/쓰기 성능을 제공한다.</li>
+<li>데이터는 자동으로 샤딩되어 여러 노드에 분산된다.</li>
+<li>NDB Cluster의 설정과 관리는 복잡하다.</li>
 </ol>
 </li>
 </ol>
 </li>
-<li>MySQL Operator for Kubernetes 개념
-    <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/mysql-operator-architecture.jpg" /><br>MySQL with k8s operator (cluster)기본 구조 / 출처: <a href="https://ronekins.com/2021/08/31/getting-started-with-the-oracle-mysql-kubernetes-operator-and-portworx/">링크</a>
-    <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/mysql-operator-architecture-2.png" /><br>MySQL with k8s operator (Primary-Secondary)상세 구조 / 출처: <a href="https://dev.mysql.com/doc/mysql-operator/en/mysql-operator-introduction.html">링크</a><ol>
-<li></li>
+<li>MySQL InnoDB Cluster
+    <img alt="InnoDB-cluster" src="../../../../Docker%20%26%20Kubernetes/doik2/mysql-operator-architecture-2.png" /><br>MySQL with k8s operator (Primary-Secondary)상세 구조 / 출처: <a href="https://dev.mysql.com/doc/mysql-operator/en/mysql-operator-introduction.html">dev.mysql.com</a><ol>
+<li>구성요소<ol>
+<li>MySQL Server Pod: InnoDB storage engine을 사용하는 MySQL pod는 서로 데이터를 복제하고 클라이언트의 읽기와 쓰기 요청을 처리한다.</li>
+<li>Group Replication: MySQL Group Replication은 MySQL pod들 사이에서 데이터를 동기화하는 역할을 수행하고 데이터의 일관성과 가용성을 유지하며 특정 pod가 실패하더라도 클러스터가 동작할 수 있게 유지한다.</li>
+<li>MySQL Router: 클라이언트 요청을 적절한 MySQL pod로 라우팅하는 역할을 하여 read request를 로드 밸런싱하고 write request를 적절한 pod 전달하여 클러스터의 가용성을 향상시킨다.</li>
+<li>MySQL Shell: 클러스터의 구성과 관리를 수행하는 도구로 사용자는 MySQL Shell을 통해 클러스터의 상태를 모니터링 및 구성 변경을 수행할 수 있다.</li>
+</ol>
+</li>
+<li>특징<ol>
+<li>InnoDB Cluster는 쉬운 설정과 높은 데이터 일관성에 초점을 맞추고 있다.</li>
+<li>InnoDB 스토리지 엔진을 사용한다.</li>
+<li>데이터는 MySQL Group Replication을 통해 서버 인스턴스(pod)간에 복제된다.</li>
+<li>데이터는 주로 디스크에 저장된다.</li>
+<li>동기식 복제와 트랜잭션 일관성을 통해 높은 데이터 일관성을 제공한다.</li>
+<li>InnoDB Cluster는 설정과 관리가 간편하다.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>MySQL Operator for Kubernetes
+    <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/mysql-operator-architecture.jpg" /><br>MySQL with k8s operator / 출처: <a href="https://ronekins.com/2021/08/31/getting-started-with-the-oracle-mysql-kubernetes-operator-and-portworx/">ronekins.com</a><ol>
+<li>k8s에 MySQL cluster배포 시 operator를 사용하는 이유<ol>
+<li>복잡한 MySQL Cluster 구성을 간편하게 YAML 파일로 정의 하고 kubectl apply 명령으로 "쉽게 배포할 수 있다".</li>
+<li>Cluster의 Life cycle를 관리하며 백업, 복구, 업그레이드, 스케일링과 같은 "운영 작업을 자동화"한다.</li>
+<li>Node가 실패했을 때 자동으로 복구하고 필요에 따라 새 인스턴스를 생성하여 "서비스의 중단을 최소화"한다.(고가용성 확보)</li>
+<li>Cluster의 상태를 모니터링하고, 문제가 발생하면 "자동으로 복구 작업을 수행"할 수 있다.</li>
+<li>Cluster에 Node를 추가하거나 제거하는 작업을 자동화하여 "scaling을 쉽게 진행"할 수 있다.</li>
+</ol>
+</li>
 </ol>
 </li>
 <li>MySQL Operator for Kubernetes 배포</li>
