@@ -12,7 +12,7 @@ categories:
 # Database on Kubernetes study / Week 2
 ---
 !!! Warning ""
-    스터디 커리큘럼, 강의 및 스크립트를 [Cloudnet@](http://gasidaseo.notion.site/gasidaseo/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863)팀의 가시다님께서 제공해주셨습니다.항상 감사드립니다.
+    스터디 커리큘럼, 강의 및 스크립트를 [Cloudnet@](http://gasidaseo.notion.site/gasidaseo/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863)팀의 가시다님께서 제공해주셨습니다. 항상 감사드립니다.
 
 ## 목차
 1. Kubernetes operator
@@ -178,7 +178,10 @@ e.yml` 를 수행했다<br>
 kubectl get statefulset -n mysql-cluster
 kubectl rollout restart statefulset mycluster -n mysql-cluster
 ```
-pod 강제 재배포 해도 실패<br>진짜 모르겠다
+pod 강제 재배포 해도 실패<br>
+진짜 모르겠다<br>
+![](./doik2/Screenshot%202023-10-29%20at%2019.15.54.png)
+2023.10.29기준 MySQL Operator의 GA버전 2.0.12는 MySQL 8.0.35부터 대응인데 oracle container hub에는 8.0.34밖에 없다.(8.0.35가 삭제됨) 2.1.1은 8.2.0~ 대응인데 얘도 없다. 이럴때 어떻게 해야하는지 아직 방법을 못 찾아서 아래 실습은 현재 보류 상태이다.<br>
 
 ```sh
 ## 이벤트 확인
