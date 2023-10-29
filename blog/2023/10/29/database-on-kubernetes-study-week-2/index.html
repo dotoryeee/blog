@@ -832,26 +832,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../category/kibana/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Kibana
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../../category/java/" class="md-nav__link">
         
   
@@ -897,6 +877,26 @@
   
   <span class="md-ellipsis">
     httpd
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kibana/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kibana
   </span>
   
 
@@ -1405,7 +1405,7 @@
 <h1 id="database-on-kubernetes-study-week-2">Database on Kubernetes study / Week 2</h1>
 <hr />
 <div class="admonition warning">
-<p>스터디 커리큘럼, 강의 및 스크립트를 <a href="http://gasidaseo.notion.site/gasidaseo/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863">Cloudnet@</a>팀의 가시다님께서 제공해주셨습니다.항상 감사드립니다.</p>
+<p>스터디 커리큘럼, 강의 및 스크립트를 <a href="http://gasidaseo.notion.site/gasidaseo/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863">Cloudnet@</a>팀의 가시다님께서 제공해주셨습니다. 항상 감사드립니다.</p>
 </div>
 <h2 id="_1">목차</h2>
 <ol>
@@ -1580,7 +1580,10 @@ e.yml</code> 를 수행했다<br>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>statefulset<span class="w"> </span>-n<span class="w"> </span>mysql-cluster
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>restart<span class="w"> </span>statefulset<span class="w"> </span>mycluster<span class="w"> </span>-n<span class="w"> </span>mysql-cluster
 </code></pre></div>
-pod 강제 재배포 해도 실패<br>진짜 모르겠다</p>
+pod 강제 재배포 해도 실패<br>
+진짜 모르겠다<br>
+<img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/Screenshot%202023-10-29%20at%2019.15.54.png" />
+2023.10.29기준 MySQL Operator의 GA버전 2.0.12는 MySQL 8.0.35부터 대응인데 oracle container hub에는 8.0.34밖에 없다.(8.0.35가 삭제됨) 2.1.1은 8.2.0~ 대응인데 얘도 없다. 이럴때 어떻게 해야하는지 아직 방법을 못 찾아서 아래 실습은 현재 보류 상태이다.<br></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">## 이벤트 확인</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>innodbcluster<span class="w"> </span>-n<span class="w"> </span>mysql-cluster<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Events:<span class="w"> </span>-A30
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>...<span class="o">(</span>생략<span class="o">)</span>...
