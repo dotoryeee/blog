@@ -182,17 +182,20 @@ pod 강제 재배포 해도 실패<br>
 진짜 모르겠다<br>
 ![](./doik2/Screenshot%202023-10-29%20at%2019.15.54.png)
 2023.10.29기준 MySQL Operator의 GA버전 2.0.12는 MySQL 8.0.35부터 대응인데 oracle container hub에는 8.0.34밖에 없다.(8.0.35가 삭제됨) 2.1.1은 8.2.0~ 대응인데 얘도 없다. 이럴때 어떻게 해야하는지 아직 방법을 못 찾아서 아래 실습은 현재 보류 상태이다.<br>
+![](./doik2/Screenshot%202023-10-29%20at%2019.26.15.png)<br>
+필요한 8.0.35, 8.2.0 빼고 다 있다..
+
 
 ```sh
 ## 이벤트 확인
 kubectl describe innodbcluster -n mysql-cluster | grep Events: -A30
-...(생략)...
+
 
 ## MySQL InnoDB Cluster 초기 설정 확인
 kubectl get configmap -n mysql-cluster mycluster-initconf -o json | jq -r '.data["my.cnf.in"]'
 kubectl get configmap -n mysql-cluster mycluster-initconf -o yaml | yh
 kubectl describe configmap -n mysql-cluster mycluster-initconf
-...(생략)...
+
 01-group_replication.cnf:
 ----
 # GR and replication related options
@@ -203,7 +206,7 @@ enforce_gtid_consistency=ON
 gtid_mode=ON                    # 그룹 복제 모드 사용을 위해서 GTID 활성화
 relay_log_info_repository=TABLE # 복제 메타데이터는 데이터 일관성을 위해 릴레이로그를 파일이 아닌 테이블에 저장
 skip_slave_start=1
-...(생략)...
+
 
 99-extra.cnf:
 ----
@@ -212,7 +215,7 @@ skip_slave_start=1
 [mysqld]
 max_connections=300            # max_connections default 기본값은 151
 default_authentication_plugin=mysql_native_password
-...(생략)...
+
 
 ## 서버인스턴스 확인(스테이트풀셋) : 3개의 노드에 각각 파드 생성 확인, 사이드카 컨테이너 배포
 kubectl get sts -n mysql-cluster; echo; kubectl get pod -n mysql-cluster -l app.kubernetes.io/component=database -owide
@@ -227,7 +230,7 @@ kubectl get pvc,pv -n mysql-cluster
 
 ## 서버인스턴스 각각 접속을 위한 헤드리스 Headless 서비스 확인
 kubectl describe svc -n mysql-cluster mycluster-instances
-...(생략)...
+
 
 kubectl get svc,ep -n mysql-cluster mycluster-instances
 NAME                  TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                        AGE
@@ -270,7 +273,7 @@ dig mycluster-instances.mysql-cluster.svc.cluster.local +short
 
 # MySQL 서버(파드)마다 고유한 SRV 레코드가 있고, 해당 도메인 주소로 접속 시 MySQL 라우터를 경유하지 않고 지정된 MySQL 서버(파드)로 접속됨
 dig mycluster-instances.mysql-cluster.svc.cluster.local SRV
-..(생략)...
+
 ;; ADDITIONAL SECTION:
 mycluster-2.mycluster-instances.mysql-cluster.svc.cluster.local. 30 IN A 172.16.1.11
 mycluster-0.mycluster-instances.mysql-cluster.svc.cluster.local. 30 IN A 172.16.3.14
@@ -289,7 +292,7 @@ MDB3=mycluster-2.mycluster-instances.mysql-cluster.svc.cluster.local
 # MySQL 라우터를 통한 MySQL 파드 접속
 #kubectl exec -it -n mysql-operator deploy/mysql-operator -- mysqlsh mysqlx://root@$MIC --password=sakila
 kubectl exec -it -n mysql-operator deploy/mysql-operator -- mysqlsh mysqlx://root@$MIC --password=sakila --sqlx --execute='show databases;'
-...(생략)...
+
 
 kubectl exec -it -n mysql-operator deploy/mysql-operator -- mysqlsh mysqlx://root@$MIC --password=sakila --sqlx --execute="SHOW VARIABLES LIKE 'max_connections';"
 Variable_name	Value
@@ -616,7 +619,7 @@ exit
 # mysqlrouter 설정 확인
 kubectl exec -it -n mysql-cluster deploy/mycluster-router -- mysqlrouter --help
 kubectl exec -it -n mysql-cluster deploy/mycluster-router -- cat /tmp/mysqlrouter/mysqlrouter.conf
-...(생략)...
+
 
 # 메타데이터 캐시 정보 확인
 kubectl exec -it -n mysql-cluster deploy/mycluster-router -- cat /tmp/mysqlrouter/data/state.json | jq
@@ -1033,7 +1036,7 @@ mycluster-schedule-inline220513171002
 ...
 
 sshpass -p "Pa55W0rd" ssh -o StrictHostKeyChecking=no root@$BNODE tree $BPATH
-...(생략)...
+
 └── mycluster-schedule-inline220513172502
     ├── @.done.json
     ├── @.json
@@ -1054,5 +1057,4 @@ sshpass -p "Pa55W0rd" ssh -o StrictHostKeyChecking=no root@$BNODE tree $BPATH
     ├── mysql_innodb_cluster_metadata@clusters.sql
     ├── mysql_innodb_cluster_metadata@clusters@@0.tsv.zst
     ├── mysql_innodb_cluster_metadata@clusters@@0.tsv.zst.idx
-...(생략)...
 ```
