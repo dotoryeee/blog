@@ -1564,7 +1564,7 @@ operator도 로그를 확인해본다
 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/2023-10-29%2011%2005%2040.png" /><br>
 <code>kubectl describe pod mycluster-0 -n mysql-cluster</code> 명령 결과 PV 바인딩이 제대로 동작하지 않는것을 확인했다.<br>
 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/2023-10-29%2011%2006%2052.png" /><br>
-PV가 30분 넘게 pending 상태이다😥. 보안 설정 문제일 수 있어서 다른 AWS 계정을 사용해보기로 했다.<br>
+PV가 30분 넘게 pending 상태이다😥. 직접 만든 Terraform으로 EKS cluster구성했더니 EBS CSI driver를 빼먹을 것 같다.<br>
 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/2023-10-29%2013%2044%2058.png" /><br>
 PV에러를 해결했더니 이번엔 image pulling이 안된다<br>
 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/2023-10-29%2013%2048%2039.png" />
