@@ -161,7 +161,24 @@ operator도 로그를 확인해본다
 ![](./doik2/2023-10-29%2011%2005%2040.png)<br>
 `kubectl describe pod mycluster-0 -n mysql-cluster` 명령 결과 PV 바인딩이 제대로 동작하지 않는것을 확인했다.<br>
 ![](./doik2/2023-10-29%2011%2006%2052.png)<br>
-PV가 30분 넘게 pending 상태이다😥. SCP정책에 걸린 것 같아 다른 AWS 계정을 사용해보기로 했다.<br>
+PV가 30분 넘게 pending 상태이다😥. 직접 만든 Terraform으로 EKS cluster구성했더니 EBS CSI driver를 빼먹은것 같다.<br>
+![](./doik2/2023-10-29%2013%2044%2058.png)<br>
+PV에러를 해결했더니 이번엔 image pulling이 안된다<br>
+![](./doik2/2023-10-29%2013%2048%2039.png)
+![](./doik2/2023-10-29%2013%2052%2000.png)<br>
+`k describe pod mycluster-0 -n mysql-cluster` 명령 수행 결과 이미지를 못 찾겠다는데 실제로 `docker pull`도 실패한다<br>
+![](./doik2/2023-10-29%2014%2008%2029.png)<br>
+[Oracle container hub](https://container-registry.oracle.com/ords/f?p=113:4:111439022752743:::4:P4_REPOSITORY,AI_REPOSITORY,AI_REPOSITORY_NAME,P4_REPOSITORY_NAME,P4_EULA_ID,P4_BUSINESS_AREA_ID:2,2,MySQL%20Server%20Community%20Edition,MySQL%20Server%20Community%20Edition,1,0&cs=39esljoUprhqfUADNSLAMeUExw_foR8LpWwgH9hjAo-8oIHWCQNyCDn1tYmQvNlGbHila0NjPeGuOLXa9lL6ozw)에서 확인 했더니 8.0.35가 없다고 뜨는데 이유는 모르겠고
+![](./doik2/2023-10-29%2014%2014%2011.png)
+![](./doik2/2023-10-29%2014%2015%2033.png)<br>
+따라서 override파일 작성 후 -> `helm repo update` -> ` helm upgrade mycluster mysql-operator/mysql-innodbcluster --namespace mysql-cluster --version 2.0.12 -f mycnf-values.yaml -f overrid
+e.yml` 를 수행했다<br>
+![](./doik2/2023-10-29%2014%2019%2024.png)<br>
+```sh
+kubectl get statefulset -n mysql-cluster
+kubectl rollout restart statefulset mycluster -n mysql-cluster
+```
+pod 강제 재배포 해도 실패<br>진짜 모르겠다
 
 ```sh
 ## 이벤트 확인
