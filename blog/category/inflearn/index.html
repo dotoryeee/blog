@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../project/">
+        <link rel="prev" href="../kubernetes/">
       
       
-        <link rel="next" href="../docker/">
+        <link rel="next" href="../study/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>AWS - dotoryeee's blog</title>
+        <title>inflearn - dotoryeee's blog</title>
       
     
     
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aws" class="md-skip">
+        <a href="#inflearn" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWS
+              inflearn
             
           </span>
         </div>
@@ -468,9 +468,18 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../inflearn/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -479,6 +488,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -608,18 +618,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../aws/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -628,7 +629,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1124,7 +1124,7 @@
   <div class="md-content" data-md-component="content">
     <div class="md-content__inner">
       <header class="md-typeset">
-        <h1 id="aws">AWS</h1>
+        <h1 id="inflearn">inflearn</h1>
       </header>
       
         <article class="md-post md-post--excerpt">
@@ -1141,267 +1141,42 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+          <time datetime="2023-11-11 00:00:00">Nov 11, 2023</time></li>
         
           <li class="md-meta__item">
             in
             
-              <a href="./" class="md-meta__link">AWS</a></li>
+              <a href="../kubernetes/" class="md-meta__link">kubernetes</a>, 
+              <a href="./" class="md-meta__link">inflearn</a>, 
+              <a href="../study/" class="md-meta__link">study</a></li>
         
         
           
           <li class="md-meta__item">
             
-              9 min read
+              1 min read
             
           </li>
         
       </ul>
       
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="3-tier"><a class="toclink" href="../../1993/09/17/3-tier/">3-Tier 기본 인프라 구성</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/3-tier/#_1">개념도</a></h3>
-<hr />
-<p><img alt="3-Tier Basic Infra/Untitled.png" src="../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled.png" /></p>
-<h3 id="todo"><a class="toclink" href="../../1993/09/17/3-tier/#todo">TODO</a></h3>
-<hr />
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
-</ul>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/3-tier/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
+        <span class="md-draft">
+          Draft
+        </span>
       
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="api-gateway-with-lambda"><a class="toclink" href="../../1993/09/17/api-gateway-with-lambda/">API Gateway with Lambda</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/api-gateway-with-lambda/#_1">목적</a></h3>
+    <h2 id="_1"><a class="toclink" href="../../2023/11/11/">쿠버네티스 어나더 클래스 (지상편) 정리</a></h2>
+<h3 id="1"><a class="toclink" href="../../2023/11/11/#1">1</a></h3>
 <hr />
-<ul>
-<li>API Gateway의 기초적인 사용법 확인</li>
-<li>API Gateway에 Lambda를 연결하여 동작 확인</li>
-<li>HTTP GET Parameter(매개변수) 전송과 응답 확인</li>
-<li>두 개의 Lambda Function을 생성하여 Root·Resource Page에 각각 적용하기</li>
-</ul>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/api-gateway-with-lambda/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="access-s3-dynamodb-with-lambda"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/">Access S3, DynamoDB with Lambda</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>AWS Lambda를 이용해 AWS S3, DynamoDB 이벤트에 반응하기</li>
-<li>Test Event 사용해서 효율성 높이기</li>
-</ul>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/access-s3-dynamodb-with-lambda/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="s3-object-encryption"><a class="toclink" href="../../1993/09/17/s3-object-encryption/">S3 object encryption</a></h2>
 <ol>
-<li>2023년 1월 5일 이후 업로드 되는 모든 오브젝트는 자동으로 암호화된다(SSE-S3) <a href="https://aws.amazon.com/ko/about-aws/whats-new/2023/01/amazon-s3-automatically-encrypts-new-objects/">관련정보</a></li>
-<li>S3 암호화 방식은 총 3가지가 존재한다<ul>
-<li>SSE-S3 (Server-Side Encryption with Amazon S3): AWS에서 키를 관리한다. 암호화 키 소유권은 AWS S3에 있다.</li>
-<li>SSE-C (Server-Side Encryption with Customer-Provided Keys): 고객이 제공하는 암호화 키를 사용해 데이터를 암호화 한다. 암호화키는 암호화 및 복호와에 모두 사용된다(대칭키)</li>
-<li>SSE-KMS (Server-Side Encryption with AWS Key Management Service): KMS 마스터키는 AWS KMS 서비스에서 관리된다. 암호화 키의 소유권이 고객에게 있다.</li>
-</ul>
-</li>
-<li>암호화 방식에 따라 오브젝트 업로드 명령 옵션이 상이하다<ul>
-<li>SSE-S3 (default)<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;
-</code></pre></div></li>
-<li>SSE-C<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse-c-key<span class="w"> </span>&lt;encryption-key&gt;
-</code></pre></div></li>
-<li>SSE-KMS<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse<span class="w"> </span>aws:kms<span class="w"> </span>--sse-kms-key-id
-</code></pre></div></li>
-</ul>
-</li>
+<li><a href="https://inf.run/Nmdvx">인프런 강의</a>를 듣고 복습을 위한 정리</li>
+<li></li>
 </ol>
 
     <nav class="md-post__action">
-      <a href="../../1993/09/17/s3-object-encryption/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="./" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="vpc-endpoint-with-role"><a class="toclink" href="../../1993/09/17/vpc-endpoint-with-role/">VPC Endpoint with Role</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/vpc-endpoint-with-role/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>Bastion Host를 이용한 Private Network의 웹 서버 접속</li>
-<li>Endpoint를 이용해 게이트웨이 없이 VPC에서 S3, DynamoDB 접속</li>
-<li>Credential이 아닌 Role을 이용한 권한적용으로 보안성 확보</li>
-</ul>
-<h3 id="_2"><a class="toclink" href="../../1993/09/17/vpc-endpoint-with-role/#_2">구성도</a></h3>
-<hr />
-<p><img alt="VPC Endpoint with Role/Untitled.png" src="../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/Untitled.png" /></p>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/vpc-endpoint-with-role/">
+      <a href="../../2023/11/11/">
         Continue reading
       </a>
     </nav>
@@ -1440,7 +1215,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../project/" class="md-footer__link md-footer__link--prev" aria-label="Previous: project">
+          <a href="../kubernetes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: kubernetes">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1450,20 +1225,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                project
+                kubernetes
               </div>
             </div>
           </a>
         
         
           
-          <a href="../docker/" class="md-footer__link md-footer__link--next" aria-label="Next: docker">
+          <a href="../study/" class="md-footer__link md-footer__link--next" aria-label="Next: study">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                docker
+                study
               </div>
             </div>
             <div class="md-footer__button md-icon">
