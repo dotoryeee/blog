@@ -95,21 +95,120 @@ sequenceDiagram
     마스터노드->>+사용자: 최종 결과 반환
 ```
 ## Execution Orchestrator
+```mermaid
+graph LR
+    오케스트레이터(Orchestrator) --> 작업1(Task 1)
+    작업1 --> 오케스트레이터
+    오케스트레이터 --> 작업2(Task 2)
+    작업2 --> 오케스트레이터
+    오케스트레이터 --> 작업3(Task 3)
+    작업3 --> 오케스트레이터
+    오케스트레이터 --> |"결과 집합"| 최종결과(Final Result)
+
+```
 ## Choreography
+```mermaid
+graph LR
+    서비스1(Service 1) --> 서비스2(Service 2)
+    서비스2 --> 서비스3(Service 3)
+    서비스3 --> 서비스4(Service 4)
+    서비스4 --> |"결과 집합"| 최종결과(Final Result)
+
+```
 ## Map Reduce
+```mermaid
+graph TD
+    데이터셋(Data Set) --> |"매핑"| 매퍼1(Map 1)
+    데이터셋 --> |"매핑"| 매퍼2(Map 2)
+    데이터셋 --> |"매핑"| 매퍼N(Map N)
+    매퍼1 --> |"키-값 쌍"| 리듀서1(Reduce 1)
+    매퍼2 --> |"키-값 쌍"| 리듀서1
+    매퍼N --> |"키-값 쌍"| 리듀서1
+    리듀서1 --> |"결과 집합"| 최종결과(Final Result)
+
+```
 ## Saga
+```mermaid
+graph LR
+    트랜잭션1(Transaction 1) --> |"이벤트 A"| 트랜잭션2(Transaction 2)
+    트랜잭션2 --> |"이벤트 B"| 트랜잭션3(Transaction 3)
+    트랜잭션3 --> |"이벤트 C"| 트랜잭션4(Transaction 4)
+    트랜잭션4 --> |"이벤트 D"| 최종결과(Final Result)
+
+```
 ## Transactional Outbox
+```mermaid
+graph LR
+    서비스 --> |"데이터 변경"| 데이터베이스
+    데이터베이스 --> |"변경 이벤트 기록"| 아웃박스
+    아웃박스 --> |"이벤트 전파"| 이벤트프로세서
+    이벤트프로세서 --> |"이벤트 전송"| 메시지브로커
+
+```
 ## Materialized View
+```mermaid
+graph LR
+    데이터소스 --> |"변경 데이터 읽기"| 뷰업데이터
+    뷰업데이터 --> |"뷰 갱신"| MaterializedView
+
+```
 ## CQRS
+```mermaid
+graph LR
+    커맨드 --> |"쓰기 작업"| 쓰기모델
+    쿼리 --> |"읽기 작업"| 읽기모델
+
+```
 ## CQRS + Materialized View
+```mermaid
+graph LR
+    커맨드 --> |"쓰기 작업"| 쓰기모델
+    쓰기모델 --> |"변경 이벤트"| 이벤트핸들러
+    이벤트핸들러 --> |"뷰 갱신"| MaterializedView
+    쿼리 --> |"읽기 작업"| MaterializedView
+
+```
 ## SideCar & Ambassador
+```mermaid
+
+```
 ## Anti-Corruption Adaptor
+```mermaid
+
+```
 ## BFF(Backend For Frontend)
+```mermaid
+
+```
 ## Throttling and Rate Limiting
+```mermaid
+
+```
 ## Retry
+```mermaid
+
+```
 ## Circuit Braker
+```mermaid
+
+```
 ## DLQ(Dead Letter Queue)
+```mermaid
+
+```
 ## Rolling Deployment
+```mermaid
+
+```
 ## Blue-Green Deployment
+```mermaid
+
+```
 ## Canary Release, A/B test deployment
+```mermaid
+
+```
 ## Chaos Engineering
+```mermaid
+
+```
