@@ -49,6 +49,14 @@ graph LR
     큐2 --> 필터3(Filter 3)
     필터3 --> 데이터베이스(Database)
 
+    style 백엔드서비스 fill:#f9f,stroke:#333,stroke-width:2px
+    style 필터1 fill:#ff9,stroke:#333,stroke-width:2px
+    style 필터2 fill:#ff9,stroke:#333,stroke-width:2px
+    style 필터3 fill:#ff9,stroke:#333,stroke-width:2px
+    style 큐1 fill:#9cf,stroke:#333,stroke-width:2px
+    style 큐2 fill:#9cf,stroke:#333,stroke-width:2px
+    style 데이터베이스 fill:#f96,stroke:#333,stroke-width:2px
+
 ```
 
 입력으로부터 결과물을 산출해내는 과정에 여러 처리 과정들이 포함되는 개념.<br> 데이터 핸들링의 ETL이나 로그수집의 ELK스택의 Logstash에서 많이 본 패턴이고 강의에서는 콘텐츠 provider가 제공한 video source를 다양한 format과 resolution으로 인코딩 후 chunk를 분리하여 고객의 네트워크 회선 상태에 따라 적합한 resolution의 video를 제공하는 예시를 알려준다.
@@ -75,7 +83,7 @@ graph LR
 
 
 
-### Sequence
+### Sequence Diagram
 ``` mermaid 
 sequenceDiagram
     participant 사용자
@@ -97,43 +105,109 @@ sequenceDiagram
 ## Execution Orchestrator
 ```mermaid
 graph LR
-    오케스트레이터(Orchestrator) --> 작업1(Task 1)
-    작업1 --> 오케스트레이터
-    오케스트레이터 --> 작업2(Task 2)
-    작업2 --> 오케스트레이터
-    오케스트레이터 --> 작업3(Task 3)
-    작업3 --> 오케스트레이터
-    오케스트레이터 --> |"결과 집합"| 최종결과(Final Result)
+    orc(Orchestrator) --> 작업1(Task 1)
+    작업1 --> orc
+    orc --> 작업2(Task 2)
+    작업2 --> orc
+    orc --> 작업3(Task 3)
+    작업3 --> orc
+    orc --> |"결과 반환"| r(Final Result)
+
+    style orc fill:#46bdc6,stroke:#333,stroke-width:2px
+    style 작업1 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style 작업2 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style 작업3 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style r fill:#ff9f9b,stroke:#333,stroke-width:2px
 
 ```
 ## Choreography
 ```mermaid
 graph LR
-    서비스1(Service 1) --> 서비스2(Service 2)
-    서비스2 --> 서비스3(Service 3)
-    서비스3 --> 서비스4(Service 4)
-    서비스4 --> |"결과 집합"| 최종결과(Final Result)
+    서비스A(Service A) --> |"이벤트 A 발행"| 이벤트허브(Event Hub)
+    이벤트허브 --> |"이벤트 A 구독"| 서비스B(Service B)
+    서비스B --> |"이벤트 B 발행"| 이벤트허브
+    이벤트허브 --> |"이벤트 B 구독"| 서비스C(Service C)
+    서비스C --> |"이벤트 C 발행"| 이벤트허브
+    이벤트허브 --> |"이벤트 C 구독"| 서비스D(Service D)
+
+    style 서비스A fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 서비스B fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 서비스C fill:#32cd32,stroke:#333,stroke-width:2px
+    style 서비스D fill:#20b2aa,stroke:#333,stroke-width:2px
+    style 이벤트허브 fill:#ffdead,stroke:#333,stroke-width:2px
 
 ```
 ## Map Reduce
+### Flow Graph
 ```mermaid
 graph TD
     데이터셋(Data Set) --> |"매핑"| 매퍼1(Map 1)
     데이터셋 --> |"매핑"| 매퍼2(Map 2)
     데이터셋 --> |"매핑"| 매퍼N(Map N)
     매퍼1 --> |"키-값 쌍"| 리듀서1(Reduce 1)
-    매퍼2 --> |"키-값 쌍"| 리듀서1
-    매퍼N --> |"키-값 쌍"| 리듀서1
-    리듀서1 --> |"결과 집합"| 최종결과(Final Result)
+    매퍼2 --> |"키-값 쌍"| 리듀서2(Reduce 2)
+    매퍼N --> |"키-값 쌍"| 리듀서N(Reduce N)
+    리듀서1 --> |"결과 집합"| 최종결과1(Final Result 1)
+    리듀서2 --> |"결과 집합"| 최종결과2(Final Result 2)
+    리듀서N --> |"결과 집합"| 최종결과N(Final Result N)
+
+    style 데이터셋 fill:#f96,stroke:#333,stroke-width:2px
+    style 매퍼1 fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 매퍼2 fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 매퍼N fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 리듀서1 fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 리듀서2 fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 리듀서N fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 최종결과1 fill:#32cd32,stroke:#333,stroke-width:2px
+    style 최종결과2 fill:#32cd32,stroke:#333,stroke-width:2px
+    style 최종결과N fill:#32cd32,stroke:#333,stroke-width:2px
 
 ```
+### Sequence Diagram
+``` mermaid
+sequenceDiagram
+    participant Client as Client
+    participant HDFS as Hadoop Distributed File System (HDFS)
+    participant Map as Map Tasks
+    participant Shuffle as Shuffle and Sort
+    participant Reduce as Reduce Tasks
+
+    Client->>+HDFS: Input Data Upload
+    HDFS->>+Map: Distribute Data
+    Map-->>-Shuffle: Emit Key-Value Pairs
+    Shuffle->>+Reduce: Group by Key
+    Reduce-->>-HDFS: Write Output
+
+```
+
 ## Saga
 ```mermaid
-graph LR
-    트랜잭션1(Transaction 1) --> |"이벤트 A"| 트랜잭션2(Transaction 2)
-    트랜잭션2 --> |"이벤트 B"| 트랜잭션3(Transaction 3)
-    트랜잭션3 --> |"이벤트 C"| 트랜잭션4(Transaction 4)
-    트랜잭션4 --> |"이벤트 D"| 최종결과(Final Result)
+graph TB
+    시작(Start) --> 트랜잭션1(Transaction 1)
+    트랜잭션1 --> |"이벤트 A 성공"| 트랜잭션2(Transaction 2)
+    트랜잭션1 --> |"이벤트 A 실패"| 컴펜세이션1(Compensation 1)
+    트랜잭션2 --> |"이벤트 B 성공"| 트랜잭션3(Transaction 3)
+    트랜잭션2 --> |"이벤트 B 실패"| 컴펜세이션2(Compensation 2)
+    트랜잭션3 --> |"이벤트 C 성공"| 트랜잭션4(Transaction 4)
+    트랜잭션3 --> |"이벤트 C 실패"| 컴펜세이션3(Compensation 3)
+    트랜잭션4 --> |"이벤트 D 성공"| 최종결과(Final Result)
+    트랜잭션4 --> |"이벤트 D 실패"| 컴펜세이션4(Compensation 4)
+    컴펜세이션4 --> 컴펜세이션3
+    컴펜세이션3 --> 컴펜세이션2
+    컴펜세이션2 --> 컴펜세이션1
+    컴펜세이션1 --> 끝(End)
+
+    style 시작 fill:#f9f,stroke:#333,stroke-width:2px
+    style 트랜잭션1 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션2 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션3 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션4 fill:#ff9,stroke:#333,stroke-width:2px
+    style 최종결과 fill:#9cf,stroke:#333,stroke-width:2px
+    style 컴펜세이션1 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션2 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션3 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션4 fill:#f99,stroke:#333,stroke-width:2px
+    style 끝 fill:#f9f,stroke:#333,stroke-width:2px
 
 ```
 ## Transactional Outbox
