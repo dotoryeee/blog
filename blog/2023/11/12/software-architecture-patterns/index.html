@@ -1177,8 +1177,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sequence" class="md-nav__link">
-    Sequence
+  <a href="#sequence-diagram" class="md-nav__link">
+    Sequence Diagram
   </a>
   
 </li>
@@ -1206,6 +1206,26 @@
   <a href="#map-reduce" class="md-nav__link">
     Map Reduce
   </a>
+  
+    <nav class="md-nav" aria-label="Map Reduce">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flow-graph_1" class="md-nav__link">
+    Flow Graph
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequence-diagram_1" class="md-nav__link">
+    Sequence Diagram
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1396,7 +1416,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              4 min read
+                              7 min read
                             
                           </span>
                         </div>
@@ -1473,6 +1493,14 @@
     필터2 --&gt; 큐2(Queue 2)
     큐2 --&gt; 필터3(Filter 3)
     필터3 --&gt; 데이터베이스(Database)
+
+    style 백엔드서비스 fill:#f9f,stroke:#333,stroke-width:2px
+    style 필터1 fill:#ff9,stroke:#333,stroke-width:2px
+    style 필터2 fill:#ff9,stroke:#333,stroke-width:2px
+    style 필터3 fill:#ff9,stroke:#333,stroke-width:2px
+    style 큐1 fill:#9cf,stroke:#333,stroke-width:2px
+    style 큐2 fill:#9cf,stroke:#333,stroke-width:2px
+    style 데이터베이스 fill:#f96,stroke:#333,stroke-width:2px
 </code></pre>
 <p>입력으로부터 결과물을 산출해내는 과정에 여러 처리 과정들이 포함되는 개념.<br> 데이터 핸들링의 ETL이나 로그수집의 ELK스택의 Logstash에서 많이 본 패턴이고 강의에서는 콘텐츠 provider가 제공한 video source를 다양한 format과 resolution으로 인코딩 후 chunk를 분리하여 고객의 네트워크 회선 상태에 따라 적합한 resolution의 video를 제공하는 예시를 알려준다.</p>
 <h2 id="scatter-gather">Scatter Gather</h2>
@@ -1493,7 +1521,7 @@
     style 워커노드2 fill:#bfb,stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5
     style 워커노드N fill:#bfb,stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5
     style 결과결합 fill:#ff6,stroke:#333,stroke-width:2px</code></pre>
-<h3 id="sequence">Sequence</h3>
+<h3 id="sequence-diagram">Sequence Diagram</h3>
 <pre class="mermaid"><code>sequenceDiagram
     participant 사용자
     participant 마스터노드
@@ -1512,37 +1540,100 @@
     마스터노드-&gt;&gt;+사용자: 최종 결과 반환</code></pre>
 <h2 id="execution-orchestrator">Execution Orchestrator</h2>
 <pre class="mermaid"><code>graph LR
-    오케스트레이터(Orchestrator) --&gt; 작업1(Task 1)
-    작업1 --&gt; 오케스트레이터
-    오케스트레이터 --&gt; 작업2(Task 2)
-    작업2 --&gt; 오케스트레이터
-    오케스트레이터 --&gt; 작업3(Task 3)
-    작업3 --&gt; 오케스트레이터
-    오케스트레이터 --&gt; |"결과 집합"| 최종결과(Final Result)
+    orc(Orchestrator) --&gt; 작업1(Task 1)
+    작업1 --&gt; orc
+    orc --&gt; 작업2(Task 2)
+    작업2 --&gt; orc
+    orc --&gt; 작업3(Task 3)
+    작업3 --&gt; orc
+    orc --&gt; |"결과 반환"| r(Final Result)
+
+    style orc fill:#46bdc6,stroke:#333,stroke-width:2px
+    style 작업1 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style 작업2 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style 작업3 fill:#f9f9c8,stroke:#333,stroke-width:2px
+    style r fill:#ff9f9b,stroke:#333,stroke-width:2px
 </code></pre>
 <h2 id="choreography">Choreography</h2>
 <pre class="mermaid"><code>graph LR
-    서비스1(Service 1) --&gt; 서비스2(Service 2)
-    서비스2 --&gt; 서비스3(Service 3)
-    서비스3 --&gt; 서비스4(Service 4)
-    서비스4 --&gt; |"결과 집합"| 최종결과(Final Result)
+    서비스A(Service A) --&gt; |"이벤트 A 발행"| 이벤트허브(Event Hub)
+    이벤트허브 --&gt; |"이벤트 A 구독"| 서비스B(Service B)
+    서비스B --&gt; |"이벤트 B 발행"| 이벤트허브
+    이벤트허브 --&gt; |"이벤트 B 구독"| 서비스C(Service C)
+    서비스C --&gt; |"이벤트 C 발행"| 이벤트허브
+    이벤트허브 --&gt; |"이벤트 C 구독"| 서비스D(Service D)
+
+    style 서비스A fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 서비스B fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 서비스C fill:#32cd32,stroke:#333,stroke-width:2px
+    style 서비스D fill:#20b2aa,stroke:#333,stroke-width:2px
+    style 이벤트허브 fill:#ffdead,stroke:#333,stroke-width:2px
 </code></pre>
 <h2 id="map-reduce">Map Reduce</h2>
+<h3 id="flow-graph_1">Flow Graph</h3>
 <pre class="mermaid"><code>graph TD
     데이터셋(Data Set) --&gt; |"매핑"| 매퍼1(Map 1)
     데이터셋 --&gt; |"매핑"| 매퍼2(Map 2)
     데이터셋 --&gt; |"매핑"| 매퍼N(Map N)
     매퍼1 --&gt; |"키-값 쌍"| 리듀서1(Reduce 1)
-    매퍼2 --&gt; |"키-값 쌍"| 리듀서1
-    매퍼N --&gt; |"키-값 쌍"| 리듀서1
-    리듀서1 --&gt; |"결과 집합"| 최종결과(Final Result)
+    매퍼2 --&gt; |"키-값 쌍"| 리듀서2(Reduce 2)
+    매퍼N --&gt; |"키-값 쌍"| 리듀서N(Reduce N)
+    리듀서1 --&gt; |"결과 집합"| 최종결과1(Final Result 1)
+    리듀서2 --&gt; |"결과 집합"| 최종결과2(Final Result 2)
+    리듀서N --&gt; |"결과 집합"| 최종결과N(Final Result N)
+
+    style 데이터셋 fill:#f96,stroke:#333,stroke-width:2px
+    style 매퍼1 fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 매퍼2 fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 매퍼N fill:#ff8c00,stroke:#333,stroke-width:2px
+    style 리듀서1 fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 리듀서2 fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 리듀서N fill:#6a5acd,stroke:#333,stroke-width:2px
+    style 최종결과1 fill:#32cd32,stroke:#333,stroke-width:2px
+    style 최종결과2 fill:#32cd32,stroke:#333,stroke-width:2px
+    style 최종결과N fill:#32cd32,stroke:#333,stroke-width:2px
+</code></pre>
+<h3 id="sequence-diagram_1">Sequence Diagram</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client as Client
+    participant HDFS as Hadoop Distributed File System (HDFS)
+    participant Map as Map Tasks
+    participant Shuffle as Shuffle and Sort
+    participant Reduce as Reduce Tasks
+
+    Client-&gt;&gt;+HDFS: Input Data Upload
+    HDFS-&gt;&gt;+Map: Distribute Data
+    Map--&gt;&gt;-Shuffle: Emit Key-Value Pairs
+    Shuffle-&gt;&gt;+Reduce: Group by Key
+    Reduce--&gt;&gt;-HDFS: Write Output
 </code></pre>
 <h2 id="saga">Saga</h2>
-<pre class="mermaid"><code>graph LR
-    트랜잭션1(Transaction 1) --&gt; |"이벤트 A"| 트랜잭션2(Transaction 2)
-    트랜잭션2 --&gt; |"이벤트 B"| 트랜잭션3(Transaction 3)
-    트랜잭션3 --&gt; |"이벤트 C"| 트랜잭션4(Transaction 4)
-    트랜잭션4 --&gt; |"이벤트 D"| 최종결과(Final Result)
+<pre class="mermaid"><code>graph TB
+    시작(Start) --&gt; 트랜잭션1(Transaction 1)
+    트랜잭션1 --&gt; |"이벤트 A 성공"| 트랜잭션2(Transaction 2)
+    트랜잭션1 --&gt; |"이벤트 A 실패"| 컴펜세이션1(Compensation 1)
+    트랜잭션2 --&gt; |"이벤트 B 성공"| 트랜잭션3(Transaction 3)
+    트랜잭션2 --&gt; |"이벤트 B 실패"| 컴펜세이션2(Compensation 2)
+    트랜잭션3 --&gt; |"이벤트 C 성공"| 트랜잭션4(Transaction 4)
+    트랜잭션3 --&gt; |"이벤트 C 실패"| 컴펜세이션3(Compensation 3)
+    트랜잭션4 --&gt; |"이벤트 D 성공"| 최종결과(Final Result)
+    트랜잭션4 --&gt; |"이벤트 D 실패"| 컴펜세이션4(Compensation 4)
+    컴펜세이션4 --&gt; 컴펜세이션3
+    컴펜세이션3 --&gt; 컴펜세이션2
+    컴펜세이션2 --&gt; 컴펜세이션1
+    컴펜세이션1 --&gt; 끝(End)
+
+    style 시작 fill:#f9f,stroke:#333,stroke-width:2px
+    style 트랜잭션1 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션2 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션3 fill:#ff9,stroke:#333,stroke-width:2px
+    style 트랜잭션4 fill:#ff9,stroke:#333,stroke-width:2px
+    style 최종결과 fill:#9cf,stroke:#333,stroke-width:2px
+    style 컴펜세이션1 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션2 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션3 fill:#f99,stroke:#333,stroke-width:2px
+    style 컴펜세이션4 fill:#f99,stroke:#333,stroke-width:2px
+    style 끝 fill:#f9f,stroke:#333,stroke-width:2px
 </code></pre>
 <h2 id="transactional-outbox">Transactional Outbox</h2>
 <pre class="mermaid"><code>graph LR
