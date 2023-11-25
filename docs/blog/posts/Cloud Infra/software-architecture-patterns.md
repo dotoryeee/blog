@@ -408,25 +408,85 @@ graph LR
 ```
 빅뱅이 아닌 분할정복 전략으로 새 시스템을 구축하는 경우 새 시스템에 레거시 시스템과 통신을 위한 "옛날"기술을 굳이 탑재하여 새 시스템을 "오염"시키고싶지 않다. 이때 ACL이라는 중간 Layer를 삽입하여 레거시와 새 시스템의 호환성을 유지해주다가 레거시를 밀어버릴때 ACL도 같이 밀어버리면 깔끔하다.
 
-
 ## BFF(Backend For Frontend)
 ```mermaid
+graph LR
+    A[웹 클라이언트] -->|요청| B[웹 BFF]
+    C[모바일 클라이언트] -->|요청| D[모바일 BFF]
+    B -->|API 호출| E[백엔드 서비스]
+    D -->|API 호출| E
+    B -->|맞춤 응답| A
+    D -->|맞춤 응답| C
+
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style D fill:#f9f,stroke:#333,stroke-width:2px
 
 ```
+클라이언트 타입별로 백앤드를 따로따로 구성하면 BFF다.
+
+장점:
+
+- 사용자 경험 증진: 클라이언트의 요구와 기능에 맞춤화된 API를 제공하여 사용자 경험을 최적화할 수 있다.
+- 성능 최적화: 클라이언트에 필요한 데이터만을 선택적으로 로드하여 네트워크 사용을 최적화하고 애플리케이션의 성능을 향상시킬 수 있다.
+- 서비스의 복잡성 감소: BFF를 사용하면 여러 백엔드 서비스를 하나의 인터페이스로 통합하여 클라이언트가 다루기 쉽게 만들 수 있다.
+
+단점:
+
+- 운영 복잡성 증가: 각각의 BFF 서버별로 모니터링, 배포 등등 유지보수를 진행하기 쉽지 않다.
+- 비용 증가: 여러 BFF 인스턴스를 실행하려면 추가적인 인프라와 자원이 필요하고 당연하게도 비용이 증가한다.
+
 ## Throttling and Rate Limiting
 ```mermaid
+graph TD
+    A[클라이언트] -->|Request| B[Rate Limiter]
+    B -->|허용된 요청| C[애플리케이션 서비스]
+    B -.->|제한된 요청| D[Reject/Re-Try]
+
+    style B fill:#f96,stroke:#333,stroke-width:2px
+    style D fill:#fcc,stroke:#333,stroke-width:2px
 
 ```
-## Retry
-```mermaid
 
-```
 ## Circuit Braker
 ```mermaid
+graph TD
+    A[클라이언트] -->|요청| B[Circuit Breaker]
+    B -->|전달| C[서비스]
+    C -->|성공 응답| B
+    B -->|응답 전달| A
+    C -. "실패 응답" .-> B
+    B -. "장애 감지" .-> D{장애 상태?}
+    D -->|예| E[Circuit Open]
+    D -->|아니오| C
+    E -->|Fallback 메커니즘| F[Fallback 서비스]
+    F -->|Fallback 응답| A
+    E -.->|타임아웃 후 재시도| B
+
+    style B fill:#ffff66,stroke:#333,stroke-width:2px
+    style E fill:#ff6666,stroke:#333,stroke-width:2px
+    style F fill:#66ff66,stroke:#333,stroke-width:2px
 
 ```
+
+- 연속된 실패 요청으로 인한 연쇄적인 장애(cascading failures)를 방지하기 위해 Fallback 매커니즘 실행 전 Circuit을 Open하면 추가 요청이 실패한 서비스로 전송되지 않으므로 시스템이 self-healing등 대응하는 동안 부담을 줄여준다. Fallback의 부하를 감소시켜주는 목적도 있다.
+- 참고: `Fallback`은 기본 작업이 실패했을 때 대안으로 실행되는 프로세스나 메커니즘을 의미
+
+
 ## DLQ(Dead Letter Queue)
 ```mermaid
+graph TD
+    A[메시지 Producer] -->|메시지 전송| B[메시지 큐]
+    B -->|메시지 처리 시도| C[메시지 Consumer]
+    C -->|처리 성공| D[처리 완료]
+    C -->|처리 실패| E[Dead Letter Queue]
+    E -->|문제 분석 및 재시도 로직| F[재처리 서비스]
+    F -->|재처리 성공| B
+    F -->|재처리 실패| G[수동 처리]
+
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#fcc,stroke:#333,stroke-width:2px
+    style F fill:#ff9,stroke:#333,stroke-width:2px
+    style G fill:#f96,stroke:#333,stroke-width:2px
 
 ```
 ## Rolling Deployment
