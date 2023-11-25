@@ -1,6 +1,6 @@
 ---
-draft: true
-date: 2023-11-12
+draft: false
+date: 2023-11-25
 authors:
   - dotoryeee
 categories:
@@ -487,21 +487,5 @@ graph TD
     style E fill:#fcc,stroke:#333,stroke-width:2px
     style F fill:#ff9,stroke:#333,stroke-width:2px
     style G fill:#f96,stroke:#333,stroke-width:2px
-
-```
-## Rolling Deployment
-```mermaid
-
-```
-## Blue-Green Deployment
-```mermaid
-
-```
-## Canary Release, A/B test deployment
-```mermaid
-
-```
-## Chaos Engineering
-```mermaid
 
 ```
