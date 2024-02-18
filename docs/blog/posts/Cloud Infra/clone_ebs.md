@@ -19,6 +19,7 @@ rsync로 EBS -> EBS 복제할 일이 생겨서 절차를 중요한 절차만 요
 ```bash
 lsblk -o +SERIAL
 ```
+![](./clone_ebs/Screenshot%202024-02-18%20at%2015.55.12.png)
 3. 볼륨 복제를 관장할 신규 인스턴스 생성 후 기존 볼륨을 ~/old에, 신규 볼륨을 ~/new에 마운트 한다.
 4. rsync명령어를 사용해 ~/old내용을 ~/new로 전부 복사한다. 이때 axcHAWS, numeric-ids옵션을 반드시 넣어줘야 사용자와 권한등 정보를 수정하지 않고 정확하게 복사한다. 또한 rsync 명령 시 ~/old뒤에 /를 넣어줘야 ~/new/old/ 로 복사되는 일을 방지할 수 있다.
 ```bash
