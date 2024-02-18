@@ -12,7 +12,7 @@
         <link rel="prev" href="../../..">
       
       
-        <link rel="next" href="../../category/aa/">
+        <link rel="next" href="../../category/aws/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -294,6 +294,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../../archive/2024/02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024 February
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../archive/2023/11/" class="md-nav__link">
         
   
@@ -453,6 +473,26 @@
             Categories
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -645,26 +685,6 @@
   
   <span class="md-ellipsis">
     project
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../category/aws/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    AWS
   </span>
   
 
@@ -974,26 +994,6 @@
 
               
             
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../category/kibana/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Kibana
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1166,6 +1166,72 @@
       <header class="md-typeset">
         <h1 id="blog">Blog</h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="elk-error"><a class="toclink" href="../../1993/09/17/elk-error/">ELK error 모음</a></h2>
+<h3 id="1"><a class="toclink" href="../../1993/09/17/elk-error/#1">1</a></h3>
+<h4 id="_1"><a class="toclink" href="../../1993/09/17/elk-error/#_1">증상</a></h4>
+<ul>
+<li>Error message<br>
+  <strong>Elastic Kibana did not load properly. Check the server output for more information</strong></li>
+<li>인프라 구성
+    Kibana 접근을 위해 Nginx를 reverse proxy로 사용하는 구조</li>
+</ul>
+<h4 id="_2"><a class="toclink" href="../../1993/09/17/elk-error/#_2">해결방법</a></h4>
+<p>Nginx 설정파일에서 proxy_buffer 부분을 수정합니다</p>
+<ul>
+<li>AS-IS
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">AWS에서</span><span class="w"> </span>제공하는<span class="w"> </span><span class="n">ES</span><span class="o">-</span><span class="n">Proxy용</span><span class="w"> </span><span class="n">nginx</span><span class="w"> </span>템플릿<span class="w"> </span>기본값<span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span>
+</code></pre></div></li>
+<li>TO-BE
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
+</code></pre></div></li>
+</ul>
+
+    <nav class="md-post__action">
+      <a href="../../1993/09/17/elk-error/">
+        Continue reading
+      </a>
+    </nav>
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -1488,59 +1554,7 @@
           <li class="md-meta__item">
             in
             
-              <a href="../../category/study/" class="md-meta__link">study</a>, 
-              <a href="../../category/java/" class="md-meta__link">java</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-        <span class="md-draft">
-          Draft
-        </span>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="jvm-options"><a class="toclink" href="../../1993/09/17/jvm-options/">JVM Options</a></h2>
-<h3 id="jvm-options_1"><a class="toclink" href="../../1993/09/17/jvm-options/#jvm-options_1">JVM options 정리</a></h3>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/jvm-options/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/study/" class="md-meta__link">study</a>, 
-              <a href="../../category/nginx/" class="md-meta__link">nginx</a>, 
-              <a href="../../category/httpd/" class="md-meta__link">httpd</a></li>
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
         
         
           
@@ -1552,118 +1566,33 @@
         
       </ul>
       
-        <span class="md-draft">
-          Draft
-        </span>
-      
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="nginx-vs-apache-httpd"><a class="toclink" href="../../1993/09/17/nginx-vs-apache-httpd/">Nginx vs Apache httpd</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>인터넷에서 정보 수집 중입니다. 틀린 정보도 많아서 팩트체크 진행중입니다.</p>
-</div>
-<ul>
-<li>
-<p>Youtube <a href="https://www.youtube.com/watch?v=6FAwAXXj5N0">10분 테코톡 피케이의 Nginx</a>를 보고 실제 성능이 어떻게, 얼마나 차이가 나는지 궁금해짐</p>
-</li>
-<li>
-<p>Nginx / Httpd prefork MPM / httpd event MPM 비교</p>
-</li>
-<li>
-<p>Nginx</p>
-<ul>
-<li>요청을 처리중인 worker의 수 = 요청을 처리중인 process 수 = 요청을 처리중인 thread 수</li>
-<li>하나의 요청을 로드밸런싱을 이용해 여러개의 worker process에서 처리할 수 있다</li>
-</ul>
-</li>
-<li>
-<p>Nginx (하나의 worker는 N개의 요청이 들어와도 단일 스레드로 처리 / 단일 스레드 + 멀티프로세스를 이용한 Event driven 비동기 처리)</p>
-<ul>
-<li>장점<ul>
-<li>높은 성능: Event driven 비동기 처리 방식으로 고성능 웹서버로 유명함</li>
-<li>적은 자원 사용: 단일 스레드 방식으로 동작하여 자원 소비가 적음</li>
-<li>높은 안정성: 안정적인 운영 환경을 보장</li>
-<li>Reverse Proxy 및 Load Balancing 기능 지원: Reverse Proxy 기능을 이용해 요청을 웹 서버 및 애플리케이션 서버로 전달하고, Load Balancing 기능을 이용해 트래픽 분산 처리 가능</li>
-</ul>
-</li>
-<li>단점<ul>
-<li>미들웨어 지원 부족: Nginx는 다양한 미들웨어를 지원하는 Apache와 비교하면 상대적으로 지원이 부족합니다.</li>
-<li>Windows 지원: Nginx는 Windows 지원이 상대적으로 부족합니다. 이는 Apache와 비교해 Windows 환경에서의 사용성이 떨어지는 단점으로 작용할 수 있습니다</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/nginx-vs-apache-httpd/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a>, 
-              <a href="../../category/kibana/" class="md-meta__link">Kibana</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-        <span class="md-draft">
-          Draft
-        </span>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="kql-for-kibana"><a class="toclink" href="../../1993/09/17/kql-for-kibana/">KQL 모음 for kibana</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>테스트 및 확인 추가 필요</p>
-</div>
+    <h2 id="terraform-aws-iam"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/">Terraform AWS IAM</a></h2>
+<h3 id="iam-user"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/#iam-user">IAM User</a></h3>
+<hr />
 <ol>
-<li>다중 필드로 로그 필터링:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;my-app&quot;</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">environment</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;production&quot;</span>
-</code></pre></div></li>
-<li>필드의 값이 특정 범위에 있는 로그 필터링:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;my-app&quot;</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">response_code</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">response_code</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="m">499</span>
-</code></pre></div></li>
-<li>여러 문자열을 포함하는 로그 필터링:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;my-app&quot;</span><span class="w"> </span><span class="nf">AND </span><span class="p">(</span><span class="n">message</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;error&quot;</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">message</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;timeout&quot;</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span><span class="n">message</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;warning&quot;</span><span class="p">)</span>
-</code></pre></div></li>
+<li>
+<p>IAM 작업 디렉터리를 생성합니다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
+</code></pre></div>
+</li>
+<li>
+<p>이제 자연스럽게 provider를 먼저 생성합니다</p>
+<p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="p">}</span>
+</code></pre></div>
+</li>
 </ol>
 
     <nav class="md-post__action">
-      <a href="../../1993/09/17/kql-for-kibana/">
+      <a href="../../1993/09/17/terraform-aws-iam/">
         Continue reading
       </a>
     </nav>
@@ -1689,89 +1618,163 @@
           <li class="md-meta__item">
             in
             
-              <a href="../../category/kubernetes/" class="md-meta__link">kubernetes</a></li>
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
         
         
           
           <li class="md-meta__item">
             
-              1 min read
+              4 min read
             
           </li>
         
       </ul>
       
-        <span class="md-draft">
-          Draft
-        </span>
-      
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="kubectl"><a class="toclink" href="../../1993/09/17/kubectl/">Kubectl 명령어 메모</a></h2>
-
-    <nav class="md-post__action">
-      <a href="../../1993/09/17/kubectl/">
-        Continue reading
-      </a>
-    </nav>
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/project/" class="md-meta__link">project</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-        <span class="md-draft">
-          Draft
-        </span>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="2023-board-app-very-very-resistant-to-infrastructure-failures"><a class="toclink" href="../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/">(2023) board app very very resistant to infrastructure failures</a></h2>
-<p>github link: <a href="https://github.com/dotoryeee/MSA_board_app">dotoryeee/MSA_board_app</a></p>
-<h3 id="tech-and-tools"><a class="toclink" href="../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/#tech-and-tools">Tech and tools</a></h3>
+    <h2 id="terraform-backend"><a class="toclink" href="../../1993/09/17/terraform-backend/">Terraform Backend</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-backend/#_1">목표</a></h3>
+<hr />
 <ul>
-<li>Python + FastAPI + SQLAlchemy ORM + MySQL8 을 이용한 Backend server 2 EA</li>
-<li>Terraform을 활용한 형상관리 가능한 인프라</li>
-<li>CI/CD 적용 (솔류션 미정)</li>
-<li>Docker를 이용해 서버 이미지를 빌드하여 immutable server 적용</li>
-<li>AWS EKS를 이용한 Kubernetes기반 orchestration</li>
-<li>ELK, EFK, Loki등 중앙화된 로그 관리</li>
-<li>Locust를 이용한 서버 부하 테스트</li>
-<li>Chaos engineering, OpenTelemetry, pinpoint APM 등등</li>
+<li>Terraform의 Backend 기능을 이용해 state파일을 안전하게 관리해봅니다.</li>
+<li>.tfstate를 로컬이 아닌 S3에 저장하고 DynamoDB를 이용해 파일을 Locking합니다</li>
+<li>
+<p>Backend를 이용함에 따른 이점</p>
+<ul>
+<li>
+<p>Locking</p>
+<p>협업시 원격 저장소를 사용하여 여러명이 동시에 같은 state 접근하는것을 막습니다</p>
+</li>
+<li>
+<p>Backup</p>
+<p>원격저장소에 저장함으로써 데이터 유실을 방지합니다. 특히 S3에 저장하는 방법은 버전관리가 가능한 편리하고 안전한 방법입니다.</p>
+</li>
+</ul>
+</li>
 </ul>
 
     <nav class="md-post__action">
-      <a href="../../1993/09/17/2023-board-app-very-very-resistant-to-infrastructure-failures/">
+      <a href="../../1993/09/17/terraform-backend/">
+        Continue reading
+      </a>
+    </nav>
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              32 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="terraform-practice"><a class="toclink" href="../../1993/09/17/terraform-practice/">Terraform Practice</a></h2>
+<aside>
+💡 테라폼을 아키텍처를 연습해봅니다
+
+</aside>
+
+<ul>
+<li>
+<p>EC2에 SSH 접속을 위한 키페어 생성</p>
+<ol>
+<li>비밀키를 생성합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">rsa</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span>
+</code></pre></div>
+<ol>
+<li>pem을 사용하려면 권한을 수정해야 합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span>
+</code></pre></div>
+<ol>
+<li>AWS에 넘겨줄 공개키를 생성합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pub</span>
+</code></pre></div>
+</li>
+</ul>
+
+    <nav class="md-post__action">
+      <a href="../../1993/09/17/terraform-practice/">
+        Continue reading
+      </a>
+    </nav>
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="terraform-deploy-vpc-and-subnet"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">Terraform deploy VPC and Subnet</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/#_1">목표</a></h3>
+<hr />
+<ul>
+<li>AWS 서비스의 근간이라고 할 수 있는 VPC부터 IaC를 구현해봅니다</li>
+<li>VPC에 서브넷도 생성해봅니다</li>
+</ul>
+
+    <nav class="md-post__action">
+      <a href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">
         Continue reading
       </a>
     </nav>
@@ -1829,13 +1832,13 @@
         
         
           
-          <a href="../../category/aa/" class="md-footer__link md-footer__link--next" aria-label="Next: AA">
+          <a href="../../category/aws/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                AA
+                AWS
               </div>
             </div>
             <div class="md-footer__button md-icon">
