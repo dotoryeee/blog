@@ -1249,7 +1249,8 @@
 <img alt="create ebs when start ec2" src="../../../../Cloud%20Infra/clone_ebs/Screenshot%202024-02-18%20at%2010.37.07.png" /></li>
 <li>따라서 EC2 접속 후 아래 명령어를 사용해 현재 부착된 볼륨의 AWS EBS Volume ID를 조회한다.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lsblk<span class="w"> </span>-o<span class="w"> </span>+SERIAL
-</code></pre></div></li>
+</code></pre></div>
+<img alt="" src="../../../../Cloud%20Infra/clone_ebs/Screenshot%202024-02-18%20at%2015.55.12.png" /></li>
 <li>볼륨 복제를 관장할 신규 인스턴스 생성 후 기존 볼륨을 ~/old에, 신규 볼륨을 ~/new에 마운트 한다.</li>
 <li>rsync명령어를 사용해 ~/old내용을 ~/new로 전부 복사한다. 이때 axcHAWS, numeric-ids옵션을 반드시 넣어줘야 사용자와 권한등 정보를 수정하지 않고 정확하게 복사한다. 또한 rsync 명령 시 ~/old뒤에 /를 넣어줘야 ~/new/old/ 로 복사되는 일을 방지할 수 있다.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>rsync<span class="w"> </span>-axcHAWS<span class="w"> </span>--numeric-ids<span class="w"> </span>--info<span class="o">=</span>progress2<span class="w"> </span>~/old/<span class="w"> </span>~/new
