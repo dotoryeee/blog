@@ -1247,6 +1247,24 @@
 <a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Command failed after </span><span class="nv">$max_attempts</span><span class="s2"> attempts.&quot;</span>
 <a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
 </code></pre></div></li>
+<li>
+<p>EFS연결을 위한 NFS utils 패키지 빌드 및 오프라인 설치
+    <div class="highlight"><span class="filename">@Bastion</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>make<span class="w"> </span>rpm-build
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>mkdir<span class="w"> </span>~/efs-utils-pkg<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/efs-utils-pkg
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>download<span class="w"> </span>--resolve<span class="w"> </span>nfs-utils
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/aws/efs-utils<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>efs-utils
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>sudo<span class="w"> </span>make<span class="w"> </span>rpm
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>sudo<span class="w"> </span>cp<span class="w"> </span>-av<span class="w"> </span>/home/ec2-user/efs-utils-pkg/efs-utils/build/amazon-efs-utils-*.rpm<span class="w"> </span>~/efs-utils-pkg<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/efs-utils-pkg
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>tar<span class="w"> </span>-cvf<span class="w"> </span>~/efs-utils-pkg.tar<span class="w"> </span>*.rpm
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>scp<span class="w"> </span>-i<span class="w"> </span>~/test.pem<span class="w"> </span>~/efs-utils-pkg.tar<span class="w"> </span>ec2-user@10.0.1.97:/home/ec2-user/
+</code></pre></div></p>
+<p><div class="highlight"><span class="filename">@Install Target Server(No Internet Server)</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>tar<span class="w"> </span>-xvf<span class="w"> </span>efs-utils-pkg.tar
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>rpm<span class="w"> </span>-ivh<span class="w"> </span>--nodeps<span class="w"> </span>./*rpm
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>sudo<span class="w"> </span>mkdir<span class="w"> </span>/efs
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>nfs<span class="w"> </span>-o<span class="w"> </span><span class="nv">nfsvers</span><span class="o">=</span><span class="m">4</span>.1,rsize<span class="o">=</span><span class="m">1048576</span>,wsize<span class="o">=</span><span class="m">1048576</span>,hard,timeo<span class="o">=</span><span class="m">600</span>,retrans<span class="o">=</span><span class="m">2</span>,noresvport<span class="w">    </span><span class="m">172</span>.31.13.181:/<span class="w"> </span>/efs
+</code></pre></div>
+10. </p>
+</li>
 </ol>
 
 
