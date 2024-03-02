@@ -8,7 +8,7 @@ categories:
 ---
 # rsync로 EBS 복제하는 방법
 
-rsync로 EBS -> EBS 복제할 일이 생겨서 절차를 중요한 절차만 요약하였습니다.<br>
+rsync로 EBS -> EBS 복제할 때 주요 절차만 요약하였습니다.<br>
 볼륨 용량 줄이기, File System변경 등에 사용할 수 있습니다.
 
 <!-- more -->
