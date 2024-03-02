@@ -87,3 +87,22 @@
     echo "Command failed after $max_attempts attempts."
     exit 1
     ```
+9. EFS연결을 위한 NFS utils 패키지 빌드 및 오프라인 설치
+    ```bash title="@Bastion"
+    sudo yum -y install git make rpm-build
+    mkdir ~/efs-utils-pkg; cd ~/efs-utils-pkg
+    sudo dnf download --resolve nfs-utils
+    git clone https://github.com/aws/efs-utils; cd efs-utils
+    sudo make rpm
+    sudo cp -av /home/ec2-user/efs-utils-pkg/efs-utils/build/amazon-efs-utils-*.rpm ~/efs-utils-pkg; cd ~/efs-utils-pkg
+    tar -cvf ~/efs-utils-pkg.tar *.rpm
+    scp -i ~/test.pem ~/efs-utils-pkg.tar ec2-user@10.0.1.97:/home/ec2-user/
+    ```
+
+    ```bash title="@Install Target Server(No Internet Server)"
+    tar -xvf efs-utils-pkg.tar
+    sudo rpm -ivh --nodeps ./*rpm
+    sudo mkdir /efs
+    sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 	172.31.13.181:/ /efs
+    ```
+10. 
