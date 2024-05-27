@@ -18,36 +18,28 @@ SAP 시스템은 ASCS (ABAP SAP Central Services)와 ERS (Enqueue Replication Se
 
 ??? note
     맞는 정보를 기재하기위해 노력했으나 내용이 틀릴 수 있으며, 발견 즉시 포스트 업데이트 진행합니다.
-## 주요 구성 요소
+## 구성 요소
 
-### 1. ASCS와 ERS
-- **ASCS (ABAP SAP Central Services)**: 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리를 담당
-- **ERS (Enqueue Replication Server)**: ASCS의 고가용성을 보장하기 위해 인큐 서버의 복제본
+### ASCS와 ERS
+- ASCS (ABAP SAP Central Services): 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리를 담당
+- ERS (Enqueue Replication Server): ASCS의 고가용성을 보장하기 위해 인큐 서버의 복제본
 
-### 2. 클러스터링 소프트웨어
-- **Pacemaker/Corosync**: 클러스터 노드 간의 통신 담당
-- **STONITH**: Split brain 문제를 방지하기 위해 타 노드를 강제로 종료(펜싱)하는 역할
+### 클러스터링 
+- Pacemaker/Corosync: 클러스터 노드 간의 통신 담당
+- STONITH: Split brain 문제를 방지하기 위해 타 노드를 강제로 종료(펜싱)하는 역할
 
-### 3. 스토리지 기반 복제
-- **DRBD (Distributed Replicated Block Device)**: 데이터(스토리지)를 실시간으로 복제하여 장애 발생 시 데이터 일관성 유지
+### 스토리지 복제
+- DRBD (Distributed Replicated Block Device): 데이터(스토리지)를 실시간으로 복제하여 장애 발생 시 데이터 일관성 유지
 
 ## SAP HA 구성 예시
 
 ### 클러스터 구성
 
-#### Pacemaker와 corosync 설치(모든 노드)
+#### Pacemaker, corosync 설치(전체노드) 클러스터 설정
 pcs는 pacekamer 관리도구
 
-```sh
-# RHEL/CentOS
-sudo yum install pacemaker corosync pcs
-
-# Ubuntu/Debian
-sudo apt-get install pacemaker corosync pcs
-```
-
-#### Pacemaker와 corosync의 클러스터 설정
 ```sh 
+sudo yum install pacemaker corosync pcs
 sudo pcs cluster auth node1 node2
 sudo pcs cluster setup --name sap_cluster node1 node2
 sudo pcs cluster start --all
@@ -63,7 +55,7 @@ sudo pcs resource create SAP_ASCS ocf:heartbeat:SAPInstance InstanceName=ASCS_00
 # ERS 
 sudo pcs resource create SAP_ERS ocf:heartbeat:SAPInstance InstanceName=ERS_01 SAPInstanceType=ERS
 ```
-#### DRBD를 이용한 스토리지를 복제
+#### 스토리지를 복제
 ```sh
 # DRBD 설치
 sudo yum install drbd84-utils
@@ -91,6 +83,7 @@ sudo drbdadm up r0
 sudo drbdadm -- --overwrite-data-of-peer primary r0
 sudo mkfs.xfs /dev/drbd0 # 또는 mkfs.ext4
 sudo mount /dev/drbd0 /mnt/drbd
+EOF
 ```
 
 #### Split brain 방지
