@@ -116,8 +116,8 @@ graph TD;
 ```
 
 #### Split brain 문제 해결
-네트워크 격리로 인해 모든 AP 서버가 서로 통신할 수 없게 되는 Split brain 문제를 방지하기 위해 아래 전략을 사용할 수 있습니다
+네트워크 격리로 인해 모든 AP 서버가 서로 통신할 수 없게 되는 Split brain 문제를 방지하기 위해 아래 방안을 적용할 수 있다.
 
-- 여러 STONITH 장치를 설정하여 하나의 장치가 실패하더라도 다른 장치가 펜싱을 수행할 수 있도록 합니다.
-- Quorum 장치나 Witness 노드를 사용하여 클러스터의 다수결 원칙을 적용하고 Split brain을 방지합니다.
-- STONITH 실패 시 Secondary 서버가 자동으로 Primary로 승격되지 않도록 설정하고 관리자의 approve를 받도록 해 Split brain을 방지합니다.
+- 여러 STONITH 장치를 설정하여 하나의 장치가 실패하더라도 다른 장치가 펜싱을 수행할 수 있도록 설정
+- Quorum, Witness 노드를 사용하여 클러스터의 다수결 원칙을 적용
+- STONITH 실패 시 Secondary 서버가 자동으로 Primary로 승격되지 않도록 설정하고 관리자의 approve를 받도록하여 Split brain을 방지
