@@ -1,0 +1,1766 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../deploy-eks-and-efk/">
+      
+      
+        <link rel="next" href="../../29/database-on-kubernetes-study--week-2/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+    
+    
+      
+        <title>Database on Kubernetes study / Week 1 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-22LC2P5RV5",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#database-on-kubernetes-study-week-1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database on Kubernetes study / Week 1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    맨땅에 헤딩 전문
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024 May
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/03/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024 March
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024 February
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023 November
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023 October
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023 February
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023 January
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2021 April
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1993 September
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CICD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cloudnet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloudnet@
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ElasticSearch
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grafana/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/loadbalancer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoadBalancer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/loki/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Loki
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nhncloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NHNcloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/pacemaker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pacemaker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prometheus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/promtail/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Promtail
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/route53/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Route53
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SAP
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/stonith/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STONITH
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Terraform
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/thanos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Thanos
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/httpd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    httpd
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/inflearn/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    inflearn
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/java/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    java
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/nginx/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    nginx
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    project
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/study/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    study
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/udemy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    udemy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    메모장
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            메모장
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS CLI 모둠
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux command 모음
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker compose 모음
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/%EC%B0%BE%EC%9D%84%EA%B2%83%EB%93%A4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TODO
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      목표
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      실습
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2023-10-22 00:00:00" class="md-ellipsis">Oct 22, 2023</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/study/">study</a>, 
+                              <a href="../../../../category/kubernetes/">kubernetes</a>, 
+                              <a href="../../../../category/database/">Database</a>, 
+                              <a href="../../../../category/cloudnet/">Cloudnet@</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              5 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="database-on-kubernetes-study-week-1">Database on Kubernetes study / Week 1</h1>
+<hr />
+<h2 id="_1">목표</h2>
+<ol>
+<li>Kubectl 명령의 흐름</li>
+<li>CSI</li>
+<li>PV/PVC</li>
+<li>CNI</li>
+<li>Sercice</li>
+<li>Ingress</li>
+<li>ExternalDNS</li>
+<li>CoreDNS</li>
+</ol>
+<!-- more -->
+
+<hr />
+<h2 id="_2">실습</h2>
+<ol>
+<li>Kubectl 명령의 흐름
+    <img alt="출처:https://devocean.sk.com/blog/techBoardDetail.do?ID=163578" src="../../../../Docker%20%26%20Kubernetes/doik2/EKS-arch.png" /><br>
+    출처: <a href="https://devocean.sk.com/blog/techBoardDetail.do?ID=163578">https://devocean.sk.com/blog/techBoardDetail.do?ID=163578</a><br>
+    AWS EKS cluter 구축 시 Contorl plane은 무조건 AWS에서 관리하는 VPC에 provisioning되며, worker node만 사용자의 VPC에 구성된다.<br>
+    참고: Control plane의 앞단에는 무조건 ALB가 아닌 NLB가 배포된다.
+    <br>
+    클러스터 관리자가 Kubectl을 이용해 베포 명령 시 아래와 같은 순서로 명령어가 전달된다.<br><ol>
+<li>Kubectl은 kubeconfig에 저장된 인증 정보를 로드한다.</li>
+<li>Kubectl명령은 AWS에서 관리하는 NLB에 도달한다.</li>
+<li>NLB 뒷단에 배치된 Control plane의 API Server에 명령이 전달된다.</li>
+<li>API Server는 변경사항을 etcd에 기록합니다.</li>
+<li>controller manager는 변경사항을 감지하고 desired state를 유지하기 위해 각종 컨트롤러(Node, Replication, Endpoint, Service Account, Namespace 등)를 동작시킵니다.</li>
+<li>Scheduler는 새로운 pod가 위치할 적절한 노드를 예약합니다.</li>
+<li>Scheduler가 노드에 pod를 할당하면 kubelet이 감지하고 pod배포를 진행합니다.</li>
+<li>kubelet은 CRI -&gt; container runtime을 이용해 pod배포를 진행합니다.</li>
+</ol>
+</li>
+<li>CSI<ol>
+<li>CSI를 사용하는 이유: Kubernetes 프로젝트 소스 코드에 있는 Kubernetes ‘in-tree’ 스토리지 드라이버 드라이버를 대체합니다. <a href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/ebs-csi-migration-faq.html">출처</a></li>
+<li>AWS EKS사용 시 CSI를 사용하는 이유: CSI를 사용하면 EBS, EFS, FSx for Lustre 등 AWS의 다양한 스토리지 서비스를 EKS cluster에 쉽게 통합할 수 있습니다. 또한 pod의 볼륨을 동적으로 provisioning할 수 있습니다.</li>
+</ol>
+</li>
+<li>PV/PVC<ol>
+<li>EKS+CSI+PV architecture 1 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/eks-csi-pv.png" /><br>
+  출처: <a href="https://itnext.io/amazon-eks-add-ons-a-curated-set-of-software-for-managing-your-kubernetes-clusters-bca8f620d55e">https://itnext.io/amazon-eks-add-ons-a-curated-set-of-software-for-managing-your-kubernetes-clusters-bca8f620d55e</a></li>
+<li>EKS+CSI+PV architecture 2 <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/k8s-csi-pv.png" /><br>
+  출처: <a href="https://www.oreilly.com/library/view/production-kubernetes/9781492092292/ch04.html">https://www.oreilly.com/library/view/production-kubernetes/9781492092292/ch04.html</a></li>
+<li>PV: EBS, EFS등 Storage를 클러스터 리소스로 표현한 것입니다. Storage가 어떤 시스템에 위치하고 있는지, 어떻게 접근할 수 있는지, 용량의 크기나 등의 정보를 포함합니다.</li>
+<li>PVC: PV와 PVC는 1:1로 바인딩 할 수 있으며 PV는 실제 스토리지를, PVC는 스토리지 요청 후 수령한 PV를 사용할 수 있는 티켓/토큰으로 비유할 수 있습니다.</li>
+</ol>
+</li>
+<li>CNI<ol>
+<li>AWS에서 VPC CNI를 제공함으로 EKS는 이를 pod의 네트워크 통신을 지원합니다(동일 노드 내 pod, 다른 노드간의 pod, 외부 트래픽과 pod, AWS 서비스와 pod 등)</li>
+<li>pod에 IP를 할당해주는 원리입니다. 이때 VPC CNI의 경우 pod와 worker node의 네트워크 대역이 동일하기 때문에 pod&lt;-&gt;worker node간에 별도의 network overlay나 NAT GW없이 직접 통신이 가능합니다.(VPC CIDR의 IP를 pod에 직접 할당)</li>
+</ol>
+</li>
+<li>
+<p>Service
+    Kubernetes Service 종류
+    <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/k8s-service.webp" /><br>
+    출처: <a href="https://medium.com/devops-mojo/kubernetes-service-types-overview-introduction-to-k8s-service-types-what-are-types-of-kubernetes-services-ea6db72c3f8c">https://medium.com/devops-mojo/kubernetes-service-types-overview-introduction-to-k8s-service-types-what-are-types-of-kubernetes-services-ea6db72c3f8c</a></p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusterIP</td>
+<td>Service에 대한 내부 IP(cluster내에서만 접근 가능)를 제공합니다.<br>외부에서는 이 Service에 직접 접근할 수 없습니다.</td>
+</tr>
+<tr>
+<td>NodePort</td>
+<td>특정 Pod에 노드의 port를 매핑합니다.</td>
+</tr>
+<tr>
+<td>LoadBalancer</td>
+<td>AWS 에서 제공하는 Load Balancer를 사용하여 특정 서비스에 외부 트래픽을 라우팅 합니다.<br>NodePort와 ClusterIP Service를 자동으로 생성하여 통합합니다.</td>
+</tr>
+<tr>
+<td>External</td>
+<td>Service를 CNAME 레코드에 매핑하여 외부 서비스에 리다이렉트합니다.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Ingress
+    <img alt="" src="../../../../Docker%20%26%20Kubernetes/doik2/k8s-ingress.png" /><br>
+    출처: <a href="https://avinetworks.com/glossary/kubernetes-ingress-services/">https://avinetworks.com/glossary/kubernetes-ingress-services/</a></p>
+<ol>
+<li>Ingress는 Cluster 내의 Service에 대한 HTTP와 HTTPS 트래픽을 라우팅하는 규칙을 정의합니다.</li>
+<li>Kubernetes에서 Ingress를 사용하려면 Ingress Controller (nginx, HAProxy 등)가 필요합니다.</li>
+<li>LoadBalancer Service는 간단한 외부 트래픽 라우팅에 사용되는 반면, Ingress는 복잡한 HTTP/HTTPS 트래픽 라우팅 규칙 및 기능을 제공합니다. 대부분 Ingress는 LoadBalancer Service 뒤에 위치하여, 외부에서의 접근을 LoadBalancer를 통해 받고, 그 트래픽을 Ingress 규칙에 따라 Service로 라우팅합니다.</li>
+</ol>
+</li>
+<li>ExternalDNS<ol>
+<li>AWS Route53과 같은 CSP의 DNS서비스와 연결되어 Kubernetes 리소스와 연결된 도메인 이름의 DNS 기록을 자동으로 생성하거나 업데이트합니다.</li>
+<li>Service나 Ingress를 배포할 때 해당 리소스에 연결된 도메인 이름의 DNS 기록을 자동으로 생성하거나 업데이트 할 수 있습니다.</li>
+</ol>
+</li>
+<li>CoreDNS<ol>
+<li>Kubernetes cluter 내부의 DNS 서비스를 제공하며 service discovery나 pod의 DNS resolver로 사용할 수 있습니다.</li>
+<li>pod가 kubernetes cluser내 다른 서비스에 연결할 때 서비스의 DNS 이름을 사용하여 CoreDNS에 위치를 요청(DNS Query)하고 IP를 알아낼 수 있습니다.</li>
+</ol>
+</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../deploy-eks-and-efk/" class="md-footer__link md-footer__link--prev" aria-label="Previous: deploy EKS and EFK">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                deploy EKS and EFK
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../29/database-on-kubernetes-study--week-2/" class="md-footer__link md-footer__link--next" aria-label="Next: Database on Kubernetes study / Week 2">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Database on Kubernetes study / Week 2
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Jeongwon Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  </body>
+</html>
