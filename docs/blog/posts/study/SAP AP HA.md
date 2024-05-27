@@ -21,7 +21,7 @@ SAP 시스템은 ASCS (ABAP SAP Central Services)와 ERS (Enqueue Replication Se
 ## 구성 요소
 
 ### ASCS와 ERS
-- ASCS (ABAP SAP Central Services): 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리를 담당
+- ASCS (ABAP SAP Central Services): 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리 담당
 - ERS (Enqueue Replication Server): ASCS의 고가용성을 보장하기 위해 인큐 서버의 복제본
 
 ### 클러스터링 
@@ -74,24 +74,24 @@ resource r0 {
         address 192.168.1.2:7788;
     }
 }
+EOF
 
-# DRBD 초기화 및 시작
+# DRBD 초기화, 시작
 sudo drbdadm create-md r0
 sudo drbdadm up r0
 
-# 동기화 및 파일 시스템 생성
+# 동기화, 파일 시스템 생성
 sudo drbdadm -- --overwrite-data-of-peer primary r0
 sudo mkfs.xfs /dev/drbd0 # 또는 mkfs.ext4
 sudo mount /dev/drbd0 /mnt/drbd
-EOF
 ```
 
 #### Split brain 방지
 ```sh
-# Quorum 디바이스 설정
+# Quorum 설정
 sudo pcs quorum device add model net host=node3
 
-# Tie-Breaker 설정
+# Tie Breaker 설정
 sudo pcs property set quorum.tie-breaker=auto
 ```
 
@@ -112,5 +112,5 @@ graph TD;
 네트워크 격리로 인해 모든 AP 서버가 서로 통신할 수 없게 되는 Split brain 문제를 방지하기 위해 아래 방안을 적용할 수 있다.
 
 - 여러 STONITH 장치를 설정하여 하나의 장치가 실패하더라도 다른 장치가 펜싱을 수행할 수 있도록 설정
-- Quorum, Witness 노드를 사용하여 클러스터의 다수결 원칙을 적용
+- Quorum, Witness 노드를 사용해 클러스터의 다수결 원칙 적용
 - STONITH 실패 시 Secondary 서버가 자동으로 Primary로 승격되지 않도록 설정하고 관리자의 approve를 받도록하여 Split brain을 방지
