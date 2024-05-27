@@ -1407,35 +1407,35 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      주요 구성 요소
+      구성 요소
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="주요 구성 요소">
+    <nav class="md-nav" aria-label="구성 요소">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-ascs-ers" class="md-nav__link">
+  <a href="#ascs-ers" class="md-nav__link">
     <span class="md-ellipsis">
-      1. ASCS와 ERS
+      ASCS와 ERS
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      2. 클러스터링 소프트웨어
+      클러스터링
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 스토리지 기반 복제
+      스토리지 복제
     </span>
   </a>
   
@@ -1457,7 +1457,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       클러스터 구성
     </span>
@@ -1469,23 +1469,14 @@
           <li class="md-nav__item">
   <a href="#pacemaker-corosync" class="md-nav__link">
     <span class="md-ellipsis">
-      Pacemaker와 corosync 설치(모든 노드)
+      Pacemaker, corosync 설치(전체노드) 클러스터 설정
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pacemaker-corosync_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pacemaker와 corosync의 클러스터 설정
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ascs-ers" class="md-nav__link">
+  <a href="#ascs-ers_1" class="md-nav__link">
     <span class="md-ellipsis">
       ASCS, ERS를 클러스터에 등록
     </span>
@@ -1494,9 +1485,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#drbd" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      DRBD를 이용한 스토리지를 복제
+      스토리지를 복제
     </span>
   </a>
   
@@ -1517,7 +1508,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       시스템 구성 도표
     </span>
@@ -1626,7 +1617,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              4 min read
+                              3 min read
                             
                           </span>
                         </div>
@@ -1655,81 +1646,76 @@
 <summary>Note</summary>
 <p>맞는 정보를 기재하기위해 노력했으나 내용이 틀릴 수 있으며, 발견 즉시 포스트 업데이트 진행합니다.</p>
 </details>
-<h2 id="_1">주요 구성 요소</h2>
-<h3 id="1-ascs-ers">1. ASCS와 ERS</h3>
+<h2 id="_1">구성 요소</h2>
+<h3 id="ascs-ers">ASCS와 ERS</h3>
 <ul>
-<li><strong>ASCS (ABAP SAP Central Services)</strong>: 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리를 담당</li>
-<li><strong>ERS (Enqueue Replication Server)</strong>: ASCS의 고가용성을 보장하기 위해 인큐 서버의 복제본</li>
+<li>ASCS (ABAP SAP Central Services): 메시지 서버와 큐 서버 역할로 SAP 시스템의 중앙 통신과 트랜잭션 락 관리를 담당</li>
+<li>ERS (Enqueue Replication Server): ASCS의 고가용성을 보장하기 위해 인큐 서버의 복제본</li>
 </ul>
-<h3 id="2">2. 클러스터링 소프트웨어</h3>
+<h3 id="_2">클러스터링</h3>
 <ul>
-<li><strong>Pacemaker/Corosync</strong>: 클러스터 노드 간의 통신 담당</li>
-<li><strong>STONITH</strong>: Split brain 문제를 방지하기 위해 타 노드를 강제로 종료(펜싱)하는 역할</li>
+<li>Pacemaker/Corosync: 클러스터 노드 간의 통신 담당</li>
+<li>STONITH: Split brain 문제를 방지하기 위해 타 노드를 강제로 종료(펜싱)하는 역할</li>
 </ul>
-<h3 id="3">3. 스토리지 기반 복제</h3>
+<h3 id="_3">스토리지 복제</h3>
 <ul>
-<li><strong>DRBD (Distributed Replicated Block Device)</strong>: 데이터(스토리지)를 실시간으로 복제하여 장애 발생 시 데이터 일관성 유지</li>
+<li>DRBD (Distributed Replicated Block Device): 데이터(스토리지)를 실시간으로 복제하여 장애 발생 시 데이터 일관성 유지</li>
 </ul>
 <h2 id="sap-ha">SAP HA 구성 예시</h2>
-<h3 id="_2">클러스터 구성</h3>
-<h4 id="pacemaker-corosync">Pacemaker와 corosync 설치(모든 노드)</h4>
+<h3 id="_4">클러스터 구성</h3>
+<h4 id="pacemaker-corosync">Pacemaker, corosync 설치(전체노드) 클러스터 설정</h4>
 <p>pcs는 pacekamer 관리도구</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># RHEL/CentOS</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>pacemaker<span class="w"> </span>corosync<span class="w"> </span>pcs
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Ubuntu/Debian</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>pacemaker<span class="w"> </span>corosync<span class="w"> </span>pcs
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>pacemaker<span class="w"> </span>corosync<span class="w"> </span>pcs
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>auth<span class="w"> </span>node1<span class="w"> </span>node2
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>setup<span class="w"> </span>--name<span class="w"> </span>sap_cluster<span class="w"> </span>node1<span class="w"> </span>node2
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>start<span class="w"> </span>--all
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>stonith-enabled<span class="o">=</span><span class="nb">true</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>no-quorum-policy<span class="o">=</span>ignore
 </code></pre></div>
-<h4 id="pacemaker-corosync_1">Pacemaker와 corosync의 클러스터 설정</h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>auth<span class="w"> </span>node1<span class="w"> </span>node2
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>setup<span class="w"> </span>--name<span class="w"> </span>sap_cluster<span class="w"> </span>node1<span class="w"> </span>node2
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>cluster<span class="w"> </span>start<span class="w"> </span>--all
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>stonith-enabled<span class="o">=</span><span class="nb">true</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>no-quorum-policy<span class="o">=</span>ignore
+<h4 id="ascs-ers_1">ASCS, ERS를 클러스터에 등록</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># ASCS </span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>resource<span class="w"> </span>create<span class="w"> </span>SAP_ASCS<span class="w"> </span>ocf:heartbeat:SAPInstance<span class="w"> </span><span class="nv">InstanceName</span><span class="o">=</span>ASCS_00<span class="w"> </span><span class="nv">SAPInstanceType</span><span class="o">=</span>ASCS
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># ERS </span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>resource<span class="w"> </span>create<span class="w"> </span>SAP_ERS<span class="w"> </span>ocf:heartbeat:SAPInstance<span class="w"> </span><span class="nv">InstanceName</span><span class="o">=</span>ERS_01<span class="w"> </span><span class="nv">SAPInstanceType</span><span class="o">=</span>ERS
 </code></pre></div>
-<h4 id="ascs-ers">ASCS, ERS를 클러스터에 등록</h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># ASCS </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>resource<span class="w"> </span>create<span class="w"> </span>SAP_ASCS<span class="w"> </span>ocf:heartbeat:SAPInstance<span class="w"> </span><span class="nv">InstanceName</span><span class="o">=</span>ASCS_00<span class="w"> </span><span class="nv">SAPInstanceType</span><span class="o">=</span>ASCS
+<h4 id="_5">스토리지를 복제</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># DRBD 설치</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>drbd84-utils
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ERS </span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>resource<span class="w"> </span>create<span class="w"> </span>SAP_ERS<span class="w"> </span>ocf:heartbeat:SAPInstance<span class="w"> </span><span class="nv">InstanceName</span><span class="o">=</span>ERS_01<span class="w"> </span><span class="nv">SAPInstanceType</span><span class="o">=</span>ERS
-</code></pre></div>
-<h4 id="drbd">DRBD를 이용한 스토리지를 복제</h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># DRBD 설치</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>drbd84-utils
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># DRBD 설정 파일 편집 (/etc/drbd.d/r0.res)</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>cat<span class="w"> </span>&lt;&lt;EOF<span class="w"> </span>&gt;<span class="w"> </span>/etc/drbd.d/r0.res
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>resource<span class="w"> </span>r0<span class="w"> </span><span class="o">{</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span>device<span class="w"> </span>/dev/drbd0<span class="p">;</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span>disk<span class="w"> </span>/dev/sdb1<span class="p">;</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span>meta-disk<span class="w"> </span>internal<span class="p">;</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>on<span class="w"> </span>node1<span class="w"> </span><span class="o">{</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span>address<span class="w"> </span><span class="m">192</span>.168.1.1:7788<span class="p">;</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="o">}</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>on<span class="w"> </span>node2<span class="w"> </span><span class="o">{</span>
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span>address<span class="w"> </span><span class="m">192</span>.168.1.2:7788<span class="p">;</span>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="o">}</span>
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="o">}</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c1"># DRBD 초기화 및 시작</span>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>sudo<span class="w"> </span>drbdadm<span class="w"> </span>create-md<span class="w"> </span>r0
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>sudo<span class="w"> </span>drbdadm<span class="w"> </span>up<span class="w"> </span>r0
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="c1"># 동기화 및 파일 시스템 생성</span>
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>sudo<span class="w"> </span>drbdadm<span class="w"> </span>--<span class="w"> </span>--overwrite-data-of-peer<span class="w"> </span>primary<span class="w"> </span>r0
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>sudo<span class="w"> </span>mkfs.xfs<span class="w"> </span>/dev/drbd0<span class="w"> </span><span class="c1"># 또는 mkfs.ext4</span>
-<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>sudo<span class="w"> </span>mount<span class="w"> </span>/dev/drbd0<span class="w"> </span>/mnt/drbd
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># DRBD 설정 파일 편집 (/etc/drbd.d/r0.res)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; /etc/drbd.d/r0.res</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">resource r0 {</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">    device /dev/drbd0;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    disk /dev/sdb1;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">    meta-disk internal;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s">    on node1 {</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="s">        address 192.168.1.1:7788;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="s">    }</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="s">    on node2 {</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s">        address 192.168.1.2:7788;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="s">    }</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="s">}</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="s"># DRBD 초기화 및 시작</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="s">sudo drbdadm create-md r0</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="s">sudo drbdadm up r0</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="s"># 동기화 및 파일 시스템 생성</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="s">sudo drbdadm -- --overwrite-data-of-peer primary r0</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="s">sudo mkfs.xfs /dev/drbd0 # 또는 mkfs.ext4</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="s">sudo mount /dev/drbd0 /mnt/drbd</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="s">EOF</span>
 </code></pre></div>
 <h4 id="split-brain">Split brain 방지</h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Quorum 디바이스 설정</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>quorum<span class="w"> </span>device<span class="w"> </span>add<span class="w"> </span>model<span class="w"> </span>net<span class="w"> </span><span class="nv">host</span><span class="o">=</span>node3
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Tie-Breaker 설정</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>quorum.tie-breaker<span class="o">=</span>auto
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Quorum 디바이스 설정</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>quorum<span class="w"> </span>device<span class="w"> </span>add<span class="w"> </span>model<span class="w"> </span>net<span class="w"> </span><span class="nv">host</span><span class="o">=</span>node3
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Tie-Breaker 설정</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>sudo<span class="w"> </span>pcs<span class="w"> </span>property<span class="w"> </span><span class="nb">set</span><span class="w"> </span>quorum.tie-breaker<span class="o">=</span>auto
 </code></pre></div>
-<h3 id="_3">시스템 구성 도표</h3>
+<h3 id="_6">시스템 구성 도표</h3>
 <pre class="mermaid"><code>graph TD;
     A[Client] --&gt;|Request| B[Load Balancer]
     B --&gt; C[Node1: ASCS + ERS]
