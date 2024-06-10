@@ -25,7 +25,7 @@ extra:
     provider: google
     property: G-22LC2P5RV5
 
-copyright: Copyright &copy; 2023 Jeongwon Lee
+copyright: Copyright &copy; 2024 Jeongwon(Aaron) Lee
 
 plugins:
   - blog:
@@ -69,5 +69,5 @@ markdown_extensions:
       custom_checkbox: true
   - attr_list
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
