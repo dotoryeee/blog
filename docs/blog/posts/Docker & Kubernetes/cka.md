@@ -262,14 +262,92 @@ Corefile:
     # coredns config변경 시 자동 리로드
     loadbalance
 }
+```
+11.  클러스터 내에서 default 네임스페이스의 test라는 Pod가 payroll 네임스페이스의 web-svc라는 service를 호출할 때 사용할 수 있는 도메인 종류 4가지
+     - FQDN (Fully Qualified Domain Name): web-svc.payroll.svc.cluster.local
+     - 단축 이름(Shortened name): web-svc
+     - 네임스페이스를 포함한 단축 이름: web-svc.payroll
+     - 서비스 도메인 (svc 포함): web-svc.payroll.svc
+12. kubernetes v1.29 설치
+    1. 시스템이 부팅될 때 br_netfilter 커널 모듈을 자동으로 로드하도록 설정(브릿지 네트워크용)
+    ```sh
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+    ```
+    2. IPv4, IPv6 패킷이 브릿지를 통과할 떄 iptables를 거치도록 설정
+    ```sh
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EOF
+    # sysctl 설정 리로드
+    sudo sysctl --system
+    ```
+    3. k8s repo 등록
+    ```sh
+    sudo apt install -y apt-transport-https ca-certificates curl
 
-```
-11.  
+    # gpg keyring 디렉터리 생성
+    sudo mkdir -p -m 755 /etc/apt/keyrings
+
+    # 시스템에 gpg키 등록
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    # pkgs.k8s.io repository 등록
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+    # 시스템 apt repo 업데이트
+    sudo apt update
+    ```
+    4. kubectl, kubeadm, kubelet 설치
+    ```sh
+    apt install -y kubelet=1.29.0-1.1 kubeadm=1.29.0-1.1 kubectl=1.29.0-1.1
+    sudo apt-mark hold kubelet kubeadm kubectl
+    ```
+13. Master node 설치
+    1.  eth0의 ip를 api 서버 ip로 adversite 설정 + pod 네트워크를 10.244.0.0/16로 설정
+    ```sh
+    IP_ADDR=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+    kubeadm init --apiserver-cert-extra-sans=controlplane --apiserver-advertise-address $IP_ADDR --pod-network-cidr=10.244.0.0/16
+    ```
+    2. init완료 후 cluster 접근 정보를 kubectl 디렉터리로 복사한다
+    ```sh
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    ```
+14. Worker node 설치
+master node init후 발급되는 토큰을 이용해 cluster join을 진행한다.
 ```sh
+kubeadm join 192.8.56.9:6443 --token w7u33y.4ij3jy55d9o3wqqa \
+--discovery-token-ca-cert-hash sha256:da7c8753a36dd3ad1b117490941b6468eae862ef5b7078e0f30f5968e7e28b5f 
 ```
-12.   
-```sh
-```
-13.   
-```sh
-```
+15.  Flannel 설치
+    1.  flannel 다운로드 
+    ```sh
+    wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+    ```
+    2. flannel 컨테이너에 eth0 인터페이스 사용하도록 파라미터 추가
+    ```yaml
+    containers:
+      - args:
+        - --ip-masq
+        - --kube-subnet-mgr
+        - --iface=eth0
+        command:
+        - /opt/bin/flanneld
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: EVENT_QUEUE_DEPTH
+          value: "5000"
+        image: docker.io/flannel/flannel:v0.25.4
+        name: kube-flannel
+    ```
