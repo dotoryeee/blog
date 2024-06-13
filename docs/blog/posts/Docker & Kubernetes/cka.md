@@ -187,4 +187,89 @@ spec:
     5. worker노드 kubeadm apply upgrade
     6. worker노드 kubelet 업그레이드
 
-7. 
+7. 현재 노드에서 K8S Cluster통신에 사용하는 NIC 찾기
+```sh
+controlplane ~ ➜  k get no -o wide
+NAME           STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+controlplane   Ready    control-plane   18m   v1.29.0   192.1.220.9    <none>        Ubuntu 22.04.4 LTS   5.4.0-1106-gcp   containerd://1.6.26
+node01         Ready    <none>          17m   v1.29.0   192.1.220.12   <none>        Ubuntu 22.04.3 LTS   5.4.0-1106-gcp   containerd://1.6.26
+
+# cluster에 공개된 Private IP는 192.1.220.9
+
+controlplane ~ ➜  ip a | grep 192.1.220.9 -C3
+    link/ether 72:b5:ab:b3:a9:61 brd ff:ff:ff:ff:ff:ff link-netns cni-1201966d-c959-fdea-787f-c45a7e9a0804
+15489: eth0@if15490: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP group default 
+    link/ether 02:42:c0:01:dc:09 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.1.220.9/24 brd 192.1.220.255 scope global eth0
+       valid_lft forever preferred_lft forever
+15491: eth1@if15492: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:19:00:13 brd ff:ff:ff:ff:ff:ff link-netnsid 1
+
+# ip a 명령어를 이용해 192.1.220.9는 eth0 NIC이 사용중인것을 확인할 수 있고 MAC Addr이 02:42:c0:01:dc:09인것도 확인할 수 있다.
+```
+8. 노드의 기본 게이트웨이 조회
+```sh
+ip route show default
+```
+9. node01의 pod들이 pod간 통신을 시도할 때 10.244.192.0으로 통신한다
+```sh
+node01 ~ ➜  ip route show 
+default via 172.25.0.1 dev eth1 
+10.244.0.0/16 dev weave proto kernel scope link src 10.244.192.0 
+172.25.0.0/24 dev eth1 proto kernel scope link src 172.25.0.43 
+192.41.231.0/24 dev eth0 proto kernel scope link src 192.41.231.3 
+```
+10. CoreDNS config 
+```sh
+controlplane ~ ➜  k -n kube-system describe cm coredns 
+# ConfigMap으로 저장된 coredns config data호출
+Name:         coredns
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+Corefile:
+----
+.:53 {
+# 53포트 listen
+    errors
+    # 쿼리 처리 중 에러를 로깅한다
+    health {
+       lameduck 5s
+       # coreDNS 종료 요청 시 5초 지연시키고, 그동안 새로운 요청은 받지 않음
+    }
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        # 클러스터 내부 DNS 도메인 설정(cluster.local, in-addr.arpa, ip6.arpa)
+        # in-addr.arpa: IP v4 역방향 조회를 위한 도메인, 192.0.2.1쿼리시 옥텟 역순 배치 방식에 따라 1.2.0.192.in-addr.arpa응답
+        # ip6.arpa: IP v6 역방향 조회를 위한 도메인
+       pods insecure
+       # 보안이 적용되지 않은 pod이름 기반 DNS 활성화
+       fallthrough in-addr.arpa ip6.arpa
+       # in-addr.arpa, ip6.arpa에 대한 쿼리 처리 실패 시 다음 플러그인으로 전달 -> forward . /etc/resolv.conf으로 전달됌
+       ttl 30
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf {
+       max_concurrent 1000
+    }
+    cache 30
+    loop
+    # DNS 쿼리 루프 방지
+    reload
+    # coredns config변경 시 자동 리로드
+    loadbalance
+}
+
+```
+11.  
+```sh
+```
+12.   
+```sh
+```
+13.   
+```sh
+```
