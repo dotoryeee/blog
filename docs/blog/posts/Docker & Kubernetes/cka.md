@@ -351,3 +351,12 @@ kubeadm join 192.8.56.9:6443 --token w7u33y.4ij3jy55d9o3wqqa \
         image: docker.io/flannel/flannel:v0.25.4
         name: kube-flannel
     ```
+16. weave 설치
+```sh
+curl -LO https://github.com/weaveworks/weave/releases/download/latest_release/weave
+-daemonset-k8s-1.11.yaml
+```
+17. pod생성 시 command를 한 번에 입력
+```sh
+kubectl run test --image=busybox --dry-run=client -o yaml --command -- sleep 3600 > test.yaml
+```
