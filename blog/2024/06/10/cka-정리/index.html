@@ -18,7 +18,7 @@
     
     
       
-        <title>CKA 시험 요약 - dotoryeee's blog</title>
+        <title>CKA 정리 - dotoryeee's blog</title>
       
     
     
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CKA 시험 요약
+              CKA 정리
             
           </span>
         </div>
@@ -1510,7 +1510,7 @@
         
 
 
-<h1 id="cka">CKA 시험 요약</h1>
+<h1 id="cka">CKA 정리</h1>
 <!-- more -->
 
 <ol>
@@ -1859,6 +1859,15 @@ master node init후 발급되는 토큰을 이용해 cluster join을 진행한�
 <li>pod생성 시 command를 한 번에 입력
 <div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--dry-run<span class="o">=</span>client<span class="w"> </span>-o<span class="w"> </span>yaml<span class="w"> </span>--command<span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span><span class="m">3600</span><span class="w"> </span>&gt;<span class="w"> </span>test.yaml
 </code></pre></div></li>
+<li>Deployment 롤백
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># deployment 내역</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span><span class="nb">history</span><span class="w"> </span>deploy<span class="w"> </span>test-deployment
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="c1"># 특정 리비전 조회</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span><span class="nb">history</span><span class="w"> </span>deploy<span class="w"> </span>test-deployment<span class="w"> </span>--revision<span class="o">=</span><span class="m">2</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="c1"># 특정 리비전으로 롤백</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>undo<span class="w"> </span>deploy<span class="w"> </span>test-deployment<span class="w"> </span>--to-revision<span class="o">=</span><span class="m">2</span>
+</code></pre></div></li>
+<li></li>
 </ol>
 
 
