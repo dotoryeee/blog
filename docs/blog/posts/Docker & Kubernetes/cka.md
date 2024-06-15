@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 date: 2024-06-10
 authors:
   - dotoryeee
@@ -8,7 +8,7 @@ categories:
   - kubernetes
   - cka
 ---
-# CKA 시험 요약
+# CKA 정리
 
 <!-- more -->
 
@@ -360,3 +360,13 @@ curl -LO https://github.com/weaveworks/weave/releases/download/latest_release/we
 ```sh
 kubectl run test --image=busybox --dry-run=client -o yaml --command -- sleep 3600 > test.yaml
 ```
+18. Deployment 롤백
+```sh
+# deployment 내역
+kubectl rollout history deploy test-deployment
+# 특정 리비전 조회
+kubectl rollout history deploy test-deployment --revision=2
+# 특정 리비전으로 롤백
+kubectl rollout undo deploy test-deployment --to-revision=2
+```
+19. 
