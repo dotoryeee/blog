@@ -10,6 +10,8 @@ categories:
 ---
 # CKA 정리
 
+![](./cka/score.png)
+
 <!-- more -->
 
 1. ETCD 백업/복구
@@ -369,4 +371,3 @@ kubectl rollout history deploy test-deployment --revision=2
 # 특정 리비전으로 롤백
 kubectl rollout undo deploy test-deployment --to-revision=2
 ```
-19. 
