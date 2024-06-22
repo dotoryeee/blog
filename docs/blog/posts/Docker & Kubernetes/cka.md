@@ -14,6 +14,8 @@ categories:
 
 <!-- more -->
 
+![](./cka/Screenshot%202024-06-22%20at%2011.51.38.png)
+
 1. ETCD 백업/복구
     - 백업
 
