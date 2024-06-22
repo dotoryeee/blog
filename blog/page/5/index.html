@@ -1149,6 +1149,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/kcna/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    kcna
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/kubernetes/" class="md-nav__link">
         
   
@@ -1430,6 +1453,71 @@
       <header class="md-typeset">
         <h1 id="blog">Blog</h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              4 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="terraform-backend"><a class="toclink" href="../../1993/09/17/terraform-backend/">Terraform Backend</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-backend/#_1">목표</a></h3>
+<hr />
+<ul>
+<li>Terraform의 Backend 기능을 이용해 state파일을 안전하게 관리해봅니다.</li>
+<li>.tfstate를 로컬이 아닌 S3에 저장하고 DynamoDB를 이용해 파일을 Locking합니다</li>
+<li>
+<p>Backend를 이용함에 따른 이점</p>
+<ul>
+<li>
+<p>Locking</p>
+<p>협업시 원격 저장소를 사용하여 여러명이 동시에 같은 state 접근하는것을 막습니다</p>
+</li>
+<li>
+<p>Backup</p>
+<p>원격저장소에 저장함으로써 데이터 유실을 방지합니다. 특히 S3에 저장하는 방법은 버전관리가 가능한 편리하고 안전한 방법입니다.</p>
+</li>
+</ul>
+</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/terraform-backend/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
