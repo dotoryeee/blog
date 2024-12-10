@@ -1550,7 +1550,9 @@
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>sudo<span class="w"> </span>mkdir<span class="w"> </span>/efs
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>nfs<span class="w"> </span>-o<span class="w"> </span><span class="nv">nfsvers</span><span class="o">=</span><span class="m">4</span>.1,rsize<span class="o">=</span><span class="m">1048576</span>,wsize<span class="o">=</span><span class="m">1048576</span>,hard,timeo<span class="o">=</span><span class="m">600</span>,retrans<span class="o">=</span><span class="m">2</span>,noresvport<span class="w">    </span><span class="m">172</span>.31.13.181:/<span class="w"> </span>/efs
 </code></pre></div>
-10. </p>
+10. 모든 명령 실행 결과 마지막에 개행 추가하기
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PS1</span><span class="o">=</span><span class="s2">&quot;\n[\u@\h \W] </span>$<span class="s2"> &quot;</span>
+</code></pre></div></p>
 </li>
 </ol>
 
