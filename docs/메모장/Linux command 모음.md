@@ -105,4 +105,7 @@
     sudo mkdir /efs
     sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 	172.31.13.181:/ /efs
     ```
-10. 
+10. 모든 명령 실행 결과 마지막에 개행 추가하기
+    ```bash
+    export PS1="\n[\u@\h \W] $ "
+    ```
