@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../http-status-code-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../storage-%EC%A0%95%EB%A6%AC/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>HTTP와 TLS 간단 정리 - dotoryeee's blog</title>
+        <title>HTTP status code 정리 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#http-tls" class="md-skip">
+        <a href="#http-status-code" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              HTTP와 TLS 간단 정리
+              HTTP status code 정리
             
           </span>
         </div>
@@ -293,11 +293,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../archive/2025/05/" class="md-nav__link">
+      <a href="../../../../archive/2025/03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    2025 May
+    2025 March
   </span>
   
 
@@ -1168,65 +1168,62 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#http" class="md-nav__link">
+  <a href="#http-20" class="md-nav__link">
     <span class="md-ellipsis">
-      HTTP 기본 통신 과정
+      HTTP 상태 코드 주요 20개 정리
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#https" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      HTTPS 적용 시 변경되는 과정
+      주요 상태 코드 설명
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="주요 상태 코드 설명">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#200-ok" class="md-nav__link">
+    <span class="md-ellipsis">
+      200 OK
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#http_1" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#301-moved-permanently" class="md-nav__link">
     <span class="md-ellipsis">
-      HTTP 버전별 차이점
+      301 Moved Permanently
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#tls" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#401-unauthorized-vs-403-forbidden" class="md-nav__link">
     <span class="md-ellipsis">
-      TLS 버전별 차이점
+      401 Unauthorized vs 403 Forbidden
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#tls-13-0-rttzero-rtt" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#500-internal-server-error-vs-502-bad-gateway-vs-503-service-unavailable" class="md-nav__link">
     <span class="md-ellipsis">
-      TLS 1.3에서 0-RTT(Zero-RTT) 동작 원리
+      500 Internal Server Error vs 502 Bad Gateway vs 503 Service Unavailable
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-master-secret" class="md-nav__link">
-    <span class="md-ellipsis">
-      프리마스터 키(Pre-Master Secret)와 세션 키의 차이
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tls-12-ecdhe" class="md-nav__link">
-    <span class="md-ellipsis">
-      TLS 1.2에서 ECDHE 사용 시 단점
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1286,7 +1283,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
-                        <time datetime="2025-05-11 00:00:00" class="md-ellipsis">May 11, 2025</time>
+                        <time datetime="2025-03-10 00:00:00" class="md-ellipsis">Mar 10, 2025</time>
                       </div>
                     </li>
                     
@@ -1297,8 +1294,7 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/network/">Network</a>, 
-                              <a href="../../../../category/security/">Security</a></span>
+                              <a href="../../../../category/network/">Network</a></span>
                         </div>
                       </li>
                     
@@ -1309,7 +1305,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              4 min read
+                              3 min read
                             
                           </span>
                         </div>
@@ -1329,179 +1325,190 @@
         
 
 
-<h1 id="http-tls">HTTP와 TLS 간단 정리</h1>
+<h1 id="http-status-code">HTTP status code 정리</h1>
 <!-- more -->
 
+<h2 id="http-20">HTTP 상태 코드 주요 20개 정리</h2>
+<table>
+<thead>
+<tr>
+<th><strong>상태 코드</strong></th>
+<th><strong>메시지</strong></th>
+<th><strong>원인</strong></th>
+<th><strong>동작 방식</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>요청이 정상적으로 처리됨</td>
+<td>서버가 요청된 리소스를 정상 반환</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>요청이 성공하여 리소스가 새로 생성됨</td>
+<td><code>POST</code> 요청으로 리소스 생성 시 반환</td>
+</tr>
+<tr>
+<td><strong>204</strong></td>
+<td>No Content</td>
+<td>요청 성공, 응답 본문이 없음</td>
+<td><code>DELETE</code> 요청 등에서 응답 없이 완료됨</td>
+</tr>
+<tr>
+<td><strong>301</strong></td>
+<td>Moved Permanently</td>
+<td>요청한 리소스가 영구적으로 이동됨</td>
+<td>클라이언트는 새로운 URL로 자동 리다이렉트</td>
+</tr>
+<tr>
+<td><strong>302</strong></td>
+<td>Found</td>
+<td>리소스가 임시로 이동됨</td>
+<td><code>Location</code> 헤더를 사용해 임시 URL 제공</td>
+</tr>
+<tr>
+<td><strong>304</strong></td>
+<td>Not Modified</td>
+<td>클라이언트가 가진 캐시된 데이터가 최신 상태임</td>
+<td><code>If-Modified-Since</code> 요청 헤더와 함께 동작</td>
+</tr>
+<tr>
+<td><strong>400</strong></td>
+<td>Bad Request</td>
+<td>요청이 잘못되었거나 서버가 이해할 수 없음</td>
+<td>잘못된 쿼리, JSON 형식 오류 등에서 발생</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>클라이언트가 인증되지 않음</td>
+<td><code>WWW-Authenticate</code> 헤더로 인증 요구</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>클라이언트가 접근 권한 없음</td>
+<td>인증되었지만 권한 부족 (예: 관리자 전용 페이지)</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>요청한 리소스를 찾을 수 없음</td>
+<td>존재하지 않는 URL 요청 시 발생</td>
+</tr>
+<tr>
+<td><strong>405</strong></td>
+<td>Method Not Allowed</td>
+<td>요청한 HTTP 메서드가 지원되지 않음</td>
+<td><code>GET</code> 요청만 허용된 엔드포인트에 <code>POST</code> 요청한 경우</td>
+</tr>
+<tr>
+<td><strong>408</strong></td>
+<td>Request Timeout</td>
+<td>클라이언트가 요청을 너무 오래 걸림</td>
+<td>서버가 일정 시간 내 응답을 받지 못하면 종료</td>
+</tr>
+<tr>
+<td><strong>409</strong></td>
+<td>Conflict</td>
+<td>요청이 현재 서버 상태와 충돌</td>
+<td>중복된 리소스 생성 시 발생</td>
+</tr>
+<tr>
+<td><strong>413</strong></td>
+<td>Payload Too Large</td>
+<td>요청 본문이 서버가 허용하는 크기를 초과</td>
+<td>대용량 파일 업로드 시 발생</td>
+</tr>
+<tr>
+<td><strong>429</strong></td>
+<td>Too Many Requests</td>
+<td>클라이언트가 너무 많은 요청을 보냄</td>
+<td><code>Rate Limiting</code> 정책에 의해 차단</td>
+</tr>
+<tr>
+<td><strong>500</strong></td>
+<td>Internal Server Error</td>
+<td>서버 내부 오류 발생</td>
+<td>예외 처리 미흡으로 인해 발생</td>
+</tr>
+<tr>
+<td><strong>502</strong></td>
+<td>Bad Gateway</td>
+<td>게이트웨이 또는 프록시 서버가 잘못된 응답 수신</td>
+<td>백엔드 서버 다운 시 발생</td>
+</tr>
+<tr>
+<td><strong>503</strong></td>
+<td>Service Unavailable</td>
+<td>서버가 과부하 또는 유지보수 중</td>
+<td>서버가 일시적으로 요청을 처리할 수 없음</td>
+</tr>
+<tr>
+<td><strong>504</strong></td>
+<td>Gateway Timeout</td>
+<td>서버가 백엔드 서버로부터 응답을 받지 못함</td>
+<td>프록시 서버에서 백엔드 서버 응답 지연 시 발생</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="http">HTTP 기본 통신 과정</h2>
-<p><pre class="mermaid"><code>sequenceDiagram
-    participant Client
-    participant Server
-
-    Client-&gt;&gt;Server: TCP 3-way Handshake (SYN, SYN-ACK, ACK)
-    Client-&gt;&gt;Server: HTTP Request (GET /index.html)
-    Server--&gt;&gt;Client: HTTP Response (200 OK, HTML Content)
-    Client-&gt;&gt;Server: Additional Requests (CSS, JS, Images)
-    Server--&gt;&gt;Client: Additional Responses
-    Client-&gt;&gt;Server: Keep-Alive or Connection Close</code></pre>
-- TCP 3-way Handshake: 클라이언트와 서버 간 TCP 연결 수립
-- HTTP Request/Response: 요청한 웹 페이지 데이터를 주고받음
-- Keep-Alive: HTTP/1.1에서는 TCP 연결을 유지하여 성능 개선</p>
-<h2 id="https">HTTPS 적용 시 변경되는 과정</h2>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Client
-    participant Server
-
-    Client-&gt;&gt;Server: TCP 3-way Handshake
-    Client-&gt;&gt;Server: TLS Handshake (ClientHello)
-    Server--&gt;&gt;Client: ServerHello + Certificate
-    Client-&gt;&gt;Server: Key Exchange + Finished
-    Server--&gt;&gt;Client: Finished (Encrypted)
-    Client-&gt;&gt;Server: Encrypted HTTP Request
-    Server--&gt;&gt;Client: Encrypted HTTP Response</code></pre>
+<h2 id="_1">주요 상태 코드 설명</h2>
+<h3 id="200-ok">200 OK</h3>
 <ul>
-<li>TLS Handshake 추가: 서버 인증서 확인 및 세션 키 교환</li>
-<li>데이터 암호화 적용: 이후의 HTTP 요청과 응답이 암호화됨</li>
+<li>요청이 정상적으로 처리되었으며, 응답 본문이 함께 전달됨</li>
+<li><code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code> 요청이 성공적으로 완료되었을 때 사용됨</li>
 </ul>
-<h2 id="http_1">HTTP 버전별 차이점</h2>
+<h3 id="301-moved-permanently">301 Moved Permanently</h3>
+<ul>
+<li>요청한 URL이 영구적으로 이동되었음을 의미</li>
+<li>클라이언트는 <code>Location</code> 헤더의 새 URL로 자동 리다이렉트해야 함</li>
+</ul>
+<h3 id="401-unauthorized-vs-403-forbidden">401 Unauthorized vs 403 Forbidden</h3>
 <table>
 <thead>
 <tr>
-<th>HTTP 버전</th>
-<th>TCP 세션 개수</th>
-<th>특징</th>
-<th>TLS 적용 시 차이점</th>
+<th>상태 코드</th>
+<th>의미</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>HTTP/1.1</td>
-<td>여러 개 (보통 6개)</td>
-<td>Keep-Alive 지원, 동시 요청 불가</td>
-<td>TCP 세션별 TLS 핸드셰이크 필요 (부하 증가)</td>
+<td><strong>401</strong> Unauthorized</td>
+<td>인증이 필요하지만 제공되지 않았거나 실패함 (예: 로그인 필요)</td>
 </tr>
 <tr>
-<td>HTTP/2</td>
-<td>1개만 사용</td>
-<td>멀티플렉싱 지원, 헤더 압축(HPACK)</td>
-<td>1개의 TLS 핸드셰이크만 필요 (성능 향상)</td>
-</tr>
-<tr>
-<td>HTTP/3</td>
-<td>1개만 사용 (UDP 기반)</td>
-<td>QUIC 사용, 0-RTT 지원</td>
-<td>TCP 핸드셰이크 없음, TLS 내장 (최적화됨)</td>
+<td><strong>403</strong> Forbidden</td>
+<td>인증되었지만 접근 권한 없음 (예: 관리자가 아닌 사용자가 관리자 페이지 접근 시)</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>HTTP/3는 UDP 기반이므로 Keep-Alive 개념이 없음, TLS 1.3 필수 적용됨 → 핸드셰이크 속도가 빠름</li>
-</ul>
-<h2 id="tls">TLS 버전별 차이점</h2>
+<h3 id="500-internal-server-error-vs-502-bad-gateway-vs-503-service-unavailable">500 Internal Server Error vs 502 Bad Gateway vs 503 Service Unavailable</h3>
 <table>
 <thead>
 <tr>
-<th>TLS 버전</th>
-<th>핸드셰이크 RTT</th>
-<th>암호화 방식</th>
-<th>특징</th>
+<th>상태 코드</th>
+<th>원인</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>TLS 1.0 / 1.1</td>
-<td>2-RTT</td>
-<td>CBC 모드 지원</td>
-<td>보안 취약, 지원 중단</td>
+<td><strong>500</strong> Internal Server Error</td>
+<td>서버 내부 코드 오류 발생</td>
 </tr>
 <tr>
-<td>TLS 1.2</td>
-<td>2-RTT</td>
-<td>AES-GCM, SHA-256 지원</td>
-<td>RSA 키 교환 가능, PFS 선택적 적용</td>
+<td><strong>502</strong> Bad Gateway</td>
+<td>서버가 백엔드 서버로부터 잘못된 응답 수신</td>
 </tr>
 <tr>
-<td>TLS 1.3</td>
-<td>1-RTT, 0-RTT</td>
-<td>AES-GCM, ChaCha20</td>
-<td>PFS 강제 적용, 0-RTT 지원</td>
+<td><strong>503</strong> Service Unavailable</td>
+<td>서버가 유지보수 중이거나 과부하 상태</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>TLS 1.3에서는 0-RTT를 통해 세션 복구 속도를 대폭 개선</li>
-<li>TLS 1.2는 RSA 기반 키 교환을 지원하지만, TLS 1.3에서는 ECDHE만 사용</li>
-</ul>
-<h2 id="tls-13-0-rttzero-rtt">TLS 1.3에서 0-RTT(Zero-RTT) 동작 원리</h2>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Client
-    participant Server
-
-    Client-&gt;&gt;Server: ClientHello + Early Data (0-RTT)
-    Server--&gt;&gt;Client: ServerHello + Finished
-    Server--&gt;&gt;Client: Processing Early Data
-    Client-&gt;&gt;Server: Secure HTTP Request
-    Server--&gt;&gt;Client: Secure HTTP Response</code></pre>
-<ul>
-<li>0-RTT(Zero-RTT): 과거 TLS 세션 정보를 활용하여 핸드셰이크 없이 즉시 데이터 전송</li>
-<li>보안 이슈: 리플레이 공격 가능성이 있음 → 서버에서 제한적으로 허용</li>
-</ul>
-<h2 id="pre-master-secret">프리마스터 키(Pre-Master Secret)와 세션 키의 차이</h2>
-<table>
-<thead>
-<tr>
-<th>개념</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>프리마스터 키</td>
-<td>클라이언트가 생성하여 서버로 전송하는 임시 키</td>
-</tr>
-<tr>
-<td>어떻게 사용됨?</td>
-<td>서버가 복호화하여 Master Secret 생성, 이후 세션 키 유도</td>
-</tr>
-<tr>
-<td>세션 키(Session Key)</td>
-<td>최종적으로 데이터를 암호화하는 키</td>
-</tr>
-<tr>
-<td>TLS 1.2와 TLS 1.3 차이점</td>
-<td>TLS 1.2는 RSA 기반 전달 가능, TLS 1.3은 ECDHE로 협상</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>프리마스터 키는 한 번 사용되며, 이후 모든 암호화는 세션 키로 수행</li>
-</ul>
-<h2 id="tls-12-ecdhe">TLS 1.2에서 ECDHE 사용 시 단점</h2>
-<table>
-<thead>
-<tr>
-<th>단점</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CPU 부하 증가</td>
-<td>RSA보다 연산량 많음 (타원곡선 연산 필요)</td>
-</tr>
-<tr>
-<td>세션 재사용 불가</td>
-<td>Ephemeral Key(임시 키) 사용으로 세션 복구 불가능</td>
-</tr>
-<tr>
-<td>메모리 사용 증가</td>
-<td>클라이언트별 임시 키 저장 필요</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>TLS 1.3에서는 키 교환 과정을 최적화하여 이러한 단점을 해결함</li>
-</ul>
 
 
 
@@ -1548,7 +1555,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: OLTP vs OLAP 차이점 정리">
+          <a href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: HTTP와 TLS 간단 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1558,20 +1565,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                OLTP vs OLAP 차이점 정리
+                HTTP와 TLS 간단 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../http-status-code-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: HTTP status code 정리">
+          <a href="../storage-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: Storage 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                HTTP status code 정리
+                Storage 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
