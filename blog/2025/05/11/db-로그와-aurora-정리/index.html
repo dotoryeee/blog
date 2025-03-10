@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../storage-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>서버 부팅 방식 정리 - dotoryeee's blog</title>
+        <title>DB 로그와 Aurora 정리 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#db-aurora" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              서버 부팅 방식 정리
+              DB 로그와 Aurora 정리
             
           </span>
         </div>
@@ -1375,127 +1373,178 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      데이터베이스 로그
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL과 PostgreSQL의 로그 종류 비교
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#walwrite-ahead-logging-vs-binlogbinary-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      WAL(Write-Ahead Logging) vs. Binlog(Binary Log)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WAL(Write-Ahead Logging) vs. Binlog(Binary Log)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wal-write-ahead-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ WAL (Write-Ahead Logging)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binlog-binary-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Binlog (Binary Log)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wal-vs-binlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      WAL VS BINLog 차이점
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-aurora-wal-binlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Aurora에서의 WAL과 Binlog
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aurora-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aurora-mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora MySQL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#write-ahead-logging-wal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write-Ahead Logging (WAL)의 동작 방식
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-aurora" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Aurora에서 로그의 작용 방식
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS Aurora에서 로그의 작용 방식">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aurora" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora의 로그 관련 특징
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aurora-wal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora에서 WAL 및 로그 활용 방식
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Aurora에서 WAL 및 로그 활용 방식">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aurora-wal-redo-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora는 WAL 기반 Redo Log를 중앙 스토리지 계층에서 관리
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aurora-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora Replication (고가용성 및 읽기 확장)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aurora-crash-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora의 Crash Recovery (장애 복구)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aurora-mysqlpostgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aurora와 기존 MySQL/PostgreSQL 비교
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      각 용어의 개념
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="각 용어의 개념">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mbr-master-boot-record" class="md-nav__link">
-    <span class="md-ellipsis">
-      MBR (Master Boot Record)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gpt-guid-partition-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      GPT (GUID Partition Table)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#uefi-unified-extensible-firmware-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      UEFI (Unified Extensible Firmware Interface)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#grub-grand-unified-bootloader" class="md-nav__link">
-    <span class="md-ellipsis">
-      GRUB (GRand Unified Bootloader)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#esp-efi-system-partition" class="md-nav__link">
-    <span class="md-ellipsis">
-      ESP (EFI System Partition)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#boot-bootefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      /boot 및 /boot/efi 필요성
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-aws-ec2-bootefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#aws-xen-t2-m4" class="md-nav__link">
-    <span class="md-ellipsis">
-      AWS Xen 기반 (예: t2, m4)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aws-nitro-m5-m6i-m7i-t4g-a1" class="md-nav__link">
-    <span class="md-ellipsis">
-      AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aws-nitro-uefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      AWS Nitro 기반에서 UEFI 부팅이 필요한 경우
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aws-ec2-os" class="md-nav__link">
-    <span class="md-ellipsis">
-      AWS EC2 인스턴스 세대 및 OS별 부팅 방식
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       결론
     </span>
@@ -1582,7 +1631,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              4 min read
+                              7 min read
                             
                           </span>
                         </div>
@@ -1602,166 +1651,290 @@
         
 
 
-<h1 id="_1">서버 부팅 방식 정리</h1>
+<h1 id="db-aurora">DB 로그와 Aurora 정리</h1>
 <!-- more -->
 
-<h2 id="_2">각 용어의 개념</h2>
-<h3 id="mbr-master-boot-record">MBR (Master Boot Record)</h3>
-<ul>
-<li>역할: 디스크의 첫 번째 512바이트에 위치하는 데이터 구조로, 부트 로더 및 파티션 정보를 저장함.</li>
-<li>왜 사용하는가?</li>
-<li>오래된 BIOS 기반 시스템에서 부팅을 지원하기 위해 사용됨.</li>
-<li>부트 로더(예: GRUB)의 첫 번째 스테이지(Stage 1)를 저장하여 운영체제 로딩을 시작할 수 있도록 함.</li>
-<li>단순한 구조이지만, 최대 2TiB 크기까지만 지원하고, 최대 4개의 기본(primary) 파티션만 가질 수 있음.</li>
-</ul>
-<hr />
-<h3 id="gpt-guid-partition-table">GPT (GUID Partition Table)</h3>
-<ul>
-<li>역할: 최신 디스크 파티션 테이블 형식으로, MBR보다 많은 파티션과 더 큰 디스크 크기를 지원함.</li>
-<li>왜 사용하는가?</li>
-<li>MBR의 2TiB 한계를 해결하여 대형 디스크(2TiB 이상)를 지원함.</li>
-<li>최대 128개의 파티션을 만들 수 있음.</li>
-<li>디스크 무결성을 위해 CRC32 체크섬을 사용하며, 복구 기능을 제공함.</li>
-<li>UEFI 부팅을 지원하는 최신 시스템에서 필수적으로 사용됨.</li>
-</ul>
-<hr />
-<h3 id="uefi-unified-extensible-firmware-interface">UEFI (Unified Extensible Firmware Interface)</h3>
-<ul>
-<li>역할: BIOS를 대체하는 최신 펌웨어 인터페이스로, 운영체제와 하드웨어 간의 연결을 제공함.</li>
-<li>왜 사용하는가?</li>
-<li>기존 BIOS보다 빠르고 더 많은 기능을 지원하며, 보안 기능(예: Secure Boot)을 포함함.</li>
-<li>GPT와 함께 사용하여, MBR의 2TiB 제한을 극복하고 더 많은 파티션을 지원함.</li>
-<li>네트워크 부팅, 고해상도 GUI 인터페이스 제공 등 추가적인 기능을 제공함.</li>
-</ul>
-<hr />
-<h3 id="grub-grand-unified-bootloader">GRUB (GRand Unified Bootloader)</h3>
-<ul>
-<li>역할: 운영체제를 로드하는 부트 로더.</li>
-<li>왜 사용하는가?</li>
-<li>여러 운영체제를 지원하는 멀티 부트 기능 제공.</li>
-<li>MBR 또는 GPT에서 커널을 로드할 수 있도록 설계됨.</li>
-<li>BIOS 기반 부팅에서는 MBR의 Stage 1에 설치됨.</li>
-<li>UEFI 기반 부팅에서는 ESP 파티션(<code>/boot/efi</code>)에 <code>grubx64.efi</code> 형식으로 설치됨.</li>
-</ul>
-<hr />
-<h3 id="esp-efi-system-partition">ESP (EFI System Partition)</h3>
-<ul>
-<li>역할: UEFI 기반 시스템에서 부트 로더 및 부팅 관련 데이터를 저장하는 FAT32 파티션.</li>
-<li>왜 사용하는가?</li>
-<li>UEFI 부팅을 위해 필수적인 공간으로, 여기서 GRUB 또는 다른 EFI 부트 로더가 실행됨.</li>
-<li>일반적으로 <code>/boot/efi</code>에 마운트됨.</li>
-<li><code>EFI/BOOT/BOOTX64.EFI</code>와 같은 실행 가능한 EFI 파일이 포함됨.</li>
-</ul>
-<hr />
-<h2 id="boot-bootefi">/boot 및 /boot/efi 필요성</h2>
+<h2 id="_1">데이터베이스 로그</h2>
 <table>
 <thead>
 <tr>
-<th>부트 방식</th>
-<th><code>/boot</code> 필요 여부</th>
-<th><code>/boot/efi</code> 필요 여부</th>
-<th>설명</th>
+<th>로그 종류</th>
+<th>역할</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>BIOS + MBR</td>
-<td>✅ 필요</td>
-<td>❌ 필요 없음</td>
-<td>GRUB이 MBR에 설치되고, <code>/boot</code>에서 커널을 로드</td>
+<td>WAL (Write-Ahead Logging)</td>
+<td>데이터를 데이터 파일에 쓰기 전에 먼저 로그에 기록하여 장애 발생 시 복구 가능</td>
 </tr>
 <tr>
-<td>UEFI + GPT</td>
-<td>✅ 필요</td>
-<td>✅ 필요</td>
-<td>GRUB이 <code>/boot/efi</code>의 ESP에서 실행되고, 커널을 <code>/boot</code>에서 로드</td>
+<td>Redo Log</td>
+<td>커밋된 변경 사항을 기록하여 장애 발생 시 데이터 복원</td>
 </tr>
 <tr>
-<td>AWS Nitro 기반 (x86)</td>
-<td>✅ 필요</td>
-<td>❌ 필요 없음</td>
-<td>AWS 가상화 환경에서는 <code>/boot/efi</code> 없이도 부팅 가능</td>
+<td>Undo Log</td>
+<td>트랜잭션 롤백을 위해 변경 이전의 데이터를 기록</td>
 </tr>
 <tr>
-<td>AWS Xen 기반 (t2 등 구형)</td>
-<td>✅ 필요</td>
-<td>❌ 필요 없음</td>
-<td>MBR 기반 BIOS 부팅 사용</td>
+<td>Binlog (Binary Log)</td>
+<td>변경된 데이터를 이진 형식으로 저장하여 복제 및 복구 용도로 사용 (MySQL)</td>
+</tr>
+<tr>
+<td>Slow Query Log</td>
+<td>실행 시간이 긴 쿼리를 기록하여 성능 분석 및 최적화에 활용</td>
+</tr>
+<tr>
+<td>Error Log</td>
+<td>DB에서 발생한 오류 및 경고 메시지 기록</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="3-aws-ec2-bootefi">3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유</h2>
-<h3 id="aws-xen-t2-m4">AWS Xen 기반 (예: t2, m4)</h3>
-<ul>
-<li>Xen 하이퍼바이저는 기본적으로 BIOS 부팅 방식을 사용하며, <code>/boot/efi</code>가 필요 없음.</li>
-<li>AWS에서 제공하는 기본 AMI(Amazon Machine Image)는 MBR 기반이 많음.</li>
-<li>GRUB이 MBR에 설치되며, <code>/boot</code>에서 커널을 로드하여 부팅.</li>
-</ul>
-<h3 id="aws-nitro-m5-m6i-m7i-t4g-a1">AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)</h3>
-<ul>
-<li>Nitro 기반 인스턴스는 UEFI 부팅을 지원하지만, AWS AMI 기본 설정은 BIOS + MBR 부팅을 사용.</li>
-<li><code>/boot/efi</code> 없이도 부팅 가능하도록 구성됨.</li>
-<li>Amazon Linux 2, Ubuntu 20.04, RHEL 8 등의 AMI는 기본적으로 MBR 부팅을 유지.</li>
-</ul>
-<h3 id="aws-nitro-uefi">AWS Nitro 기반에서 UEFI 부팅이 필요한 경우</h3>
-<ul>
-<li>일부 최신 OS(Amazon Linux 2023 등)는 UEFI-preferred 설정이 되어 있으며, ESP(<code>/boot/efi</code>)를 사용.</li>
-<li>Nitro 기반 인스턴스에서 UEFI 모드를 활성화하면 GPT 및 <code>/boot/efi</code>를 사용하여 부팅 가능.</li>
-<li>그러나 대부분의 리눅스 AMI는 여전히 MBR 기반 BIOS 부팅을 기본값으로 사용.</li>
-</ul>
-<h2 id="aws-ec2-os">AWS EC2 인스턴스 세대 및 OS별 부팅 방식</h2>
+<h2 id="mysql-postgresql">MySQL과 PostgreSQL의 로그 종류 비교</h2>
 <table>
 <thead>
 <tr>
-<th>인스턴스 유형 및 OS</th>
-<th>ESP 사용</th>
-<th>파티션 타입</th>
-<th>부팅 방식</th>
-<th>비고</th>
+<th>로그 종류</th>
+<th>MySQL</th>
+<th>PostgreSQL</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>t2, m4 (Xen기반) - Ubuntu, AL2, RHEL8/9</td>
-<td>❌</td>
-<td>MBR</td>
-<td>BIOS</td>
-<td>GRUB(MBR)로 부팅</td>
+<td>에러 로그(Error Log)</td>
+<td>서버 시작 및 종료 정보, 오류 및 경고 메시지 기록</td>
+<td>서버 시작 및 종료 정보, 오류 및 경고 메시지 기록</td>
 </tr>
 <tr>
-<td>m5, m6i, m7i (Nitro 기반, x86) - Ubuntu, AL2, RHEL8/9</td>
-<td>❌</td>
-<td>MBR</td>
-<td>BIOS(기본값)</td>
-<td>UEFI 지원하지만 기본 MBR/BIOS</td>
+<td>일반 쿼리 로그(General Query Log)</td>
+<td>클라이언트 연결 및 모든 SQL 문 기록</td>
+<td>모든 SQL 문 및 연결 정보 기록</td>
 </tr>
 <tr>
-<td>m5, m6i, m7i - Amazon Linux 2023</td>
-<td>✅</td>
-<td>GPT</td>
-<td>UEFI</td>
-<td>UEFI-preferred, ESP 존재</td>
+<td>슬로우 쿼리 로그(Slow Query Log)</td>
+<td>실행 시간이 긴 쿼리 기록</td>
+<td>실행 시간이 긴 쿼리 기록</td>
 </tr>
 <tr>
-<td>a1, t4g, m6g (Nitro, ARM Graviton)</td>
-<td>✅</td>
-<td>GPT</td>
-<td>UEFI</td>
-<td>ARM 환경은 UEFI만 지원</td>
+<td>바이너리 로그(Binary Log)</td>
+<td>데이터 변경 이벤트 및 트랜잭션 기록, 복제 및 복구에 사용</td>
+<td>해당 없음</td>
+</tr>
+<tr>
+<td>리두 로그(Redo Log)</td>
+<td>InnoDB 스토리지 엔진에서 사용, 데이터 변경 사항을 기록하여 장애 발생 시 복구에 사용</td>
+<td>WAL(Write-Ahead Logging) 메커니즘으로 구현, 데이터 변경 사항을 기록하여 장애 발생 시 복구에 사용</td>
+</tr>
+<tr>
+<td>언두 로그(Undo Log)</td>
+<td>트랜잭션 롤백 및 MVCC(다중 버전 동시성 제어)를 위해 사용</td>
+<td>트랜잭션 롤백 및 MVCC를 위해 사용</td>
+</tr>
+</tbody>
+</table>
+<h2 id="walwrite-ahead-logging-vs-binlogbinary-log">WAL(Write-Ahead Logging) vs. Binlog(Binary Log)</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>WAL (Write-Ahead Logging)</th>
+<th>Binlog (Binary Log)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>주요 목적</td>
+<td>데이터 무결성 보장 및 장애 복구</td>
+<td>데이터 변경 이력 저장 및 복제(Replication)</td>
+</tr>
+<tr>
+<td>로그 저장 위치</td>
+<td>데이터베이스의 내부 스토리지 엔진(InnoDB, PostgreSQL 등)</td>
+<td>MySQL 서버 전체에서 관리</td>
+</tr>
+<tr>
+<td>저장 방식</td>
+<td>트랜잭션이 실행되면 데이터 변경 사항을 먼저 WAL에 기록한 후 실제 데이터 파일에 적용</td>
+<td>트랜잭션이 커밋된 후 변경 내용을 이진 형식으로 저장</td>
+</tr>
+<tr>
+<td>장애 복구 사용 여부</td>
+<td>사용됨 (크래시 리커버리 및 데이터 무결성 보장)</td>
+<td>직접적인 장애 복구용은 아님</td>
+</tr>
+<tr>
+<td>복제(Replication) 역할</td>
+<td>주로 장애 복구용이며 복제에도 활용 가능 (PostgreSQL)</td>
+<td>MySQL의 마스터-슬레이브 복제에서 필수적으로 사용됨</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wal-write-ahead-logging">✅ WAL (Write-Ahead Logging)</h3>
+<ol>
+<li>데이터 변경이 발생하면 먼저 WAL 로그에 기록됨.</li>
+<li>로그가 안정적으로 저장된 후 데이터 파일이 변경됨.</li>
+<li>장애 발생 시 WAL을 재적용하여 마지막 정상 상태로 복구 가능.</li>
+<li>PostgreSQL에서는 스트리밍 복제를 통해 WAL을 활용하여 데이터 복제 수행.</li>
+</ol>
+<h3 id="binlog-binary-log">✅ Binlog (Binary Log)</h3>
+<ol>
+<li>MySQL에서 트랜잭션이 커밋될 때 변경 내용을 Binlog에 기록.</li>
+<li>이진(Binary) 형식으로 저장되며, 마스터-슬레이브 복제에서 슬레이브가 Binlog를 읽고 재적용하여 복제 수행.</li>
+<li>Point-in-Time Recovery(PITR) 같은 데이터 복구에도 사용됨.</li>
+</ol>
+<h3 id="wal-vs-binlog">WAL VS BINLog 차이점</h3>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>WAL</th>
+<th>Binlog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사용 목적</td>
+<td>장애 복구 (크래시 리커버리)</td>
+<td>복제 및 데이터 복구</td>
+</tr>
+<tr>
+<td>기록 시점</td>
+<td>트랜잭션이 실행될 때 즉시 기록</td>
+<td>트랜잭션이 커밋될 때 기록</td>
+</tr>
+<tr>
+<td>저장 위치</td>
+<td>데이터 파일과 가까운 저수준(log sequence number - LSN)</td>
+<td>DB 서버 레벨의 독립적인 파일</td>
+</tr>
+<tr>
+<td>주요 활용 DBMS</td>
+<td>PostgreSQL, MySQL (InnoDB 내부)</td>
+<td>MySQL (주로 복제용)</td>
+</tr>
+<tr>
+<td>복제 지원</td>
+<td>PostgreSQL의 스트리밍 복제에서 사용</td>
+<td>MySQL의 마스터-슬레이브 복제에서 필수</td>
+</tr>
+<tr>
+<td>장애 복구 지원</td>
+<td>주요 기능 (크래시 리커버리)</td>
+<td>직접적인 복구 기능 없음 (PITR 용도로 활용)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aws-aurora-wal-binlog">AWS Aurora에서의 WAL과 Binlog</h3>
+<h3 id="aurora-postgresql">Aurora PostgreSQL</h3>
+<ul>
+<li>PostgreSQL의 WAL을 Aurora 스토리지 계층에서 관리하여 장애 복구 및 복제에 사용.</li>
+<li>Aurora Read Replica는 WAL을 사용하여 빠른 읽기 복제 가능.</li>
+</ul>
+<h3 id="aurora-mysql">Aurora MySQL</h3>
+<ul>
+<li>기본적으로 Binlog를 기록하지 않음 (활성화 가능하지만 성능 저하 가능).</li>
+<li>Aurora의 Redo Log 기반 복제를 사용하여 MySQL보다 더 빠른 데이터 동기화 가능.</li>
+</ul>
+<hr />
+<h2 id="write-ahead-logging-wal">Write-Ahead Logging (WAL)의 동작 방식</h2>
+<ul>
+<li>트랜잭션이 변경을 수행하면 변경 사항을 먼저 WAL 로그에 기록</li>
+<li>WAL이 디스크에 안전하게 기록된 후 데이터 파일을 수정</li>
+<li>장애 발생 시 WAL 로그를 활용하여 최근 트랜잭션을 재적용하거나 롤백</li>
+<li>PostgreSQL, MySQL InnoDB, Oracle 등의 주요 DBMS에서 사용됨</li>
+</ul>
+<hr />
+<h2 id="aws-aurora">AWS Aurora에서 로그의 작용 방식</h2>
+<p>AWS Aurora(MySQL 및 PostgreSQL 호환)에서는 기본적으로 WAL 및 Binlog를 내부적으로 관리하며 클러스터 기반으로 동작하여 고가용성을 제공함.</p>
+<h3 id="aurora">Aurora의 로그 관련 특징</h3>
+<table>
+<thead>
+<tr>
+<th>로그 유형</th>
+<th>Aurora에서의 역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redo Log</td>
+<td>Aurora 스토리지 계층에 비동기적으로 저장되어 빠른 장애 복구 지원</td>
+</tr>
+<tr>
+<td>Undo Log</td>
+<td>InnoDB 기반에서 변경 전 데이터를 유지하여 트랜잭션 롤백 지원</td>
+</tr>
+<tr>
+<td>Binlog</td>
+<td>Aurora 복제(Aurora Read Replica) 또는 외부 MySQL 복제를 위해 사용됨</td>
+</tr>
+<tr>
+<td>Slow Query Log</td>
+<td>성능 분석을 위해 활성화 가능하며, CloudWatch 및 S3로 내보내기 가능</td>
+</tr>
+<tr>
+<td>Error Log</td>
+<td>오류 및 이벤트 기록, RDS 콘솔 또는 CloudWatch에서 확인 가능</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_3">결론</h2>
+<h2 id="aurora-wal">Aurora에서 WAL 및 로그 활용 방식</h2>
+<h3 id="aurora-wal-redo-log">Aurora는 WAL 기반 Redo Log를 중앙 스토리지 계층에서 관리</h3>
 <ul>
-<li>MBR은 BIOS 부팅에서 사용되며, 2TiB 이하의 디스크에서 유효함.</li>
-<li>GPT는 UEFI 부팅에 필수적이며, 대형 디스크 및 보안 기능을 지원함.</li>
-<li>GRUB은 MBR 또는 UEFI 환경에서 동작할 수 있음.</li>
-<li>ESP(<code>/boot/efi</code>)는 UEFI 부팅에서 필수이며, AWS Nitro 기반에서는 일반적으로 사용되지 않음.</li>
-<li>AWS EC2 인스턴스에서는 대부분 MBR 기반 부팅을 사용하여 <code>/boot/efi</code> 없이도 정상 작동함.</li>
+<li>일반적인 RDS와 달리, Aurora는 WAL을 공유 스토리지 계층에 저장하여 빠른 장애 복구 및 복제 지원</li>
+<li>기존 MySQL은 InnoDB에서 Redo Log를 관리하지만, Aurora는 Redo Log를 스토리지에 저장하여 별도 장애 복구 불필요</li>
+</ul>
+<h3 id="aurora-replication">Aurora Replication (고가용성 및 읽기 확장)</h3>
+<ul>
+<li>WAL을 Aurora 스토리지 계층에 저장하여 읽기 노드(Read Replica)로 실시간 복제  </li>
+<li>WAL이 공유되어 Aurora Replicas는 WAL을 직접 적용하여 빠른 읽기 성능 제공</li>
+</ul>
+<h3 id="aurora-crash-recovery">Aurora의 Crash Recovery (장애 복구)</h3>
+<ul>
+<li>기존 DBMS에서는 WAL을 적용하여 복구해야 하지만, Aurora는 WAL을 스토리지에서 직접 사용하므로 빠른 복구 가능</li>
+<li>Redo Log가 Aurora 스토리지 계층에 유지되므로 복구 시간이 거의 없음</li>
 </ul>
 <hr />
+<h2 id="aurora-mysqlpostgresql">Aurora와 기존 MySQL/PostgreSQL 비교</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>기존 MySQL / PostgreSQL</th>
+<th>AWS Aurora</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WAL 적용 방식</td>
+<td>개별 인스턴스에서 WAL을 관리</td>
+<td>공유 스토리지 계층에서 WAL 관리</td>
+</tr>
+<tr>
+<td>Redo Log 위치</td>
+<td>개별 서버 내 저장</td>
+<td>Aurora 스토리지 계층에서 직접 유지</td>
+</tr>
+<tr>
+<td>Failover 속도</td>
+<td>WAL을 재적용해야 하므로 느림</td>
+<td>스토리지에서 바로 반영되어 매우 빠름</td>
+</tr>
+<tr>
+<td>Replication 방식</td>
+<td>Binlog 기반, Replica가 SQL을 다시 실행</td>
+<td>WAL을 스토리지에서 공유하여 더 빠름</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">결론</h2>
+<ol>
+<li>WAL (Write-Ahead Logging)은 장애 복구를 위한 핵심 기술로, Aurora에서는 이를 공유 스토리지 계층에서 관리하여 고속 복구 및 실시간 복제가 가능함.</li>
+<li>Aurora의 WAL은 일반적인 MySQL/PostgreSQL보다 성능이 뛰어나며 Redo Log를 중앙에서 관리하여 복구 속도를 크게 향상시킴.</li>
+<li>Aurora Replication은 WAL을 활용하여 빠르게 읽기 복제를 제공하므로, 읽기 부하가 큰 환경에서 뛰어난 확장성을 제공함.</li>
+<li>기존 RDS보다 Aurora의 복구 및 장애 대응이 더 빠르고 효율적이므로, 고가용성이 필요한 환경에서는 Aurora가 강력한 선택지가 될 수 있음.</li>
+</ol>
+<p>Aurora의 WAL 및 로그 시스템은 단순한 DB 복제 수준이 아니라, 고가용성 및 빠른 복구를 위한 최적화된 구조로 설계됨</p>
 
 
 
@@ -1808,7 +1981,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../storage-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Storage 정리">
+          <a href="../%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 서버 부팅 방식 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1818,27 +1991,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Storage 정리
+                서버 부팅 방식 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: DB 로그와 Aurora 정리">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                DB 로그와 Aurora 정리
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

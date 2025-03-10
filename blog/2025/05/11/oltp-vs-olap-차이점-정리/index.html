@@ -9,25 +9,25 @@
       
       
       
-        <link rel="prev" href="../../..">
+        <link rel="prev" href="../websocket-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../../category/aa/">
+        <link rel="next" href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/">
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
     
     
       
-        <title>Blog - dotoryeee's blog</title>
+        <title>OLTP vs OLAP 차이점 정리 - dotoryeee's blog</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.6543a935.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,7 +46,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#blog" class="md-skip">
+        <a href="#oltp-vs-olap" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Blog
+              OLTP vs OLAP 차이점 정리
             
           </span>
         </div>
@@ -144,7 +144,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -155,7 +157,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     dotoryeee's blog
@@ -170,7 +172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -224,21 +226,14 @@
                 
   
   
-  
-    
-      
     
   
   
-    <li class="md-nav__item">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="../../" class="md-nav__link md-nav__link--active">
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -247,7 +242,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -299,7 +293,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2025/05/" class="md-nav__link">
+      <a href="../../../../archive/2025/05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -322,7 +316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/06/" class="md-nav__link">
+      <a href="../../../../archive/2024/06/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -345,7 +339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/05/" class="md-nav__link">
+      <a href="../../../../archive/2024/05/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -368,7 +362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/03/" class="md-nav__link">
+      <a href="../../../../archive/2024/03/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -391,7 +385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/02/" class="md-nav__link">
+      <a href="../../../../archive/2024/02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2023/11/" class="md-nav__link">
+      <a href="../../../../archive/2023/11/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2023/10/" class="md-nav__link">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -460,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2023/02/" class="md-nav__link">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -483,7 +477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2023/01/" class="md-nav__link">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -506,7 +500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2021/04/" class="md-nav__link">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -529,7 +523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/1993/09/" class="md-nav__link">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -597,7 +591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/aa/" class="md-nav__link">
+      <a href="../../../../category/aa/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -620,7 +614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/aws/" class="md-nav__link">
+      <a href="../../../../category/aws/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -643,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cicd/" class="md-nav__link">
+      <a href="../../../../category/cicd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -666,7 +660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cloud/" class="md-nav__link">
+      <a href="../../../../category/cloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cloudnet/" class="md-nav__link">
+      <a href="../../../../category/cloudnet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -712,7 +706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/database/" class="md-nav__link">
+      <a href="../../../../category/database/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -735,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/devops/" class="md-nav__link">
+      <a href="../../../../category/devops/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -758,7 +752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/elasticsearch/" class="md-nav__link">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -781,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/grafana/" class="md-nav__link">
+      <a href="../../../../category/grafana/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -804,7 +798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/network/" class="md-nav__link">
+      <a href="../../../../category/network/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -827,7 +821,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/pacemaker/" class="md-nav__link">
+      <a href="../../../../category/pacemaker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -850,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/prometheus/" class="md-nav__link">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -873,7 +867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/python/" class="md-nav__link">
+      <a href="../../../../category/python/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -896,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/route53/" class="md-nav__link">
+      <a href="../../../../category/route53/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -919,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/sap/" class="md-nav__link">
+      <a href="../../../../category/sap/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -942,7 +936,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/sre/" class="md-nav__link">
+      <a href="../../../../category/sre/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -965,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/stonith/" class="md-nav__link">
+      <a href="../../../../category/stonith/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,7 +982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/security/" class="md-nav__link">
+      <a href="../../../../category/security/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1011,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/server/" class="md-nav__link">
+      <a href="../../../../category/server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1034,7 +1028,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/terraform/" class="md-nav__link">
+      <a href="../../../../category/terraform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1057,7 +1051,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cka/" class="md-nav__link">
+      <a href="../../../../category/cka/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1080,7 +1074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/docker/" class="md-nav__link">
+      <a href="../../../../category/docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1103,7 +1097,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/kcna/" class="md-nav__link">
+      <a href="../../../../category/kcna/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1126,7 +1120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/kubernetes/" class="md-nav__link">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1149,7 +1143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/project/" class="md-nav__link">
+      <a href="../../../../category/project/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1172,7 +1166,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/study/" class="md-nav__link">
+      <a href="../../../../category/study/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1195,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/udemy/" class="md-nav__link">
+      <a href="../../../../category/udemy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1268,7 +1262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1289,7 +1283,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1310,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1331,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/%EC%B0%BE%EC%9D%84%EA%B2%83%EB%93%A4/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/%EC%B0%BE%EC%9D%84%EA%B2%83%EB%93%A4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1360,6 +1354,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -1372,6 +1368,122 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#oltp-online-transaction-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLTP (Online Transaction Processing)란?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OLTP (Online Transaction Processing)란?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oltp" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLTP 특징
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oltp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLTP 사용 사례
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#olap-online-analytical-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLAP (Online Analytical Processing)란?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OLAP (Online Analytical Processing)란?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#olap" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLAP 특징
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#olap_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLAP 사용 사례
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oltp-vs-olap_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLTP vs OLAP 비교
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oltp-olap" class="md-nav__link">
+    <span class="md-ellipsis">
+      OLTP와 OLAP의 관계
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OLTP와 OLAP의 관계">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws-oltp-olap" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS에서 OLTP &amp; OLAP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      결론
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1379,386 +1491,260 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="blog">Blog</h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/prometheus/" class="md-meta__link">Prometheus</a>, 
-              <a href="../../category/grafana/" class="md-meta__link">Grafana</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
+                        <time datetime="2025-05-11 00:00:00" class="md-ellipsis">May 11, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/cloud/">Cloud</a>, 
+                              <a href="../../../../category/server/">Server</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              3 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
           
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="prometheus-and-grafana"><a class="toclink" href="../../1993/09/17/prometheus-and-grafana/">Prometheus and Grafana</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/prometheus-and-grafana/#_1">목표</a></h3>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="oltp-vs-olap">OLTP vs OLAP 차이점 정리</h1>
+<!-- more -->
+
+<h2 id="oltp-online-transaction-processing">OLTP (Online Transaction Processing)란?</h2>
+<p>OLTP(온라인 트랜잭션 처리)는 빠르고 연속적인 트랜잭션 처리를 위한 시스템입니다.<br />
+일반적으로 데이터베이스를 실시간으로 읽고 쓰는 애플리케이션에서 사용됩니다.</p>
+<h3 id="oltp">OLTP 특징</h3>
+<ul>
+<li>트랜잭션 중심: 빠른 CRUD(Create, Read, Update, Delete) 연산 수행</li>
+<li>실시간 데이터 처리: 은행, 전자상거래, 예약 시스템 등 실시간으로 데이터를 갱신</li>
+<li>정규화된 데이터 모델: 중복을 최소화하여 일관성 유지</li>
+<li>작고 빈번한 쿼리: 빠른 조회 및 수정이 필요함</li>
+</ul>
+<h3 id="oltp_1">OLTP 사용 사례</h3>
+<ul>
+<li>온라인 쇼핑몰 (장바구니, 주문 처리)</li>
+<li>은행 시스템 (계좌 이체, 거래 내역)</li>
+<li>항공권 예약 시스템</li>
+<li>POS(Point of Sale) 시스템</li>
+</ul>
 <hr />
+<h2 id="olap-online-analytical-processing">OLAP (Online Analytical Processing)란?</h2>
+<p>OLAP(온라인 분석 처리)는 대량의 데이터를 분석하고 인사이트를 도출하는 시스템입니다.<br />
+데이터 웨어하우스 또는 BI(Business Intelligence) 시스템에서 사용됩니다.</p>
+<h3 id="olap">OLAP 특징</h3>
 <ul>
-<li>프로메테우스와 그라파나를 연결합니다</li>
-<li>그라파나에 대시보드를 추가해 시각적인 정보를 생성합니다</li>
+<li>분석 중심: 과거 데이터를 기반으로 트렌드 분석, 예측, 의사 결정 지원</li>
+<li>대량의 데이터 처리: OLTP에서 생성된 데이터를 집계하여 분석</li>
+<li>비정규화된 데이터 모델: 분석을 빠르게 수행하기 위해 정규화가 덜 된 구조</li>
+<li>복잡한 쿼리 수행: 다차원 분석, 그룹화, 피벗 테이블 활용</li>
 </ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/prometheus-and-grafana/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-aws-iam"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/">Terraform AWS IAM</a></h2>
-<h3 id="iam-user"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/#iam-user">IAM User</a></h3>
+<h3 id="olap_1">OLAP 사용 사례</h3>
+<ul>
+<li>매출 분석 및 KPI(Key Performance Indicator) 추적</li>
+<li>마케팅 및 사용자 행동 분석</li>
+<li>빅데이터 및 AI 모델 학습을 위한 데이터 처리</li>
+<li>재무 및 리스크 관리 분석</li>
+</ul>
 <hr />
-<ol>
-<li>
-<p>IAM 작업 디렉터리를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
-</code></pre></div>
-</li>
-<li>
-<p>이제 자연스럽게 provider를 먼저 생성합니다</p>
-<p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
-</code></pre></div>
-<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="p">}</span>
-</code></pre></div>
-</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-aws-iam/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-backend"><a class="toclink" href="../../1993/09/17/terraform-backend/">Terraform Backend</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-backend/#_1">목표</a></h3>
+<h2 id="oltp-vs-olap_1">OLTP vs OLAP 비교</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>OLTP (트랜잭션 처리)</th>
+<th>OLAP (분석 처리)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>목적</td>
+<td>실시간 데이터 입력 및 처리</td>
+<td>데이터 분석 및 의사 결정 지원</td>
+</tr>
+<tr>
+<td>사용자</td>
+<td>고객, 직원</td>
+<td>데이터 분석가, 경영진</td>
+</tr>
+<tr>
+<td>데이터 크기</td>
+<td>작고 빈번한 트랜잭션</td>
+<td>대량의 과거 데이터</td>
+</tr>
+<tr>
+<td>데이터 모델</td>
+<td>정규화된 데이터 모델</td>
+<td>비정규화된 데이터 모델</td>
+</tr>
+<tr>
+<td>쿼리 유형</td>
+<td>단순하고 빠른 트랜잭션 쿼리</td>
+<td>복잡한 분석 및 집계 쿼리</td>
+</tr>
+<tr>
+<td>읽기 vs 쓰기 비율</td>
+<td>읽기/쓰기 비율이 비슷함</td>
+<td>읽기(조회) 작업이 많음</td>
+</tr>
+<tr>
+<td>응답 속도</td>
+<td>밀리초(ms) 단위</td>
+<td>초~분 단위</td>
+</tr>
+<tr>
+<td>예제</td>
+<td>쇼핑몰 주문 처리, 은행 계좌 이체</td>
+<td>매출 분석, 고객 행동 분석</td>
+</tr>
+</tbody>
+</table>
 <hr />
+<h2 id="oltp-olap">OLTP와 OLAP의 관계</h2>
 <ul>
-<li>Terraform의 Backend 기능을 이용해 state파일을 안전하게 관리해봅니다.</li>
-<li>.tfstate를 로컬이 아닌 S3에 저장하고 DynamoDB를 이용해 파일을 Locking합니다</li>
-<li>
-<p>Backend를 이용함에 따른 이점</p>
-<ul>
-<li>
-<p>Locking</p>
-<p>협업시 원격 저장소를 사용하여 여러명이 동시에 같은 state 접근하는것을 막습니다</p>
-</li>
-<li>
-<p>Backup</p>
-<p>원격저장소에 저장함으로써 데이터 유실을 방지합니다. 특히 S3에 저장하는 방법은 버전관리가 가능한 편리하고 안전한 방법입니다.</p>
-</li>
+<li>OLTP는 데이터를 생성하고 OLAP은 이를 분석하는 역할을 합니다.</li>
+<li>OLTP 시스템에서 발생한 데이터를 ETL(Extract, Transform, Load) 프로세스를 거쳐 OLAP 시스템으로 이동하여 분석함.</li>
+<li>OLAP 데이터는 데이터 웨어하우스, 데이터 레이크, BI 툴에서 활용됨.</li>
 </ul>
-</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-backend/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              32 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-practice"><a class="toclink" href="../../1993/09/17/terraform-practice/">Terraform Practice</a></h2>
-<aside>
-💡 테라폼을 아키텍처를 연습해봅니다
-
-</aside>
-
-<ul>
-<li>
-<p>EC2에 SSH 접속을 위한 키페어 생성</p>
-<ol>
-<li>비밀키를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">rsa</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span>
-</code></pre></div>
-<ol>
-<li>pem을 사용하려면 권한을 수정해야 합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span>
-</code></pre></div>
-<ol>
-<li>AWS에 넘겨줄 공개키를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pub</span>
-</code></pre></div>
-</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-practice/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-deploy-vpc-and-subnet"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">Terraform deploy VPC and Subnet</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/#_1">목표</a></h3>
+<h3 id="aws-oltp-olap">AWS에서 OLTP &amp; OLAP</h3>
+<table>
+<thead>
+<tr>
+<th>AWS 서비스</th>
+<th>OLTP</th>
+<th>OLAP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Amazon RDS (MySQL, PostgreSQL, Aurora)</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Amazon DynamoDB</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Amazon Redshift</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Amazon S3 + Athena</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>AWS Glue (ETL)</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
 <hr />
+<h2 id="_1">결론</h2>
 <ul>
-<li>AWS 서비스의 근간이라고 할 수 있는 VPC부터 IaC를 구현해봅니다</li>
-<li>VPC에 서브넷도 생성해봅니다</li>
+<li>OLTP는 빠르고 정확한 트랜잭션 처리가 필요할 때 사용</li>
+<li>OLAP는 대량의 데이터를 분석하여 인사이트를 도출할 때 사용</li>
+<li>OLTP에서 수집된 데이터를 OLAP 시스템에서 분석하여 비즈니스 인사이트를 얻고 최적의 의사 결정을 내릴 수 있음</li>
+<li>OLTP는 "실시간 데이터 저장", OLAP는 "데이터 분석"이라고 이해하면 됌</li>
 </ul>
 
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-deploy-vpc"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc/">Terraform deploy VPC</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>서브넷이 public인지 private인지 결정하는 것은 IGW유무입니다</li>
-<li>terraform을 이용해 IGW와 NAT Gateway를 생성봅니다</li>
-<li>네트워크 트래픽의 Destination을 알려주는, 이정표 역할을 하는 라우팅 테이블을 작성합니다</li>
-<li>라우트테이블은 생성 후 association(=매핑)을 진행합니다. Terraform으로 이를 구현해봅니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-deploy-vpc/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-      
-        
-          
 
 
 
-<nav class="md-pagination">
-  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12l4.58-4.59m-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12l4.58-4.59Z"/></svg></a> <a class="md-pagination__link" href="../4/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42Z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../3/">3</a> <a class="md-pagination__link" href="../4/">4</a> <span class="md-pagination__current">5</span>  
-</nav>
-        
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
       
-    </div>
+    </article>
   </div>
 
           
@@ -1779,10 +1765,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: 맨땅에 헤딩 전문">
+          <a href="../websocket-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Websocket 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1792,20 +1780,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                맨땅에 헤딩 전문
+                Websocket 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../category/aa/" class="md-footer__link md-footer__link--next" aria-label="Next: AA">
+          <a href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: HTTP와 TLS 간단 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                AA
+                HTTP와 TLS 간단 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1869,10 +1857,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
