@@ -34,8 +34,49 @@ categories:
 | 리두 로그(Redo Log) | InnoDB 스토리지 엔진에서 사용, 데이터 변경 사항을 기록하여 장애 발생 시 복구에 사용 | WAL(Write-Ahead Logging) 메커니즘으로 구현, 데이터 변경 사항을 기록하여 장애 발생 시 복구에 사용 |
 | 언두 로그(Undo Log) | 트랜잭션 롤백 및 MVCC(다중 버전 동시성 제어)를 위해 사용 | 트랜잭션 롤백 및 MVCC를 위해 사용 |
 
+## WAL(Write-Ahead Logging) vs. Binlog(Binary Log)
 
----
+| 구분 | WAL (Write-Ahead Logging) | Binlog (Binary Log) |
+|------|-------------------------|---------------------|
+| 주요 목적 | 데이터 무결성 보장 및 장애 복구 | 데이터 변경 이력 저장 및 복제(Replication) |
+| 로그 저장 위치 | 데이터베이스의 내부 스토리지 엔진(InnoDB, PostgreSQL 등) | MySQL 서버 전체에서 관리 |
+| 저장 방식 | 트랜잭션이 실행되면 데이터 변경 사항을 먼저 WAL에 기록한 후 실제 데이터 파일에 적용 | 트랜잭션이 커밋된 후 변경 내용을 이진 형식으로 저장 |
+| 장애 복구 사용 여부 | 사용됨 (크래시 리커버리 및 데이터 무결성 보장) | 직접적인 장애 복구용은 아님 |
+| 복제(Replication) 역할 | 주로 장애 복구용이며 복제에도 활용 가능 (PostgreSQL) | MySQL의 마스터-슬레이브 복제에서 필수적으로 사용됨 |
+
+### ✅ WAL (Write-Ahead Logging)
+1. 데이터 변경이 발생하면 먼저 WAL 로그에 기록됨.
+2. 로그가 안정적으로 저장된 후 데이터 파일이 변경됨.
+3. 장애 발생 시 WAL을 재적용하여 마지막 정상 상태로 복구 가능.
+4. PostgreSQL에서는 스트리밍 복제를 통해 WAL을 활용하여 데이터 복제 수행.
+
+### ✅ Binlog (Binary Log)
+1. MySQL에서 트랜잭션이 커밋될 때 변경 내용을 Binlog에 기록.
+2. 이진(Binary) 형식으로 저장되며, 마스터-슬레이브 복제에서 슬레이브가 Binlog를 읽고 재적용하여 복제 수행.
+3. Point-in-Time Recovery(PITR) 같은 데이터 복구에도 사용됨.
+
+### WAL VS BINLog 차이점
+
+| 비교 항목 | WAL | Binlog |
+|----------|----|------|
+| 사용 목적 | 장애 복구 (크래시 리커버리) | 복제 및 데이터 복구 |
+| 기록 시점 | 트랜잭션이 실행될 때 즉시 기록 | 트랜잭션이 커밋될 때 기록 |
+| 저장 위치 | 데이터 파일과 가까운 저수준(log sequence number - LSN) | DB 서버 레벨의 독립적인 파일 |
+| 주요 활용 DBMS | PostgreSQL, MySQL (InnoDB 내부) | MySQL (주로 복제용) |
+| 복제 지원 | PostgreSQL의 스트리밍 복제에서 사용 | MySQL의 마스터-슬레이브 복제에서 필수 |
+| 장애 복구 지원 | 주요 기능 (크래시 리커버리) | 직접적인 복구 기능 없음 (PITR 용도로 활용) |
+
+### AWS Aurora에서의 WAL과 Binlog
+
+### Aurora PostgreSQL
+- PostgreSQL의 WAL을 Aurora 스토리지 계층에서 관리하여 장애 복구 및 복제에 사용.
+- Aurora Read Replica는 WAL을 사용하여 빠른 읽기 복제 가능.
+
+### Aurora MySQL
+- 기본적으로 Binlog를 기록하지 않음 (활성화 가능하지만 성능 저하 가능).
+- Aurora의 Redo Log 기반 복제를 사용하여 MySQL보다 더 빠른 데이터 동기화 가능.
+
+ ---
 
 ## Write-Ahead Logging (WAL)의 동작 방식
 - 트랜잭션이 변경을 수행하면 변경 사항을 먼저 WAL 로그에 기록
