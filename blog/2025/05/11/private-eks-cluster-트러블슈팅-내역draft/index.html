@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../http-status-code-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../storage-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../private-eks-cluster-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EB%82%B4%EC%97%ADdraft/">
+        <link rel="next" href="../%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Storage 정리 - dotoryeee's blog</title>
+        <title>Private EKS Cluster 트러블슈팅 내역[Draft] - dotoryeee's blog</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#storage" class="md-skip">
+        <a href="#private-eks-cluster-draft" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Storage 정리
+              Private EKS Cluster 트러블슈팅 내역[Draft]
             
           </span>
         </div>
@@ -1227,7 +1227,7 @@
                             in
                             
                               <a href="../../../../category/cloud/">Cloud</a>, 
-                              <a href="../../../../category/server/">Server</a></span>
+                              <a href="../../../../category/kubernetes/">Kubernetes</a></span>
                         </div>
                       </li>
                     
@@ -1238,7 +1238,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              11 min read
+                              1 min read
                             
                           </span>
                         </div>
@@ -1258,468 +1258,18 @@
         
 
 
-<h1 id="storage">Storage 정리</h1>
+<h1 id="private-eks-cluster-draft">Private EKS Cluster 트러블슈팅 내역[Draft]</h1>
 <!-- more -->
 
-<h1 id="raid">RAID 종류별 동작 방식과 장단점</h1>
-<table>
-<thead>
-<tr>
-<th>RAID 종류</th>
-<th>동작 방식</th>
-<th>장점</th>
-<th>단점</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RAID 0 (스트라이핑)</td>
-<td>데이터를 여러 디스크에 분산 저장하여 성능 향상</td>
-<td>빠른 읽기/쓰기 속도, 모든 디스크의 용량 활용 가능</td>
-<td>내결함성 없음 (디스크 하나라도 고장 나면 데이터 손실)</td>
-</tr>
-<tr>
-<td>RAID 1 (미러링)</td>
-<td>동일한 데이터를 두 개 이상의 디스크에 복제</td>
-<td>높은 데이터 안정성, 디스크 하나 고장 나도 복구 가능</td>
-<td>디스크 사용 효율이 50%로 감소</td>
-</tr>
-<tr>
-<td>RAID 5 (패리티 스트라이핑)</td>
-<td>데이터를 블록 단위로 나누어 저장하고 패리티 정보를 추가</td>
-<td>데이터 안정성과 성능 균형, 하나의 디스크 장애 허용 가능</td>
-<td>패리티 계산으로 인해 쓰기 성능 저하, 3개 이상의 디스크 필요</td>
-</tr>
-<tr>
-<td>RAID 6 (이중 패리티 스트라이핑)</td>
-<td>RAID 5와 유사하지만 두 개의 패리티 블록을 저장</td>
-<td>두 개의 디스크 장애까지 허용 가능</td>
-<td>패리티 연산으로 인한 성능 저하, 최소 4개의 디스크 필요</td>
-</tr>
-<tr>
-<td>RAID 10 (1+0, 미러링+스트라이핑)</td>
-<td>RAID 1과 RAID 0을 결합하여 미러링된 디스크를 스트라이핑</td>
-<td>높은 성능과 내결함성 제공</td>
-<td>디스크 사용 효율이 절반으로 감소, 최소 4개의 디스크 필요</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h1 id="aws-raid">AWS 환경에서 RAID 적용</h1>
-<p>AWS 환경에서는 RAID 구성보다는 EBS의 내장 기능을 활용하는 것이 일반적임. 하지만 특정 요구사항에 따라 RAID를 적용할 수 있음.</p>
-<h2 id="raid-0">RAID 0 적용</h2>
-<ul>
-<li>사용처: 높은 성능이 필요한 애플리케이션 (예: 캐싱, 데이터 분석)</li>
-<li>AWS에서의 적용 방법:</li>
-<li>여러 개의 EBS 볼륨을 묶어 RAID 0을 구성</li>
-<li>EC2에서 <code>mdadm</code>을 사용하여 소프트웨어 RAID 0 설정</li>
-</ul>
-<h2 id="raid-1">RAID 1 적용</h2>
-<ul>
-<li>사용처: 데이터 안전성이 중요한 환경 (예: 데이터베이스, 로그 저장)</li>
-<li>AWS에서의 적용 방법:</li>
-<li>EBS 스냅샷이나 AWS의 다중 AZ RDS를 활용하는 것이 일반적</li>
-<li>하지만 OS 레벨에서 RAID 1을 적용하려면 <code>mdadm</code>으로 설정 가능</li>
-</ul>
-<h2 id="raid-5-6">RAID 5 / 6 적용</h2>
-<ul>
-<li>사용처: 대용량 저장소가 필요한 경우 (예: 빅데이터, 데이터 웨어하우스)</li>
-<li>AWS에서의 적용 방법:</li>
-<li>EBS 볼륨 여러 개를 묶어 RAID &#8538;으로 설정할 수 있으나, AWS에서는 별로 추천되지 않음</li>
-<li>대신 S3, EFS, FSx 같은 AWS 네이티브 솔루션이 더 적합함</li>
-</ul>
-<h2 id="raid-10">RAID 10 적용</h2>
-<ul>
-<li>사용처: 데이터 안정성과 성능이 동시에 필요한 환경</li>
-<li>AWS에서의 적용 방법:</li>
-<li>EBS 볼륨을 RAID 10으로 구성 가능</li>
-<li>다만, AWS의 EBS 프로비저닝된 IOPS 옵션이 RAID 10보다 성능 면에서 유리할 수 있음</li>
-</ul>
-<hr />
-<h1 id="raid-lvm">RAID와 LVM의 연관성</h1>
-<h2 id="lvmlogical-volume-manager-raid">LVM(Logical Volume Manager)이 RAID에 미치는 영향</h2>
-<p>LVM은 물리적 볼륨(PV)을 논리적 볼륨(VG, LV)으로 관리하는 방식으로, RAID와 함께 사용할 경우 다음과 같은 이점이 있음.</p>
-<h3 id="lvm-raid-0">LVM + RAID 0</h3>
-<ul>
-<li>특징: LVM의 <code>striping</code> 기능을 사용하여 RAID 0과 유사한 효과를 얻을 수 있음</li>
-<li>장점: RAID 0과 비슷하게 성능 향상 가능, 볼륨 크기 조정 용이</li>
-</ul>
-<h3 id="lvm-raid-1">LVM + RAID 1</h3>
-<ul>
-<li>특징: LVM의 <code>mirroring</code> 기능을 사용하여 RAID 1과 유사한 효과 제공</li>
-<li>장점: RAID 1의 데이터 보호 기능을 유지하면서 논리적 볼륨 관리 기능 추가</li>
-</ul>
-<h3 id="lvm-raid-56">LVM + RAID &#8538;</h3>
-<ul>
-<li>특징: LVM의 <code>striping with parity</code> 기능을 통해 RAID &#8538;과 유사한 데이터 보호 효과 가능</li>
-<li>단점: 패리티 연산이 OS 레벨에서 수행되어 성능 저하 가능성 있음</li>
-</ul>
-<h3 id="lvm-raid-10">LVM + RAID 10</h3>
-<ul>
-<li>특징: LVM의 <code>mirroring</code>과 <code>striping</code>을 결합하여 RAID 10과 유사한 구성 가능</li>
-<li>장점: 성능과 데이터 안정성을 동시에 제공, 유연한 볼륨 크기 확장 가능</li>
-</ul>
-<h2 id="aws-lvm-raid">AWS에서 LVM과 RAID 활용</h2>
-<ul>
-<li>LVM을 사용하면 RAID와 조합하여 디스크 확장 및 관리를 유연하게 수행 가능</li>
-<li>AWS에서는 RAID보다 EBS의 내장 기능을 활용하는 것이 더 효율적인 경우가 많음</li>
-<li>EBS의 IOPS 설정이나 EFS, S3 같은 서비스를 고려하는 것이 더 좋은 선택일 수 있음</li>
-</ul>
-<hr />
-<h1 id="_1">결론</h1>
-<ol>
-<li>AWS에서는 RAID보다 EBS, RDS, S3 등의 네이티브 서비스를 활용하는 것이 일반적임</li>
-<li>RAID를 사용해야 한다면 RAID 0 (성능 목적)이나 RAID 1 (안정성 목적)이 주로 사용됨</li>
-<li>LVM과 RAID를 함께 사용하면 유연한 스토리지 관리를 할 수 있으나, AWS에서는 필요성이 낮을 수 있음</li>
-<li>EBS IOPS 조정 + LVM을 활용하면 RAID를 쓰지 않고도 높은 성능과 확장성을 확보 가능</li>
-</ol>
-<h1 id="object-storage-vs-block-storage">Object Storage vs Block Storage</h1>
-<h2 id="_2">개념 및 동작 방식</h2>
-<table>
-<thead>
-<tr>
-<th>스토리지 유형</th>
-<th>동작 방식</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Object Storage</td>
-<td>데이터를 오브젝트 단위로 저장하며, 메타데이터와 함께 키-값 형태로 저장됨. 개별 파일(오브젝트)에 고유한 ID(URI)가 부여되며, API를 통해 접근 가능</td>
-</tr>
-<tr>
-<td>Block Storage</td>
-<td>데이터를 블록 단위로 나누어 저장하며, 각 블록이 특정 주소를 가짐. 운영체제가 직접 관리하며 디스크처럼 동작</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_3">사용 사례</h2>
-<table>
-<thead>
-<tr>
-<th>스토리지 유형</th>
-<th>주요 사용 사례</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Object Storage</td>
-<td>백업 및 아카이빙, 정적 웹사이트 호스팅, 빅데이터 저장, CDN 캐시, 머신러닝 데이터 저장</td>
-</tr>
-<tr>
-<td>Block Storage</td>
-<td>데이터베이스 저장, 가상 머신 디스크(VM), 트랜잭션 처리, 고성능 애플리케이션</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_4">차이점 비교</h2>
-<table>
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>Object Storage</th>
-<th>Block Storage</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>데이터 저장 방식</td>
-<td>오브젝트 단위 저장 (파일 + 메타데이터 + ID)</td>
-<td>블록 단위 저장 (파일을 여러 블록으로 나눔)</td>
-</tr>
-<tr>
-<td>주소 지정 방식</td>
-<td>URI 또는 키-값 기반 접근</td>
-<td>블록 주소를 기반으로 운영체제가 관리</td>
-</tr>
-<tr>
-<td>파일 수정</td>
-<td>파일 전체를 다시 저장해야 함</td>
-<td>특정 블록만 수정 가능</td>
-</tr>
-<tr>
-<td>액세스 방식</td>
-<td>API 기반 (HTTP, S3 API 등)</td>
-<td>OS에서 디스크처럼 마운트하여 사용</td>
-</tr>
-<tr>
-<td>성능</td>
-<td>대량의 데이터를 저장하고 읽을 때 최적화됨</td>
-<td>낮은 지연시간과 높은 성능을 제공</td>
-</tr>
-<tr>
-<td>확장성</td>
-<td>매우 뛰어남 (수십 페타바이트 이상 확장 가능)</td>
-<td>제한적 (스토리지 크기에 따라 확장)</td>
-</tr>
-<tr>
-<td>비용</td>
-<td>일반적으로 저렴</td>
-<td>상대적으로 고가</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_5">장단점</h2>
-<table>
-<thead>
-<tr>
-<th>스토리지 유형</th>
-<th>장점</th>
-<th>단점</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Object Storage</td>
-<td>무한 확장 가능, 비용 효율적, 내구성 높음</td>
-<td>낮은 성능 (랜덤 읽기/쓰기 부적합), 파일 수정이 어려움</td>
-</tr>
-<tr>
-<td>Block Storage</td>
-<td>빠른 읽기/쓰기 속도, OS에서 직접 관리 가능</td>
-<td>확장성이 제한적, 비용이 상대적으로 높음</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="aws-object-storage-block-storage">AWS에서 Object Storage와 Block Storage의 동작 방식 및 결합</h2>
-<h3 id="aws-object-storage">AWS에서 Object Storage</h3>
-<ul>
-<li>Amazon S3 (Simple Storage Service)</li>
-<li>AWS의 대표적인 Object Storage 서비스</li>
-<li>데이터를 "버킷(Bucket)" 단위로 관리</li>
-<li>HTTP 기반 API(S3 API)로 데이터 업로드 및 다운로드 가능</li>
-<li>정적 웹사이트 호스팅, 백업/아카이빙, 빅데이터 저장소로 활용</li>
-</ul>
-<h3 id="aws-block-storage">AWS에서 Block Storage</h3>
-<ul>
-<li>Amazon EBS (Elastic Block Store)</li>
-<li>EC2 인스턴스에 연결되어 디스크처럼 동작</li>
-<li>고성능 IOPS 제공 가능 (Provisioned IOPS 지원)</li>
-<li>
-<p>스냅샷 기능을 통해 백업 가능</p>
-</li>
-<li>
-<p>Amazon Instance Store</p>
-</li>
-<li>EC2에 직접 연결된 초고속 로컬 스토리지</li>
-<li>일시적인 저장소로 사용되며, 인스턴스 종료 시 데이터 삭제됨</li>
-<li>데이터베이스 캐시, 임시 저장소 용도로 활용</li>
-</ul>
-<h3 id="aws-object-storage-block-storage_1">AWS에서 Object Storage와 Block Storage 결합 방식</h3>
-<ul>
-<li>S3 + EBS: 애플리케이션의 정적 데이터(예: 로그, 이미지)는 S3에 저장하고, 운영 데이터(예: 데이터베이스)는 EBS에 저장</li>
-<li>EBS + S3 백업: EC2에서 EBS를 운영 디스크로 사용하고, 정기적으로 EBS 스냅샷을 S3에 저장하여 비용 절감</li>
-<li>S3 + Glacier: 자주 접근하지 않는 데이터는 S3에, 장기 보관용 데이터는 Glacier로 이동하여 비용 최적화</li>
-</ul>
-<hr />
-<h2 id="_6">결론</h2>
-<ul>
-<li>Object Storage (S3)는 대규모 데이터를 저장하고 접근하는 데 적합하지만, 파일 수정이 어렵고 높은 성능이 필요한 경우 부적합함.</li>
-<li>Block Storage (EBS)는 높은 성능이 필요한 데이터베이스 및 애플리케이션 운영에 적합하지만, 확장성이 제한적이고 비용이 높음.</li>
-<li>AWS에서는 S3 + EBS 조합을 통해 확장성과 성능을 모두 고려한 하이브리드 스토리지 아키텍처를 구성하는 것이 일반적.</li>
-</ul>
-<h2 id="_7">주요 파일 시스템 비교</h2>
-<table>
-<thead>
-<tr>
-<th>파일 시스템</th>
-<th>특징</th>
-<th>장점</th>
-<th>단점</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>EXT4</td>
-<td>리눅스 기본 파일 시스템, 저널링 지원</td>
-<td>안정적, 대부분의 리눅스 배포판에서 기본 지원, 대용량 파일 지원(최대 16TB)</td>
-<td>성능이 XFS나 Btrfs보다 낮음, 확장성이 제한적</td>
-</tr>
-<tr>
-<td>XFS</td>
-<td>고성능 저널링 파일 시스템, 병렬 입출력(IO) 최적화</td>
-<td>대용량 파일과 다중 쓰레드 환경에서 뛰어난 성능, 빠른 데이터 복구</td>
-<td>작은 파일 처리 성능이 EXT4보다 낮음, 볼륨 크기 축소 불가</td>
-</tr>
-<tr>
-<td>Btrfs</td>
-<td>스냅샷 및 데이터 중복 제거 지원, Copy-on-Write(COW) 방식</td>
-<td>스냅샷 기능 제공, RAID 기능 내장, 자동 파일 시스템 복구</td>
-<td>EXT4나 XFS보다 성숙도가 낮음, 일부 배포판에서 기본 지원하지 않음</td>
-</tr>
-<tr>
-<td>ZFS</td>
-<td>고급 데이터 보호 및 압축 기능 제공</td>
-<td>데이터 무결성 보장, 내장된 RAID-Z 지원, 대규모 데이터 처리 최적화</td>
-<td>메모리 사용량이 높음, 리눅스에서 기본적으로 포함되지 않음</td>
-</tr>
-<tr>
-<td>NTFS</td>
-<td>윈도우 기본 파일 시스템, 저널링 지원</td>
-<td>파일 및 폴더 권한 관리, 윈도우 환경에서 최적화됨</td>
-<td>리눅스에서 쓰기 성능이 낮음, 조각 모음 필요</td>
-</tr>
-<tr>
-<td>FAT32</td>
-<td>범용 파일 시스템, 거의 모든 OS에서 인식 가능</td>
-<td>높은 호환성, 간단한 구조</td>
-<td>4GB 이상의 파일 저장 불가, 보안 기능 부족</td>
-</tr>
-</tbody>
-</table>
-<h2 id="inode">Inode 개념</h2>
-<ul>
-<li>Inode(아이노드)는 리눅스 및 유닉스 기반 파일 시스템에서 파일 메타데이터를 저장하는 데이터 구조임.</li>
-<li>파일의 실제 데이터(내용)와는 별도로, 파일의 속성 정보(메타데이터)를 저장하는 역할을 함.</li>
-</ul>
-<h2 id="inode_1">Inode에 저장되는 정보</h2>
-<p>Inode는 파일 자체의 내용이 아닌, 다음과 같은 메타데이터를 저장함.</p>
-<table>
-<thead>
-<tr>
-<th>속성</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>파일 크기</td>
-<td>파일의 총 크기 (바이트 단위)</td>
-</tr>
-<tr>
-<td>파일 유형</td>
-<td>일반 파일, 디렉터리, 심볼릭 링크 등</td>
-</tr>
-<tr>
-<td>파일 권한</td>
-<td>읽기/쓰기/실행 권한 (rwx)</td>
-</tr>
-<tr>
-<td>소유자 및 그룹</td>
-<td>해당 파일의 소유 사용자 및 그룹</td>
-</tr>
-<tr>
-<td>파일 생성 및 수정 시간</td>
-<td>파일이 생성, 수정, 접근된 시간 (ctime, mtime, atime)</td>
-</tr>
-<tr>
-<td>하드 링크 수</td>
-<td>해당 파일을 참조하는 링크 개수</td>
-</tr>
-<tr>
-<td>데이터 블록 위치</td>
-<td>파일의 실제 데이터가 저장된 디스크 블록 주소</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Inode에 저장되지 않는 정보</li>
-<li>파일명은 Inode에 저장되지 않으며, 디렉터리 엔트리(directory entry)에서 별도로 관리됨.</li>
-</ul>
-<hr />
-<h1 id="inode_2">Inode와 파일 시스템의 관계</h1>
-<table>
-<thead>
-<tr>
-<th>파일 시스템</th>
-<th>Inode 사용 방식</th>
-<th>특징</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>EXT4</td>
-<td>Inode 기반 파일 시스템</td>
-<td>각 파일마다 Inode가 생성되며, 디렉터리가 파일명과 Inode 번호를 매핑</td>
-</tr>
-<tr>
-<td>XFS</td>
-<td>Inode 기반, 동적 할당</td>
-<td>Inode를 미리 할당하지 않고 필요할 때 동적으로 생성</td>
-</tr>
-<tr>
-<td>Btrfs</td>
-<td>Inode 사용, Copy-on-Write (COW) 적용</td>
-<td>데이터 보호를 위해 스냅샷 및 RAID 기능 내장</td>
-</tr>
-<tr>
-<td>ZFS</td>
-<td>Inode + 데이터 무결성 보장</td>
-<td>Inode와 데이터 블록을 함께 관리하여 오류 감지 및 자동 복구 가능</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="inode_3">Inode의 중요성</h2>
-<ul>
-<li>파일이 생성될 때마다 Inode가 할당됨.</li>
-<li>Inode가 부족하면 더 이상 파일을 생성할 수 없음 (디스크 공간이 남아 있어도).</li>
-<li><code>df -i</code> 명령어로 현재 사용 가능한 Inode 개수 확인 가능.</li>
-</ul>
-<h2 id="instance-store-vs-ebs">Instance Store vs. EBS 비교</h2>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>Instance Store</th>
-<th>EBS (Elastic Block Store)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>스토리지 위치</td>
-<td>물리적 서버 내부의 디스크 (로컬 스토리지)</td>
-<td>네트워크를 통해 연결된 분리된 블록 스토리지</td>
-</tr>
-<tr>
-<td>데이터 휘발성</td>
-<td>인스턴스 중지/종료 시 데이터 삭제</td>
-<td>영구 저장 가능</td>
-</tr>
-<tr>
-<td>성능</td>
-<td>초고속 I/O (낮은 지연시간, 높은 처리량)</td>
-<td>SSD 기반으로 안정적이지만 네트워크 지연 가능</td>
-</tr>
-<tr>
-<td>장애 복구</td>
-<td>복구 불가 (인스턴스 종료 시 데이터 손실)</td>
-<td>스냅샷 및 복제 가능</td>
-</tr>
-<tr>
-<td>주요 사용 사례</td>
-<td>캐시, 임시 데이터 저장, 고성능 처리</td>
-<td>OS 및 애플리케이션 데이터 저장</td>
-</tr>
-</tbody>
-</table>
-<h2 id="instance-store">Instance Store를 사용하면 좋은 경우</h2>
-<h3 id="_8">고성능 캐시 저장소</h3>
-<ul>
-<li>Redis, Memcached 같은 인메모리 데이터베이스의 백업 캐시 스토리지로 활용 가능</li>
-<li>휘발성이지만 낮은 지연시간(Low Latency)이 필요할 때 적합</li>
-</ul>
-<h3 id="temporary-storage">임시 데이터 저장 (Temporary Storage)</h3>
-<ul>
-<li>ETL(Extract, Transform, Load) 프로세스에서 임시 파일 저장</li>
-<li>동영상/이미지 처리 중간 파일 저장</li>
-<li>로그 파일 및 빅데이터 분석을 위한 임시 저장소</li>
-</ul>
-<h3 id="_9">고속 읽기/쓰기 요구되는 애플리케이션</h3>
-<ul>
-<li>Hadoop, Spark 같은 빅데이터 프레임워크의 중간 결과 저장소</li>
-<li>대용량 트랜잭션 처리 시스템(OLTP)의 단기 데이터 저장소</li>
-<li>CI/CD 빌드 및 컴파일 과정에서 임시 파일 저장</li>
-</ul>
-<h3 id="_10">비용 절감</h3>
-<ul>
-<li>EC2 비용만 지불하면 되므로 EBS 비용을 절감할 수 있음</li>
-<li>하지만, 인스턴스 종료 시 데이터가 삭제되므로 영구 저장소가 필요할 경우 EBS 또는 S3 사용 추천</li>
-</ul>
+<p>출처:
+1. <a href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/enable-iam-roles-for-service-accounts.html">https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/enable-iam-roles-for-service-accounts.html</a>
+2. <a href="https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/lbc-manifest.html">https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/lbc-manifest.html</a>
+3. <a href="https://stackoverflow.com/questions/76624577/argocd-ingress-kubernetes-too-many-redirects-even-with-insecure-nginx">https://stackoverflow.com/questions/76624577/argocd-ingress-kubernetes-too-many-redirects-even-with-insecure-nginx</a>
+4. <a href="https://husheart.tistory.com/187">https://husheart.tistory.com/187</a>
+5. <a href="https://argo-cd.readthedocs.io/en/release-2.5/operator-manual/rbac/">https://argo-cd.readthedocs.io/en/release-2.5/operator-manual/rbac/</a>
+6. <a href="https://huntedhappy.tistory.com/entry/DK-Argocd-cli-%EC%84%A4%EC%B9%98-%EB%B0%8F-User-%EC%B6%94%EA%B0%80">https://huntedhappy.tistory.com/entry/DK-Argocd-cli-%EC%84%A4%EC%B9%98-%EB%B0%8F-User-%EC%B6%94%EA%B0%80</a>
+7. <a href="https://changbaebang.github.io/2021-08-07-redis-cli/">https://changbaebang.github.io/2021-08-07-redis-cli/</a>
+8. <a href="https://velog.io/@broccolism/nginx-%EC%82%BD%EC%A7%88%ED%95%98%EA%B8%B0-%EB%94%B1-%EC%A2%8B%EC%9D%80-%EC%84%A4%EC%A0%95">https://velog.io/@broccolism/nginx-%EC%82%BD%EC%A7%88%ED%95%98%EA%B8%B0-%EB%94%B1-%EC%A2%8B%EC%9D%80-%EC%84%A4%EC%A0%95</a></p>
 
 
 
@@ -1766,7 +1316,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../http-status-code-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: HTTP status code 정리">
+          <a href="../storage-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Storage 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1776,20 +1326,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                HTTP status code 정리
+                Storage 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../private-eks-cluster-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EB%82%B4%EC%97%ADdraft/" class="md-footer__link md-footer__link--next" aria-label="Next: Private EKS Cluster 트러블슈팅 내역[Draft]">
+          <a href="../%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: 서버 부팅 방식 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Private EKS Cluster 트러블슈팅 내역[Draft]
+                서버 부팅 방식 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
