@@ -220,5 +220,4 @@ AWS에서는 RDS, DynamoDB에서 PITR 기능을 제공(RDS 모든 엔진 사용 
 
 ### Amazon RDS의 PITR
 - Binary Log(Binlog) 또는 WAL을 사용하여 특정 시점 복구 가능
-- RDS 콘솔, AWS CLI, API를 사용하여 특정 시점으로 복원 가능
 - 최대 35일까지 트랜잭션 로그 보관 가능
