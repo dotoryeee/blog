@@ -1261,12 +1261,16 @@
 
 <ul>
 <li>
-<p>OCSP 에러 발생 시
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-v<span class="w"> </span>https://test.test.com<span class="w"> </span>--ssl-no-revoke
-</code></pre></div></p>
+<p>coredns configMap 수정하여 cluster내 hosts 수정하는 방법</p>
 </li>
 <li>
-<p>PKIX path building failed
+<p>OCSP 에러 발생 시
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-v<span class="w"> </span>https://test.test.com<span class="w"> </span>--ssl-no-revoke
+</code></pre></div>
+curl의 k 옵션과 전혀 다른 옵션임에 유의할 것</p>
+</li>
+<li>
+<p>PKIX path building failed(JAVA Spring)
 JAVA IDE의 TrustStore에 SSL 등록해야 함</p>
 </li>
 <li>
