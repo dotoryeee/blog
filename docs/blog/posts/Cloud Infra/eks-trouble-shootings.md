@@ -12,7 +12,16 @@ categories:
 <!-- more -->
 
 
+- OCSP 에러 발생 시
+```sh
+curl -v https://test.test.com --ssl-no-revoke
+```
 
+- PKIX path building failed
+JAVA IDE의 TrustStore에 SSL 등록해야 함
+
+- openssl verify return code: 19
+self-signed 인증서이므로 시스템에 신뢰할 수 인증서로 등록해야함
 
 ---
 출처:
