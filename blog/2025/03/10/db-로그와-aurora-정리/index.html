@@ -1198,7 +1198,7 @@
           <li class="md-nav__item">
   <a href="#wal-write-ahead-logging" class="md-nav__link">
     <span class="md-ellipsis">
-      ✅ WAL (Write-Ahead Logging)
+      WAL (Write-Ahead Logging)
     </span>
   </a>
   
@@ -1207,7 +1207,7 @@
           <li class="md-nav__item">
   <a href="#binlog-binary-log" class="md-nav__link">
     <span class="md-ellipsis">
-      ✅ Binlog (Binary Log)
+      Binlog (Binary Log)
     </span>
   </a>
   
@@ -1563,14 +1563,14 @@
 </tr>
 </tbody>
 </table>
-<h3 id="wal-write-ahead-logging">✅ WAL (Write-Ahead Logging)</h3>
+<h3 id="wal-write-ahead-logging">WAL (Write-Ahead Logging)</h3>
 <ol>
 <li>데이터 변경이 발생하면 먼저 WAL 로그에 기록됨.</li>
 <li>로그가 안정적으로 저장된 후 데이터 파일이 변경됨.</li>
 <li>장애 발생 시 WAL을 재적용하여 마지막 정상 상태로 복구 가능.</li>
 <li>PostgreSQL에서는 스트리밍 복제를 통해 WAL을 활용하여 데이터 복제 수행.</li>
 </ol>
-<h3 id="binlog-binary-log">✅ Binlog (Binary Log)</h3>
+<h3 id="binlog-binary-log">Binlog (Binary Log)</h3>
 <ol>
 <li>MySQL에서 트랜잭션이 커밋될 때 변경 내용을 Binlog에 기록.</li>
 <li>이진(Binary) 형식으로 저장되며, 마스터-슬레이브 복제에서 슬레이브가 Binlog를 읽고 재적용하여 복제 수행.</li>
