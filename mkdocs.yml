@@ -37,8 +37,8 @@ plugins:
       post_readtime_words_per_minute: 150
       archive_url_date_format: yyyy/MM
       pagination_format: "$link_first $link_previous ~2~ $link_next $link_last"
-      draft_on_serve: true
-      draft: true
+      draft_on_serve: false
+      draft: false
       
 
 markdown_extensions:
