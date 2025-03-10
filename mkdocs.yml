@@ -25,7 +25,7 @@ extra:
     provider: google
     property: G-22LC2P5RV5
 
-copyright: Copyright &copy; 2024 Jeongwon(Aaron) Lee
+copyright: Copyright &copy; 2025 Jeongwon(Aaron) Lee
 
 plugins:
   - blog:

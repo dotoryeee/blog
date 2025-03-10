@@ -131,7 +131,4 @@ AWS Aurora(MySQL 및 PostgreSQL 호환)에서는 기본적으로 WAL 및 Binlog�
 1. WAL (Write-Ahead Logging)은 장애 복구를 위한 핵심 기술로, Aurora에서는 이를 공유 스토리지 계층에서 관리하여 고속 복구 및 실시간 복제가 가능함.
 2. Aurora의 WAL은 일반적인 MySQL/PostgreSQL보다 성능이 뛰어나며 Redo Log를 중앙에서 관리하여 복구 속도를 크게 향상시킴.
 3. Aurora Replication은 WAL을 활용하여 빠르게 읽기 복제를 제공하므로, 읽기 부하가 큰 환경에서 뛰어난 확장성을 제공함.
-4. 기존 RDS보다 Aurora의 복구 및 장애 대응이 더 빠르고 효율적이므로, 고가용성이 필요한 환경에서는 Aurora가 강력한 선택지가 될 수 있음.
-
-Aurora의 WAL 및 로그 시스템은 단순한 DB 복제 수준이 아니라, 고가용성 및 빠른 복구를 위한 최적화된 구조로 설계됨
-
+4. 기존 RDS보다 Aurora의 복구 및 장애 대응이 더 빠르고 효율적이므로, 고가용성이 필요한 환경에서는 Aurora 추천
