@@ -1588,74 +1588,9 @@
           <li class="md-meta__item">
             in
             
-              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
-              <a href="../../category/study/" class="md-meta__link">study</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              8 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="docker-proxy-layer-for-mysql"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/">Docker Proxy Layer for MySQL</a></h2>
-<h3 id="proxy-layer"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/#proxy-layer">Proxy Layer의 필요성</a></h3>
-<hr />
-<ul>
-<li>외부(어플리케이션)에서 접속 시 3306포트의 MASTER DB가 에러가 발생했을 때, FailOver가 구현되어 SLAVE DB(3307)가 MASTER로 승격되더라도 3307포트로 자동으로 변경되지 않기 떄문에 사이에서 중재해줄 Layer가 필요합니다.</li>
-<li>
-<p>ex&gt;Nginx with Proxy</p>
-<p><img alt="Docker Proxy Layer for MySQL/Untitled.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled.png" /></p>
-</li>
-<li>
-<p>ex)Nginx without Proxy</p>
-<p><img alt="Docker Proxy Layer for MySQL/Untitled%201.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled%201.png" /></p>
-</li>
-</ul>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>ProxySQL을 이용해 Proxy Layer를 구현합니다</li>
-<li>READ, WRITE작업을 수행하는 호스트그룹과 Read작업만 수행하는 호스트 그룹을 생성합니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/docker-proxy-layer-for-mysql/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
-              <a href="../../category/study/" class="md-meta__link">study</a></li>
+              <a href="../../category/study/" class="md-meta__link">study</a>, 
+              <a href="../../category/nginx/" class="md-meta__link">nginx</a>, 
+              <a href="../../category/httpd/" class="md-meta__link">httpd</a></li>
         
         
           
@@ -1667,452 +1602,54 @@
         
       </ul>
       
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="docker-basics"><a class="toclink" href="../../1993/09/17/docker-basics/">Docker basics</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-basics/#_1">목표</a></h3>
-<hr />
-<ol>
-<li>도커를 복습 겸 간단하게 한 번 훑어봅니다</li>
-<li>간단한 node 백엔드를 작성하고 도커 이미지를 생성합니다</li>
-<li>Working Directory를 설정합니다</li>
-<li>node 종속성을 수정해 이미지 빌드 속도를 높여봅니다</li>
-<li>개발일을 할 떄 docker volume을 어떻게 활용할 수 있는지 한 번 살펴봅니다</li>
-<li>compose를 이용해 간단한 페이지를 만들어봅니다</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/docker-basics/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
-              <a href="../../category/study/" class="md-meta__link">study</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
+        <span class="md-draft">
+          Draft
+        </span>
       
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="docker-compose-and-web-gui"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/">Docker compose and web GUI</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/#_1">작업요약</a></h3>
-<hr />
+    <h2 id="nginx-vs-apache-httpd"><a class="toclink" href="../../1993/09/17/nginx-vs-apache-httpd/">Nginx vs Apache httpd</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>인터넷에서 정보 수집 중입니다. 틀린 정보도 많아서 팩트체크 진행중입니다.</p>
+</div>
 <ul>
-<li>Docker를 설치하는 과정에 필요한 파라미터 변수에 대해 알아봅니다</li>
-<li>빠른 이해와 편리한 사용을 위해 Portainer를 설치합니다</li>
-<li>Docker-Hub에서 컨테이너를 찾고 DVWA 컨테이너를 로드해봅니다</li>
-<li>YAML + Docker Compose를 이용해 코드로 관리하는 법을 알아봅니다</li>
+<li>
+<p>Youtube <a href="https://www.youtube.com/watch?v=6FAwAXXj5N0">10분 테코톡 피케이의 Nginx</a>를 보고 실제 성능이 어떻게, 얼마나 차이가 나는지 궁금해짐</p>
+</li>
+<li>
+<p>Nginx / Httpd prefork MPM / httpd event MPM 비교</p>
+</li>
+<li>
+<p>Nginx</p>
+<ul>
+<li>요청을 처리중인 worker의 수 = 요청을 처리중인 process 수 = 요청을 처리중인 thread 수</li>
+<li>하나의 요청을 로드밸런싱을 이용해 여러개의 worker process에서 처리할 수 있다</li>
 </ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/docker-compose-and-web-gui/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
-              <a href="../../category/study/" class="md-meta__link">study</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              6 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="docker-volume-with-mysql"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/">Docker volume with MySQL</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/#_1">목표</a></h3>
-<hr />
+</li>
+<li>
+<p>Nginx (하나의 worker는 N개의 요청이 들어와도 단일 스레드로 처리 / 단일 스레드 + 멀티프로세스를 이용한 Event driven 비동기 처리)</p>
 <ul>
-<li>CentOS8에 도커를 설치하고 MySQL 컨테이너를 로드합니다</li>
-<li>컨테이너를 종료하고 외부에서 접속하도록 다시 로드합니다</li>
-<li>컨테이너를 삭제해도 이전 데이터를 그대로 유지하는 stateful한 상태를 구현합니다</li>
-<li>Stateful 상태는 Volume설정을 통해 구현합니다</li>
+<li>장점<ul>
+<li>높은 성능: Event driven 비동기 처리 방식으로 고성능 웹서버로 유명함</li>
+<li>적은 자원 사용: 단일 스레드 방식으로 동작하여 자원 소비가 적음</li>
+<li>높은 안정성: 안정적인 운영 환경을 보장</li>
+<li>Reverse Proxy 및 Load Balancing 기능 지원: Reverse Proxy 기능을 이용해 요청을 웹 서버 및 애플리케이션 서버로 전달하고, Load Balancing 기능을 이용해 트래픽 분산 처리 가능</li>
 </ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/docker-volume-with-mysql/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/kubernetes/" class="md-meta__link">kubernetes</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="k8s-jvm-heap-dump"><a class="toclink" href="../../1993/09/17/k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">K8S에 배포된 JVM Heap Dump 생성</a></h2>
-<ul>
-<li>명령어
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">jmap</span><span class="w"> </span><span class="o">-</span><span class="n">dump</span><span class="o">:</span><span class="n">live</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">file</span><span class="o">=/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="m">1234</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;:/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="n">heapdump.hprof</span>
-</code></pre></div></li>
-<li>옵션 설명<ul>
-<li>kubectl exec <pod_name>: 특정 파드에 접근하고 명령을 실행</li>
-<li>--: kubectl exec 명령어 옵션과 파드 내에서 실행할 명령어를 구분</li>
-<li>jmap: JVM memory map tool name</li>
-<li>-dump: jmap의 heap dump 생성 옵션</li>
-<li>live: GC에 의에 회수되지 않은 live object'만' 포함해서 덤프 생성. memory leak 분석에 용이해짐.</li>
-<li>format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.</li>
-<li>file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성</li>
-<li>1234: jmap으로 덤프 생성할 PID 입력</li>
+</li>
+<li>단점<ul>
+<li>미들웨어 지원 부족: Nginx는 다양한 미들웨어를 지원하는 Apache와 비교하면 상대적으로 지원이 부족합니다.</li>
+<li>Windows 지원: Nginx는 Windows 지원이 상대적으로 부족합니다. 이는 Apache와 비교해 Windows 환경에서의 사용성이 떨어지는 단점으로 작용할 수 있습니다</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
     
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/python/" class="md-meta__link">Python</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              3 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="boto3"><a class="toclink" href="../../1993/09/17/boto3-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%8B%9C/">Boto3 사용 예시</a></h2>
-
-    
       <nav class="md-post__action">
-        <a href="../../1993/09/17/boto3-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%8B%9C/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/python/" class="md-meta__link">Python</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="datadog-dashboard-crawling"><a class="toclink" href="../../1993/09/17/datadog-dashboard-crawling/">Datadog dashboard crawling</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/datadog-dashboard-crawling/#_1">목적</a></h3>
-<p>Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하여 dashboard를 직접 긁어 report를 렌더링 하기로 했습니다</p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/datadog-dashboard-crawling/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/python/" class="md-meta__link">Python</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              6 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="naver-cloud-api"><a class="toclink" href="../../1993/09/17/naver-cloud-api-%ED%98%B8%EC%B6%9C-%EC%98%88%EC%8B%9C/">Naver cloud API 호출 예시</a></h2>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/naver-cloud-api-%ED%98%B8%EC%B6%9C-%EC%98%88%EC%8B%9C/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="elk-error"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/">ELK error 모음</a></h2>
-<h3 id="1"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#1">1</a></h3>
-<h4 id="_1"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#_1">증상</a></h4>
-<ul>
-<li>Error message<br>
-  <strong>Elastic Kibana did not load properly. Check the server output for more information</strong></li>
-<li>인프라 구성
-    Kibana 접근을 위해 Nginx를 reverse proxy로 사용하는 구조</li>
-</ul>
-<h4 id="_2"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#_2">해결방법</a></h4>
-<p>Nginx 설정파일에서 proxy_buffer 부분을 수정합니다</p>
-<ul>
-<li>AS-IS
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">AWS에서</span><span class="w"> </span>제공하는<span class="w"> </span><span class="n">ES</span><span class="o">-</span><span class="n">Proxy용</span><span class="w"> </span><span class="n">nginx</span><span class="w"> </span>템플릿<span class="w"> </span>기본값<span class="p">)</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span>
-</code></pre></div></li>
-<li>TO-BE
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
-</code></pre></div></li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="elasticsearch-domain-in-vpc"><a class="toclink" href="../../1993/09/17/elasticsearch-domain-in-vpc/">ElasticSearch domain in VPC</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/elasticsearch-domain-in-vpc/#_1">사전정보</a></h3>
-<ul>
-<li>AWS에서 SaaS 형태로 제공하는 ElasticSearch(이하 ES)의 경우 domain을 VPC내부 또는 외부에 생성할 수 있다</li>
-<li>보안을 위해 VPC 내부에 생성을 권고하는데, ES domain이 private subnet에 위치하는 경우 public subnet에 Nginx를 프록시 서버로 생성하고 redirection 해주어야 한다</li>
-<li>Redirection시 cognito를 이용한 사용자인증 유무에 따라 Nginx 설정이 다르다(아래 참조)</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/elasticsearch-domain-in-vpc/">
+        <a href="../../1993/09/17/nginx-vs-apache-httpd/">
           Continue reading
         </a>
       </nav>
@@ -2127,7 +1664,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12l4.58-4.59m-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12l4.58-4.59Z"/></svg></a> <a class="md-pagination__link" href="../3/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42Z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <a class="md-pagination__link" href="../2/">2</a> <a class="md-pagination__link" href="../3/">3</a> <span class="md-pagination__current">4</span> <a class="md-pagination__link" href="../5/">5</a> <a class="md-pagination__link" href="../6/">6</a> <a class="md-pagination__link" href="../5/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42Z"/></svg></a> <a class="md-pagination__link" href="../6/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.59 7.41 7 6l6 6-6 6-1.41-1.41L10.17 12 5.59 7.41m6 0L13 6l6 6-6 6-1.41-1.41L16.17 12l-4.58-4.59Z"/></svg></a>
+  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12l4.58-4.59m-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12l4.58-4.59Z"/></svg></a> <a class="md-pagination__link" href="../5/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.42Z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../4/">4</a> <a class="md-pagination__link" href="../5/">5</a> <span class="md-pagination__current">6</span>  
 </nav>
         
       
