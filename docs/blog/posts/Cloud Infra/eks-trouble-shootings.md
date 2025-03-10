@@ -11,13 +11,16 @@ categories:
 
 <!-- more -->
 
+- coredns configMap 수정하여 cluster내 hosts 수정하는 방법
+
 
 - OCSP 에러 발생 시
 ```sh
 curl -v https://test.test.com --ssl-no-revoke
 ```
+curl의 k 옵션과 전혀 다른 옵션임에 유의할 것
 
-- PKIX path building failed
+- PKIX path building failed(JAVA Spring)
 JAVA IDE의 TrustStore에 SSL 등록해야 함
 
 - openssl verify return code: 19
