@@ -1,6 +1,6 @@
 ---
 draft: false
-date: 2025-05-11
+date: 2025-03-11
 authors:
   - dotoryeee
 categories:
@@ -12,7 +12,11 @@ categories:
 <!-- more -->
 
 
+
+
+---
 출처:
+
 1. https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
 2. https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/lbc-manifest.html
 3. https://stackoverflow.com/questions/76624577/argocd-ingress-kubernetes-too-many-redirects-even-with-insecure-nginx
