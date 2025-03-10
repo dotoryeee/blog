@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">
+        <link rel="prev" href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../docker-compose-and-web-gui/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>Docker volume with MySQL - dotoryeee's blog</title>
+        <title>서버 부팅 방식 정리 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker-volume-with-mysql" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker volume with MySQL
+              서버 부팅 방식 정리
             
           </span>
         </div>
@@ -1559,54 +1557,129 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      목표
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Docker 설치
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql" class="md-nav__link">
-    <span class="md-ellipsis">
-      MySQL 컨테이너 설치
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      외부에서 MySQL 컨테이너 접속
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stateful-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      Stateful 구현을 위한 Volume 설정
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      링크
+      각 용어의 개념
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="각 용어의 개념">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mbr-master-boot-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      MBR (Master Boot Record)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpt-guid-partition-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPT (GUID Partition Table)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uefi-unified-extensible-firmware-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      UEFI (Unified Extensible Firmware Interface)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grub-grand-unified-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      GRUB (GRand Unified Bootloader)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esp-efi-system-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      ESP (EFI System Partition)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-bootefi" class="md-nav__link">
+    <span class="md-ellipsis">
+      /boot 및 /boot/efi 필요성
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aws-ec2-bootefi" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws-xen-t2-m4" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Xen 기반 (예: t2, m4)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-nitro-m5-m6i-m7i-t4g-a1" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-nitro-uefi" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS Nitro 기반에서 UEFI 부팅이 필요한 경우
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-ec2-os" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS EC2 인스턴스 세대 및 OS별 부팅 방식
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      결론
     </span>
   </a>
   
@@ -1668,7 +1741,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
-                        <time datetime="1993-09-17 00:00:00" class="md-ellipsis">Sep 17, 1993</time>
+                        <time datetime="2025-05-11 00:00:00" class="md-ellipsis">May 11, 2025</time>
                       </div>
                     </li>
                     
@@ -1679,8 +1752,8 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/docker/">docker</a>, 
-                              <a href="../../../../category/study/">study</a></span>
+                              <a href="../../../../category/cloud/">Cloud</a>, 
+                              <a href="../../../../category/server/">Server</a></span>
                         </div>
                       </li>
                     
@@ -1691,7 +1764,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              6 min read
+                              4 min read
                             
                           </span>
                         </div>
@@ -1711,252 +1784,166 @@
         
 
 
-<h1 id="docker-volume-with-mysql">Docker volume with MySQL</h1>
-<h2 id="_1">목표</h2>
-<hr />
-<ul>
-<li>CentOS8에 도커를 설치하고 MySQL 컨테이너를 로드합니다</li>
-<li>컨테이너를 종료하고 외부에서 접속하도록 다시 로드합니다</li>
-<li>컨테이너를 삭제해도 이전 데이터를 그대로 유지하는 stateful한 상태를 구현합니다</li>
-<li>Stateful 상태는 Volume설정을 통해 구현합니다</li>
-</ul>
+<h1 id="_1">서버 부팅 방식 정리</h1>
 <!-- more -->
-<h2 id="docker">Docker 설치</h2>
-<hr />
-<ol>
-<li>
-<p>yum util 패키지 설치</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">yum</span><span class="o">-</span><span class="n">utils</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker를 위한 repo를 설정</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span><span class="w"> </span><span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span><span class="o">=</span><span class="n">https</span><span class="o">://</span><span class="n">download.docker.com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">ce.repo</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker-ce 설치</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="w"> </span>
-</code></pre></div>
-</li>
-<li>
-<p>(이미 설치된 패키지 떄문에)설치 에러 발생시 allowerasing 옵션</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">dnf</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">nobest</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker를 실행</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">docker</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker 버전 확인</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">docker</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="mysql">MySQL 컨테이너 설치</h2>
-<hr />
-<ol>
-<li>
-<p>MYSQL 컨테이너를 실행합니다. 5.7.30 버전 mySQL 컨테이너를 다운로드하고 db001이라는 컨테이너 이름으로 로드하는 명령입니다</p>
-<p>-i, -t : 컨테이너의 shell에 접속하기 위한 옵션
-—name : 컨테이너 이름
--e : 환경변수 세팅
--d : 백그라운드에서 컨테이너 실행</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-<p>아래 스크린샷 처럼 우선 로컬에서 컨테이너를 찾아보고 없으면 도커허브에서 알아서 찾고 다운로드하여 컨테이너를 로드합니다</p>
-<p><img alt="Docker volume with MySQL/Untitled.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled.png" /></p>
-</li>
-<li>
-<p>다음 명령으로 현재 실행중인 컨테이너에 MySQL이 존재하는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">ps</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%201.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%201.png" /></p>
-</li>
-<li>
-<p>db001컨테이너에 /bin/bash 셸을 통해 접속합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%202.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%202.png" /></p>
-</li>
-<li>
-<p>컨테이너에 접속되었으면 MySQL에 접속하고 데이터베이스 목록을 호출합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">show</span><span class="w"> </span><span class="n">databases</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%203.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%203.png" /></p>
-</li>
-<li>
-<p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="mysql_1">외부에서 MySQL 컨테이너 접속</h2>
-<hr />
-<ol>
-<li>
-<p>호스트에 MySQL 클라이언트를 설치합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">dnf</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">mysql</span>
-</code></pre></div>
-</li>
-<li>
-<p>외부에서 컨테이너를 접속하려면 접속포트와 컨테이너포트, 도커 호스트 IP가 필요합니다</p>
-</li>
-<li>
-<p>컨테이너를 로드할 때 포트를 매칭해줍니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker ps를 이용해 동작중인 컨테이너 목록을 확인하면 이번엔 포트가 연결된 것을 확인할 수 있습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%204.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%204.png" /></p>
-</li>
-<li>
-<p>도커 호스트 IP를 파라미터에 전달하여 MySQL을 실행합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="p">{</span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너 외부에서 DB 접속을 성공하였습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%205.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%205.png" /></p>
-</li>
-<li>
-<p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="stateful-volume">Stateful 구현을 위한 Volume 설정</h2>
-<hr />
-<ol>
-<li>
-<p>도커 호스트에 데이터 저장을 위한 디렉터리 생성</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-</li>
-<li>
-<p>작업이 가능하도록 디렉터리에 권한 부여</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-</li>
-<li>
-<p>볼륨 옵션을 추가하여 컨테이너를 로드합니다</p>
-<p>이는 데이터 저장을 위해 생성했던 디렉터리와 컨테이너의 디렉터리가 공유되도록 설정(매핑)합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너 로드 후 데이터 저장용 디렉터리로 이동하면 파일이 생성된 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-<p><img alt="MAGIC" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%206.png" /></p>
-<p>MAGIC</p>
-</li>
-<li>
-<p>stateful 구현 테스트를 위한 데이터를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="k">set</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">use</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">tt</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="nb">int</span><span class="p">);</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">tt</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tt</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%207.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%207.png" /></p>
-</li>
-<li>
-<p>Stateful 테스트를 위해 컨테이너를 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너를 다시 로드합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>구동된 컨테이너에서 아까 작성했던 테이블이 살아있는 것을 확인할 수 있습니다.</p>
-<p><img alt="Docker volume with MySQL/Untitled%208.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%208.png" /></p>
-</li>
-<li>
-<p>Stateful 구현에 성공하였습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%209.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%209.png" /></p>
-</li>
-<li>
-<p>데이터뿐만 아니라 로그, 설정파일 등에 응용할 수 있습니다</p>
-</li>
-<li>
-<p>다시 컨테이너를 제거합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-<li>
-<p>로그와 설정을 위한 디렉토리를 생성하고 권한을 부여합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
-</code></pre></div>
-</li>
-<li>
-<p>/db/db001/conf 디렉터리에 644 퍼미션을 가지는 cnf 파일을 생성합니다</p>
+
+<h2 id="_2">각 용어의 개념</h2>
+<h3 id="mbr-master-boot-record">MBR (Master Boot Record)</h3>
 <ul>
-<li>
-<p>my.cnf</p>
-<p>server-id와 report_host 값은 유니크한 특성(고유값)을 가져야합니다</p>
-</li>
+<li>역할: 디스크의 첫 번째 512바이트에 위치하는 데이터 구조로, 부트 로더 및 파티션 정보를 저장함.</li>
+<li>왜 사용하는가?</li>
+<li>오래된 BIOS 기반 시스템에서 부팅을 지원하기 위해 사용됨.</li>
+<li>부트 로더(예: GRUB)의 첫 번째 스테이지(Stage 1)를 저장하여 운영체제 로딩을 시작할 수 있도록 함.</li>
+<li>단순한 구조이지만, 최대 2TiB 크기까지만 지원하고, 최대 4개의 기본(primary) 파티션만 가질 수 있음.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>[mysqld]
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>log_bin                     = mysql-bin
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>binlog_format               = ROW
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>gtid_mode                   = ON
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>enforce-gtid-consistency    = true
-<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>server-id                   = 100
-<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>log_slave_updates
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>datadir                     = /var/lib/mysql
-<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>socket                      = /var/lib/mysql/mysql.sock
-<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>
-<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a># Disabling symbolic-links is recommended to prevent assorted security risks
-<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>symbolic-links              = 0
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>
-<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>log-error                   = /var/log/mysql/mysqld.log
-<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>pid-file                    = /var/run/mysqld/mysqld.pid
-<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>
-<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>report_host                 = db001
-<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
-<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a>[mysqld_safe]
-<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>pid-file                    = /var/run/mysqld/mysqld.pid
-<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>socket                      = /var/lib/mysql/mysql.sock
-<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>nice                        = 0
-</code></pre></div>
-<p><a href="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/my.cnf">my.cnf</a></p>
-</li>
-<li>
-<p>다음 명령으로 데이터, 로그, 설정파일이 모두 매핑된 컨테이너를 실행합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span><span class="o">:/</span><span class="n">etc</span><span class="o">/</span><span class="n">percona</span><span class="o">-</span><span class="n">server.conf.d</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>로그폴더에 들어가보면 로그가 정상적으로 보이는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%2010.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%2010.png" /></p>
-</li>
-</ol>
-<h2 id="_2">링크</h2>
 <hr />
+<h3 id="gpt-guid-partition-table">GPT (GUID Partition Table)</h3>
 <ul>
-<li>
-<p>percona 이미지 정보는 다음 주소에서 그 내용을 확인할 수 있습니다</p>
-<p><a href="https://github.com/percona/percona-docker/blob/master/percona-server-5.7/Dockerfile">https://github.com/percona/percona-docker/blob/master/percona-server-5.7/Dockerfile</a></p>
-</li>
+<li>역할: 최신 디스크 파티션 테이블 형식으로, MBR보다 많은 파티션과 더 큰 디스크 크기를 지원함.</li>
+<li>왜 사용하는가?</li>
+<li>MBR의 2TiB 한계를 해결하여 대형 디스크(2TiB 이상)를 지원함.</li>
+<li>최대 128개의 파티션을 만들 수 있음.</li>
+<li>디스크 무결성을 위해 CRC32 체크섬을 사용하며, 복구 기능을 제공함.</li>
+<li>UEFI 부팅을 지원하는 최신 시스템에서 필수적으로 사용됨.</li>
 </ul>
+<hr />
+<h3 id="uefi-unified-extensible-firmware-interface">UEFI (Unified Extensible Firmware Interface)</h3>
+<ul>
+<li>역할: BIOS를 대체하는 최신 펌웨어 인터페이스로, 운영체제와 하드웨어 간의 연결을 제공함.</li>
+<li>왜 사용하는가?</li>
+<li>기존 BIOS보다 빠르고 더 많은 기능을 지원하며, 보안 기능(예: Secure Boot)을 포함함.</li>
+<li>GPT와 함께 사용하여, MBR의 2TiB 제한을 극복하고 더 많은 파티션을 지원함.</li>
+<li>네트워크 부팅, 고해상도 GUI 인터페이스 제공 등 추가적인 기능을 제공함.</li>
+</ul>
+<hr />
+<h3 id="grub-grand-unified-bootloader">GRUB (GRand Unified Bootloader)</h3>
+<ul>
+<li>역할: 운영체제를 로드하는 부트 로더.</li>
+<li>왜 사용하는가?</li>
+<li>여러 운영체제를 지원하는 멀티 부트 기능 제공.</li>
+<li>MBR 또는 GPT에서 커널을 로드할 수 있도록 설계됨.</li>
+<li>BIOS 기반 부팅에서는 MBR의 Stage 1에 설치됨.</li>
+<li>UEFI 기반 부팅에서는 ESP 파티션(<code>/boot/efi</code>)에 <code>grubx64.efi</code> 형식으로 설치됨.</li>
+</ul>
+<hr />
+<h3 id="esp-efi-system-partition">ESP (EFI System Partition)</h3>
+<ul>
+<li>역할: UEFI 기반 시스템에서 부트 로더 및 부팅 관련 데이터를 저장하는 FAT32 파티션.</li>
+<li>왜 사용하는가?</li>
+<li>UEFI 부팅을 위해 필수적인 공간으로, 여기서 GRUB 또는 다른 EFI 부트 로더가 실행됨.</li>
+<li>일반적으로 <code>/boot/efi</code>에 마운트됨.</li>
+<li><code>EFI/BOOT/BOOTX64.EFI</code>와 같은 실행 가능한 EFI 파일이 포함됨.</li>
+</ul>
+<hr />
+<h2 id="boot-bootefi">/boot 및 /boot/efi 필요성</h2>
+<table>
+<thead>
+<tr>
+<th>부트 방식</th>
+<th><code>/boot</code> 필요 여부</th>
+<th><code>/boot/efi</code> 필요 여부</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BIOS + MBR</td>
+<td>✅ 필요</td>
+<td>❌ 필요 없음</td>
+<td>GRUB이 MBR에 설치되고, <code>/boot</code>에서 커널을 로드</td>
+</tr>
+<tr>
+<td>UEFI + GPT</td>
+<td>✅ 필요</td>
+<td>✅ 필요</td>
+<td>GRUB이 <code>/boot/efi</code>의 ESP에서 실행되고, 커널을 <code>/boot</code>에서 로드</td>
+</tr>
+<tr>
+<td>AWS Nitro 기반 (x86)</td>
+<td>✅ 필요</td>
+<td>❌ 필요 없음</td>
+<td>AWS 가상화 환경에서는 <code>/boot/efi</code> 없이도 부팅 가능</td>
+</tr>
+<tr>
+<td>AWS Xen 기반 (t2 등 구형)</td>
+<td>✅ 필요</td>
+<td>❌ 필요 없음</td>
+<td>MBR 기반 BIOS 부팅 사용</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-aws-ec2-bootefi">3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유</h2>
+<h3 id="aws-xen-t2-m4">AWS Xen 기반 (예: t2, m4)</h3>
+<ul>
+<li>Xen 하이퍼바이저는 기본적으로 BIOS 부팅 방식을 사용하며, <code>/boot/efi</code>가 필요 없음.</li>
+<li>AWS에서 제공하는 기본 AMI(Amazon Machine Image)는 MBR 기반이 많음.</li>
+<li>GRUB이 MBR에 설치되며, <code>/boot</code>에서 커널을 로드하여 부팅.</li>
+</ul>
+<h3 id="aws-nitro-m5-m6i-m7i-t4g-a1">AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)</h3>
+<ul>
+<li>Nitro 기반 인스턴스는 UEFI 부팅을 지원하지만, AWS AMI 기본 설정은 BIOS + MBR 부팅을 사용.</li>
+<li><code>/boot/efi</code> 없이도 부팅 가능하도록 구성됨.</li>
+<li>Amazon Linux 2, Ubuntu 20.04, RHEL 8 등의 AMI는 기본적으로 MBR 부팅을 유지.</li>
+</ul>
+<h3 id="aws-nitro-uefi">AWS Nitro 기반에서 UEFI 부팅이 필요한 경우</h3>
+<ul>
+<li>일부 최신 OS(Amazon Linux 2023 등)는 UEFI-preferred 설정이 되어 있으며, ESP(<code>/boot/efi</code>)를 사용.</li>
+<li>Nitro 기반 인스턴스에서 UEFI 모드를 활성화하면 GPT 및 <code>/boot/efi</code>를 사용하여 부팅 가능.</li>
+<li>그러나 대부분의 리눅스 AMI는 여전히 MBR 기반 BIOS 부팅을 기본값으로 사용.</li>
+</ul>
+<h2 id="aws-ec2-os">AWS EC2 인스턴스 세대 및 OS별 부팅 방식</h2>
+<table>
+<thead>
+<tr>
+<th>인스턴스 유형 및 OS</th>
+<th>ESP 사용</th>
+<th>파티션 타입</th>
+<th>부팅 방식</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>t2, m4 (Xen기반) - Ubuntu, AL2, RHEL8/9</td>
+<td>❌</td>
+<td>MBR</td>
+<td>BIOS</td>
+<td>GRUB(MBR)로 부팅</td>
+</tr>
+<tr>
+<td>m5, m6i, m7i (Nitro 기반, x86) - Ubuntu, AL2, RHEL8/9</td>
+<td>❌</td>
+<td>MBR</td>
+<td>BIOS(기본값)</td>
+<td>UEFI 지원하지만 기본 MBR/BIOS</td>
+</tr>
+<tr>
+<td>m5, m6i, m7i - Amazon Linux 2023</td>
+<td>✅</td>
+<td>GPT</td>
+<td>UEFI</td>
+<td>UEFI-preferred, ESP 존재</td>
+</tr>
+<tr>
+<td>a1, t4g, m6g (Nitro, ARM Graviton)</td>
+<td>✅</td>
+<td>GPT</td>
+<td>UEFI</td>
+<td>ARM 환경은 UEFI만 지원</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">결론</h2>
+<ul>
+<li>MBR은 BIOS 부팅에서 사용되며, 2TiB 이하의 디스크에서 유효함.</li>
+<li>GPT는 UEFI 부팅에 필수적이며, 대형 디스크 및 보안 기능을 지원함.</li>
+<li>GRUB은 MBR 또는 UEFI 환경에서 동작할 수 있음.</li>
+<li>ESP(<code>/boot/efi</code>)는 UEFI 부팅에서 필수이며, AWS Nitro 기반에서는 일반적으로 사용되지 않음.</li>
+<li>AWS EC2 인스턴스에서는 대부분 MBR 기반 부팅을 사용하여 <code>/boot/efi</code> 없이도 정상 작동함.</li>
+</ul>
+<hr />
 
 
 
@@ -2003,7 +1990,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: K8S에 배포된 JVM Heap Dump 생성">
+          <a href="../http%EC%99%80-tls-%EA%B0%84%EB%8B%A8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: HTTP와 TLS 간단 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2013,27 +2000,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                K8S에 배포된 JVM Heap Dump 생성
+                HTTP와 TLS 간단 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../docker-compose-and-web-gui/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker compose and web GUI">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Docker compose and web GUI
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
