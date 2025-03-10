@@ -299,6 +299,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../archive/2025/05/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2025 May
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../archive/2024/06/" class="md-nav__link">
         
   
@@ -827,6 +850,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/network/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/pacemaker/" class="md-nav__link">
         
   
@@ -993,6 +1039,29 @@
   
   <span class="md-ellipsis">
     STONITH
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
   </span>
   
 
@@ -1453,6 +1522,73 @@
       <header class="md-typeset">
         <h1 id="blog">Blog</h1>
       </header>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="s3-object-encryption"><a class="toclink" href="../../1993/09/17/s3-object-encryption/">S3 object encryption</a></h2>
+<ol>
+<li>2023년 1월 5일 이후 업로드 되는 모든 오브젝트는 자동으로 암호화된다(SSE-S3) <a href="https://aws.amazon.com/ko/about-aws/whats-new/2023/01/amazon-s3-automatically-encrypts-new-objects/">관련정보</a></li>
+<li>S3 암호화 방식은 총 3가지가 존재한다<ul>
+<li>SSE-S3 (Server-Side Encryption with Amazon S3): AWS에서 키를 관리한다. 암호화 키 소유권은 AWS S3에 있다.</li>
+<li>SSE-C (Server-Side Encryption with Customer-Provided Keys): 고객이 제공하는 암호화 키를 사용해 데이터를 암호화 한다. 암호화키는 암호화 및 복호와에 모두 사용된다(대칭키)</li>
+<li>SSE-KMS (Server-Side Encryption with AWS Key Management Service): KMS 마스터키는 AWS KMS 서비스에서 관리된다. 암호화 키의 소유권이 고객에게 있다.</li>
+</ul>
+</li>
+<li>암호화 방식에 따라 오브젝트 업로드 명령 옵션이 상이하다<ul>
+<li>SSE-S3 (default)<br>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;
+</code></pre></div></li>
+<li>SSE-C<br>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse-c-key<span class="w"> </span>&lt;encryption-key&gt;
+</code></pre></div></li>
+<li>SSE-KMS<br>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse<span class="w"> </span>aws:kms<span class="w"> </span>--sse-kms-key-id
+</code></pre></div></li>
+</ul>
+</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/s3-object-encryption/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -1969,63 +2105,6 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
           Continue reading
         </a>
       </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/kubernetes/" class="md-meta__link">kubernetes</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              1 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="k8s-jvm-heap-dump"><a class="toclink" href="../../1993/09/17/k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">K8S에 배포된 JVM Heap Dump 생성</a></h2>
-<ul>
-<li>명령어
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">jmap</span><span class="w"> </span><span class="o">-</span><span class="n">dump</span><span class="o">:</span><span class="n">live</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">file</span><span class="o">=/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="m">1234</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;:/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="n">heapdump.hprof</span>
-</code></pre></div></li>
-<li>옵션 설명<ul>
-<li>kubectl exec <pod_name>: 특정 파드에 접근하고 명령을 실행</li>
-<li>--: kubectl exec 명령어 옵션과 파드 내에서 실행할 명령어를 구분</li>
-<li>jmap: JVM memory map tool name</li>
-<li>-dump: jmap의 heap dump 생성 옵션</li>
-<li>live: GC에 의에 회수되지 않은 live object'만' 포함해서 덤프 생성. memory leak 분석에 용이해짐.</li>
-<li>format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.</li>
-<li>file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성</li>
-<li>1234: jmap으로 덤프 생성할 PID 입력</li>
-</ul>
-</li>
-</ul>
-
     
   </div>
 </article>
