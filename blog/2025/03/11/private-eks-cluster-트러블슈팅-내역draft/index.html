@@ -1236,7 +1236,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              1 min read
+                              2 min read
                             
                           </span>
                         </div>
@@ -1259,6 +1259,21 @@
 <h1 id="private-eks-cluster-draft">Private EKS Cluster 트러블슈팅 내역[Draft]</h1>
 <!-- more -->
 
+<ul>
+<li>
+<p>OCSP 에러 발생 시
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-v<span class="w"> </span>https://test.test.com<span class="w"> </span>--ssl-no-revoke
+</code></pre></div></p>
+</li>
+<li>
+<p>PKIX path building failed
+JAVA IDE의 TrustStore에 SSL 등록해야 함</p>
+</li>
+<li>
+<p>openssl verify return code: 19
+self-signed 인증서이므로 시스템에 신뢰할 수 인증서로 등록해야함</p>
+</li>
+</ul>
 <hr />
 <p>출처:</p>
 <ol>
