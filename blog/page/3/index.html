@@ -322,29 +322,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../archive/2024/06/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    2024 June
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../archive/2024/03/" class="md-nav__link">
         
   
@@ -666,52 +643,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cloudnet/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Cloudnet@
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../../category/database/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Database
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../category/devops/" class="md-nav__link">
         
   
@@ -763,6 +694,29 @@
   
   <span class="md-ellipsis">
     Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
   </span>
   
 
@@ -965,80 +919,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/cka/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    cka
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../category/docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     docker
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../../category/kcna/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    kcna
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../../category/kubernetes/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    kubernetes
   </span>
   
 
@@ -1292,229 +1177,6 @@
       <header class="md-typeset">
         <h1 id="blog">Blog</h1>
       </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              9 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="3-tier"><a class="toclink" href="../../1993/09/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/">3-Tier 기본 인프라 구성</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/#_1">개념도</a></h3>
-<hr />
-<p><img alt="3-Tier Basic Infra/Untitled.png" src="../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled.png" /></p>
-<h3 id="todo"><a class="toclink" href="../../1993/09/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/#todo">TODO</a></h3>
-<hr />
-<ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="api-gateway-with-lambda"><a class="toclink" href="../../1993/09/17/api-gateway-with-lambda/">API Gateway with Lambda</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/api-gateway-with-lambda/#_1">목적</a></h3>
-<hr />
-<ul>
-<li>API Gateway의 기초적인 사용법 확인</li>
-<li>API Gateway에 Lambda를 연결하여 동작 확인</li>
-<li>HTTP GET Parameter(매개변수) 전송과 응답 확인</li>
-<li>두 개의 Lambda Function을 생성하여 Root·Resource Page에 각각 적용하기</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/api-gateway-with-lambda/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="access-s3-dynamodb-with-lambda"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/">Access S3, DynamoDB with Lambda</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>AWS Lambda를 이용해 AWS S3, DynamoDB 이벤트에 반응하기</li>
-<li>Test Event 사용해서 효율성 높이기</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/access-s3-dynamodb-with-lambda/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/docker/" class="md-meta__link">docker</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              6 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="failover-for-ha"><a class="toclink" href="../../1993/09/17/failover-for-ha/">Failover for HA</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/failover-for-ha/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>오케스트레이터를 이용한 HA 구현</li>
-<li>오케스트레이터 GUI도구를 이용한 쉬운 이해</li>
-<li>Master가 다운되면 자동으로 Fail-Over 동작</li>
-<li>인위적으로 마스터를 다운시켜서 동작 확인</li>
-<li>사람의 개입 없이 자동으로 FailOver가 이뤄지도록 자동화를 구현</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/failover-for-ha/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
       
         <article class="md-post md-post--excerpt">
   <header class="md-post__header">
@@ -1873,6 +1535,230 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
           Continue reading
         </a>
       </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              7 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-basics"><a class="toclink" href="../../1993/09/17/docker-basics/">Docker basics</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-basics/#_1">목표</a></h3>
+<hr />
+<ol>
+<li>도커를 복습 겸 간단하게 한 번 훑어봅니다</li>
+<li>간단한 node 백엔드를 작성하고 도커 이미지를 생성합니다</li>
+<li>Working Directory를 설정합니다</li>
+<li>node 종속성을 수정해 이미지 빌드 속도를 높여봅니다</li>
+<li>개발일을 할 떄 docker volume을 어떻게 활용할 수 있는지 한 번 살펴봅니다</li>
+<li>compose를 이용해 간단한 페이지를 만들어봅니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-basics/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              7 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-compose-and-web-gui"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/">Docker compose and web GUI</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/#_1">작업요약</a></h3>
+<hr />
+<ul>
+<li>Docker를 설치하는 과정에 필요한 파라미터 변수에 대해 알아봅니다</li>
+<li>빠른 이해와 편리한 사용을 위해 Portainer를 설치합니다</li>
+<li>Docker-Hub에서 컨테이너를 찾고 DVWA 컨테이너를 로드해봅니다</li>
+<li>YAML + Docker Compose를 이용해 코드로 관리하는 법을 알아봅니다</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-compose-and-web-gui/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              6 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-volume-with-mysql"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/">Docker volume with MySQL</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/#_1">목표</a></h3>
+<hr />
+<ul>
+<li>CentOS8에 도커를 설치하고 MySQL 컨테이너를 로드합니다</li>
+<li>컨테이너를 종료하고 외부에서 접속하도록 다시 로드합니다</li>
+<li>컨테이너를 삭제해도 이전 데이터를 그대로 유지하는 stateful한 상태를 구현합니다</li>
+<li>Stateful 상태는 Volume설정을 통해 구현합니다</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-volume-with-mysql/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/kubernetes/" class="md-meta__link">Kubernetes</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="k8s-jvm-heap-dump"><a class="toclink" href="../../1993/09/17/k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">K8S에 배포된 JVM Heap Dump 생성</a></h2>
+<ul>
+<li>명령어
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">jmap</span><span class="w"> </span><span class="o">-</span><span class="n">dump</span><span class="o">:</span><span class="n">live</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">file</span><span class="o">=/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="m">1234</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;:/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="n">heapdump.hprof</span>
+</code></pre></div></li>
+<li>옵션 설명<ul>
+<li>kubectl exec <pod_name>: 특정 파드에 접근하고 명령을 실행</li>
+<li>--: kubectl exec 명령어 옵션과 파드 내에서 실행할 명령어를 구분</li>
+<li>jmap: JVM memory map tool name</li>
+<li>-dump: jmap의 heap dump 생성 옵션</li>
+<li>live: GC에 의에 회수되지 않은 live object'만' 포함해서 덤프 생성. memory leak 분석에 용이해짐.</li>
+<li>format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.</li>
+<li>file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성</li>
+<li>1234: jmap으로 덤프 생성할 PID 입력</li>
+</ul>
+</li>
+</ul>
+
     
   </div>
 </article>
