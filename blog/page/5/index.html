@@ -1405,6 +1405,85 @@
             in
             
               <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
+              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              7 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="elasticsearch"><a class="toclink" href="../../1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC/">ElasticSearch 정리</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>변경 가능한 변수 부분은 "garden" keyword를 포함하고 있다</p>
+</div>
+<ol>
+<li>도큐먼트 삽입
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span><span class="p">,</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">    </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">29</span><span class="p">,</span>
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="w">    </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;male&quot;</span>
+<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="p">}</span>
+</code></pre></div>
+    도큐먼트 삽입으로 인해서 ljw_index가 신규 생성됨 -&gt; ljw_index 인덱스 정보 확인
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span>
+</code></pre></div></li>
+<li>도큐먼트 조회<ol>
+<li>도큐먼트 아이디로 조회
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
+</code></pre></div></li>
+<li>DSL 쿼리를 이용한 조회 예시. match를 사용해 전문 검색하는 예시로 역인덱싱된 garden term을 검색하는 중이다.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="p">{</span>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
+<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a><span class="p">}</span>
+</code></pre></div></li>
+</ol>
+</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
               <a href="../../category/prometheus/" class="md-meta__link">Prometheus</a>, 
               <a href="../../category/grafana/" class="md-meta__link">Grafana</a></li>
         
@@ -1822,7 +1901,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 Jeongwon(Aaron) Lee
+      Copyright &copy; 2025 Jeongwon(Aaron) Lee
     </div>
   
   

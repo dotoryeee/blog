@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">
+        <link rel="prev" href="../websocket-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../docker-compose-and-web-gui/">
+        <link rel="next" href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Docker volume with MySQL - dotoryeee's blog</title>
+        <title>RTO vs RPO - dotoryeee's blog</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker-volume-with-mysql" class="md-skip">
+        <a href="#rto-vs-rpo" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker volume with MySQL
+              RTO vs RPO
             
           </span>
         </div>
@@ -1375,54 +1375,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#rtorecovery-time-objective-vs-rporecovery-point-objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      RTO(Recovery Time Objective) vs. RPO(Recovery Point Objective) 개념
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rto-rpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      RTO와 RPO의 차이점
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rto-rpo_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      RTO와 RPO의 이해를 돕는 예제
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RTO와 RPO의 이해를 돕는 예제">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      예제 1: 은행 시스템
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      예제 2: 블로그 서비스
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      예제 3: 온라인 쇼핑몰
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-rto-rpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      AWS에서 RTO &amp; RPO를 충족하는 방법
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      목표
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Docker 설치
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql" class="md-nav__link">
-    <span class="md-ellipsis">
-      MySQL 컨테이너 설치
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mysql_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      외부에서 MySQL 컨테이너 접속
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stateful-volume" class="md-nav__link">
-    <span class="md-ellipsis">
-      Stateful 구현을 위한 Volume 설정
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      링크
+      결론
     </span>
   </a>
   
@@ -1484,7 +1508,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
-                        <time datetime="1993-09-17 00:00:00" class="md-ellipsis">Sep 17, 1993</time>
+                        <time datetime="2025-05-11 00:00:00" class="md-ellipsis">May 11, 2025</time>
                       </div>
                     </li>
                     
@@ -1495,8 +1519,8 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/docker/">docker</a>, 
-                              <a href="../../../../category/study/">study</a></span>
+                              <a href="../../../../category/cloud/">Cloud</a>, 
+                              <a href="../../../../category/server/">Server</a></span>
                         </div>
                       </li>
                     
@@ -1507,7 +1531,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              6 min read
+                              11 min read
                             
                           </span>
                         </div>
@@ -1527,251 +1551,519 @@
         
 
 
-<h1 id="docker-volume-with-mysql">Docker volume with MySQL</h1>
-<h2 id="_1">목표</h2>
-<hr />
-<ul>
-<li>CentOS8에 도커를 설치하고 MySQL 컨테이너를 로드합니다</li>
-<li>컨테이너를 종료하고 외부에서 접속하도록 다시 로드합니다</li>
-<li>컨테이너를 삭제해도 이전 데이터를 그대로 유지하는 stateful한 상태를 구현합니다</li>
-<li>Stateful 상태는 Volume설정을 통해 구현합니다</li>
-</ul>
+<h1 id="rto-vs-rpo">RTO vs RPO</h1>
 <!-- more -->
-<h2 id="docker">Docker 설치</h2>
+
+<h2 id="rtorecovery-time-objective-vs-rporecovery-point-objective">RTO(Recovery Time Objective) vs. RPO(Recovery Point Objective) 개념</h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>정의</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTO (Recovery Time Objective, 복구 시간 목표)</td>
+<td>시스템 장애 발생 후, 서비스가 정상적으로 복구되기까지 허용 가능한 최대 시간</td>
+</tr>
+<tr>
+<td>RPO (Recovery Point Objective, 복구 지점 목표)</td>
+<td>장애 발생 시, 복구할 수 있는 가장 최신 데이터의 기준 시점</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<ol>
-<li>
-<p>yum util 패키지 설치</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">yum</span><span class="o">-</span><span class="n">utils</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker를 위한 repo를 설정</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span><span class="w"> </span><span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span><span class="o">=</span><span class="n">https</span><span class="o">://</span><span class="n">download.docker.com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">ce.repo</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker-ce 설치</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="w"> </span>
-</code></pre></div>
-</li>
-<li>
-<p>(이미 설치된 패키지 떄문에)설치 에러 발생시 allowerasing 옵션</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">yum</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">dnf</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">nobest</span><span class="w"> </span><span class="o">--</span><span class="n">allowerasing</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker를 실행</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">systemctl</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">docker</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker 버전 확인</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">docker</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="mysql">MySQL 컨테이너 설치</h2>
+<h2 id="rto-rpo">RTO와 RPO의 차이점</h2>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>RTO (복구 시간 목표)</th>
+<th>RPO (복구 지점 목표)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>목적</td>
+<td>서비스 복구 속도 보장</td>
+<td>데이터 손실 최소화</td>
+</tr>
+<tr>
+<td>의미</td>
+<td>장애 발생 후, 시스템을 복구할 수 있는 최대 시간</td>
+<td>장애 발생 시, 복구 가능한 최신 데이터 시점</td>
+</tr>
+<tr>
+<td>단위</td>
+<td>시간(초, 분, 시간, 일)</td>
+<td>시간(초, 분, 시간)</td>
+</tr>
+<tr>
+<td>핵심 질문</td>
+<td>"시스템을 몇 시간 안에 복구해야 하는가?"</td>
+<td>"최대 몇 시간 전의 데이터까지 복구 가능해야 하는가?"</td>
+</tr>
+<tr>
+<td>비즈니스 영향</td>
+<td>RTO가 길면 서비스 다운타임이 길어져 사용자 및 수익에 직접적인 영향</td>
+<td>RPO가 길면 데이터 손실 가능성이 커짐</td>
+</tr>
+<tr>
+<td>백업 전략</td>
+<td>장애 대응을 위한 재해 복구(DR) 및 고가용성(AWS Multi-AZ, Load Balancer 등) 활용</td>
+<td>백업 빈도 및 데이터 복제(AWS S3, RDS 스냅샷, DynamoDB Streams 등) 활용</td>
+</tr>
+<tr>
+<td>비용 고려</td>
+<td>RTO가 짧을수록(빠른 복구) 비용 증가 (HA, DR 구축 비용)</td>
+<td>RPO가 짧을수록(데이터 손실 최소화) 비용 증가 (고빈도 백업, 지속적 복제)</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<ol>
-<li>
-<p>MYSQL 컨테이너를 실행합니다. 5.7.30 버전 mySQL 컨테이너를 다운로드하고 db001이라는 컨테이너 이름으로 로드하는 명령입니다</p>
-<p>-i, -t : 컨테이너의 shell에 접속하기 위한 옵션
-—name : 컨테이너 이름
--e : 환경변수 세팅
--d : 백그라운드에서 컨테이너 실행</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-<p>아래 스크린샷 처럼 우선 로컬에서 컨테이너를 찾아보고 없으면 도커허브에서 알아서 찾고 다운로드하여 컨테이너를 로드합니다</p>
-<p><img alt="Docker volume with MySQL/Untitled.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled.png" /></p>
-</li>
-<li>
-<p>다음 명령으로 현재 실행중인 컨테이너에 MySQL이 존재하는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">ps</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%201.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%201.png" /></p>
-</li>
-<li>
-<p>db001컨테이너에 /bin/bash 셸을 통해 접속합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%202.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%202.png" /></p>
-</li>
-<li>
-<p>컨테이너에 접속되었으면 MySQL에 접속하고 데이터베이스 목록을 호출합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">show</span><span class="w"> </span><span class="n">databases</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%203.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%203.png" /></p>
-</li>
-<li>
-<p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="mysql_1">외부에서 MySQL 컨테이너 접속</h2>
-<hr />
-<ol>
-<li>
-<p>호스트에 MySQL 클라이언트를 설치합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">dnf</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">mysql</span>
-</code></pre></div>
-</li>
-<li>
-<p>외부에서 컨테이너를 접속하려면 접속포트와 컨테이너포트, 도커 호스트 IP가 필요합니다</p>
-</li>
-<li>
-<p>컨테이너를 로드할 때 포트를 매칭해줍니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>docker ps를 이용해 동작중인 컨테이너 목록을 확인하면 이번엔 포트가 연결된 것을 확인할 수 있습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%204.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%204.png" /></p>
-</li>
-<li>
-<p>도커 호스트 IP를 파라미터에 전달하여 MySQL을 실행합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="p">{</span><span class="n">HOST</span><span class="w"> </span><span class="n">IP</span><span class="p">}</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너 외부에서 DB 접속을 성공하였습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%205.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%205.png" /></p>
-</li>
-<li>
-<p>다음 실습을 위해 컨테이너를 중지 후 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-</ol>
-<h2 id="stateful-volume">Stateful 구현을 위한 Volume 설정</h2>
-<hr />
-<ol>
-<li>
-<p>도커 호스트에 데이터 저장을 위한 디렉터리 생성</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-</li>
-<li>
-<p>작업이 가능하도록 디렉터리에 권한 부여</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-</li>
-<li>
-<p>볼륨 옵션을 추가하여 컨테이너를 로드합니다</p>
-<p>이는 데이터 저장을 위해 생성했던 디렉터리와 컨테이너의 디렉터리가 공유되도록 설정(매핑)합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너 로드 후 데이터 저장용 디렉터리로 이동하면 파일이 생성된 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span>
-</code></pre></div>
-<p><img alt="MAGIC" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%206.png" /></p>
-<p>MAGIC</p>
-</li>
-<li>
-<p>stateful 구현 테스트를 위한 데이터를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nb">character</span><span class="w"> </span><span class="k">set</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">use</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">tt</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="nb">int</span><span class="p">);</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">tt</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">tt</span><span class="p">;</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%207.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%207.png" /></p>
-</li>
-<li>
-<p>Stateful 테스트를 위해 컨테이너를 삭제합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-<li>
-<p>컨테이너를 다시 로드합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>구동된 컨테이너에서 아까 작성했던 테이블이 살아있는 것을 확인할 수 있습니다.</p>
-<p><img alt="Docker volume with MySQL/Untitled%208.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%208.png" /></p>
-</li>
-<li>
-<p>Stateful 구현에 성공하였습니다</p>
-<p><img alt="Docker volume with MySQL/Untitled%209.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%209.png" /></p>
-</li>
-<li>
-<p>데이터뿐만 아니라 로그, 설정파일 등에 응용할 수 있습니다</p>
-</li>
-<li>
-<p>다시 컨테이너를 제거합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="n">db001</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="n">db001</span>
-</code></pre></div>
-</li>
-<li>
-<p>로그와 설정을 위한 디렉토리를 생성하고 권한을 부여합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">chmod</span><span class="w"> </span><span class="m">777</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span>
-</code></pre></div>
-</li>
-<li>
-<p>/db/db001/conf 디렉터리에 644 퍼미션을 가지는 cnf 파일을 생성합니다</p>
+<h2 id="rto-rpo_1">RTO와 RPO의 이해를 돕는 예제</h2>
+<h3 id="1">예제 1: 은행 시스템</h3>
 <ul>
-<li>
-<p>my.cnf</p>
-<p>server-id와 report_host 값은 유니크한 특성(고유값)을 가져야합니다</p>
-</li>
+<li>RTO: 장애 발생 후 5분 안에 서비스가 정상적으로 복구되어야 함.</li>
+<li>RPO: 장애 발생 전 최대 1초 전의 데이터까지 복구 가능해야 함 (거래 데이터 손실 불가).</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>[mysqld]
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>log_bin                     = mysql-bin
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>binlog_format               = ROW
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>gtid_mode                   = ON
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>enforce-gtid-consistency    = true
-<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>server-id                   = 100
-<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>log_slave_updates
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>datadir                     = /var/lib/mysql
-<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>socket                      = /var/lib/mysql/mysql.sock
-<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>
-<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a># Disabling symbolic-links is recommended to prevent assorted security risks
-<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>symbolic-links              = 0
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>
-<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>log-error                   = /var/log/mysql/mysqld.log
-<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>pid-file                    = /var/run/mysqld/mysqld.pid
-<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>
-<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>report_host                 = db001
-<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
-<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a>[mysqld_safe]
-<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>pid-file                    = /var/run/mysqld/mysqld.pid
-<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>socket                      = /var/lib/mysql/mysql.sock
-<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>nice                        = 0
-</code></pre></div>
-<p><a href="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/my.cnf">my.cnf</a></p>
-</li>
-<li>
-<p>다음 명령으로 데이터, 로그, 설정파일이 모두 매핑된 컨테이너를 실행합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">db001</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">3306</span><span class="o">:</span><span class="m">3306</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">data</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">conf</span><span class="o">:/</span><span class="n">etc</span><span class="o">/</span><span class="n">percona</span><span class="o">-</span><span class="n">server.conf.d</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">percona</span><span class="o">:</span><span class="m">5.7</span><span class="n">.</span><span class="m">30</span>
-</code></pre></div>
-</li>
-<li>
-<p>로그폴더에 들어가보면 로그가 정상적으로 보이는 것을 확인할 수 있습니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">db001</span><span class="o">/</span><span class="n">log</span>
-</code></pre></div>
-<p><img alt="Docker volume with MySQL/Untitled%2010.png" src="../../../../Docker%20%26%20Kubernetes/Docker%20volume%20with%20MySQL/Untitled%2010.png" /></p>
-</li>
-</ol>
-<h2 id="_2">링크</h2>
-<hr />
+<h3 id="2">예제 2: 블로그 서비스</h3>
 <ul>
-<li>
-<p>percona 이미지 정보는 다음 주소에서 그 내용을 확인할 수 있습니다</p>
-<p><a href="https://github.com/percona/percona-docker/blob/master/percona-server-5.7/Dockerfile">https://github.com/percona/percona-docker/blob/master/percona-server-5.7/Dockerfile</a></p>
-</li>
+<li>RTO: 장애 발생 후 1시간 안에 서비스가 정상적으로 복구되면 됨.</li>
+<li>RPO: 장애 발생 전 1일 전 데이터까지만 복구 가능해도 무방함.</li>
+</ul>
+<h3 id="3">예제 3: 온라인 쇼핑몰</h3>
+<ul>
+<li>RTO: 장애 발생 후 10분 안에 서비스가 복구되지 않으면 매출 손실 발생.</li>
+<li>RPO: 장애 발생 전 10분 전의 데이터까지 복구 가능해야 함 (주문 정보 손실 최소화).</li>
+</ul>
+<hr />
+<h2 id="aws-rto-rpo">AWS에서 RTO &amp; RPO를 충족하는 방법</h2>
+<table>
+<thead>
+<tr>
+<th>AWS 서비스</th>
+<th>RTO 단축 (빠른 복구)</th>
+<th>RPO 최소화 (데이터 보호)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AWS Multi-AZ (RDS, DynamoDB 등)</td>
+<td>자동 장애 조치로 빠른 복구</td>
+<td>실시간 데이터 복제</td>
+</tr>
+<tr>
+<td>AWS Backup</td>
+<td>신속한 백업 복구 가능</td>
+<td>백업 빈도를 높이면 RPO 최소화 가능</td>
+</tr>
+<tr>
+<td>Amazon S3 Cross-Region Replication</td>
+<td>장애 시 빠르게 데이터 복구 가능</td>
+<td>여러 리전에 걸쳐 데이터 복제</td>
+</tr>
+<tr>
+<td>AWS Lambda &amp; S3 Event Notification</td>
+<td>장애 감지 후 자동으로 복구 수행</td>
+<td>실시간 데이터 백업 가능</td>
+</tr>
+<tr>
+<td>Amazon Aurora Global Database</td>
+<td>다른 리전에 복제본을 유지하여 복구 가능</td>
+<td>지속적인 데이터 동기화</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_1">결론</h2>
+<ul>
+<li>RTO는 "얼마나 빨리 시스템을 복구할 것인가"를 의미함.</li>
+<li>RPO는 "얼마나 최신 데이터를 보장할 것인가"를 의미함.</li>
+<li>RTO와 RPO 목표가 낮을수록(복구 시간이 짧고, 데이터 손실이 적을수록) 비용이 증가함.</li>
+<li>비즈니스 중요도에 따라 비용 vs. 복구 전략을 적절히 설계하는 것이 중요함.</li>
+<li>RTO는 "다운타임 최소화", RPO는 "데이터 손실 최소화"라고 이해하면 됌</li>
+</ul>
+<h1 id="rto-rpo_2">RTO, RPO 관련 용어 및 차이점</h1>
+<h2 id="1-rto-rpo">1. RTO &amp; RPO와 관련된 주요 용어</h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>정의</th>
+<th>RTO &amp; RPO와의 관계</th>
+<th>사용처</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MTTR (Mean Time to Recovery, 평균 복구 시간)</td>
+<td>장애 발생 후 시스템이 복구되는 평균 시간</td>
+<td>RTO와 유사하지만, 실제 복구 시간이 포함됨</td>
+<td>IT 운영 및 장애 관리, 서비스 복구 전략</td>
+</tr>
+<tr>
+<td>MTBF (Mean Time Between Failures, 평균 고장 간격)</td>
+<td>두 번의 장애 발생 사이의 평균 시간</td>
+<td>장애 발생 빈도가 높을수록 RTO와 RPO 요구사항이 더 중요해짐</td>
+<td>시스템 안정성 평가, 유지보수 계획</td>
+</tr>
+<tr>
+<td>DR (Disaster Recovery, 재해 복구)</td>
+<td>장애 또는 재해 발생 시 시스템을 복구하는 전략 및 프로세스</td>
+<td>RTO/RPO 목표에 따라 DR 전략이 결정됨</td>
+<td>고가용성 시스템, 데이터 보호 솔루션</td>
+</tr>
+<tr>
+<td>HA (High Availability, 고가용성)</td>
+<td>장애 발생 시에도 서비스가 지속적으로 운영될 수 있도록 하는 시스템 설계</td>
+<td>RTO를 최소화하기 위한 핵심 전략</td>
+<td>금융 서비스, 미션 크리티컬 시스템</td>
+</tr>
+<tr>
+<td>BCP (Business Continuity Planning, 업무 연속성 계획)</td>
+<td>장애 발생 시 비즈니스 운영을 지속할 수 있도록 하는 계획</td>
+<td>RTO/RPO를 기반으로 DR 및 HA 전략을 포함</td>
+<td>기업 IT 운영, 리스크 관리</td>
+</tr>
+<tr>
+<td>Failover (장애 조치)</td>
+<td>장애 발생 시 자동으로 대체 시스템으로 전환하는 프로세스</td>
+<td>RTO를 최소화하는 핵심 메커니즘</td>
+<td>클라우드 서비스, 데이터센터 운영</td>
+</tr>
+<tr>
+<td>Backup (백업)</td>
+<td>데이터를 정기적으로 저장하여 장애 발생 시 복구 가능하도록 하는 방법</td>
+<td>RPO를 충족하는 데 필수적</td>
+<td>데이터 보호, 법적 규제 준수</td>
+</tr>
+<tr>
+<td>Replication (복제)</td>
+<td>데이터를 실시간으로 다른 위치에 동기화하여 저장하는 방법</td>
+<td>RPO를 최소화하고 실시간 복구 가능하게 함</td>
+<td>금융 시스템, AWS Multi-AZ, Redshift 복제</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">결론</h2>
+<ul>
+<li>MTTR은 RTO와 유사하지만 실제 평균 복구 시간을 측정하는 데 사용됨.</li>
+<li>MTBF는 장애 발생 빈도를 나타내며, 장애 발생이 많을수록 RTO/RPO 요구사항이 더 중요해짐.</li>
+<li>DR(재해 복구)은 RTO/RPO 목표를 기반으로 수립되며, HA 및 백업 전략을 포함함.</li>
+<li>Replication은 RPO를 최소화하는 데 필수적이며, 실시간 데이터 보호가 필요한 환경에서 사용됨.</li>
+<li>AWS 환경에서는 Multi-AZ, Auto Scaling, S3 Cross-Region Replication 등의 서비스를 활용하여 RTO/RPO 목표를 달성할 수 있음.</li>
+</ul>
+<h1 id="legacy-vs-aws-rto-rpo-mttr-mtbf">Legacy vs AWS 환경에서 RTO, RPO, MTTR, MTBF 최소화 방안</h1>
+<h2 id="_3">개념 정리</h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>정의</th>
+<th>최소화해야 하는 이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTO (Recovery Time Objective)</td>
+<td>장애 발생 후 서비스 복구까지 허용 가능한 최대 시간</td>
+<td>서비스 다운타임 최소화</td>
+</tr>
+<tr>
+<td>RPO (Recovery Point Objective)</td>
+<td>장애 발생 시 데이터 손실 허용 범위 (최신 백업과의 차이)</td>
+<td>데이터 유실 최소화</td>
+</tr>
+<tr>
+<td>MTTR (Mean Time to Recovery)</td>
+<td>장애 발생 후 복구까지 걸리는 평균 시간</td>
+<td>신속한 장애 대응</td>
+</tr>
+<tr>
+<td>MTBF (Mean Time Between Failures)</td>
+<td>장애 발생 후 다음 장애까지의 평균 시간</td>
+<td>시스템 안정성 증가</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="legacy">Legacy 환경 (온프레미스)에서 최소화 방안</h2>
+<table>
+<thead>
+<tr>
+<th>요소</th>
+<th>최소화 방법</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTO 최소화</td>
+<td>이중화(HA) 서버 구성</td>
+<td>물리적 서버 및 데이터센터 이중화</td>
+</tr>
+<tr>
+<td></td>
+<td>DR(재해 복구) 센터 운영</td>
+<td>이중 데이터센터를 구성하여 장애 시 신속한 복구</td>
+</tr>
+<tr>
+<td></td>
+<td>자동화된 장애 감지 및 복구 스크립트</td>
+<td>장애 감지 후 자동 페일오버 수행</td>
+</tr>
+<tr>
+<td>RPO 최소화</td>
+<td>고빈도 백업 수행</td>
+<td>RAID, SAN, NAS 백업 주기 단축</td>
+</tr>
+<tr>
+<td></td>
+<td>실시간 데이터 복제</td>
+<td>DB 복제 (Active-Standby, Active-Active)</td>
+</tr>
+<tr>
+<td></td>
+<td>테이프 백업에서 디스크 기반 백업 전환</td>
+<td>신속한 데이터 복구 가능</td>
+</tr>
+<tr>
+<td>MTTR 최소화</td>
+<td>모니터링 시스템 구축</td>
+<td>장애 탐지 시스템 (Nagios, Zabbix)</td>
+</tr>
+<tr>
+<td></td>
+<td>장애 대응 매뉴얼 운영</td>
+<td>장애 복구 절차 표준화</td>
+</tr>
+<tr>
+<td></td>
+<td>예비 부품/서버 유지</td>
+<td>장애 발생 시 신속한 하드웨어 교체</td>
+</tr>
+<tr>
+<td>MTBF 최소화</td>
+<td>정기적인 유지보수 및 점검</td>
+<td>하드웨어 및 네트워크 점검</td>
+</tr>
+<tr>
+<td></td>
+<td>서버/스토리지 이중화</td>
+<td>단일 장애점(SPOF) 제거</td>
+</tr>
+<tr>
+<td></td>
+<td>전원 및 냉각 시스템 보강</td>
+<td>UPS, 발전기 추가 구축</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="aws">AWS 환경에서 최소화 방안</h2>
+<table>
+<thead>
+<tr>
+<th>요소</th>
+<th>최소화 방법</th>
+<th>AWS 서비스 활용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTO 최소화</td>
+<td>Auto Scaling</td>
+<td>EC2 자동 확장으로 장애 시 대체 인스턴스 생성</td>
+</tr>
+<tr>
+<td></td>
+<td>Multi-AZ 구성</td>
+<td>RDS, ElastiCache 등을 멀티 AZ로 구성하여 장애 시 자동 전환</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS Elastic Load Balancer (ELB)</td>
+<td>트래픽을 자동으로 정상 인스턴스로 라우팅</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS Route 53</td>
+<td>장애 감지 후 자동 페일오버 수행</td>
+</tr>
+<tr>
+<td>RPO 최소화</td>
+<td>S3 Cross-Region Replication</td>
+<td>S3 데이터를 다른 리전에 실시간 복제</td>
+</tr>
+<tr>
+<td></td>
+<td>RDS Read Replica</td>
+<td>DB 복제를 통해 최신 데이터 유지</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS Backup &amp; EBS Snapshot</td>
+<td>정기적인 데이터 백업</td>
+</tr>
+<tr>
+<td></td>
+<td>DynamoDB Global Tables</td>
+<td>글로벌 데이터 복제</td>
+</tr>
+<tr>
+<td>MTTR 최소화</td>
+<td>CloudWatch + SNS 알림</td>
+<td>장애 감지 후 즉시 알림 전송</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS Lambda로 자동 복구</td>
+<td>장애 감지 시 복구 스크립트 실행</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS System Manager</td>
+<td>장애 원인 분석 및 원격 명령 실행</td>
+</tr>
+<tr>
+<td></td>
+<td>EC2 Auto Healing</td>
+<td>장애 발생 시 자동으로 대체 인스턴스 배포</td>
+</tr>
+<tr>
+<td>MTBF 최소화</td>
+<td>AWS Well-Architected Framework 적용</td>
+<td>안정적인 아키텍처 설계 가이드 준수</td>
+</tr>
+<tr>
+<td></td>
+<td>Auto Scaling 활용</td>
+<td>트래픽 급증 시 시스템 부하 방지</td>
+</tr>
+<tr>
+<td></td>
+<td>AWS Trusted Advisor</td>
+<td>보안 및 인프라 문제 사전 탐지</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="legacy-vs-aws">Legacy vs AWS 비교 요약</h2>
+<table>
+<thead>
+<tr>
+<th>요소</th>
+<th>Legacy 환경</th>
+<th>AWS 환경</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTO 최소화</td>
+<td>이중화 서버, DR 센터</td>
+<td>Auto Scaling, Multi-AZ, ELB</td>
+</tr>
+<tr>
+<td>RPO 최소화</td>
+<td>고빈도 백업, 실시간 복제</td>
+<td>S3 Replication, RDS Read Replica, AWS Backup</td>
+</tr>
+<tr>
+<td>MTTR 최소화</td>
+<td>모니터링 시스템, 장애 대응 매뉴얼</td>
+<td>CloudWatch, Lambda 자동 복구, Auto Healing</td>
+</tr>
+<tr>
+<td>MTBF 최소화</td>
+<td>정기 유지보수, 이중화</td>
+<td>Well-Architected Framework, Auto Scaling</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">결론</h2>
+<ul>
+<li>Legacy 환경에서는 하드웨어 이중화, DR 센터 운영, 정기 점검이 필요하지만, 비용과 운영 부담이 큼.</li>
+<li>AWS 환경에서는 Auto Scaling, Multi-AZ, AWS Backup, CloudWatch 자동 모니터링 등을 활용하여 RTO/RPO/MTTR/MTBF를 자동화할 수 있음.</li>
+<li>AWS의 자동 복구 기능을 활용하면 Legacy 대비 더 빠르게 장애 복구 가능하며, 운영 비용도 절감할 수 있음.</li>
+</ul>
+<h1 id="pitr-point-in-time-recovery">PITR (Point-In-Time Recovery) 개념과 동작 방식</h1>
+<h2 id="pitrpoint-in-time-recovery">PITR(Point-In-Time Recovery)란?</h2>
+<p>PITR(시점 복구, Point-In-Time Recovery)는 데이터베이스에서 특정 시점으로 데이터를 복구할 수 있는 기능입니다.<br />
+데이터 손실 또는 장애 발생 시, 사용자가 지정한 특정 시점으로 DB 상태를 복원할 수 있습니다.</p>
+<hr />
+<h2 id="pitr">PITR의 원리 및 동작 방식</h2>
+<p>PITR은 주기적인 백업(snapshot) + 변경 로그(transaction log, WAL/Binlog)를 사용하여 원하는 시점으로 복구하는 방식입니다.</p>
+<h3 id="pitr_1">PITR 동작 방식</h3>
+<ol>
+<li>Full Backup(스냅샷) 생성<br />
+    주기적으로 전체 데이터베이스의 정확한 복사본(스냅샷)을 저장<br />
+    MySQL은 <code>mysqldump</code>, PostgreSQL은 <code>pg_basebackup</code>과 같은 방법 사용</li>
+<li>변경 로그(트랜잭션 로그) 지속적 기록<br />
+    백업 이후 발생하는 모든 변경 사항을 트랜잭션 로그(WAL, Binlog)에 저장<br />
+    MySQL: Binary Log (Binlog) 사용<br />
+    PostgreSQL: WAL(Write-Ahead Logging) 사용</li>
+<li>복구 요청 발생<br />
+    데이터베이스 관리자(DBA)가 특정 시점(예: <code>2025-03-10 14:30:00</code>)으로 복구 요청</li>
+<li>Snapshot(전체 백업) 복원 후 트랜잭션 로그 적용<br />
+    가장 가까운 Full Backup(스냅샷)으로 복원<br />
+    스냅샷 이후의 트랜잭션 로그를 차례로 적용하여 지정된 시점까지 복구<br />
+    이 과정에서 특정 트랜잭션을 제외하고 적용 가능 (Selective Recovery)</li>
+<li>지정된 시점으로 DB 상태 복원 완료<br />
+    해당 시점의 정확한 데이터 상태로 DB가 복구됨  </li>
+</ol>
+<hr />
+<h2 id="pitr_2">PITR과 일반 백업 비교</h2>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>일반 백업</th>
+<th>PITR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>복구 가능 범위</td>
+<td>특정 시점의 백업으로만 복구 가능</td>
+<td>백업 이후 원하는 특정 시점으로 복구 가능</td>
+</tr>
+<tr>
+<td>데이터 손실 가능성</td>
+<td>백업 이후 변경된 데이터는 손실될 가능성이 있음</td>
+<td>트랜잭션 로그를 활용하여 최소한의 데이터 손실</td>
+</tr>
+<tr>
+<td>복구 속도</td>
+<td>빠름 (백업된 시점으로만 복구)</td>
+<td>비교적 느림 (트랜잭션 로그를 순차적으로 적용해야 함)</td>
+</tr>
+<tr>
+<td>사용 사례</td>
+<td>주기적인 백업만 필요할 때</td>
+<td>데이터 실수 삭제 복구, 장애 발생 시 특정 시점 복구</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pitr_3">PITR이 유용한 사례</h2>
+<p>운영자의 실수로 인해 데이터 손실이 발생한 경우<br />
+   - 실수로 <code>DELETE</code> 또는 <code>UPDATE</code> 실행 시 삭제되기 전 상태로 복구 가능</p>
+<p>랜섬웨어 공격 또는 데이터 손상 발생 시<br />
+   - 특정 시점(공격 발생 직전)으로 복구하여 피해 최소화</p>
+<p>애플리케이션 장애 발생 후 롤백할 필요가 있는 경우<br />
+   - 잘못된 배포 후 데이터가 변경된 경우, 배포 전 상태로 복원 가능</p>
+<hr />
+<h2 id="aws-pitr">AWS에서 PITR 적용 방법</h2>
+<p>AWS에서는 RDS, DynamoDB에서 PITR 기능을 제공(RDS 모든 엔진 사용 가능)</p>
+<h3 id="amazon-rds-pitr">Amazon RDS의 PITR</h3>
+<ul>
+<li>Binary Log(Binlog) 또는 WAL을 사용하여 특정 시점 복구 가능</li>
+<li>RDS 콘솔, AWS CLI, API를 사용하여 특정 시점으로 복원 가능</li>
+<li>최대 35일까지 트랜잭션 로그 보관 가능</li>
 </ul>
 
 
@@ -1819,7 +2111,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: K8S에 배포된 JVM Heap Dump 생성">
+          <a href="../websocket-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Websocket 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1829,20 +2121,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                K8S에 배포된 JVM Heap Dump 생성
+                Websocket 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../docker-compose-and-web-gui/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker compose and web GUI">
+          <a href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: OLTP vs OLAP 차이점 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Docker compose and web GUI
+                OLTP vs OLAP 차이점 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
