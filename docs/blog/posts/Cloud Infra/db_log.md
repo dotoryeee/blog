@@ -44,13 +44,13 @@ categories:
 | 장애 복구 사용 여부 | 사용됨 (크래시 리커버리 및 데이터 무결성 보장) | 직접적인 장애 복구용은 아님 |
 | 복제(Replication) 역할 | 주로 장애 복구용이며 복제에도 활용 가능 (PostgreSQL) | MySQL의 마스터-슬레이브 복제에서 필수적으로 사용됨 |
 
-### ✅ WAL (Write-Ahead Logging)
+### WAL (Write-Ahead Logging)
 1. 데이터 변경이 발생하면 먼저 WAL 로그에 기록됨.
 2. 로그가 안정적으로 저장된 후 데이터 파일이 변경됨.
 3. 장애 발생 시 WAL을 재적용하여 마지막 정상 상태로 복구 가능.
 4. PostgreSQL에서는 스트리밍 복제를 통해 WAL을 활용하여 데이터 복제 수행.
 
-### ✅ Binlog (Binary Log)
+### Binlog (Binary Log)
 1. MySQL에서 트랜잭션이 커밋될 때 변경 내용을 Binlog에 기록.
 2. 이진(Binary) 형식으로 저장되며, 마스터-슬레이브 복제에서 슬레이브가 Binlog를 읽고 재적용하여 복제 수행.
 3. Point-in-Time Recovery(PITR) 같은 데이터 복구에도 사용됨.
