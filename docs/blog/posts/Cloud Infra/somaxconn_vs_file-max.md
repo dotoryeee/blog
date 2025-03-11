@@ -11,7 +11,22 @@ categories:
 
 <!-- more -->
 
-# `net.core.somaxconn` vs `fs.file-max` 차이 및 비교
+## 위 파라미터가 왜 중요할까
+!!! tip
+    리눅스에서는 "모든 것은 파일이다" 라는 철학을 따르기 때문에, 파일, 소켓, 파이프, 디바이스 등도 파일 디스크립터(File Descriptor, FD)를 사용
+
+**HTTP/1.1을 이용해 6개의 TCP 세션을 열면, 리눅스에서는 6개의 파일 디스크립터(FD)가 생성**
+
+
+### TCP 소켓이 파일로 취급되는 이유
+- 리눅스에서 파일 디스크립터(FD)란?<br>
+파일 디스크립터는 리눅스 커널에서 파일, 소켓, 파이프, 디바이스 등 다양한 리소스를 핸들링하는 식별자<br>
+프로세스가 무언가를 읽거나 쓸 때, FD를 통해 접근
+- TCP 소켓도 FD를 사용<br>
+네트워크 소켓(TCP/UDP)은 socket() 시스템 호출을 통해 생성되며, 내부적으로 파일 디스크립터를 할당받음<br>
+즉, 소켓이 생성될 때 파일처럼 다뤄지며 FD가 할당됨<br>
+소켓 FD는 일반 파일처럼 read(), write(), close() 등의 시스템 호출을 사용할 수 있음
+
 
 ## `net.core.somaxconn`란?
 네트워크 서버가 클라이언트 연결을 받을 때, 큐(대기열)의 크기를 결정하는 파라미터.
@@ -121,7 +136,7 @@ echo 'fs.file-max=2097152' | sudo tee -a /etc/sysctl.conf
     file-max와 ulimit open files 파라미터 모두 값이 부족할 때 Too many open files 에러 발생하는 점은 동일
 
 ## 시스템 기본값
-1. net.core.somaxconn 기본값
+### net.core.somaxconn 기본값
 
 |운영체제|기본값|
 |---------|----|
@@ -133,7 +148,7 @@ echo 'fs.file-max=2097152' | sudo tee -a /etc/sysctl.conf
 |RHEL 8|128|
 |RHEL 9|4096|
 
-2. fs.file-max 기본값
+### fs.file-max 기본값
 
 |운영체제|기본값|
 |---------|----|
