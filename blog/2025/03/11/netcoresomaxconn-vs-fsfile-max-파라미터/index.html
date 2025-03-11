@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../../10/db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../swap-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0/">
+        <link rel="next" href="../private-eks-cluster-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EB%82%B4%EC%97%ADdraft/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Swap 정리 - dotoryeee's blog</title>
+        <title>net.core.somaxconn vs fs.file-max 파라미터 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#swap" class="md-skip">
+        <a href="#netcoresomaxconn-vs-fsfile-max" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Swap 정리
+              net.core.somaxconn vs fs.file-max 파라미터
             
           </span>
         </div>
@@ -1161,92 +1161,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#swap_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      swap이란
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swap_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      Swap 공간의 종류
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swap_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      swap 상태 확인
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swapfile" class="md-nav__link">
-    <span class="md-ellipsis">
-      Swapfile 생성방법
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swap_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      swap 용량
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swap_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      swap 파라미터
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="swap 파라미터">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#swappiness" class="md-nav__link">
-    <span class="md-ellipsis">
-      Swappiness
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#swap_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      컨테이너 환경에서 swap을 최소화해야하는 이유
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1344,135 +1258,244 @@
         
 
 
-<h1 id="swap">Swap 정리</h1>
+<h1 id="netcoresomaxconn-vs-fsfile-max">net.core.somaxconn vs fs.file-max 파라미터</h1>
 <!-- more -->
 
-<h2 id="swap_1">swap이란</h2>
-<p>운영체제에서 RAM(메모리)이 부족할 때 디스크 공간을 임시 메모리처럼 사용하는 기술</p>
-<h2 id="swap_2">Swap 공간의 종류</h2>
-<ol>
-<li>Swap Partition (스왑 파티션)
-디스크의 특정 영역을 스왑 전용으로 설정
-시스템이 부팅될 때 자동으로 마운트됨
-일반적으로 리눅스 설치 시 기본적으로 설정됨</li>
-<li>Swap File (스왑 파일)
-기존 파티션을 변경하지 않고, 파일 시스템 내부에 스왑 파일을 생성하여 사용
-동적으로 크기를 조정할 수 있어 유연함
-SSD를 사용할 경우, 수명 단축을 방지하기 위해 가급적 피하는 것이 좋음</li>
-</ol>
+<h1 id="netcoresomaxconn-vs-fsfile-max_1"><code>net.core.somaxconn</code> vs <code>fs.file-max</code> 차이 및 비교</h1>
+<h2 id="netcoresomaxconn"><code>net.core.somaxconn</code>란?</h2>
+<p>네트워크 서버가 클라이언트 연결을 받을 때, 큐(대기열)의 크기를 결정하는 파라미터.</p>
+<h3 id="_1">개념</h3>
+<ul>
+<li>서버가 동시에 받을 수 있는 연결 요청 개수(대기 큐 크기)를 조절.</li>
+<li>리눅스 시스템에서는 <code>listen()</code> 시스템 호출을 사용하여 대기 큐를 설정하는데, 이때 최대 큐 크기가 <code>net.core.somaxconn</code> 값에 의해 제한됨.</li>
+</ul>
+<h3 id="_2">현재 설정 확인</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sysctl<span class="w"> </span>net.core.somaxconn
+</code></pre></div>
+<h3 id="_3">변경 방법</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.somaxconn<span class="o">=</span><span class="m">1024</span>
+</code></pre></div>
+<p><code>/etc/sysctl.conf</code>에 영구 적용:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;net.core.somaxconn=1024&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+</code></pre></div></p>
+<hr />
+<h2 id="fsfile-max"><code>fs.file-max</code>란?</h2>
+<p>리눅스 시스템이 동시에 열 수 있는 최대 파일 개수(파일 디스크립터 개수)를 제한하는 파라미터.</p>
+<h3 id="_4">개념</h3>
+<ul>
+<li>서버에서 실행되는 모든 프로세스는 파일 디스크립터(File Descriptor, FD) 를 사용함.</li>
+<li>파일뿐만 아니라 소켓(socket), 파이프(pipe), 장치(device) 등도 파일 디스크립터를 사용.</li>
+<li><code>fs.file-max</code>는 시스템 전체에서 열 수 있는 최대 FD 개수를 제한하는 역할을 함.</li>
+<li>기본값은 보통 2097152 (2M, 시스템에 따라 다름).</li>
+</ul>
+<h3 id="_5">현재 설정 확인</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sysctl<span class="w"> </span>fs.file-max
+</code></pre></div>
+<h3 id="_6">변경 방법</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>fs.file-max<span class="o">=</span><span class="m">2097152</span>
+</code></pre></div>
+<p><code>/etc/sysctl.conf</code>에 영구 적용:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;fs.file-max=2097152&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+</code></pre></div></p>
+<hr />
+<h2 id="netcoresomaxconn-fsfile-max"><code>net.core.somaxconn</code>, <code>fs.file-max</code> 차이점</h2>
 <table>
 <thead>
 <tr>
 <th>항목</th>
-<th>Swap Partition</th>
-<th>Swap File</th>
+<th>net.core.somaxconn</th>
+<th>fs.file-max</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>개념</td>
-<td>디스크의 특정 파티션을 Swap으로 설정</td>
-<td>기존 파일 시스템 내에서 일반 파일을 Swap으로 사용</td>
+<td>역할</td>
+<td>서버가 수신할 수 있는 연결 대기 큐 크기 설정</td>
+<td>시스템 전체에서 열 수 있는 최대 파일 디스크립터 개수 제한</td>
 </tr>
 <tr>
-<td>설정 방식</td>
-<td>리눅스 설치 시 또는 fdisk로 직접 생성</td>
-<td>fallocate 또는 dd 명령어로 파일 생성</td>
+<td>대상</td>
+<td>네트워크 요청(TCP/UDP 소켓)</td>
+<td>파일, 소켓, 파이프 등 모든 FD</td>
 </tr>
 <tr>
-<td>속도</td>
-<td>더 빠름 (디스크의 연속된 공간을 사용)</td>
-<td>상대적으로 느림 (파일 시스템을 통해 접근)</td>
+<td>기본값</td>
+<td>128</td>
+<td>2097152</td>
 </tr>
 <tr>
-<td>유연성</td>
-<td>크기 변경이 어려움 (재파티셔닝 필요)</td>
-<td>크기 조정이 용이 (fallocate 사용)</td>
+<td>최적화 목적</td>
+<td>동시 접속 요청이 많은 웹서버(Nginx, Apache, Redis 등)의 성능 향상</td>
+<td>다중 프로세스를 실행하는 서버의 파일 핸들 제한 해제</td>
 </tr>
 <tr>
-<td>설치 난이도</td>
-<td>초기 설정이 필요함 (파티션 생성 &amp; 포맷 필요)</td>
-<td>간단 (swapfile 생성 후 swapon 실행)</td>
+<td>설정 위치</td>
+<td><code>sysctl net.core.somaxconn</code></td>
+<td><code>sysctl fs.file-max</code></td>
 </tr>
 <tr>
-<td>파일 시스템 영향</td>
-<td>파일 시스템과 독립적 (파티션 레벨)</td>
-<td>파일 시스템의 영향을 받음 (파일 조각화 가능)</td>
+<td>변경 효과</td>
+<td>- <code>listen()</code> 호출에서 허용하는 대기 큐 크기 증가<br>- 동시 연결 요청을 더 많이 수용 가능</td>
+<td>- 서버에서 열 수 있는 파일 개수 증가<br>- 많은 소켓, 로그 파일을 사용하는 애플리케이션 최적화</td>
 </tr>
 <tr>
-<td>디스크 사용 방식</td>
-<td>연속된 블록을 사용하여 성능 최적화</td>
-<td>파일 시스템 내부에서 일반 파일로 할당</td>
-</tr>
-<tr>
-<td>보안</td>
-<td>Swap 파티션 전체를 암호화하려면 별도 설정 필요</td>
-<td>파일 기반 암호화 가능 (chattr +C, chmod 600)</td>
-</tr>
-<tr>
-<td>권장 환경</td>
-<td>서버, 성능이 중요한 시스템</td>
-<td>데스크탑, 가상머신, 유동적인 환경</td>
+<td>적용 사례</td>
+<td>웹 서버, DB 서버, 메시지 큐 서버</td>
+<td>DB 서버, 로그 분석 서버, 대량 파일 처리 서버</td>
 </tr>
 </tbody>
 </table>
-<h2 id="swap_3">swap 상태 확인</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>free<span class="w"> </span>-h<span class="w"> </span><span class="c1"># 명령 시 아래와 같이 swap usage 확인 가능</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">              </span>total<span class="w">        </span>used<span class="w">        </span>free<span class="w">      </span>shared<span class="w">  </span>buff/cache<span class="w">   </span>available
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Mem:<span class="w">           </span><span class="m">8</span>.0G<span class="w">        </span><span class="m">5</span>.6G<span class="w">        </span><span class="m">1</span>.2G<span class="w">        </span><span class="m">0</span>.5G<span class="w">        </span><span class="m">1</span>.2G<span class="w">        </span><span class="m">2</span>.1G
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Swap:<span class="w">          </span><span class="m">2</span>.0G<span class="w">        </span><span class="m">1</span>.0G<span class="w">        </span><span class="m">1</span>.0G
-</code></pre></div>
-<h2 id="swapfile">Swapfile 생성방법</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>/dev/zero<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/swapfile<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1M<span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">2048</span><span class="w">  </span><span class="c1"># 1MB 블록 2048개 작성하여 2GB 파일 생성</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>/swapfile<span class="w"> </span><span class="c1">#스왑 파일의 보안을 위해 다른 사용자 접근을 차단</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>sudo<span class="w"> </span>mkswap<span class="w"> </span>/swapfile
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>sudo<span class="w"> </span>swapon<span class="w"> </span>/swapfile<span class="w"> </span><span class="c1">#일회성 swap 마운트 명령어</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>sudo<span class="w"> </span>swapoff<span class="w"> </span>-v<span class="w"> </span>/swapfile<span class="w"> </span><span class="c1">#swap ummount</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># 시스템 재시작 후에도 swap 사용하려면 fstab에 아래 내용 추가</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>/swapfile<span class="w"> </span>none<span class="w"> </span>swap<span class="w"> </span>sw<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>sudo<span class="w"> </span>mount<span class="w"> </span>-a
-</code></pre></div>
-<h2 id="swap_4">swap 용량</h2>
-<ol>
-<li>Database 서버 (MySQL, PostgreSQL 등)<br>
-DB 서버는 보통 RAM을 적극적으로 캐싱에 사용하지만, RAM이 부족한 경우 Swap이 부족하면 DB가 강제 종료될 수 있음<br>
-vm.swappiness=10 정도로 설정하여 Swap을 최대한 적게 사용하도록 조정</li>
-<li>웹 서버 (Nginx, Apache, Node.js 등)<br>
-웹 서버는 대부분 RAM을 많이 쓰지 않으므로 Swap을 2GB~4GB 설정<br></li>
-<li>가상 머신 (VM) &amp; 컨테이너 서버 (Docker, K8s)<br>
-Swap은 가상 머신이나 컨테이너 환경에서 성능 저하를 일으킬 수 있음<br>
-RAM이 충분하면 Swap을 비활성화 (swapoff -a)<br>
-RAM이 부족하면 최소한의 Swap(2GB~4GB)만 설정</li>
-<li>RAM이 매우 작은경우(4GB 이하 등)에는 OOM 방지를 위해 충분한 swap 용량을 확보해줄것</li>
-<li>데이터 분석, 머신러닝, 영상 렌더링 등에서 RAM을 초과하는 연산을 수행할 경우 Swap이 부족하면 프로그램이 강제 종료될 수 있으므로 RAM의 1.5배~2배 용량 확보</li>
-</ol>
-<h2 id="swap_5">swap 파라미터</h2>
-<h3 id="swappiness">Swappiness</h3>
+<hr />
+<h2 id="_7">사용 예시</h2>
+<h3 id="netcoresomaxconn_1"><code>net.core.somaxconn</code>을 조정해야 하는 경우</h3>
 <ul>
-<li>기본 값: 60 (값이 클수록 적극적으로 스왑 사용)</li>
-<li>낮은 값(예: 10~20)으로 설정하면, RAM을 최대한 사용하고 스왑을 적게 사용하도록 조정 가능</li>
-<li>swappiness = 0<br>
-RAM을 최대한 활용하고, 거의 스왑을 사용하지 않음<br>
-메모리가 거의 가득 차야 스왑을 사용</li>
-<li>swappiness = 100<br>
-메모리가 남아 있어도 적극적으로 스왑을 사용<br>
-RAM이 빠르게 확보되지만, 디스크 I/O가 증가하여 성능 저하 가능성</li>
-<li>데스크톱은 일반적으로 swappiness=10~20 사용</li>
-<li>서버는 안정성이 중요하기 때문에 기본값인 swappiness=60을 유지</li>
-<li>DB 서버나 캐시 서버의 경우, RAM을 우선적으로 사용하고 스왑을 최소화 (swappiness=10~30)</li>
+<li>웹 서버(Nginx, Apache, Tomcat 등)에서 많은 동시 접속을 처리해야 할 때</li>
+<li>DB 서버(MySQL, PostgreSQL, Redis, MongoDB)에서 많은 클라이언트 요청을 받을 때</li>
+<li><code>dmesg</code> 로그에서 "TCP: drop request" 또는 "listen queue overflow" 오류가 발생할 때</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cat<span class="w"> </span>/proc/sys/vm/swappiness<span class="w"> </span><span class="c1">#현재 swappiness 값 확인</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>vm.swappiness<span class="o">=</span><span class="m">10</span><span class="w"> </span><span class="c1"># 10으로 변경 (일회성)</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># 시스템 재시작 후에도 10을 유지하려면 /etc/sysctl.conf 에 아래 내용 추가</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>vm.swappiness<span class="o">=</span><span class="m">10</span>
+<h3 id="fsfile-max_1"><code>fs.file-max</code>를 조정해야 하는 경우</h3>
+<ul>
+<li>DB 서버에서 많은 커넥션을 처리해야 할 때</li>
+<li>로그 서버(ELK, Prometheus 등)에서 대량의 파일을 다룰 때</li>
+<li>Node.js 같은 이벤트 기반 서버에서 많은 소켓 핸들을 유지해야 할 때</li>
+<li><code>ulimit -n</code> 명령어를 실행했을 때 파일 핸들 제한이 너무 낮은 경우</li>
+</ul>
+<hr />
+<h2 id="_8">최적화 예시</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># TCP 연결 대기 큐 크기 증가</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.somaxconn<span class="o">=</span><span class="m">1024</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># 시스템 전체에서 열 수 있는 파일 개수 증가</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>fs.file-max<span class="o">=</span><span class="m">2097152</span>
 </code></pre></div>
-<h2 id="swap_6">컨테이너 환경에서 swap을 최소화해야하는 이유</h2>
+<p>부팅 후에도 유지하려면 <code>/etc/sysctl.conf</code>에 추가
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;net.core.somaxconn=1024&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;fs.file-max=2097152&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+</code></pre></div></p>
+<h2 id="fsfile-max-ulimit-nopen-files">fs.file-max와 ulimit -n(open files)의 차이점</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>fs.file-max</th>
+<th>ulimit -n (open files)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>역할</td>
+<td>시스템 전체에서 열 수 있는 파일 개수 제한</td>
+<td>각 프로세스가 열 수 있는 파일 개수 제한</td>
+</tr>
+<tr>
+<td>적용 범위</td>
+<td>커널 전역 설정 (시스템 전체)</td>
+<td>각 사용자 또는 특정 프로세스에 적용</td>
+</tr>
+<tr>
+<td>확인 방법</td>
+<td>sysctl fs.file-max</td>
+<td>ulimit -n 또는 ulimit -a</td>
+</tr>
+<tr>
+<td>설정 방법</td>
+<td>sysctl -w fs.file-max=값</td>
+<td>ulimit -n 값 또는 /etc/security/limits.conf</td>
+</tr>
+<tr>
+<td>기본값 예시 (Ubuntu 22.04)</td>
+<td>9223372036854775807 (이론적 최대)</td>
+<td>1024 (Soft Limit) / 1048576 (Hard Limit)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>file-max와 ulimit open files 파라미터 모두 값이 부족할 때 Too many open files 에러 발생하는 점은 동일</p>
+</div>
+<h2 id="_9">시스템 기본값</h2>
 <ol>
-<li>Kubernetes는 컨테이너의 메모리 리소스를 엄격하게 제한하기 위해 기본적으로 Swap을 비활성화해야 한다고 권장함.</li>
-<li>컨테이너는 프로세스 격리 기술을 사용하므로, Swap이 많으면 리소스 예측이 어려움</li>
-<li>Swap이 많으면 OOM Killer가 즉시 실행되지 않고, Swap을 먼저 사용하여 프로세스를 유지하려고 하는데 이로 인해 프로세스가 Swap을 과도하게 사용하다가 결국 시스템 전체가 느려질 수 있음 -&gt; 컨테이너 환경에서는 OOM Killer을 이용해 죽였다 다시 살리는게 나을 수 있다</li>
+<li>net.core.somaxconn 기본값</li>
 </ol>
+<table>
+<thead>
+<tr>
+<th>운영체제</th>
+<th>기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS 7</td>
+<td>128</td>
+</tr>
+<tr>
+<td>Amazon Linux 2</td>
+<td>128</td>
+</tr>
+<tr>
+<td>Amazon Linux 2023</td>
+<td>4096</td>
+</tr>
+<tr>
+<td>Ubuntu 20.04</td>
+<td>128</td>
+</tr>
+<tr>
+<td>Ubuntu 22.04</td>
+<td>4096</td>
+</tr>
+<tr>
+<td>RHEL 8</td>
+<td>128</td>
+</tr>
+<tr>
+<td>RHEL 9</td>
+<td>4096</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>fs.file-max 기본값</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>운영체제</th>
+<th>기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CentOS 7</td>
+<td>798004</td>
+</tr>
+<tr>
+<td>Amazon Linux 2</td>
+<td>524288</td>
+</tr>
+<tr>
+<td>Amazon Linux 2023</td>
+<td>9223372036854775807</td>
+</tr>
+<tr>
+<td>Ubuntu 20.04</td>
+<td>9223372036854775807</td>
+</tr>
+<tr>
+<td>Ubuntu 22.04</td>
+<td>9223372036854775807</td>
+</tr>
+<tr>
+<td>RHEL 8</td>
+<td>524288</td>
+</tr>
+<tr>
+<td>RHEL 9</td>
+<td>9223372036854775807</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -1519,7 +1542,7 @@ RAM이 빠르게 확보되지만, 디스크 I/O가 증가하여 성능 저하 �
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../10/db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: DB 로그와 Aurora 정리">
+          <a href="../swap-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Swap 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1529,20 +1552,20 @@ RAM이 빠르게 확보되지만, 디스크 I/O가 증가하여 성능 저하 �
                 Previous
               </span>
               <div class="md-ellipsis">
-                DB 로그와 Aurora 정리
+                Swap 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0/" class="md-footer__link md-footer__link--next" aria-label="Next: net.core.somaxconn vs fs.file-max 파라미터">
+          <a href="../private-eks-cluster-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EB%82%B4%EC%97%ADdraft/" class="md-footer__link md-footer__link--next" aria-label="Next: Private EKS Cluster 트러블슈팅 내역[Draft]">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                net.core.somaxconn vs fs.file-max 파라미터
+                Private EKS Cluster 트러블슈팅 내역[Draft]
               </div>
             </div>
             <div class="md-footer__button md-icon">
