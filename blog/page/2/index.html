@@ -1192,6 +1192,57 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2024-03-02 00:00:00">Mar 2, 2024</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/aws/" class="md-meta__link">AWS</a>, 
+              <a href="../../category/route53/" class="md-meta__link">Route53</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="route53-endpoint-for-private-hosted-zone"><a class="toclink" href="../../2024/03/02/route53-endpoint-for-private-hosted-zone/">Route53 Endpoint for Private Hosted Zone</a></h2>
+<p>Route53 Private Hosted Zone(이하 PHZ) 생성 후 TGW로 연결된 타 VPC에서 쿼리 테스트 진행했습니다.<br>
+온프레미스 또는 다른 클라우드에서 AWS Route53 PHZ의 DNS 쿼리를 사용하고자 할 때 동일한 구조로 이용 가능합니다.<br>
+원래 Bind서버의 조건부 포워딩 정책에 Route53 PHZ 도메인을 부여해주는것이 주 목적이지만, 별도 DNS서버 없이 Route53 Inbound Endpoint가 DNS서버로써 동작할 수 있는지 테스트 하였습니다.</p>
+<p><img alt="" src="../../Cloud%20Infra/rt53_endpoint/Screenshot%202024-03-02%20at%2009.56.49.png" /></p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/03/02/route53-endpoint-for-private-hosted-zone/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2024-02-18 00:00:00">Feb 18, 2024</time></li>
         
           <li class="md-meta__item">
@@ -1713,58 +1764,6 @@
     
       <nav class="md-post__action">
         <a href="../../1993/09/17/api-gateway-with-lambda/">
-          Continue reading
-        </a>
-      </nav>
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="access-s3-dynamodb-with-lambda"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/">Access S3, DynamoDB with Lambda</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/access-s3-dynamodb-with-lambda/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>AWS Lambda를 이용해 AWS S3, DynamoDB 이벤트에 반응하기</li>
-<li>Test Event 사용해서 효율성 높이기</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/access-s3-dynamodb-with-lambda/">
           Continue reading
         </a>
       </nav>
