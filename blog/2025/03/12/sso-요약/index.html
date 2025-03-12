@@ -1339,7 +1339,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              8 min read
+                              9 min read
                             
                           </span>
                         </div>
@@ -1552,14 +1552,23 @@
     AWS_Service--&gt;&gt;Pod: 요청된 데이터 반환</code></pre>
 <h2 id="iam-role-for-service-account-irsa">IAM Role for Service Account (IRSA) 프로세스</h2>
 <pre class="mermaid"><code>sequenceDiagram
-    participant Pod as Pod (앱 컨테이너)
+    participant Pod as Pod (애플리케이션 컨테이너)
     participant ServiceAccount as Kubernetes ServiceAccount
+    participant AWS_OIDC as AWS OIDC Provider
     participant IAM as AWS IAM Role
+    participant STS as AWS Security Token Service (STS)
     participant AWS_Service as AWS 서비스 (S3, DynamoDB 등)
+    participant Pod_Env as Pod 내부 환경 변수
 
-    Pod-&gt;&gt;ServiceAccount: Kubernetes ServiceAccount 사용
+    Pod-&gt;&gt;ServiceAccount: OIDC 토큰 요청
+    ServiceAccount-&gt;&gt;AWS_OIDC: OIDC 토큰을 AWS OIDC Provider에 전달
+    AWS_OIDC-&gt;&gt;STS: ID 토큰 검증 요청
+    STS-&gt;&gt;AWS_OIDC: 검증 완료 응답
     ServiceAccount-&gt;&gt;IAM: IAM Role과 연결된 ServiceAccount 인증
-    IAM-&gt;&gt;AWS_Service: AWS 서비스 접근 허용
+    IAM-&gt;&gt;STS: AssumeRoleWithWebIdentity 호출 (OIDC 토큰 포함)
+    STS-&gt;&gt;IAM: 임시 AWS 보안 자격 증명 (AccessKey, SecretKey, Session Token) 발급
+    IAM-&gt;&gt;Pod_Env: Pod 내부 환경 변수에 자격 증명 저장
+    Pod-&gt;&gt;AWS_Service: AWS 서비스 요청 (IAM Role 기반 인증)
     AWS_Service--&gt;&gt;Pod: 요청된 데이터 반환</code></pre>
 <h3 id="pod-identity-oidc">Pod Identity (OIDC) 시나리오</h3>
 <table>
