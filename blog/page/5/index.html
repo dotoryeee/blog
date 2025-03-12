@@ -1197,6 +1197,74 @@
           <li class="md-meta__item">
             in
             
+              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="elk-error"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/">ELK error 모음</a></h2>
+<h3 id="1"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#1">1</a></h3>
+<h4 id="_1"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#_1">증상</a></h4>
+<ul>
+<li>Error message<br>
+  <strong>Elastic Kibana did not load properly. Check the server output for more information</strong></li>
+<li>인프라 구성
+    Kibana 접근을 위해 Nginx를 reverse proxy로 사용하는 구조</li>
+</ul>
+<h4 id="_2"><a class="toclink" href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/#_2">해결방법</a></h4>
+<p>Nginx 설정파일에서 proxy_buffer 부분을 수정합니다</p>
+<ul>
+<li>AS-IS
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="n">AWS에서</span><span class="w"> </span>제공하는<span class="w"> </span><span class="n">ES</span><span class="o">-</span><span class="n">Proxy용</span><span class="w"> </span><span class="n">nginx</span><span class="w"> </span>템플릿<span class="w"> </span>기본값<span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">256</span><span class="n">k</span><span class="p">;</span>
+</code></pre></div></li>
+<li>TO-BE
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">proxy_buffer_size</span><span class="w"> </span><span class="m">128</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">proxy_buffers</span><span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">proxy_busy_buffers_size</span><span class="w"> </span><span class="m">1024</span><span class="n">k</span><span class="p">;</span>
+</code></pre></div></li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/elk-error-%EB%AA%A8%EC%9D%8C/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
               <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
               <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
         
