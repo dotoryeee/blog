@@ -27,7 +27,7 @@ sequenceDiagram
     JavaScript-->>Browser: DOM 업데이트
 ```
 
-## CORS 에러 발생 경우 및 해결 방안 (SPA 기반)
+## CORS 에러 발생 시나리오
 
 ### 단순 요청 차단
 ```mermaid
@@ -137,9 +137,9 @@ sequenceDiagram
 Access-Control-Expose-Headers: X-Transaction-ID 설정하여 브라우저가 해당 헤더를 읽을 수 있도록 허용
 
 
-## CORS 관련 헤더 정리 및 인과관계
+## CORS 관련 헤더 정리
 
-| 헤더 | 역할 | 설정 방법 | 주의점 |
+| 헤더 | 역할 | 설정 방법 | 비고 |
 |------|------|------|------|
 | Access-Control-Allow-Origin | 허용할 출처(도메인) 설정 | `Access-Control-Allow-Origin: https://example.com` | `*` 사용 시 Credential 포함 요청 불가능 |
 | Access-Control-Allow-Methods | 허용할 HTTP 메서드 지정 | `Access-Control-Allow-Methods: GET, POST, PUT, DELETE` | 반드시 프리플라이트 응답에 포함해야 함 |
