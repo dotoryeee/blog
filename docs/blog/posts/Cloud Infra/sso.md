@@ -94,16 +94,25 @@ sequenceDiagram
 
 ## IAM Role for Service Account (IRSA) 프로세스
 
-``` mermaid
+```mermaid
 sequenceDiagram
-    participant Pod as Pod (앱 컨테이너)
+    participant Pod as Pod (애플리케이션 컨테이너)
     participant ServiceAccount as Kubernetes ServiceAccount
+    participant AWS_OIDC as AWS OIDC Provider
     participant IAM as AWS IAM Role
+    participant STS as AWS Security Token Service (STS)
     participant AWS_Service as AWS 서비스 (S3, DynamoDB 등)
+    participant Pod_Env as Pod 내부 환경 변수
 
-    Pod->>ServiceAccount: Kubernetes ServiceAccount 사용
+    Pod->>ServiceAccount: OIDC 토큰 요청
+    ServiceAccount->>AWS_OIDC: OIDC 토큰을 AWS OIDC Provider에 전달
+    AWS_OIDC->>STS: ID 토큰 검증 요청
+    STS->>AWS_OIDC: 검증 완료 응답
     ServiceAccount->>IAM: IAM Role과 연결된 ServiceAccount 인증
-    IAM->>AWS_Service: AWS 서비스 접근 허용
+    IAM->>STS: AssumeRoleWithWebIdentity 호출 (OIDC 토큰 포함)
+    STS->>IAM: 임시 AWS 보안 자격 증명 (AccessKey, SecretKey, Session Token) 발급
+    IAM->>Pod_Env: Pod 내부 환경 변수에 자격 증명 저장
+    Pod->>AWS_Service: AWS 서비스 요청 (IAM Role 기반 인증)
     AWS_Service-->>Pod: 요청된 데이터 반환
 ```
 
