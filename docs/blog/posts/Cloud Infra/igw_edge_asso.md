@@ -32,9 +32,8 @@ graph TD;
 
     TGW["Transit Gateway"]
 
-    subgraph AWS_Instances ["AWS 내부 EC2 인스턴스"]
-      EC2_A["EC2 in A VPC (Private IP 10.0.1.10)"]
-      EC2_B["EC2 in B VPC (Public IP 52.x.x.x, Private IP 10.1.1.20)"]
+    subgraph AWS_Instances ["B Subnet에 위치한 EC2 Instance B"]
+      EC2_B["B EC2 ENI (Public IP 52.x.x.x, Private IP 10.1.1.20)"]
     end
   end
 
