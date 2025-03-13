@@ -55,14 +55,14 @@ graph TD;
 1. 클라이언트 (3.x.x.x) → EC2_B Public IP (52.x.x.x) 요청
 2. IGW가 요청을 받고, Edge Association Route Table을 통해 TGW로 전달
 3. TGW가 트래픽을 B VPC로 전달
-4. B VPC의 EC2_B (Private IP: 10.1.1.20) 가 트래픽 수신
+4. B VPC내 B subnet의 EC2_B (Private IP: 10.1.1.20) 가 트래픽 수신
 
 ## egress flow
 1. EC2_B (Private IP: 10.1.1.20) → 클라이언트 응답 생성
-2. B VPC 라우트 테이블에서 TGW로 전달
+2. B subnet 라우트 테이블에서 TGW로 전달
 3. TGW가 트래픽을 A VPC로 전달
-4. A VPC에서 IGW를 통해 외부 인터넷으로 전달
-5. 클라이언트 (3.x.x.x) 가 응답을 수신
+4. A TGW subnet에서 IGW를 통해 외부 인터넷으로 전달
+5. 클라이언트(3.x.x.x) 가 응답을 수신
 
 
 ## 라우팅 설정
