@@ -42,29 +42,15 @@ sequenceDiagram
 
 ### Pod Identity vs IRSA 비교표
 
-| 비교 항목 | Pod Identity (OIDC 기반 AssumeRoleWithWebIdentity) | IAM Role for Service Account (IRSA) |
-|-----------|------------------------------------------------------|-------------------------------------|
-| 개념 | OIDC 토큰을 사용하여 AWS STS에서 IAM Role을 임시 획득 | Kubernetes의 ServiceAccount와 IAM Role을 직접 연결 |
-| IAM Role 연결 방식 | Pod가 실행될 때 OIDC 토큰을 이용하여 IAM Role을 Assume | Kubernetes ServiceAccount가 IAM Role과 연결되어 자동 인증 |
-| 자격 증명 관리 | OIDC 토큰을 기반으로 임시 보안 자격 증명 발급 | ServiceAccount에 IAM Role을 연결하여 자동 인증 |
-| 보안성 | OIDC 토큰이 자동으로 갱신됨 (단기 자격 증명) | IAM Role을 ServiceAccount에 직접 연결하여 더 세밀한 권한 관리 가능 |
-| 설정 난이도 | OIDC Provider 설정 필요, IAM 정책 구성 필요 | `eksctl`을 사용하면 쉽게 설정 가능 |
-| AWS STS 호출 여부 | OIDC 토큰을 사용하여 STS를 통해 임시 자격 증명 획득 | STS 호출 없이 ServiceAccount와 IAM Role이 직접 연동됨 |
-| 사용 예시 | 다른 클러스터나 외부 서비스가 AWS 서비스 접근을 필요로 할 때 적합 | EKS 내부 Pod가 AWS 서비스(S3, DynamoDB 등)에 접근할 때 가장 일반적인 방식 |
-| 지원하는 AWS 서비스 | STS 기반으로 모든 AWS 서비스 접근 가능 | IRSA를 설정한 AWS 서비스만 접근 가능 |
-| 권장 시나리오 | AWS STS 기반 인증을 선호하는 경우 | EKS 내부에서 AWS 서비스 사용이 많은 경우 |
-| 구현 난이도 | IAM Role을 설정하고 OIDC 인증을 추가해야 함 | EKS ServiceAccount와 IAM Role을 `eksctl`로 간단히 연결 가능 |
-
-
-|비교 항목|IRSA (IAM Role for Service Account)|일반 OIDC 기반 Pod Identity|
-|---------|--------------|------------|
-|OIDC 사용 여부| OIDC 기반 (AWS IAM OIDC Provider 사용)| OIDC 기반 (AWS IAM OIDC Provider 사용)|
-|IAM Role 연결 방식|Kubernetes ServiceAccount를 IAM Role과 직접 연결|Pod가 직접 OIDC 토큰을 이용하여 STS |AssumeRoleWithWebIdentity 호출
-|STS 호출 방식|ServiceAccount에 IAM Role이 자동 매핑됨|Pod가 직접 STS AssumeRoleWithWebIdentity 호출|
-|보안성|Kubernetes 네임스페이스와 ServiceAccount 단위로 IAM Role을 제한 가능|OIDC 토큰을 직접 사용하여 외부에서도 |인증 가능
-|EKS 외부 접근 가능 여부| ServiceAccount 기반이므로 EKS 내부 전용| OIDC 토큰을 이용하면 EKS 외부에서도 IAM Role |Assume 가능
-|설정 난이도|eksctl create iamserviceaccount 등으로 쉽게 설정 가능|IAM 정책을 직접 구성해야 함|
-
+비교 항목                | Pod Identity (OIDC 기반 AssumeRoleWithWebIdentity) | IAM Role for Service Account (IRSA)
+-------------------- | ------------------------------------------------ | -----------------------------------------------------------
+OIDC 사용 여부           | O                                                | O
+IAM Role 연결 방식       | OIDC 토큰 기반 STS AssumeRole                        | Kubernetes ServiceAccount가 AWS IAM과 연결됨
+AWS STS 호출 여부        | O                                                | O
+EKS API Server 인증 과정 | 없음 (OIDC Provider를 직접 사용)                        | OIDC를 통해 EKS API Server에서 ServiceAccount 인증 후 STS 호출
+EKS 외부 접근 가능 여부      | O                                                | X
+AssumeRole 시점        | Pod가 실행될 때 OIDC 토큰을 이용하여 STS AssumeRole 호출       | Pod가 ServiceAccount를 통해 AWS STS AssumeRole 호출
+사용 예시                | EKS 외부에서 AWS 리소스 접근                              | EKS 내부 Pod가 AWS 서비스 접근
 
 ## EKS Pod Identity 인증 프로세스
 
@@ -115,7 +101,7 @@ sequenceDiagram
 
 
 ### Pod Identity (OIDC) 시나리오
-| 추천 상황 | 추천 사유 |
+| 상황 | 비고 |
 |--------------|-------------|
 | AWS STS 기반 인증을 원할 때 | OIDC 기반 인증을 사용하여 AWS STS를 통해 임시 자격 증명을 발급받을 수 있음 |
 | EKS 외부(예: 다른 클러스터)에서도 AWS 접근이 필요할 때 | OIDC 토큰을 사용하면 EKS 외부에서도 인증을 수행할 수 있음 (EKS 내부 ServiceAccount에 의존하지 않음) |
@@ -128,7 +114,7 @@ EKS 외부에서도 AWS 서비스에 접근하거나, ID 페더레이션과의 �
 
 
 ### IAM Role for Service Account (IRSA) 시나리오
-| 추천 상황 | 추천 사유 |
+| 상황 | 비고 |
 |--------------|-------------|
 | EKS 내부에서 AWS 서비스 접근이 필요할 때 | Kubernetes ServiceAccount와 IAM Role을 1:1 매핑하여 AWS 리소스 접근이 가능 |
 | AWS STS 호출 없이 효율적으로 인증하고 싶을 때 | OIDC를 통한 STS 인증이 필요 없고, ServiceAccount 기반으로 IAM Role을 자동 연결하여 성능 향상 |
