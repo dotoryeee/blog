@@ -1517,7 +1517,6 @@
 </tr>
 </tbody>
 </table>
-<hr />
 <h2 id="eks-pod-identity">EKS Pod Identity 인증 프로세스</h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant User as 사용자
@@ -1533,8 +1532,7 @@
     Pod-&gt;&gt;ServiceAccount: OIDC 토큰 요청
     ServiceAccount-&gt;&gt;Pod: OIDC 토큰 반환
     Pod-&gt;&gt;AWS_OIDC: OIDC 토큰을 사용하여 요청
-    AWS_OIDC-&gt;&gt;Pod: OIDC ID 토큰 반환
-    Pod-&gt;&gt;IAM: OIDC 토큰 포함하여 STS AssumeRoleWithWebIdentity 요청
+    AWS_OIDC-&gt;&gt;IAM: OIDC ID 토큰 검증 요청
     IAM-&gt;&gt;Pod: 임시 AWS 자격 증명 반환 (AccessKey, SecretKey, Token)
     Pod-&gt;&gt;AWS_Service: IAM Role 기반의 인증으로 AWS 서비스 접근
     AWS_Service--&gt;&gt;Pod: 요청된 데이터 반환</code></pre>
@@ -1591,7 +1589,6 @@
 </table>
 <p>Pod Identity 방식은 OIDC 토큰을 활용하여 AWS IAM과 직접 연동할 수 있으므로,<br />
 EKS 외부에서도 AWS 서비스에 접근하거나, ID 페더레이션과의 연동이 필요한 경우 적합</p>
-<hr />
 <h3 id="iam-role-for-service-account-irsa_1">IAM Role for Service Account (IRSA) 시나리오</h3>
 <table>
 <thead>
@@ -1624,7 +1621,6 @@ EKS 외부에서도 AWS 서비스에 접근하거나, ID 페더레이션과의 �
 </tbody>
 </table>
 <p>IRSA 방식은 Kubernetes의 ServiceAccount를 AWS IAM Role과 직접 연결하는 방식이므로 EKS 내부에서 AWS 리소스(S3, DynamoDB, SQS 등)에 접근하는 Pod를 효율적으로 관리할 때 적합</p>
-<hr />
 <h3 id="oidc-vs-irsa">상황별 OIDC vs IRSA</h3>
 <table>
 <thead>
