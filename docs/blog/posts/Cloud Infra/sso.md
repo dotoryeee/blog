@@ -11,15 +11,15 @@ categories:
 
 <!-- more -->
 
-## SSO 연동 방식
+## SSO 연동 프로토콜
 
-| 연동 방식      | 설명 | 장점 | 단점 | 예시 |
-|--------------|------|------|------|------|
-| OAuth 2.0 | 인증 및 권한 부여 프레임워크 | 다양한 애플리케이션과 연동 가능, 토큰 기반 인증 | 구현이 복잡할 수 있음 | Google 로그인, GitHub 로그인 |
-| OpenID Connect (OIDC) | OAuth 2.0 기반의 인증 프로토콜 | 사용자의 ID 정보를 포함하여 인증 가능 | OAuth 2.0보다 약간 무거움 | Google 로그인, Microsoft 로그인 |
-| SAML (Security Assertion Markup Language) | XML 기반의 인증 및 권한 부여 표준 | 기업 환경에서 많이 사용됨, 강력한 보안 | XML 기반이라 비교적 무거움, 설정이 복잡 | 기업용 SSO (Azure AD, Okta) |
-| JWT (JSON Web Token) | JSON 기반의 토큰을 활용한 인증 방식 | 가볍고 빠른 인증 처리 가능 | 토큰 유출 시 보안 문제 발생 가능 | 자체 구축 API 인증 |
-| Kerberos | 네트워크 인증 프로토콜 | 강력한 보안, 티켓 기반 인증 | 설정이 복잡하고 네트워크 환경 의존적 | Windows AD SSO |
+|연동 방식 (프로토콜)|설명|장점|단점|
+|---------------|--|---|----|
+|OAuth 2.0|API 접근 권한 부여 프레임워크 (사용자 인증 X)|다양한 애플리케이션과 연동 가능, 토큰 기반 접근 제어|사용자 인증 기능이 없어 OIDC 필요|
+|OpenID Connect (OIDC)|OAuth 2.0을 확장하여 사용자 인증 추가|ID 토큰을 통해 사용자 정보를 검증 가능|OAuth 2.0보다 구조가 복잡|
+|SAML (Security Assertion Markup Language)|XML 기반의 기업용 SSO 표준|기업 환경에서 많이 사용|XML 기반이라 비교적 무겁고 설정이 복잡|
+|JWT (JSON Web Token)|JSON 기반의 토큰 형식(프로토콜이 아님)|빠른 인증 처리 가능|토큰 유출 시 보안 문제 발생 가능|
+
 
 ## SSO 연동 과정
 
@@ -66,8 +66,6 @@ sequenceDiagram
 |설정 난이도|eksctl create iamserviceaccount 등으로 쉽게 설정 가능|IAM 정책을 직접 구성해야 함|
 
 
----
-
 ## EKS Pod Identity 인증 프로세스
 
 ```mermaid
@@ -85,8 +83,7 @@ sequenceDiagram
     Pod->>ServiceAccount: OIDC 토큰 요청
     ServiceAccount->>Pod: OIDC 토큰 반환
     Pod->>AWS_OIDC: OIDC 토큰을 사용하여 요청
-    AWS_OIDC->>Pod: OIDC ID 토큰 반환
-    Pod->>IAM: OIDC 토큰 포함하여 STS AssumeRoleWithWebIdentity 요청
+    AWS_OIDC->>IAM: OIDC ID 토큰 검증 요청
     IAM->>Pod: 임시 AWS 자격 증명 반환 (AccessKey, SecretKey, Token)
     Pod->>AWS_Service: IAM Role 기반의 인증으로 AWS 서비스 접근
     AWS_Service-->>Pod: 요청된 데이터 반환
@@ -129,7 +126,6 @@ sequenceDiagram
 Pod Identity 방식은 OIDC 토큰을 활용하여 AWS IAM과 직접 연동할 수 있으므로,  
 EKS 외부에서도 AWS 서비스에 접근하거나, ID 페더레이션과의 연동이 필요한 경우 적합
 
----
 
 ### IAM Role for Service Account (IRSA) 시나리오
 | 추천 상황 | 추천 사유 |
@@ -143,7 +139,6 @@ EKS 외부에서도 AWS 서비스에 접근하거나, ID 페더레이션과의 �
 
 IRSA 방식은 Kubernetes의 ServiceAccount를 AWS IAM Role과 직접 연결하는 방식이므로 EKS 내부에서 AWS 리소스(S3, DynamoDB, SQS 등)에 접근하는 Pod를 효율적으로 관리할 때 적합
 
----
 
 ### 상황별 OIDC vs IRSA
 | 상황 | 추천 방식 | 추천 사유 |
