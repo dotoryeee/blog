@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../../12/cors-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../rsyslog-journald-%EB%B9%84%EA%B5%90/">
       
-      
-        <link rel="next" href="../aws-%EC%BD%98%EC%86%94-system-log--dmesg-%EC%9D%B8%EA%B0%80/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>rsyslog, journald 비교 - dotoryeee's blog</title>
+        <title>AWS 콘솔 system log = dmesg 인가 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rsyslog-journald" class="md-skip">
+        <a href="#aws-system-log-dmesg" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              rsyslog, journald 비교
+              AWS 콘솔 system log = dmesg 인가
             
           </span>
         </div>
@@ -1170,16 +1168,16 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      비교표
+      요약
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#journald-cli" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      journald CLI 예시
+      커널 로그 저장 및 출력 순서
     </span>
   </a>
   
@@ -1252,6 +1250,7 @@
                           <span class="md-ellipsis">
                             in
                             
+                              <a href="../../../../category/cloud/">Cloud</a>, 
                               <a href="../../../../category/server/">Server</a></span>
                         </div>
                       </li>
@@ -1283,96 +1282,42 @@
         
 
 
-<h1 id="rsyslog-journald">rsyslog, journald 비교</h1>
+<h1 id="aws-system-log-dmesg">AWS 콘솔 system log = dmesg 인가</h1>
 <!-- more -->
 
-<h2 id="_1">비교표</h2>
-<table>
-<thead>
-<tr>
-<th>구분</th>
-<th>rsyslog</th>
-<th>journald</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>설명</td>
-<td>기존 리눅스 시스템에서 사용되던 로깅 시스템</td>
-<td><code>systemd</code>의 일부로 동작하는 로깅 시스템</td>
-</tr>
-<tr>
-<td>로그 저장 방식</td>
-<td>일반 텍스트 파일 (<code>/var/log/messages</code> 등)</td>
-<td>바이너리 형식 (<code>/var/log/journal/</code>)</td>
-</tr>
-<tr>
-<td>로그 확인 방법</td>
-<td><code>cat</code>, <code>tail</code>, <code>grep</code> 등</td>
-<td><code>journalctl</code> 명령어 사용</td>
-</tr>
-<tr>
-<td>설정 파일</td>
-<td><code>/etc/rsyslog.conf</code></td>
-<td><code>/etc/systemd/journald.conf</code></td>
-</tr>
-<tr>
-<td>검색 및 필터링</td>
-<td>파일 기반 검색</td>
-<td><code>journalctl</code>로 상세한 필터링 가능</td>
-</tr>
-<tr>
-<td>로그 보존 방식</td>
-<td>로그 파일 크기 제한 및 롤링</td>
-<td>압축 및 저장 공간 자동 관리 가능</td>
-</tr>
-<tr>
-<td>네트워크 전송 지원</td>
-<td>TCP, UDP 지원 (원격 서버 전송 가능)</td>
-<td>기본 미지원 (<code>journal-remote</code> 필요)</td>
-</tr>
-<tr>
-<td>보안 및 접근 제어</td>
-<td>root 및 특정 그룹만 접근 가능</td>
-<td><code>journald</code> 자체 보안 기능 활용</td>
-</tr>
-<tr>
-<td>성능</td>
-<td>파일 I/O 기반, 빠르지만 로깅이 많으면 부하 증가</td>
-<td>바이너리 저장 방식으로 빠른 검색 가능</td>
-</tr>
-<tr>
-<td>메타데이터 포함</td>
-<td>기본 텍스트만 저장</td>
-<td>실행한 사용자, 프로세스 정보 등 추가 메타데이터 포함</td>
-</tr>
-<tr>
-<td>장점</td>
-<td>텍스트 기반으로 직관적이며 기존 시스템과 호환성이 높음, 원격 전송 지원</td>
-<td>고급 메타데이터 저장 가능, 빠른 검색 및 필터링, 로그 압축 가능</td>
-</tr>
-<tr>
-<td>단점</td>
-<td>파일 I/O 부담이 크고 검색이 비효율적일 수 있음</td>
-<td>바이너리 저장 방식으로 직접 읽기 어려움, 기본적으로 네트워크 전송 미지원</td>
-</tr>
-</tbody>
-</table>
-<h2 id="journald-cli">journald CLI 예시</h2>
-<ol>
-<li>기본 로깅 위치 <code>/var/log/journal/</code>가 아닌 다른 위치의 로그 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>--directory<span class="o">=</span>/mnt/recovery/var/log/journal/<span class="w"> </span>--no-pager
-</code></pre></div></li>
-<li>특정 시점 로그 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;2024-03-10 00:00:00&quot;</span><span class="w"> </span>--until<span class="w"> </span><span class="s2">&quot;2024-03-11 23:59:59&quot;</span>
-</code></pre></div></li>
-<li>sshd 서비스 로그만 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>sshd
-</code></pre></div></li>
-<li>json으로 출력하기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-o<span class="w"> </span>json-pretty
-</code></pre></div></li>
-</ol>
+<h2 id="_1">요약</h2>
+<ul>
+<li>AWS Console의 "인스턴스 로그 읽기" 기능은 커널 링 버퍼(dmesg)를 직접 읽는 것이 아니고 EC2의 부팅 과정에서 콘솔(/dev/ttyS0)에 출력된 로그를 AWS에서 캡처하여 제공하는 방식</li>
+</ul>
+<p>참고: 콘솔 출력(/dev/ttyS0)등은 사용자/프로세스 레벨이 아니므로 stdout,stderr랑 관련이 없음</p>
+<h2 id="_2">커널 로그 저장 및 출력 순서</h2>
+<pre class="mermaid"><code>graph TD
+    A["커널 이벤트 발생&lt;br&gt;(하드웨어 인식, 드라이버 로딩, 오류 등)"]
+    B["커널 내부 printk() 함수 호출로 메시지 생성"]
+    C["커널 링 버퍼(kernel ring buffer)에 메시지 저장&lt;br/&gt;(메모리 저장)"]
+    D["커널 링 버퍼 내용을 콘솔(/dev/console 등)에 출력"]
+    E["사용자 공간에서 dmesg 명령어로 조회 가능"]
+    F["AWS 가상화 계층에서 콘솔 출력 캡처"]
+    G["AWS Console에서 '인스턴스 로그 읽기'로 제공"]
+
+    A --&gt; B
+    B --&gt; C
+    C --&gt; D
+    C --&gt; E
+    D --&gt; F
+    F --&gt; G
+
+    subgraph 커널 공간
+        A --&gt; B["커널 내부 printk() 함수 호출로 메시지 생성"] --&gt; C["커널 링 버퍼(kernel ring buffer)에 메시지 저장"]
+        C --&gt; D
+    end
+
+    D --&gt; F
+    F --&gt; G
+
+    C --&gt; E
+</code></pre>
+<p>AWS Console의 로그는 일부 커널 메시지만 포함되며 커널 링 버퍼의 전체 내용과 100% 동일하지는 않음</p>
 
 
 
@@ -1419,7 +1364,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../12/cors-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CORS 정리">
+          <a href="../rsyslog-journald-%EB%B9%84%EA%B5%90/" class="md-footer__link md-footer__link--prev" aria-label="Previous: rsyslog, journald 비교">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1429,27 +1374,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                CORS 정리
+                rsyslog, journald 비교
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../aws-%EC%BD%98%EC%86%94-system-log--dmesg-%EC%9D%B8%EA%B0%80/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS 콘솔 system log = dmesg 인가">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                AWS 콘솔 system log = dmesg 인가
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
