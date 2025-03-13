@@ -1170,7 +1170,7 @@
         <li class="md-nav__item">
   <a href="#sso_1" class="md-nav__link">
     <span class="md-ellipsis">
-      SSO 연동 방식
+      SSO 연동 프로토콜
     </span>
   </a>
   
@@ -1339,7 +1339,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"/></svg>
                           <span class="md-ellipsis">
                             
-                              9 min read
+                              8 min read
                             
                           </span>
                         </div>
@@ -1362,52 +1362,40 @@
 <h1 id="sso">SSO 요약</h1>
 <!-- more -->
 
-<h2 id="sso_1">SSO 연동 방식</h2>
+<h2 id="sso_1">SSO 연동 프로토콜</h2>
 <table>
 <thead>
 <tr>
-<th>연동 방식</th>
+<th>연동 방식 (프로토콜)</th>
 <th>설명</th>
 <th>장점</th>
 <th>단점</th>
-<th>예시</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>OAuth 2.0</td>
-<td>인증 및 권한 부여 프레임워크</td>
-<td>다양한 애플리케이션과 연동 가능, 토큰 기반 인증</td>
-<td>구현이 복잡할 수 있음</td>
-<td>Google 로그인, GitHub 로그인</td>
+<td>API 접근 권한 부여 프레임워크 (사용자 인증 X)</td>
+<td>다양한 애플리케이션과 연동 가능, 토큰 기반 접근 제어</td>
+<td>사용자 인증 기능이 없어 OIDC 필요</td>
 </tr>
 <tr>
 <td>OpenID Connect (OIDC)</td>
-<td>OAuth 2.0 기반의 인증 프로토콜</td>
-<td>사용자의 ID 정보를 포함하여 인증 가능</td>
-<td>OAuth 2.0보다 약간 무거움</td>
-<td>Google 로그인, Microsoft 로그인</td>
+<td>OAuth 2.0을 확장하여 사용자 인증 추가</td>
+<td>ID 토큰을 통해 사용자 정보를 검증 가능</td>
+<td>OAuth 2.0보다 구조가 복잡</td>
 </tr>
 <tr>
 <td>SAML (Security Assertion Markup Language)</td>
-<td>XML 기반의 인증 및 권한 부여 표준</td>
-<td>기업 환경에서 많이 사용됨, 강력한 보안</td>
-<td>XML 기반이라 비교적 무거움, 설정이 복잡</td>
-<td>기업용 SSO (Azure AD, Okta)</td>
+<td>XML 기반의 기업용 SSO 표준</td>
+<td>기업 환경에서 많이 사용</td>
+<td>XML 기반이라 비교적 무겁고 설정이 복잡</td>
 </tr>
 <tr>
 <td>JWT (JSON Web Token)</td>
-<td>JSON 기반의 토큰을 활용한 인증 방식</td>
-<td>가볍고 빠른 인증 처리 가능</td>
+<td>JSON 기반의 토큰 형식(프로토콜이 아님)</td>
+<td>빠른 인증 처리 가능</td>
 <td>토큰 유출 시 보안 문제 발생 가능</td>
-<td>자체 구축 API 인증</td>
-</tr>
-<tr>
-<td>Kerberos</td>
-<td>네트워크 인증 프로토콜</td>
-<td>강력한 보안, 티켓 기반 인증</td>
-<td>설정이 복잡하고 네트워크 환경 의존적</td>
-<td>Windows AD SSO</td>
 </tr>
 </tbody>
 </table>
