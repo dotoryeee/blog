@@ -1346,15 +1346,15 @@
 <li>클라이언트 (3.x.x.x) → EC2_B Public IP (52.x.x.x) 요청</li>
 <li>IGW가 요청을 받고, Edge Association Route Table을 통해 TGW로 전달</li>
 <li>TGW가 트래픽을 B VPC로 전달</li>
-<li>B VPC의 EC2_B (Private IP: 10.1.1.20) 가 트래픽 수신</li>
+<li>B VPC내 B subnet의 EC2_B (Private IP: 10.1.1.20) 가 트래픽 수신</li>
 </ol>
 <h2 id="egress-flow">egress flow</h2>
 <ol>
 <li>EC2_B (Private IP: 10.1.1.20) → 클라이언트 응답 생성</li>
-<li>B VPC 라우트 테이블에서 TGW로 전달</li>
+<li>B subnet 라우트 테이블에서 TGW로 전달</li>
 <li>TGW가 트래픽을 A VPC로 전달</li>
-<li>A VPC에서 IGW를 통해 외부 인터넷으로 전달</li>
-<li>클라이언트 (3.x.x.x) 가 응답을 수신</li>
+<li>A TGW subnet에서 IGW를 통해 외부 인터넷으로 전달</li>
+<li>클라이언트(3.x.x.x) 가 응답을 수신</li>
 </ol>
 <h2 id="_2">라우팅 설정</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>IGW<span class="w"> </span>edge<span class="w"> </span>associate<span class="w"> </span>라우트<span class="w"> </span>테이블:
