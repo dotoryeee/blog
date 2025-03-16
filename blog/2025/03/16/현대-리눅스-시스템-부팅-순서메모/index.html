@@ -1304,7 +1304,7 @@
 <!-- more -->
 
 <p>최신 시스템(MBR x / initrd x / init x / GRUB 1 x) 전제</p>
-<p>power on -&gt; uefi 시작 &gt; gpt의 esp에서 GRUB 2 로드&gt; grub.cfg읽기  &gt; vmlinuz 커널 이미지 로드 &gt; initramfs 로드 &gt; 커널 시작(dmesg로 확인할 수 있는 커널 로그 생성 시작) &gt; swapper(pid 0) 시작 &gt; 커널 링 영역 생성 &gt; 시스템 로드를 위한 램디스크 생성 &gt; initramfs내 init 스크립트 시작 &gt; 루트 파일시스템 마운트(/etc/fstab을 읽지 않고 직접 UUID 읽고 R/O로 마운트) &gt; switch_root로 루트 전환 &gt; systemd(pid 1) 시작 &gt; /etc/fstab읽고 파일시스템을 R/W로 재마운트 &gt; target에 의한 서비스 데몬을 의존성에 따라 병렬 시작</p>
+<p>power on &gt; uefi 시작 &gt; gpt의 esp에서 GRUB 2 로드&gt; grub.cfg읽기  &gt; vmlinuz 커널 이미지 로드 &gt; initramfs 로드 &gt; 커널 시작(dmesg로 확인할 수 있는 커널 로그 생성 시작) &gt; swapper(pid 0) 시작 &gt; 커널 링 영역 생성 &gt; 시스템 로드를 위한 램디스크 생성 &gt; initramfs내 init 스크립트 시작 &gt; 루트 파일시스템 마운트(/etc/fstab을 읽지 않고 직접 UUID 읽고 R/O로 마운트) &gt; switch_root로 루트 전환 &gt; systemd(pid 1) 시작 &gt; /etc/fstab읽고 파일시스템을 R/W로 재마운트 &gt; target에 의한 서비스 데몬을 의존성에 따라 병렬 시작</p>
 
 
 
