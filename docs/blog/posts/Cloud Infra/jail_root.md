@@ -40,5 +40,4 @@ categories:
 |containerd/runc|pivot_root|OCI 표준 컨테이너 런타임|
 |initrd|pivot_root|실제 파일 시스템으로 로드되어 pivot_root 사용 가능|
 |initramfs|switch_root|tmpfs 위에 압축 해제되어 pivot_root 사용 불가|
-|dracut|switch_root|현대 리눅스 배포판의 initramfs 생성 도구|
 |systemd-boot|switch_root|systemd 기반 초기 부팅 환경|
