@@ -19,6 +19,13 @@ AWS는 2025년 4월 30일부로 ALB Pre-Warming 요청을 더 이상 지원하�
 3. LCU-R은 ALB뿐만 아니라 Network Load Balancer(NLB)에서도 사용 가능
 4. 예약은 최소 1시간부터 최대 14일까지 가능
 
+## LCU-R 값 추산 가이드
+1. Pre-Warming 요청한 이력이 있다면 AWS Support에 문의하여 과거에 적용된 설정 값 확인 가능
+2. CloudWatch의 LCU 메트릭(PeakLCUs)을 활용하여 ALB의 최대 트래픽 대응에 필요한 LCU 추정
+3. Max(PeakLCUs) * (samplecount / PERIOD(metric) * 60)
+
+출처: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/capacity-unit-reservation.html
+
 ## 비교표
 | 특성 | ALB Pre-Warming | LCU-R(Load Balancer Capacity Unit Reservation) |
 |------|----------------|----------------------------------------------|
