@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../../12/cors-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../16/chroot-pivot_root-switch_root-%EB%B9%84%EA%B5%90/">
       
-      
-        <link rel="next" href="../aws-%EC%BD%98%EC%86%94-system-log--dmesg-%EC%9D%B8%EA%B0%80/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>rsyslog, journald 비교 - dotoryeee's blog</title>
+        <title>AWS ALB Pre-Warming 지원 종료 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rsyslog-journald" class="md-skip">
+        <a href="#aws-alb-pre-warming" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              rsyslog, journald 비교
+              AWS ALB Pre-Warming 지원 종료
             
           </span>
         </div>
@@ -1170,16 +1168,25 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      비교표
+      요약
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#journald-cli" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      journald CLI 예시
+      대안
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      비교표
     </span>
   </a>
   
@@ -1241,7 +1248,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"/></svg>
-                        <time datetime="2025-03-13 00:00:00" class="md-ellipsis">Mar 13, 2025</time>
+                        <time datetime="2025-03-19 00:00:00" class="md-ellipsis">Mar 19, 2025</time>
                       </div>
                     </li>
                     
@@ -1252,7 +1259,7 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/server/">Server</a></span>
+                              <a href="../../../../category/cloud/">Cloud</a></span>
                         </div>
                       </li>
                     
@@ -1283,96 +1290,90 @@
         
 
 
-<h1 id="rsyslog-journald">rsyslog, journald 비교</h1>
+<h1 id="aws-alb-pre-warming">AWS ALB Pre-Warming 지원 종료</h1>
 <!-- more -->
 
-<h2 id="_1">비교표</h2>
+<h2 id="_1">요약</h2>
+<p>AWS는 2025년 4월 30일부로 ALB Pre-Warming 요청을 더 이상 지원하지 않으며, 기존에 설정된 Pre-Warming은 2025년 6월 30일까지만 유지</p>
+<h2 id="_2">대안</h2>
+<ol>
+<li>Pre-Warming을 대체하는 새로운 방식으로 LCU-R 사용(2023.11 출시)</li>
+<li>LCU-R은 사용자가 직접 ALB 용량을 예약할 수 있는 셀프 서비스</li>
+<li>LCU-R은 ALB뿐만 아니라 Network Load Balancer(NLB)에서도 사용 가능</li>
+<li>예약은 최소 1시간부터 최대 14일까지 가능</li>
+</ol>
+<h2 id="_3">비교표</h2>
 <table>
 <thead>
 <tr>
-<th>구분</th>
-<th>rsyslog</th>
-<th>journald</th>
+<th>특성</th>
+<th>ALB Pre-Warming</th>
+<th>LCU-R(Load Balancer Capacity Unit Reservation)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>설명</td>
-<td>기존 리눅스 시스템에서 사용되던 로깅 시스템</td>
-<td><code>systemd</code>의 일부로 동작하는 로깅 시스템</td>
+<td>요청 방식</td>
+<td>AWS Support 티켓 제출</td>
+<td>셀프 서비스(콘솔, CLI, SDK)</td>
 </tr>
 <tr>
-<td>로그 저장 방식</td>
-<td>일반 텍스트 파일 (<code>/var/log/messages</code> 등)</td>
-<td>바이너리 형식 (<code>/var/log/journal/</code>)</td>
+<td>설정 주체</td>
+<td>AWS 지원팀</td>
+<td>고객 직접 설정</td>
 </tr>
 <tr>
-<td>로그 확인 방법</td>
-<td><code>cat</code>, <code>tail</code>, <code>grep</code> 등</td>
-<td><code>journalctl</code> 명령어 사용</td>
+<td>최소 요청 기간</td>
+<td>일반적으로 며칠 전</td>
+<td>최소 1시간 전</td>
 </tr>
 <tr>
-<td>설정 파일</td>
-<td><code>/etc/rsyslog.conf</code></td>
-<td><code>/etc/systemd/journald.conf</code></td>
+<td>최대 유지 기간</td>
+<td>케이스별 상이</td>
+<td>최대 14일</td>
 </tr>
 <tr>
-<td>검색 및 필터링</td>
-<td>파일 기반 검색</td>
-<td><code>journalctl</code>로 상세한 필터링 가능</td>
+<td>비용 청구 방식</td>
+<td>별도 비용 없음</td>
+<td>예약한 LCU 수에 따라 비용 청구</td>
 </tr>
 <tr>
-<td>로그 보존 방식</td>
-<td>로그 파일 크기 제한 및 롤링</td>
-<td>압축 및 저장 공간 자동 관리 가능</td>
+<td>용량 단위</td>
+<td>대략적인 트래픽 예상치</td>
+<td>정확한 LCU 수치</td>
 </tr>
 <tr>
-<td>네트워크 전송 지원</td>
-<td>TCP, UDP 지원 (원격 서버 전송 가능)</td>
-<td>기본 미지원 (<code>journal-remote</code> 필요)</td>
+<td>최소 예약 단위</td>
+<td>명시적 제한 없음</td>
+<td>최소 100 LCU</td>
 </tr>
 <tr>
-<td>보안 및 접근 제어</td>
-<td>root 및 특정 그룹만 접근 가능</td>
-<td><code>journald</code> 자체 보안 기능 활용</td>
+<td>최대 예약 단위</td>
+<td>명시적 제한 없음</td>
+<td>기본 1,500 LCU (조정 가능)</td>
 </tr>
 <tr>
-<td>성능</td>
-<td>파일 I/O 기반, 빠르지만 로깅이 많으면 부하 증가</td>
-<td>바이너리 저장 방식으로 빠른 검색 가능</td>
+<td>계정 한도</td>
+<td>명시적 제한 없음</td>
+<td>리전별 12,000 LCU (조정 가능)</td>
 </tr>
 <tr>
-<td>메타데이터 포함</td>
-<td>기본 텍스트만 저장</td>
-<td>실행한 사용자, 프로세스 정보 등 추가 메타데이터 포함</td>
+<td>투명성</td>
+<td>내부 처리 과정 불투명</td>
+<td>명확한 수치와 비용</td>
 </tr>
 <tr>
-<td>장점</td>
-<td>텍스트 기반으로 직관적이며 기존 시스템과 호환성이 높음, 원격 전송 지원</td>
-<td>고급 메타데이터 저장 가능, 빠른 검색 및 필터링, 로그 압축 가능</td>
+<td>모니터링</td>
+<td>제한적</td>
+<td>CloudWatch 메트릭을 통한 상세 모니터링</td>
 </tr>
 <tr>
-<td>단점</td>
-<td>파일 I/O 부담이 크고 검색이 비효율적일 수 있음</td>
-<td>바이너리 저장 방식으로 직접 읽기 어려움, 기본적으로 네트워크 전송 미지원</td>
+<td>종료 일정</td>
+<td>2025년 4월 30일 요청 종료, 2025년 6월 30일 서비스 종료</td>
+<td>현재 활성화</td>
 </tr>
 </tbody>
 </table>
-<h2 id="journald-cli">journald CLI 예시</h2>
-<ol>
-<li>기본 로깅 위치 <code>/var/log/journal/</code>가 아닌 다른 위치의 로그 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>--directory<span class="o">=</span>/mnt/recovery/var/log/journal/<span class="w"> </span>--no-pager
-</code></pre></div></li>
-<li>특정 시점 로그 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;2024-03-10 00:00:00&quot;</span><span class="w"> </span>--until<span class="w"> </span><span class="s2">&quot;2024-03-11 23:59:59&quot;</span>
-</code></pre></div></li>
-<li>sshd 서비스 로그만 읽기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-u<span class="w"> </span>sshd
-</code></pre></div></li>
-<li>json으로 출력하기
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>journalctl<span class="w"> </span>-o<span class="w"> </span>json-pretty
-</code></pre></div></li>
-</ol>
 
 
 
@@ -1419,7 +1420,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../12/cors-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CORS 정리">
+          <a href="../../16/chroot-pivot_root-switch_root-%EB%B9%84%EA%B5%90/" class="md-footer__link md-footer__link--prev" aria-label="Previous: chroot, pivot_root, switch_root 비교">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -1429,27 +1430,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                CORS 정리
+                chroot, pivot_root, switch_root 비교
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../aws-%EC%BD%98%EC%86%94-system-log--dmesg-%EC%9D%B8%EA%B0%80/" class="md-footer__link md-footer__link--next" aria-label="Next: AWS 콘솔 system log = dmesg 인가">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                AWS 콘솔 system log = dmesg 인가
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
