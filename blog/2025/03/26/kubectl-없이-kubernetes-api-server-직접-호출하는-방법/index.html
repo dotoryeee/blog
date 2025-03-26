@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../cdn%EA%B3%BC-%EB%8F%99%EC%A0%81%EC%BD%98%ED%85%90%EC%B8%A0-%ED%86%B5%ED%95%A9-%EC%8B%9C-%EC%B0%A8%EC%9D%B4%EC%A0%90/">
+        <link rel="prev" href="../../19/aws-alb-pre-warming-%EC%A7%80%EC%9B%90-%EC%A2%85%EB%A3%8C/">
       
-      
-        <link rel="next" href="../../26/kubectl-%EC%97%86%EC%9D%B4-kubernetes-api-server-%EC%A7%81%EC%A0%91-%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>AWS ALB Pre-Warming 지원 종료 - dotoryeee's blog</title>
+        <title>Kubectl 없이 Kubernetes API Server 직접 호출하는 방법 - dotoryeee's blog</title>
       
     
     
@@ -80,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aws-alb-pre-warming" class="md-skip">
+        <a href="#kubectl-kubernetes-api-server" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWS ALB Pre-Warming 지원 종료
+              Kubectl 없이 Kubernetes API Server 직접 호출하는 방법
             
           </span>
         </div>
@@ -1200,50 +1198,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      요약
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      대안
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lcu-r" class="md-nav__link">
-    <span class="md-ellipsis">
-      LCU-R 값 추산 가이드
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      비교표
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1298,7 +1252,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2025-03-19 00:00:00+00:00" class="md-ellipsis">Mar 19, 2025</time>
+                        <time datetime="2025-03-26 00:00:00+00:00" class="md-ellipsis">Mar 26, 2025</time>
                       </div>
                     </li>
                     
@@ -1309,7 +1263,7 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/cloud/">Cloud</a></span>
+                              <a href="../../../../category/kubernetes/">Kubernetes</a></span>
                         </div>
                       </li>
                     
@@ -1344,97 +1298,94 @@
 
 
 
-<h1 id="aws-alb-pre-warming">AWS ALB Pre-Warming 지원 종료</h1>
+<h1 id="kubectl-kubernetes-api-server">Kubectl 없이 Kubernetes API Server 직접 호출하는 방법</h1>
 <!-- more -->
 
-<h2 id="_1">요약</h2>
-<p>AWS는 2025년 4월 30일부로 ALB Pre-Warming 요청을 더 이상 지원하지 않으며, 기존에 설정된 Pre-Warming은 2025년 6월 30일까지만 유지</p>
-<h2 id="_2">대안</h2>
 <ol>
-<li>Pre-Warming을 대체하는 새로운 방식으로 LCU-R 사용(2023.11 출시)</li>
-<li>LCU-R은 사용자가 직접 ALB 용량을 예약할 수 있는 셀프 서비스</li>
-<li>LCU-R은 ALB뿐만 아니라 Network Load Balancer(NLB)에서도 사용 가능</li>
-<li>예약은 최소 1시간부터 최대 14일까지 가능</li>
+<li>Kubernetes 접속 정보 가져오기(api endpoint, name)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span>k<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>-o<span class="w"> </span>yaml
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>apiVersion:<span class="w"> </span>v1
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>clusters:
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>-<span class="w"> </span>cluster:
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>certificate-authority-data:<span class="w"> </span>DATA+OMITTED
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="hll"><span class="w">    </span>server:<span class="w"> </span>https://controlplane:6443
+</span><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="hll"><span class="w">  </span>name:<span class="w"> </span>kubernetes
+</span><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>contexts:
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>-<span class="w"> </span>context:
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span>cluster:<span class="w"> </span>kubernetes
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span>user:<span class="w"> </span>kubernetes-admin
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span>name:<span class="w"> </span>kubernetes-admin@kubernetes
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>current-context:<span class="w"> </span>kubernetes-admin@kubernetes
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>kind:<span class="w"> </span>Config
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>preferences:<span class="w"> </span><span class="o">{}</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>users:
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>-<span class="w"> </span>name:<span class="w"> </span>kubernetes-admin
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span>user:
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span>client-certificate-data:<span class="w"> </span>DATA+OMITTED
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span>client-key-data:<span class="w"> </span>DATA+OMITTED
+</code></pre></div></li>
+<li>부트스트랩 토큰 secret 이름 확인
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;bootstrap-token-*&#39;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>bootstrap-token-cfs356<span class="w">   </span>bootstrap.kubernetes.io/token<span class="w">   </span><span class="m">6</span><span class="w">      </span>30m
+</code></pre></div></li>
+<li>수집 대상 토큰 정보 확인
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span>k<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>bootstrap-token-cfs356<span class="w"> </span>-o<span class="w"> </span>yaml
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>apiVersion:<span class="w"> </span>v1
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>data:
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>auth-extra-groups:<span class="w"> </span><span class="nv">c3lzdGVtOmJvb3RzdHJhcHBlcnM6a3ViZWFkbTpkZWZhdWx0LW5vZGUtdG9rZW4</span><span class="o">=</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>expiration:<span class="w"> </span><span class="nv">MjAyNS0wMy0yN1QwMDoxMTowNFo</span><span class="o">=</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="hll"><span class="w">  </span>token-id:<span class="w"> </span>Y2ZzMzU2
+</span><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="hll"><span class="w">  </span>token-secret:<span class="w"> </span><span class="nv">NnBvYmNjOTNmNGswMXhobg</span><span class="o">==</span>
+</span><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span>usage-bootstrap-authentication:<span class="w"> </span><span class="nv">dHJ1ZQ</span><span class="o">==</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span>usage-bootstrap-signing:<span class="w"> </span><span class="nv">dHJ1ZQ</span><span class="o">==</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>kind:<span class="w"> </span>Secret
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>metadata:
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span>creationTimestamp:<span class="w"> </span><span class="s2">&quot;2025-03-26T00:11:04Z&quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span>name:<span class="w"> </span>bootstrap-token-cfs356
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span>namespace:<span class="w"> </span>kube-system
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span>resourceVersion:<span class="w"> </span><span class="s2">&quot;249&quot;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span>uid:<span class="w"> </span>cb9b0f6e-af44-40a9-b1d7-f44313678416
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>type:<span class="w"> </span>bootstrap.kubernetes.io/token
+</code></pre></div></li>
+<li>토근 base64 디코딩
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>✖<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>Y2ZzMzU2<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cfs356
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="nv">NnBvYmNjOTNmNGswMXhobg</span><span class="o">==</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>6pobcc93f4k01xhn
+</code></pre></div></li>
+<li>kubectl 없이 API 직접 호출<ol>
+<li>토큰 없을때
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span>curl<span class="w"> </span>--insecure<span class="w"> </span>https://controlplane:6443/api
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s2">&quot;kind&quot;</span>:<span class="w"> </span><span class="s2">&quot;Status&quot;</span>,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s2">&quot;apiVersion&quot;</span>:<span class="w"> </span><span class="s2">&quot;v1&quot;</span>,
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s2">&quot;metadata&quot;</span>:<span class="w"> </span><span class="o">{}</span>,
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;Failure&quot;</span>,
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s2">&quot;message&quot;</span>:<span class="w"> </span><span class="s2">&quot;forbidden: User \&quot;system:anonymous\&quot; cannot get path \&quot;/api\&quot;&quot;</span>,
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s2">&quot;reason&quot;</span>:<span class="w"> </span><span class="s2">&quot;Forbidden&quot;</span>,
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s2">&quot;details&quot;</span>:<span class="w"> </span><span class="o">{}</span>,
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s2">&quot;code&quot;</span>:<span class="w"> </span><span class="m">403</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="o">}</span>
+</code></pre></div></li>
+<li>토큰 있을떄
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>controlplane<span class="w"> </span>~<span class="w"> </span>➜<span class="w">  </span>curl<span class="w"> </span>--insecure<span class="w"> </span>https://controlplane:6443/api<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer cfs356.6pobcc93f4k01xhn&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s2">&quot;kind&quot;</span>:<span class="w"> </span><span class="s2">&quot;APIVersions&quot;</span>,
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s2">&quot;versions&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="s2">&quot;v1&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="o">]</span>,
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s2">&quot;serverAddressByClientCIDRs&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="o">{</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="s2">&quot;clientCIDR&quot;</span>:<span class="w"> </span><span class="s2">&quot;0.0.0.0/0&quot;</span>,
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="s2">&quot;serverAddress&quot;</span>:<span class="w"> </span><span class="s2">&quot;192.168.58.188:6443&quot;</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="o">]</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="o">}</span>
+</code></pre></div></li>
 </ol>
-<h2 id="lcu-r">LCU-R 값 추산 가이드</h2>
-<ol>
-<li>Pre-Warming 요청한 이력이 있다면 AWS Support에 문의하여 과거에 적용된 설정 값 확인 가능</li>
-<li>CloudWatch의 LCU 메트릭(PeakLCUs)을 활용하여 ALB의 최대 트래픽 대응에 필요한 LCU 추정</li>
-<li>Max(PeakLCUs) * (samplecount / PERIOD(metric) * 60)</li>
+</li>
+<li></li>
 </ol>
-<p>출처: <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/capacity-unit-reservation.html">https://docs.aws.amazon.com/elasticloadbalancing/latest/application/capacity-unit-reservation.html</a></p>
-<h2 id="_3">비교표</h2>
-<table>
-<thead>
-<tr>
-<th>특성</th>
-<th>ALB Pre-Warming</th>
-<th>LCU-R(Load Balancer Capacity Unit Reservation)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>요청 방식</td>
-<td>AWS Support 티켓 제출</td>
-<td>셀프 서비스(콘솔, CLI, SDK)</td>
-</tr>
-<tr>
-<td>설정 주체</td>
-<td>AWS 지원팀</td>
-<td>고객 직접 설정</td>
-</tr>
-<tr>
-<td>최소 요청 기간</td>
-<td>일반적으로 며칠 전</td>
-<td>최소 1시간 전</td>
-</tr>
-<tr>
-<td>최대 유지 기간</td>
-<td>케이스별 상이</td>
-<td>최대 14일</td>
-</tr>
-<tr>
-<td>비용 청구 방식</td>
-<td>별도 비용 없음</td>
-<td>예약한 LCU 수에 따라 비용 청구</td>
-</tr>
-<tr>
-<td>용량 단위</td>
-<td>대략적인 트래픽 예상치</td>
-<td>정확한 LCU 수치</td>
-</tr>
-<tr>
-<td>최소 예약 단위</td>
-<td>명시적 제한 없음</td>
-<td>최소 100 LCU</td>
-</tr>
-<tr>
-<td>최대 예약 단위</td>
-<td>명시적 제한 없음</td>
-<td>기본 1,500 LCU (조정 가능)</td>
-</tr>
-<tr>
-<td>계정 한도</td>
-<td>명시적 제한 없음</td>
-<td>리전별 12,000 LCU (조정 가능)</td>
-</tr>
-<tr>
-<td>투명성</td>
-<td>내부 처리 과정 불투명</td>
-<td>명확한 수치와 비용</td>
-</tr>
-<tr>
-<td>모니터링</td>
-<td>제한적</td>
-<td>CloudWatch 메트릭을 통한 상세 모니터링</td>
-</tr>
-<tr>
-<td>종료 일정</td>
-<td>2025년 4월 30일 요청 종료, 2025년 6월 30일 서비스 종료</td>
-<td>현재 활성화</td>
-</tr>
-</tbody>
-</table>
 
 
 
@@ -1481,7 +1432,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../cdn%EA%B3%BC-%EB%8F%99%EC%A0%81%EC%BD%98%ED%85%90%EC%B8%A0-%ED%86%B5%ED%95%A9-%EC%8B%9C-%EC%B0%A8%EC%9D%B4%EC%A0%90/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CDN과 동적콘텐츠 통합 시 차이점">
+          <a href="../../19/aws-alb-pre-warming-%EC%A7%80%EC%9B%90-%EC%A2%85%EB%A3%8C/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AWS ALB Pre-Warming 지원 종료">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1491,27 +1442,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                CDN과 동적콘텐츠 통합 시 차이점
+                AWS ALB Pre-Warming 지원 종료
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../26/kubectl-%EC%97%86%EC%9D%B4-kubernetes-api-server-%EC%A7%81%EC%A0%91-%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95/" class="md-footer__link md-footer__link--next" aria-label="Next: Kubectl 없이 Kubernetes API Server 직접 호출하는 방법">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Kubectl 없이 Kubernetes API Server 직접 호출하는 방법
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
