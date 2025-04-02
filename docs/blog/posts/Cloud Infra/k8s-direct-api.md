@@ -96,4 +96,3 @@ controlplane ~ ➜  echo NnBvYmNjOTNmNGswMXhobg== | base64 --decode
     ]
     }
     ```
-1. 
