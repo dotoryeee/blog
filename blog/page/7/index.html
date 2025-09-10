@@ -1310,6 +1310,77 @@
           
           <li class="md-meta__item">
             
+              32 min read
+            
+          </li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="terraform-practice"><a class="toclink" href="../../1993/09/17/terraform-practice/">Terraform Practice</a></h2>
+<aside>
+💡 테라폼을 아키텍처를 연습해봅니다
+
+</aside>
+
+<ul>
+<li>
+<p>EC2에 SSH 접속을 위한 키페어 생성</p>
+<ol>
+<li>비밀키를 생성합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">rsa</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span>
+</code></pre></div>
+<ol>
+<li>pem을 사용하려면 권한을 수정해야 합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span>
+</code></pre></div>
+<ol>
+<li>AWS에 넘겨줄 공개키를 생성합니다</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pub</span>
+</code></pre></div>
+</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/terraform-practice/">
+          Continue reading
+        </a>
+      </nav>
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
               4 min read
             
           </li>
