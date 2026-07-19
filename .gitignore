@@ -17,3 +17,4 @@ __pycache__
 *.tfvars.json
 
 .DS_Store
+CLAUDE.md
