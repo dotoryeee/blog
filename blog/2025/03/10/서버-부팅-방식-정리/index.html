@@ -8,6 +8,8 @@
       
       
       
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2025/03/10/%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/">
+      
       
         <link rel="prev" href="../storage-%EC%A0%95%EB%A6%AC/">
       
@@ -1838,33 +1840,33 @@
 <thead>
 <tr>
 <th>부트 방식</th>
-<th><code>/boot</code> 필요 여부</th>
-<th><code>/boot/efi</code> 필요 여부</th>
+<th><code>/boot</code> 별도 파티션</th>
+<th><code>/boot/efi</code> 별도 파티션</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>BIOS + MBR</td>
-<td>✅ 필요</td>
+<td>선택</td>
 <td>❌ 필요 없음</td>
 <td>GRUB이 MBR에 설치되고, <code>/boot</code>에서 커널을 로드</td>
 </tr>
 <tr>
 <td>UEFI + GPT</td>
-<td>✅ 필요</td>
+<td>선택</td>
 <td>✅ 필요</td>
 <td>GRUB이 <code>/boot/efi</code>의 ESP에서 실행되고, 커널을 <code>/boot</code>에서 로드</td>
 </tr>
 <tr>
 <td>AWS Nitro 기반 (x86)</td>
-<td>✅ 필요</td>
+<td>선택</td>
 <td>❌ 필요 없음</td>
 <td>AWS 가상화 환경에서는 <code>/boot/efi</code> 없이도 부팅 가능</td>
 </tr>
 <tr>
 <td>AWS Xen 기반 (t2 등 구형)</td>
-<td>✅ 필요</td>
+<td>선택</td>
 <td>❌ 필요 없음</td>
 <td>MBR 기반 BIOS 부팅 사용</td>
 </tr>
