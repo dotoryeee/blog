@@ -1546,7 +1546,7 @@
   <a href="#gwlb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        트래픽 흐름 (GWLB 방식)
+        GWLB가 대규모에서 유리한 이유
       
     </span>
   </a>
@@ -1555,6 +1555,17 @@
       
         <li class="md-nav__item">
   <a href="#gwlb_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트래픽 흐름 (GWLB 방식)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gwlb_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         라우트 테이블 예시 (GWLB 방식)
@@ -1777,7 +1788,16 @@
 </tbody>
 </table>
 <hr />
-<h2 id="gwlb">트래픽 흐름 (GWLB 방식)</h2>
+<h2 id="gwlb">GWLB가 대규모에서 유리한 이유</h2>
+<ul>
+<li>수평 확장: 어플라이언스를 target group으로 묶어 분산 → 부하 증가 시 Auto Scaling으로 대수만 추가 (ENI 방식은 인스턴스 타입 업그레이드뿐)</li>
+<li>Flow 고정(sticky): 5-tuple 해시로 같은 flow는 항상 같은 어플라이언스에 전달 → 장비 간 세션 동기화(클러스터링) 없이 stateful 검사 유지</li>
+<li>장애 처리 내장: 헬스체크로 비정상 장비 자동 제외 후 재해싱 → ENI 방식의 수동 라우트 교체(수십 초~수 분 단절) 불필요</li>
+<li>무중단 증설: GENEVE가 원본 패킷을 그대로 전달하므로 NAT·라우팅 변경 없이 target group 등록/해제만으로 장비 추가·제거 가능</li>
+<li>멀티 VPC 공유: GWLBe가 PrivateLink 기반이라 여러 VPC·계정이 하나의 검사 fleet을 공유 → 검사 계층을 한곳에서 중앙 확장</li>
+</ul>
+<hr />
+<h2 id="gwlb_1">트래픽 흐름 (GWLB 방식)</h2>
 <pre class="mermaid"><code>graph LR
     Internet((Internet)) --&gt; IGW[IGW]
     IGW --&gt;|"edge association RT&lt;br&gt;dest: 워크로드 서브넷 → GWLBe"| GWLBe[GWLB Endpoint]
@@ -1792,7 +1812,7 @@
 <li>왕복이 같은 어플라이언스를 거치는 대칭 라우팅 구성이 핵심 → 비대칭 시 세션 기반 검사 불가</li>
 </ul>
 <hr />
-<h2 id="gwlb_1">라우트 테이블 예시 (GWLB 방식)</h2>
+<h2 id="gwlb_2">라우트 테이블 예시 (GWLB 방식)</h2>
 <table>
 <thead>
 <tr>
