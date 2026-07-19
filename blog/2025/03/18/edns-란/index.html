@@ -23,7 +23,7 @@
     
     
       
-        <title>eDNS 란 - dotoryeee's blog</title>
+        <title>EDNS 란 - dotoryeee's blog</title>
       
     
     
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              eDNS 란
+              EDNS 란
             
           </span>
         </div>
@@ -1548,7 +1548,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        변경된 로직
+        동작 방식
       
     </span>
   </a>
@@ -1657,11 +1657,14 @@
 
 
 
-<h1 id="edns">eDNS 란</h1>
+<h1 id="edns">EDNS 란</h1>
 <!-- more -->
 
 <h2 id="_1">중요한 이유</h2>
-<p>DNS 서비스 제공자(Google, Cloudflare 등)들이 EDNS 표준을 구현하지 않은 DNS에 대해 2019년부터 중단</p>
+<ul>
+<li>2019년 DNS Flag Day부터 주요 퍼블릭 DNS 리졸버(Google, Cloudflare 등)가 EDNS 쿼리에 응답하지 않는 비표준 DNS 서버에 대한 재시도 워크어라운드를 중단 → 해당 서버는 조회 실패로 사실상 서비스 불가</li>
+<li>EDNS 미구현이어도 규격대로 응답(FORMERR 반환 또는 OPT 없이 응답)하는 서버는 Flag Day 이후에도 정상 동작</li>
+</ul>
 <h2 id="_2">비교표</h2>
 <table>
 <thead>
@@ -1673,14 +1676,14 @@
 </thead>
 <tbody>
 <tr>
-<td>패킷 크기</td>
-<td>512바이트 이상 가능</td>
-<td>512바이트로 제한</td>
+<td>패킷 크기 (UDP)</td>
+<td>512바이트 초과 가능 (통상 1232~4096바이트 광고)</td>
+<td>512바이트 제한, 초과 시 TC 비트로 TCP 폴백 필요</td>
 </tr>
 <tr>
 <td>플래그 필드</td>
-<td>최대 16개의 플래그 지원</td>
-<td>제한된 플래그 필드</td>
+<td>16비트 확장 플래그 필드 추가 (현재 DO 비트만 정의)</td>
+<td>헤더 기본 플래그만 사용</td>
 </tr>
 <tr>
 <td>응답 코드</td>
@@ -1724,18 +1727,18 @@
 </tr>
 </tbody>
 </table>
-<h2 id="_3">변경된 로직</h2>
-<pre class="mermaid"><code>graph TD
-    A[클라이언트] --&gt;|DNS 요청| B[DNS 서버]
-    B --&gt;|전통적 DNS| C[단순 도메인 확인]
-    B --&gt;|EDNS 확장 기능| D[확장된 DNS 처리]
-    D --&gt;|DNS 필터링| E[허용되지 않은 도메인 필터링]
-    D --&gt;|DNSSEC| F[DNS 보안 확장]
-    D --&gt;|DNS 마이그레이션| G[다운타임 없는 인프라 마이그레이션]
-    E --&gt;|싱크홀 작업| H[차단된 도메인 요청 리다이렉션]
-    E --&gt;|로깅 작업| I[요청 기록 및 액세스 허용]
-    F --&gt;|서명 검증| J[DNS 하이재킹 방지]
-    G --&gt;|네임서버 변경| K[새 환경으로 트래픽 이동]</code></pre>
+<h2 id="_3">동작 방식</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant Server
+
+    Client-&gt;&gt;Server: DNS 쿼리 + OPT 레코드 (UDP 페이로드 크기 광고, DO=1)
+    Server--&gt;&gt;Client: 응답 + OPT 레코드 (512바이트 초과 응답, DNSSEC 서명 포함)
+    Note over Client,Server: EDNS 미지원 서버는 OPT 무시 또는 FORMERR 응답</code></pre>
+<ul>
+<li>EDNS는 헤더를 바꾸지 않고 OPT 의사 레코드(pseudo-RR)를 Additional 섹션에 실어 기능을 확장하는 방식 (RFC 6891)</li>
+<li>DNSSEC, ECS 같은 확장 기능이 모두 이 OPT 레코드 위에서 동작</li>
+</ul>
 
 
 
