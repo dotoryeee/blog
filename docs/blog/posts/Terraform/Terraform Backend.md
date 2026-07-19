@@ -71,7 +71,11 @@ categories:
     }
     ######### DO NOT TOUCH #############
     ```
-        
+
+    !!! warning
+
+        💡 지금은 provider version과 인라인 versioning이 deprecated 되었으니 required_providers와 aws_s3_bucket_versioning 리소스로 작성합니다
+
 3. plan에 따르면 두 개의 리소스가 생성됨을 안내하고 있습니다
     ```s
     terraform plan

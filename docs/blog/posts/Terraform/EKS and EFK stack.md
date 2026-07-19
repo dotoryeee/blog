@@ -334,25 +334,25 @@ resource "aws_instance" "logstash_instance_private_2_1" {
   }
 }
 
-resource "aws_lb" "logstash_alb" {
-  name               = "logstash-alb"
+resource "aws_lb" "logstash_nlb" {
+  name               = "logstash-nlb"
   internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.logstash_alb_sg.id]
+  load_balancer_type = "network" #Beats(5044)는 TCP 기반이므로 L7 ALB가 아닌 L4 NLB로 프론트
+  security_groups    = [aws_security_group.logstash_nlb_sg.id]
   subnets            = [aws_subnet.public_1.id, aws_subnet.public_2.id]
 }
 
 resource "aws_lb_target_group" "logstash_target_group" {
   name     = "logstash-tg"
   port     = 5044
-  protocol = "HTTP"
+  protocol = "TCP"
   vpc_id   = aws_vpc.main.id
 }
 
 resource "aws_lb_listener" "logstash_ingress" {
-  load_balancer_arn = aws_lb.logstash_alb.arn
-  port              = "80"
-  protocol          = "HTTP"
+  load_balancer_arn = aws_lb.logstash_nlb.arn
+  port              = "5044"
+  protocol          = "TCP"
 
   default_action {
     type             = "forward"
@@ -374,7 +374,7 @@ resource "aws_lb_target_group_attachment" "tg_attachment_2" {
 
 ### security Group
 
-resource "aws_security_group" "logstash_alb_sg" {
+resource "aws_security_group" "logstash_nlb_sg" {
   vpc_id = aws_vpc.main.id
 
   ingress {

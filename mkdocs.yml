@@ -1,4 +1,5 @@
 site_name: dotoryeee's blog
+site_url: https://dotoryeee.github.io/blog/
 
 theme:
   name: material

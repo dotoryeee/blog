@@ -21,7 +21,6 @@ K8S 연습을 위한 최소한의 EKS cluter 구축 terraform 코드입니다.
   ```
   ![configmap_error](EKS and EFK stack/Screenshot 2023-04-12 at 12.23.26 AM copy.png)
 4. 
-<!-- more -->
 
 ## EKS클러스터 배포 Terraform 코드
 

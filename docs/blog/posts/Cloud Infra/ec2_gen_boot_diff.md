@@ -63,12 +63,12 @@ categories:
 ---
 
 ## /boot 및 /boot/efi 필요성
-| 부트 방식 | `/boot` 필요 여부 | `/boot/efi` 필요 여부 | 설명 |
+| 부트 방식 | `/boot` 별도 파티션 | `/boot/efi` 별도 파티션 | 설명 |
 |----------|-----------------|------------------|------------------|
-| BIOS + MBR | ✅ 필요 | ❌ 필요 없음 | GRUB이 MBR에 설치되고, `/boot`에서 커널을 로드 |
-| UEFI + GPT | ✅ 필요 | ✅ 필요 | GRUB이 `/boot/efi`의 ESP에서 실행되고, 커널을 `/boot`에서 로드 |
-| AWS Nitro 기반 (x86) | ✅ 필요 | ❌ 필요 없음 | AWS 가상화 환경에서는 `/boot/efi` 없이도 부팅 가능 |
-| AWS Xen 기반 (t2 등 구형) | ✅ 필요 | ❌ 필요 없음 | MBR 기반 BIOS 부팅 사용 |
+| BIOS + MBR | 선택 | ❌ 필요 없음 | GRUB이 MBR에 설치되고, `/boot`에서 커널을 로드 |
+| UEFI + GPT | 선택 | ✅ 필요 | GRUB이 `/boot/efi`의 ESP에서 실행되고, 커널을 `/boot`에서 로드 |
+| AWS Nitro 기반 (x86) | 선택 | ❌ 필요 없음 | AWS 가상화 환경에서는 `/boot/efi` 없이도 부팅 가능 |
+| AWS Xen 기반 (t2 등 구형) | 선택 | ❌ 필요 없음 | MBR 기반 BIOS 부팅 사용 |
 
 ---
 

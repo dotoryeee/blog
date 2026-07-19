@@ -827,6 +827,10 @@ categories:
 
 - rds.tf
 
+    !!! warning
+
+        💡 지금은 aws_db_instance에서 name 대신 db_name으로 작성합니다
+
     ```terraform title="rds.tf" linenums="1"
     #--------------Security Group----------------
     resource "aws_security_group" "rds" {
