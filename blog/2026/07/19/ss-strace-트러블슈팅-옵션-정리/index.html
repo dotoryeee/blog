@@ -9,26 +9,26 @@
       
       
       
-        <link rel="prev" href="../docker_compose_templates/">
+        <link rel="prev" href="../edge-association-%EA%B8%B0%EB%B0%98-utm-%EA%B5%AC%EC%84%B1-%EC%A0%95%EB%A6%AC/">
       
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>TODO - dotoryeee's blog</title>
+        <title>ss, strace 트러블슈팅 옵션 정리 - dotoryeee's blog</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +47,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#todo" class="md-skip">
+        <a href="#ss-strace" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TODO
+              ss, strace 트러블슈팅 옵션 정리
             
           </span>
         </div>
@@ -144,7 +144,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -155,7 +157,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
-  <img src="../../logo.svg" alt="logo">
+  <img src="../../../../../logo.svg" alt="logo">
 
     </a>
     dotoryeee's blog
@@ -170,7 +172,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../../.." class="md-nav__link">
         
   
   
@@ -194,20 +196,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -228,7 +230,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -243,12 +245,14 @@
                 
   
   
+    
+  
   
     
   
   
-    <li class="md-nav__item">
-      <a href="../../blog/" class="md-nav__link">
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
         
   
   
@@ -327,7 +331,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2026/07/" class="md-nav__link">
+      <a href="../../../../archive/2026/07/" class="md-nav__link">
         
   
   
@@ -357,7 +361,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2025/09/" class="md-nav__link">
+      <a href="../../../../archive/2025/09/" class="md-nav__link">
         
   
   
@@ -387,7 +391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2025/03/" class="md-nav__link">
+      <a href="../../../../archive/2025/03/" class="md-nav__link">
         
   
   
@@ -417,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2024/03/" class="md-nav__link">
+      <a href="../../../../archive/2024/03/" class="md-nav__link">
         
   
   
@@ -447,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2024/02/" class="md-nav__link">
+      <a href="../../../../archive/2024/02/" class="md-nav__link">
         
   
   
@@ -477,7 +481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2023/11/" class="md-nav__link">
+      <a href="../../../../archive/2023/11/" class="md-nav__link">
         
   
   
@@ -507,7 +511,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2023/10/" class="md-nav__link">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
         
   
   
@@ -537,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2023/02/" class="md-nav__link">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
         
   
   
@@ -567,7 +571,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2023/01/" class="md-nav__link">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
         
   
   
@@ -597,7 +601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/2021/04/" class="md-nav__link">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
         
   
   
@@ -627,7 +631,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/archive/1993/09/" class="md-nav__link">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
         
   
   
@@ -714,7 +718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/aa/" class="md-nav__link">
+      <a href="../../../../category/aa/" class="md-nav__link">
         
   
   
@@ -744,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/aws/" class="md-nav__link">
+      <a href="../../../../category/aws/" class="md-nav__link">
         
   
   
@@ -774,7 +778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/cicd/" class="md-nav__link">
+      <a href="../../../../category/cicd/" class="md-nav__link">
         
   
   
@@ -804,7 +808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/cloud/" class="md-nav__link">
+      <a href="../../../../category/cloud/" class="md-nav__link">
         
   
   
@@ -834,7 +838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/devops/" class="md-nav__link">
+      <a href="../../../../category/devops/" class="md-nav__link">
         
   
   
@@ -864,7 +868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/elasticsearch/" class="md-nav__link">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
         
   
   
@@ -894,7 +898,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/grafana/" class="md-nav__link">
+      <a href="../../../../category/grafana/" class="md-nav__link">
         
   
   
@@ -924,7 +928,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/kubernetes/" class="md-nav__link">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
         
   
   
@@ -954,7 +958,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/network/" class="md-nav__link">
+      <a href="../../../../category/network/" class="md-nav__link">
         
   
   
@@ -984,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/prometheus/" class="md-nav__link">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
         
   
   
@@ -1014,7 +1018,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/python/" class="md-nav__link">
+      <a href="../../../../category/python/" class="md-nav__link">
         
   
   
@@ -1044,7 +1048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/route53/" class="md-nav__link">
+      <a href="../../../../category/route53/" class="md-nav__link">
         
   
   
@@ -1074,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/sre/" class="md-nav__link">
+      <a href="../../../../category/sre/" class="md-nav__link">
         
   
   
@@ -1104,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/security/" class="md-nav__link">
+      <a href="../../../../category/security/" class="md-nav__link">
         
   
   
@@ -1134,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/server/" class="md-nav__link">
+      <a href="../../../../category/server/" class="md-nav__link">
         
   
   
@@ -1164,7 +1168,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/terraform/" class="md-nav__link">
+      <a href="../../../../category/terraform/" class="md-nav__link">
         
   
   
@@ -1194,7 +1198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/docker/" class="md-nav__link">
+      <a href="../../../../category/docker/" class="md-nav__link">
         
   
   
@@ -1224,7 +1228,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/project/" class="md-nav__link">
+      <a href="../../../../category/project/" class="md-nav__link">
         
   
   
@@ -1254,7 +1258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/study/" class="md-nav__link">
+      <a href="../../../../category/study/" class="md-nav__link">
         
   
   
@@ -1284,7 +1288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/category/udemy/" class="md-nav__link">
+      <a href="../../../../category/udemy/" class="md-nav__link">
         
   
   
@@ -1324,20 +1328,20 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -1358,7 +1362,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1376,7 +1380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
         
   
   
@@ -1404,7 +1408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
         
   
   
@@ -1432,7 +1436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../docker_compose_templates/" class="md-nav__link">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
         
   
   
@@ -1453,44 +1457,6 @@
 
               
             
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    TODO
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1506,6 +1472,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -1518,6 +1486,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        언제 쓰는가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ss-nltp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ss -nltp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strace-k-p-x-i-t-z" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        strace -k -p -x -i -T -Z
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사용 사례
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1525,28 +1556,222 @@
             
           
           
-            <div class="md-content" data-md-component="content">
-              
-              <article class="md-content__inner md-typeset">
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
                 
-                  
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-19 00:00:00+00:00" class="md-ellipsis">Jul 19, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/server/">Server</a>, 
+                              <a href="../../../../category/network/">Network</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              3 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
 
 
 
-<h1 id="todo">TODO</h1>
+
+<h1 id="ss-strace">ss, strace 트러블슈팅 옵션 정리</h1>
+<!-- more -->
+
+<h2 id="_1">언제 쓰는가</h2>
+<ul>
+<li>ss: 리스닝 포트와 소켓 상태, 그 소켓을 잡고 있는 프로세스를 확인하는 도구 (netstat 대체, iproute2 포함)</li>
+<li>strace: 프로세스가 호출하는 시스템 콜을 추적하는 도구</li>
+<li>조합 워크플로: ss로 포트 점유 프로세스의 PID 확인 → strace로 해당 PID에 attach해 실패 원인 추적</li>
+</ul>
 <hr />
-<ol>
-<li>word</li>
-<li>ss -nltp</li>
-<li>strace -k -p <PID> -x -i -T -Z</li>
-</ol>
+<h2 id="ss-nltp">ss -nltp</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ss</span><span class="w"> </span><span class="o">-</span><span class="n">nltp</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">State</span><span class="w">   </span><span class="n">Recv</span><span class="o">-</span><span class="n">Q</span><span class="w">  </span><span class="n">Send</span><span class="o">-</span><span class="n">Q</span><span class="w">   </span><span class="n">Local</span><span class="w"> </span><span class="n">Address</span><span class="o">:</span><span class="n">Port</span><span class="w">   </span><span class="n">Peer</span><span class="w"> </span><span class="n">Address</span><span class="o">:</span><span class="n">Port</span><span class="w">  </span><span class="n">Process</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">LISTEN</span><span class="w">  </span><span class="m">0</span><span class="w">       </span><span class="m">511</span><span class="w">            </span><span class="m">0.0</span><span class="n">.</span><span class="m">0.0</span><span class="o">:</span><span class="m">80</span><span class="w">          </span><span class="m">0.0</span><span class="n">.</span><span class="m">0.0</span><span class="o">:*</span><span class="w">      </span><span class="n">users</span><span class="o">:</span><span class="p">((</span><span class="s">&quot;nginx&quot;</span><span class="p">,</span><span class="n">pid</span><span class="o">=</span><span class="m">1234</span><span class="p">,</span><span class="n">fd</span><span class="o">=</span><span class="m">6</span><span class="p">))</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">LISTEN</span><span class="w">  </span><span class="m">0</span><span class="w">       </span><span class="m">128</span><span class="w">            </span><span class="m">0.0</span><span class="n">.</span><span class="m">0.0</span><span class="o">:</span><span class="m">22</span><span class="w">          </span><span class="m">0.0</span><span class="n">.</span><span class="m">0.0</span><span class="o">:*</span><span class="w">      </span><span class="n">users</span><span class="o">:</span><span class="p">((</span><span class="s">&quot;sshd&quot;</span><span class="p">,</span><span class="n">pid</span><span class="o">=</span><span class="m">890</span><span class="p">,</span><span class="n">fd</span><span class="o">=</span><span class="m">3</span><span class="p">))</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-n</td>
+<td>포트를 서비스명으로 변환하지 않고 숫자 그대로 출력 (조회 속도↑)</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>LISTEN 상태 소켓만 출력</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>TCP 소켓만 출력 (UDP는 -u)</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>소켓을 소유한 프로세스명·PID 표시 (타 유저 프로세스는 root 권한 필요)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>"어떤 프로세스가 이 포트를 물고 있는가"를 확인하는 가장 빠른 조합</li>
+<li>Recv-Q/Send-Q: LISTEN 소켓에서는 accept 대기 큐 사용량/최대치 → backlog 튜닝(somaxconn) 판단 근거</li>
+</ul>
 <hr />
-<ol>
-<li>paragraph</li>
-<li>docker desktop 없이 wsl에서 docker 사용하기: netmarble.engineering/docker-on-wsl2-without-docker-desktop</li>
-</ol>
-
-
+<h2 id="strace-k-p-x-i-t-z">strace -k -p <PID> -x -i -T -Z</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">strace</span><span class="w"> </span><span class="o">-</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">1234</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="bp">T</span><span class="w"> </span><span class="o">-</span><span class="n">Z</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>옵션</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-k</td>
+<td>각 시스템 콜의 유저 스택 트레이스 출력 → 어느 코드 경로에서 호출됐는지 확인</td>
+</tr>
+<tr>
+<td>-p <PID></td>
+<td>실행 중인 프로세스에 attach (PID 인자 필수)</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>비ASCII 문자열을 16진수로 출력 → 바이너리 데이터 식별</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>시스템 콜 시점의 instruction pointer 출력</td>
+</tr>
+<tr>
+<td>-T</td>
+<td>각 시스템 콜에 소요된 시간 표시 → 느린 콜 식별</td>
+</tr>
+<tr>
+<td>-Z</td>
+<td>실패한 시스템 콜만 출력 (성공만 보려면 -z)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>-Z로 실패 콜만 추리고 -k 스택 트레이스로 호출 지점까지 역추적하는 에러 원인 분석용 조합</li>
+<li>-T는 지연 분석용 → 어떤 콜에서 시간을 쓰는지 확인</li>
+<li>운영 환경 주의: strace attach는 대상 프로세스를 크게 느리게 만들 수 있음 → 단시간만 붙였다 뗄 것</li>
+</ul>
+<hr />
+<h2 id="_2">사용 사례</h2>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>명령</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>포트 충돌 (bind 실패) 원인 프로세스 찾기</td>
+<td>ss -nltp 로 점유 PID 확인</td>
+</tr>
+<tr>
+<td>프로세스가 에러를 뱉는데 로그가 없음</td>
+<td>strace -Z -k -p <PID> 로 실패 콜과 호출 스택 확인</td>
+</tr>
+<tr>
+<td>특정 요청만 느림</td>
+<td>strace -T -p <PID> 로 소요 시간 큰 콜 식별</td>
+</tr>
+<tr>
+<td>accept 큐 넘침 의심</td>
+<td>ss -nltp 의 Recv-Q가 Send-Q(backlog)에 근접하는지 확인</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">결론</h2>
+<ul>
+<li>ss는 "누가 물고 있는가", strace는 "안에서 무슨 일이 벌어지는가"를 보는 도구</li>
+<li>포트 확인 → PID 추출 → strace attach 순서로 이어 쓰면 로그 없는 장애도 원인 추적 가능</li>
+</ul>
 
 
 
@@ -1555,14 +1780,21 @@
 
 
   
+  
 
 
 
+  
 
-                
-              </article>
-            </div>
-          
+
+  
+
+
+
+      
+    </article>
+  </div>
+
           
   <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
 
@@ -1581,10 +1813,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../docker_compose_templates/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Docker compose 모음">
+          <a href="../edge-association-%EA%B8%B0%EB%B0%98-utm-%EA%B5%AC%EC%84%B1-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Edge Association 기반 UTM 구성 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1594,7 +1828,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Docker compose 모음
+                Edge Association 기반 UTM 구성 정리
               </div>
             </div>
           </a>
@@ -1659,10 +1893,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
