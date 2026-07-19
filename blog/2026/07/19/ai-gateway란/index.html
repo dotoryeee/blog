@@ -1570,6 +1570,78 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
+        동작 방식
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="동작 방식">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        요청 처리 파이프라인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        미터링(Metering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로드밸런싱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        폴백 판정
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐시 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         핵심 기능 정리
       
     </span>
@@ -1578,7 +1650,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         대표 솔루션
@@ -1589,7 +1661,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_10" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1679,7 +1751,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              4 min read
+                              6 min read
                             
                           </span>
                         </div>
@@ -1729,8 +1801,8 @@
 <tbody>
 <tr>
 <td>과금·미터링 단위</td>
-<td>요청(Request) 수 기준</td>
-<td>토큰(Token) 사용량 기준</td>
+<td>요청 수 기준</td>
+<td>토큰 사용량 기준</td>
 </tr>
 <tr>
 <td>라우팅 기준</td>
@@ -1789,7 +1861,76 @@
 <li>우측: 상용 프로바이더와 사내 로컬 모델을 동일한 인터페이스로 연결</li>
 </ul>
 <hr />
-<h2 id="_3">핵심 기능 정리</h2>
+<h2 id="_3">동작 방식</h2>
+<h3 id="_4">요청 처리 파이프라인</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App
+    participant Gateway
+    participant Cache
+    participant Provider
+    App-&gt;&gt;Gateway: 요청 (virtual key 포함)
+    Gateway-&gt;&gt;Gateway: 인증 (virtual key 검증)
+    Gateway-&gt;&gt;Gateway: rate limit·예산 검사
+    Gateway-&gt;&gt;Cache: 캐시 조회
+    Cache--&gt;&gt;Gateway: 미스(Miss)
+    Gateway-&gt;&gt;Gateway: 라우팅 결정 (배포 선택)
+    Gateway-&gt;&gt;Provider: 모델 호출
+    Provider--&gt;&gt;Gateway: 응답 + usage
+    Gateway-&gt;&gt;Gateway: 미터링 기록 (토큰·비용 누적)
+    Gateway--&gt;&gt;App: 최종 응답</code></pre>
+<ul>
+<li>인증 → 예산·rate limit 검사 → 캐시 조회 → 라우팅 → 호출 → 미터링 순으로 통과하는 단방향 파이프라인</li>
+<li>캐시 히트(Hit) 시 라우팅·프로바이더 호출을 건너뛰고 즉시 응답 → 해당 요청의 토큰 비용 0</li>
+</ul>
+<h3 id="metering">미터링(Metering)</h3>
+<ul>
+<li>비스트리밍: 프로바이더 응답의 usage 필드에서 입력·출력 토큰 수 확보</li>
+<li>스트리밍: 종료 청크의 usage로 집계하거나, 미제공 시 tokenizer(tiktoken 등)로 추정</li>
+<li>비용 산출: 토큰 수 × 모델별 단가표(입력·출력 1K 토큰당 요금)로 요청별 비용 계산</li>
+<li>누적: 키(Key)·팀(Team)·모델 차원으로 DB에 spend 적재</li>
+<li>환류: 누적값이 예산 한도·rate limit 초과 판정의 근거로 재사용됨</li>
+</ul>
+<h3 id="_5">로드밸런싱</h3>
+<ul>
+<li>동일 모델의 여러 배포(키·리전·프로바이더)를 하나의 모델 그룹(Model Group)으로 묶음</li>
+<li>rate limit(RPM/TPM) 여유가 남은 배포를 우선 선택해 throttling 회피</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>전략</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>가중치 라운드로빈</td>
+<td>배포별 weight·RPM/TPM 비율에 따른 확률적 분산</td>
+</tr>
+<tr>
+<td>최소 지연(Latency-based)</td>
+<td>최근 응답 지연이 가장 낮은 배포 선택</td>
+</tr>
+<tr>
+<td>사용량 기반(Usage-based)</td>
+<td>실시간 TPM/RPM 소비량이 가장 적은 배포 선택</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_6">폴백 판정</h3>
+<ul>
+<li>일시적 오류(429·5xx·타임아웃): 동일 배포에서 지정 횟수만큼 재시도 → 소진 시 폴백 체인의 다음 모델로 전환</li>
+<li>비일시적 오류(컨텍스트 윈도우 초과 등): 재시도 무의미 → 즉시 폴백</li>
+<li>폴백 체인의 다음 모델도 실패하면 순서대로 후속 후보로 계속 이동</li>
+</ul>
+<h3 id="_7">캐시 조회</h3>
+<ul>
+<li>exact: 요청을 정규화·해시해 완전 일치 항목이 있으면 히트</li>
+<li>semantic: 프롬프트 임베딩의 코사인 유사도가 임계값(similarity threshold) 이상이면 히트</li>
+<li>exact 우선 조회 → 미스 시 semantic 조회 순으로 판정</li>
+</ul>
+<hr />
+<h2 id="_8">핵심 기능 정리</h2>
 <table>
 <thead>
 <tr>
@@ -1799,7 +1940,7 @@
 </thead>
 <tbody>
 <tr>
-<td>통합 API(Unified API)</td>
+<td>통합 API</td>
 <td>프로바이더별 API를 OpenAI 호환 단일 스키마로 정규화</td>
 </tr>
 <tr>
@@ -1807,7 +1948,7 @@
 <td>비용·지연·품질 기준으로 요청을 적절한 모델로 분배</td>
 </tr>
 <tr>
-<td>폴백·재시도(Fallback)</td>
+<td>폴백·재시도</td>
 <td>프로바이더 오류·throttling 시 다른 모델로 자동 전환</td>
 </tr>
 <tr>
@@ -1815,11 +1956,11 @@
 <td>여러 키·리전에 요청을 분산해 rate limit 회피</td>
 </tr>
 <tr>
-<td>시맨틱 캐싱(Semantic Cache)</td>
+<td>시맨틱 캐싱</td>
 <td>의미가 같은 프롬프트의 응답을 재사용해 토큰 비용 절감</td>
 </tr>
 <tr>
-<td>가상 키(Virtual Key)</td>
+<td>가상 키</td>
 <td>실제 키를 숨기고 앱별 발급·회수 가능한 대체 키 제공</td>
 </tr>
 <tr>
@@ -1827,17 +1968,17 @@
 <td>팀·모델별 토큰 비용 추적과 예산 한도 초과 차단</td>
 </tr>
 <tr>
-<td>가드레일(Guardrail)</td>
+<td>가드레일</td>
 <td>프롬프트 인젝션·PII·유해 콘텐츠 입출력 필터링</td>
 </tr>
 <tr>
-<td>관측성(Observability)</td>
+<td>관측성</td>
 <td>요청·응답 로그, 지연, 토큰·비용 메트릭 수집</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_4">대표 솔루션</h2>
+<h2 id="_9">대표 솔루션</h2>
 <ul>
 <li>LiteLLM: 오픈소스 셀프 호스팅형, 100여 개 프로바이더를 OpenAI 호환 엔드포인트로 래핑</li>
 <li>Kong AI Gateway: 기존 Kong API 관리 플랫폼에 LLM 라우팅·PII 마스킹 플러그인 결합</li>
@@ -1845,9 +1986,8 @@
 <li>Cloudflare AI Gateway: 완전 관리형(Managed), 캐싱·분석을 프로바이더 앞단에 추가</li>
 <li>Envoy AI Gateway: Envoy·Kubernetes 프리미티브 기반의 클라우드 네이티브 게이트웨이</li>
 </ul>
-<p>각 솔루션의 아키텍처·기능·운영 부담 상세 비교는 연재 후속 편에서 정리 예정.</p>
 <hr />
-<h2 id="_5">결론</h2>
+<h2 id="_10">결론</h2>
 <ul>
 <li>AI Gateway는 앱과 여러 LLM 프로바이더 사이의 단일 제어 계층</li>
 <li>요청이 아닌 토큰 기준으로 트래픽을 다루며 라우팅·캐싱·폴백·가드레일·관측을 통합</li>
