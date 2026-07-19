@@ -15,7 +15,7 @@ categories:
 
 ## Edge Association이란
 
-Edge Association이란 라우트 테이블을 서브넷이 아닌 IGW에 연결하여, VPC로 들어오는 인바운드 트래픽을 VPC 내부의 보안 어플라이언스로 우회시키는 기능입니다(VPC Ingress Routing).
+Edge Association이란 라우트 테이블을 서브넷이 아닌 IGW에 연결하여, VPC로 들어오는 인바운드 트래픽을 VPC 내부의 보안 어플라이언스로 우회시키는 기능(VPC Ingress Routing)
 
 - 일반 라우트 테이블: 서브넷에서 나가는 트래픽의 경로 제어
 - Gateway 라우트 테이블(edge association): IGW를 통과해 들어오는 트래픽의 경로 제어
