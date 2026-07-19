@@ -195,7 +195,7 @@ categories:
 4. SQL구문으로 설정 상태를 확인해볼 수 있습니다
     
     ```sql
-    SELECT * FROM mysql-servers;
+    SELECT * FROM mysql_servers;
     ```
 
     ![Docker Proxy Layer for MySQL/Untitled%204.png](Docker Proxy Layer for MySQL/Untitled%204.png)
@@ -242,8 +242,8 @@ categories:
 3. 마찬가지로 설정을 적용하고 저장합니다
     
     ```s
-    LOAD MYSQL SERVERS TO RUNTIME;
-    SAVE MYSQL SERVERS TO DISK;
+    LOAD MYSQL USERS TO RUNTIME;
+    SAVE MYSQL USERS TO DISK;
     ```
 
 
@@ -273,8 +273,8 @@ categories:
 3. 저장합니다
         
     ```s
-    LOAD MYSQL SERVERS TO RUNTIME;
-    SAVE MYSQL SERVERS TO DISK;
+    LOAD MYSQL QUERY RULES TO RUNTIME;
+    SAVE MYSQL QUERY RULES TO DISK;
     ```
 
 4. ProxySQL컨테이너에서 빠져나옵니다

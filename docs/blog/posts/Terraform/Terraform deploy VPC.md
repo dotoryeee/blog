@@ -75,13 +75,16 @@ categories:
     resource "aws_nat_gateway" "nat" {
     allocation_id = aws_eip.terraEIP.id
 
-    subnet_id = aws_subnet.private01.id
+    subnet_id = aws_subnet.public01.id
 
     tags = {
         Name = "terra_NAT"
     }
     }
     ```
+
+    !!! warning
+        💡 vpc = true는 지금은 deprecated 되었으니 domain = "vpc"로 작성합니다
 
 6. terraform plan을 이용하면 이번에도 잘 작성되었습니다
     

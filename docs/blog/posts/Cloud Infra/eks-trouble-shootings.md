@@ -18,7 +18,7 @@ categories:
 ```sh
 curl -v https://test.test.com --ssl-no-revoke
 ```
-curl의 k 옵션과 전혀 다른 옵션임에 유의할 것
+--ssl-no-revoke는 Windows(Schannel) 전용 옵션이라 리눅스(OpenSSL)에선 무효하므로, OCSP responder로의 아웃바운드 경로를 열거나 폐기 검사를 수행하는 클라이언트에서 검사를 비활성화할 것
 
 - PKIX path building failed(JAVA Spring)
 JAVA IDE의 TrustStore에 SSL 등록해야 함

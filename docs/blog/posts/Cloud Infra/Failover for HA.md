@@ -172,6 +172,9 @@ categories:
 
 ---
 
+!!! warning
+    💡 CHANGE MASTER TO/START SLAVE/SHOW SLAVE STATUS는 지금은 deprecated 되었으니 CHANGE REPLICATION SOURCE TO/START REPLICA/SHOW REPLICA STATUS로 작성합니다
+
 1. 기존에 Master였던 db001 컨테이너를 다시 구동합니다
         
     ```s

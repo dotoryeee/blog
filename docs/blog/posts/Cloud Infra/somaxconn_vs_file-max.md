@@ -143,7 +143,7 @@ echo 'fs.file-max=2097152' | sudo tee -a /etc/sysctl.conf
 |CentOS 7|128|
 |Amazon Linux 2|128|
 |Amazon Linux 2023|4096|
-|Ubuntu 20.04|128|
+|Ubuntu 20.04|4096|
 |Ubuntu 22.04|4096|
 |RHEL 8|128|
 |RHEL 9|4096|

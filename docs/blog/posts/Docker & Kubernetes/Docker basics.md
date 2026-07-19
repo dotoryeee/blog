@@ -149,7 +149,7 @@ categories:
     docker run -p 5000:8080 dotoryeee/first_image
     ```
     
-2. {DOCKER HOST IP}:8080에 접속하면 서버를 확인할 수 있습니다
+2. {DOCKER HOST IP}:5000에 접속하면 서버를 확인할 수 있습니다
     
     ![Docker basics/Untitled%203.png](Docker basics/Untitled%203.png)
     
@@ -226,8 +226,8 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
 
     ```s
     docker run -p 5000:8080 \
-    -v /usr/src/app/node_module \
-    -v $(pwd):/use/src/app \
+    -v /usr/src/app/node_modules \
+    -v $(pwd):/usr/src/app \
     -d dotoryeee/first_image
     ```
 
@@ -283,13 +283,14 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
     const client = redis.createClient({
         //host값에 도커가 아닌 일반 환경에서는 https://redis-server.com 을 입력
         //compose를 사용할 경우 docker-compose.yml에 명시한 컨테이너 이름을 입력
-        host: "redis-server";  
-        port: REDIS_PORT;
+        host: "redis-server",  
+        port: REDIS_PORT,
     })
 
     client.set("number", 0);
 
     //express
+    const app = express();
     app.get('/', (req, res) => {
         client.get("number", (err, Number) => { //에러가 발생하지 않는다면
             //숫자를 1씩 증가
@@ -298,7 +299,6 @@ server.js 코드가 변경되었음에도 불구하고 1.8초밖에 소모되지
         })
     })
 
-    const app = express();
     app.listen(EXPRESS_PORT);
     console.log('server is running');
     ```

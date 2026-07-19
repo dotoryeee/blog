@@ -133,7 +133,7 @@ categories:
     docker run -i -t --name prom001 -h prom001 --net mybridge --net-alias=prom001 -p 9090:9090 \
     -v /db/prom001/data:/prometheus \
     -v /db/prom001/conf:/etc/prometheus \
-    -d prom/prometheus-linux-amd64
+    -d prom/prometheus
     ```
 
 

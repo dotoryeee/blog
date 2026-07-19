@@ -39,5 +39,5 @@ Nginx 설정파일에서 proxy_buffer 부분을 수정합니다
 filebeat의 버그로 6.8.4 / 7.4.1 이후로 업그레이드 해야합니다
 
 ### 원인
-filebeat에서 close_timeout이 기본적으로 5minutes인데, 5분이 지나도 파일이 닫히지 않아 검색해보니 github issue로 등록된 것을 확인했습니다 [issue #13907](http://github.com/elastic/beats/pulls?q=13907)<br>
+filebeat에서 close_inactive가 기본적으로 5minutes인데, 5분이 지나도 파일이 닫히지 않아 검색해보니 github issue로 등록된 것을 확인했습니다 [issue #13907](http://github.com/elastic/beats/pulls?q=13907)<br>
 해당 버그에 대응하는 filebeat 버전은 [6.8.4](https://www.elastic.co/guide/en/beats/libbeat/6.8/release-notes-6.8.4.html#_bugfixes_11) 또는 [7.4.1](https://www.elastic.co/guide/en/beats/libbeat/7.17/release-notes-7.4.1.html0) 입니다.

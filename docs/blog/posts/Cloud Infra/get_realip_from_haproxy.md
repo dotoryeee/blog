@@ -20,9 +20,9 @@ categories:
     set_real_ip_from 10.0.0.0/8;
     real_ip_header X-Forwarded-For;
 
-    log_format main '$http_x_forwarded_for  – $remote_user [$time_local]'
-        '”$request” $status $body_bytes_sent “$http_referer”'
-        '”$http_user_agent”';
+    log_format main '$http_x_forwarded_for  - $remote_user [$time_local]'
+        '"$request" $status $body_bytes_sent "$http_referer"'
+        '"$http_user_agent"';
     ```
     ![image3](./get_realip_from_haproxy/Screenshot%202023-05-27%20at%2010.11.53%20PM.png)
 5. Nginx access log에 client의 IP가 잘 저장된다

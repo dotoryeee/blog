@@ -77,8 +77,8 @@ categories:
             ring: 
                 kvstore:
                   store: inmemory
-                replication_factor: 2
-            final_sleep: 0s # chunk_retain_period가 10m으로 설정하고 final_sleep을 5m으로 설정하면 chunk는 15분만 유지됌
+                replication_factor: 1 # inmemory는 프로세스 간 링을 공유하지 않아 단일 인스턴스 기준 1로 설정. 다중 replica로 확장하려면 consul/etcd 등 공유 kvstore가 필요함
+            final_sleep: 0s # 인제스터가 링에서 빠진 뒤 종료까지 대기하는 셧다운 유예 시간이며 chunk 유지 기간과는 무관함
         chunk_idle_period: 5m #데이터 청크가 저장되어 있는 상태로 유지되는 최대 기간
         chunk_retain_period: 10m #데이터 청크가 유지되는 기간. chunk_idle_period가 chunk_retain_period보다 작은 경우 chunk가 적절한 시간 내에 compacting이나 ingesting이 되지 않을 수 있으므로 데이터 손실이 발생할 수 있다. chunk_idle_period >= chunk_retain_period
         max_transfer_retries: 0 #데이터 전송에 실패한 경우 재시도 횟수
@@ -86,10 +86,10 @@ categories:
             store: inmemory # 인제스터에서 발생한 추적 데이터를 저장하는 곳
         wal:
             enabled: true
-            compressions: none # none, snappy, gzip, lz4 
-            flush_after: 512mb # WAL 파일이 일정 크기가 될 때마다 디스크로 플러시
-            encoding: snappy
-            segment_size: 512mb
+            dir: /tmp/loki/wal # WAL 파일을 저장하는 디렉터리
+            checkpoint_duration: 5m # WAL을 체크포인트(오래된 세그먼트 정리)하는 주기
+            flush_on_shutdown: true # 셧다운 시 WAL 데이터를 스토리지로 플러시
+            replay_memory_ceiling: 4GB # WAL 재생 시 사용하는 메모리 상한
 
     schema_config:
         configs:
@@ -117,15 +117,15 @@ categories:
     compactor: #컴팩터는 오래된 로그를 압축
         working_directory: /tmp/loki/compactor
         shared_store: aws
-        compaction:
-            schedule: '0 * * * *'
-            retention_enabled: true
-            retention: 48h
+        compaction_interval: 10m #컴팩션 및 retention 적용 주기
+        retention_enabled: true #retention 활성화(미설정 시 압축만 수행)
+        retention_delete_delay: 2h #retention 기간 경과 후 청크 실제 삭제까지 대기 시간
 
     limits_config:
         ingestion_rate_mb: 5
         ingestion_burst_size_mb: 10
         staleness_delta: 1m
+        retention_period: 48h #전역 로그 보존 기간. compactor가 이 값을 기준으로 삭제
 
     chunk_store_config:
         max_look_back_period: 0s
@@ -155,7 +155,7 @@ categories:
         image: grafana/loki:2.3.0
         command: -config.file=/etc/loki-config/config.yaml
         volumes:
-        - ./loki-config:/etc/loki/
+        - ./loki-config:/etc/loki-config/
         ports:
         - "3100:3100"
         deploy:

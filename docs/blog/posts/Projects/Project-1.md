@@ -64,7 +64,7 @@ categories:
 
 - Docker에서 Flask 서버를 띄울 때 Host주소는 0.0.0.0
 - wsgi용 파이썬 파일을 별도로 분리하고 포트 할당하기
-- 최신 uWSGI는 [musl](https://en.wikipedia.org/wiki/Musl)을 사용하기 때문에 [https://stackoverflow.com/questions/36217250/cannot-install-uwsgi-on-alpine](https://stackoverflow.com/questions/36217250/cannot-install-uwsgi-on-alpine)
+- Alpine Linux는 glibc가 아닌 [musl](https://en.wikipedia.org/wiki/Musl) libc를 사용해 uWSGI를 소스에서 빌드해야 하기 때문에 [https://stackoverflow.com/questions/36217250/cannot-install-uwsgi-on-alpine](https://stackoverflow.com/questions/36217250/cannot-install-uwsgi-on-alpine)
 [https://github.com/gliderlabs/docker-alpine/issues/158](https://github.com/gliderlabs/docker-alpine/issues/158)
 RUN apk add python3-dev build-base linux-headers pcre-dev 명령을 추가합니다
 - 이유없이 뭔가 잘 안되면 일단 YAML 띄어쓰기부터 확인
@@ -329,9 +329,9 @@ user_data 사용시 terraform init 다시 해야 함
     #!/bin/bash
     sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
-    docker-compose -f /home/e2-user/app/docker-compose-ec2.yml rm -fs
+    docker-compose -f /home/ec2-user/app/docker-compose-ec2.yml rm -fs
     docker system prune -a -f
-    docker-compose -f /home/e2-user/app/docker-compose-ec2.yml up
+    docker-compose -f /home/ec2-user/app/docker-compose-ec2.yml up
     ```
     
 

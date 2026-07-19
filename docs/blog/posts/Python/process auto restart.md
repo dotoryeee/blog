@@ -38,7 +38,7 @@ log_file_location = {
     "some_service_2": "/var/log/service_2.log"
 }
 log_file_keyword = {
-    "some_service_1": "load_success"
+    "some_service_1": "load_success",
     "some_service_2": "running"
 }
 restart_sleep_time = {

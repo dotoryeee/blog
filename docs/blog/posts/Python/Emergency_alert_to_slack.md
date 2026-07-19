@@ -121,7 +121,7 @@ def lambda_handler(event, context):
     --platform manylinux2014_x86_64 \
     --target=emergency_alert_to_slack \
     --implementation cp \
-    --python 3.9 \
+    --python-version 3.9 \
     --only-binary=:all: --upgrade \
     requests
     ```

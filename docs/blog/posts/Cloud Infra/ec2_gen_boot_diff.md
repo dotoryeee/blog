@@ -101,7 +101,7 @@ categories:
 
 ## 결론
 - MBR은 BIOS 부팅에서 사용되며, 2TiB 이하의 디스크에서 유효함.
-- GPT는 UEFI 부팅에 필수적이며, 대형 디스크 및 보안 기능을 지원함.
+- GPT는 UEFI 부팅에서 표준으로 사용되며, 대형 디스크 및 보안 기능을 지원함.
 - GRUB은 MBR 또는 UEFI 환경에서 동작할 수 있음.
 - ESP(`/boot/efi`)는 UEFI 부팅에서 필수이며, AWS Nitro 기반에서는 일반적으로 사용되지 않음.
 - AWS EC2 인스턴스에서는 대부분 MBR 기반 부팅을 사용하여 `/boot/efi` 없이도 정상 작동함.

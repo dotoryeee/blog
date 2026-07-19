@@ -15,14 +15,14 @@ categories:
         프로젝트별 가상 환경을 지원하지 않아, 여러 프로젝트에서 서로 다른 종속성을 가진 경우 관리가 어렵습니다.
 <!-- more -->
 2. poetry (가상환경)<br>
-    파이썬 내부의 venv를 사용해 가상환경을 생성하고 pip를 이용해 pypi에서 패키지를 가져옵니다.
+    virtualenv로 가상환경을 생성하고 pypi에서 패키지를 가져옵니다.
     - 장점:<br>
         프로젝트별 가상 환경을 지원하여 서로 다른 종속성을 가진 프로젝트를 관리할 수 있습니다.<br>
         종속성의 버전을 자동으로 관리하며, 메타데이터와 종속성을 선언하는 pyproject.toml 파일을 사용하여 명시적으로 종속성을 기록합니다.<br>
         프로젝트별 가상 환경 관리를 자동으로 지원합니다.
     - 단점:<br>
         Python 버전 관리 기능이 약합니다. 별도의 버전 관리 도구를 함께 사용해야 할 수도 있습니다.<br>
-        기존의 requirements.txt로 종속성을 관리할 수 없습니다 (import는 가능 poetry import requirements.txt)
+        기존의 requirements.txt로 종속성을 관리할 수 없습니다 (poetry add $(cat requirements.txt) 형태로 가져올 수는 있습니다)
         
 3. conda (가상환경)<br>
     anaconda 자체 가상화 환경을 사용하고, conda 자체 저장소(anaconda cloud)를 사용해 패키지를 가져옵니다. (conda config --add channels <channel_name>로 외부 저장소를 추가할 수도 있음)

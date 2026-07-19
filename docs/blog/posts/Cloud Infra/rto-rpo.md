@@ -95,10 +95,10 @@ categories:
 - Replication은 RPO를 최소화하는 데 필수적이며, 실시간 데이터 보호가 필요한 환경에서 사용됨.
 - AWS 환경에서는 Multi-AZ, Auto Scaling, S3 Cross-Region Replication 등의 서비스를 활용하여 RTO/RPO 목표를 달성할 수 있음.
 
-# Legacy vs AWS 환경에서 RTO, RPO, MTTR, MTBF 최소화 방안
+# Legacy vs AWS 환경에서 RTO, RPO, MTTR, MTBF 개선 방안
 
 ## 개념 정리
-| 용어 | 정의 | 최소화해야 하는 이유 |
+| 용어 | 정의 | 개선해야 하는 이유 |
 |------|------|----------------|
 | RTO (Recovery Time Objective) | 장애 발생 후 서비스 복구까지 허용 가능한 최대 시간 | 서비스 다운타임 최소화 |
 | RPO (Recovery Point Objective) | 장애 발생 시 데이터 손실 허용 범위 (최신 백업과의 차이) | 데이터 유실 최소화 |
@@ -107,8 +107,8 @@ categories:
 
 ---
 
-## Legacy 환경 (온프레미스)에서 최소화 방안
-| 요소 | 최소화 방법 | 설명 |
+## Legacy 환경 (온프레미스)에서 개선 방안
+| 요소 | 개선 방법 | 설명 |
 |------|-----------|------|
 | RTO 최소화 | 이중화(HA) 서버 구성 | 물리적 서버 및 데이터센터 이중화 |
 | | DR(재해 복구) 센터 운영 | 이중 데이터센터를 구성하여 장애 시 신속한 복구 |
@@ -119,14 +119,14 @@ categories:
 | MTTR 최소화 | 모니터링 시스템 구축 | 장애 탐지 시스템 (Nagios, Zabbix) |
 | | 장애 대응 매뉴얼 운영 | 장애 복구 절차 표준화 |
 | | 예비 부품/서버 유지 | 장애 발생 시 신속한 하드웨어 교체 |
-| MTBF 최소화 | 정기적인 유지보수 및 점검 | 하드웨어 및 네트워크 점검 |
+| MTBF 최대화 | 정기적인 유지보수 및 점검 | 하드웨어 및 네트워크 점검 |
 | | 서버/스토리지 이중화 | 단일 장애점(SPOF) 제거 |
 | | 전원 및 냉각 시스템 보강 | UPS, 발전기 추가 구축 |
 
 ---
 
-## AWS 환경에서 최소화 방안
-| 요소 | 최소화 방법 | AWS 서비스 활용 |
+## AWS 환경에서 개선 방안
+| 요소 | 개선 방법 | AWS 서비스 활용 |
 |------|-----------|----------------|
 | RTO 최소화 | Auto Scaling | EC2 자동 확장으로 장애 시 대체 인스턴스 생성 |
 | | Multi-AZ 구성 | RDS, ElastiCache 등을 멀티 AZ로 구성하여 장애 시 자동 전환 |
@@ -140,7 +140,7 @@ categories:
 | | AWS Lambda로 자동 복구 | 장애 감지 시 복구 스크립트 실행 |
 | | AWS System Manager | 장애 원인 분석 및 원격 명령 실행 |
 | | EC2 Auto Healing | 장애 발생 시 자동으로 대체 인스턴스 배포 |
-| MTBF 최소화 | AWS Well-Architected Framework 적용 | 안정적인 아키텍처 설계 가이드 준수 |
+| MTBF 최대화 | AWS Well-Architected Framework 적용 | 안정적인 아키텍처 설계 가이드 준수 |
 | | Auto Scaling 활용 | 트래픽 급증 시 시스템 부하 방지 |
 | | AWS Trusted Advisor | 보안 및 인프라 문제 사전 탐지 |
 
@@ -152,7 +152,7 @@ categories:
 | RTO 최소화 | 이중화 서버, DR 센터 | Auto Scaling, Multi-AZ, ELB |
 | RPO 최소화 | 고빈도 백업, 실시간 복제 | S3 Replication, RDS Read Replica, AWS Backup |
 | MTTR 최소화 | 모니터링 시스템, 장애 대응 매뉴얼 | CloudWatch, Lambda 자동 복구, Auto Healing |
-| MTBF 최소화 | 정기 유지보수, 이중화 | Well-Architected Framework, Auto Scaling |
+| MTBF 최대화 | 정기 유지보수, 이중화 | Well-Architected Framework, Auto Scaling |
 
 ---
 

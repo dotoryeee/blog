@@ -15,6 +15,9 @@ categories:
 - Redirection시 cognito를 이용한 사용자인증 유무에 따라 Nginx 설정이 다르다(아래 참조)
 <!-- more -->
 - Nginx proxy config
+
+    참고: ssl on; 지시어는 최신 nginx에서 제거되었고 TLSv1/TLSv1.1도 폐기되었으니, 지금은 listen 443 ssl;과 ssl_protocols TLSv1.2 TLSv1.3; 형태를 사용한다 (아래는 작성 시점 AWS 템플릿 인용)
+
     1. Cognito를 사용하는 경우
     ![with congito](ES Domain in VPC/2023-02-02_20-56-30.png)
     ```json title="/etc/nginx/conf.d/default.conf" linenums="1"

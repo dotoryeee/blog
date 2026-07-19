@@ -11,7 +11,7 @@ K8S 연습을 위한 최소한의 EKS cluter 구축 terraform 코드입니다.
 <!-- more -->
 
 ## 주의할 점
-1. node instance type을 명시하지 않을경우 m4.large가 provision된다
+1. node instance type을 명시하지 않을경우 t3.medium가 provision된다
 2. 각 AZ에서 사용자가 요청한 인스턴스타입을 지원하지않는 경우, 해당 인스턴스타입을 지원하는 타 AZ에 추가 provisioning하여 desired capacity를 맞추려 한다. Seoul지역 b-AZ에서 m4.large 인스턴스를 지원하지 않아 b-AZ의 할당량이 a-AZ와 c-AZ에 배포되었다.
   ![instance_health_issue](EKS and EFK stack/Screenshot 2023-04-12 at 10.53.25 PM.png)
   ![instance_list](EKS and EFK stack/Screenshot 2023-04-12 at 10.54.46 PM.png)

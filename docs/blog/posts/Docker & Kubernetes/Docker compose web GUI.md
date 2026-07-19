@@ -45,6 +45,9 @@ categories:
 
 ---
 
+!!! warning
+    💡 apt-key는 지금은 deprecated 되었으니 signed-by 방식으로 키를 등록합니다
+
 1. 도커의 GPG PublicKey를 다운로드한 후 apt-key에 추가합니다
     
     ```s
@@ -66,12 +69,12 @@ categories:
     
     docker-ce : 도커 데몬으로 모든 작업을 수행하는 부분입니다
     
-    docker-cli : 데몬은 제어하는 CLI 도구입니다
+    docker-ce-cli : 데몬은 제어하는 CLI 도구입니다
     
     containerd.io : 컨테이너 데몬입니다
         
     ```s
-    sudo apt install docker-ce docker-cli containerd.io
+    sudo apt install docker-ce docker-ce-cli containerd.io
     ```
 
 5.  도커의 명령을 실행해봅니다
@@ -147,6 +150,9 @@ categories:
 ## Portainer 설치
 
 ---
+
+!!! warning
+    💡 portainer/portainer는 지금은 deprecated 되었으니 portainer/portainer-ce를 사용합니다
 
 1. docker를 쉽게 관리할 수 있는 GUI 도구인 portainer를 설치합니다
 2. portainer를 설치할 디렉토리를 생성합니다

@@ -189,6 +189,9 @@ categories:
 
 ---
 
+!!! warning
+    💡 Launch Configuration은 현재 deprecated 되었으니 Launch Template 사용을 권장합니다
+
 1. EC2 좌측 메뉴 Auto Scaling → Launch Configuration 에서 새로 작성합니다
     
     ![3-Tier Basic Infra/Untitled%2032.png](3-Tier Basic Infra/Untitled%2032.png)
@@ -352,6 +355,9 @@ categories:
     ```
     sudo yum -y install mysql
     ```
+    
+    !!! warning
+        💡 Amazon Linux 2에선 yum install mysql이 실패할 수 있으니 mariadb 패키지로 설치합니다
     
 3. 서버접속을 위해 다음 명령을 이용해 MySQL 을 사용합니다
     

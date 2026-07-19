@@ -310,7 +310,7 @@ graph TB
 - 시스템의 '쓰기(Command)'와 '읽기(Query)'를 명확히 분리하여 복잡한 도메인 로직이나 비즈니스 규칙을 갖는 시스템에서 성능과 확장성을 향상시키기 위해 사용한다.
 - 쓰기 모델(Command Model): 커맨드를 통해 상태 변경 작업을 수행한다. 비즈니스 로직과 유효성 검사가 여기에 포함
 - 읽기 모델(Query Model): 쿼리를 통해 데이터를 조회한다. 높은 조회 성능을 제공하기 위해 별도로 설계할 수 있다. 변경 사항은 이벤트 소싱을 통해 읽기 모델에 반영한다.
-- 단점: Eventual Consistency만 적용 가능하다
+- 단점: 읽기 모델을 비동기로 갱신하는 구성에서는 Eventual Consistency를 감수해야 한다
 
 ## CQRS + Materialized View
 ```mermaid
@@ -334,7 +334,7 @@ graph TB
 - 복잡성: Materialized View를 도입하면 데이터 일관성을 관리하는 추가적인 복잡성이 발생한다.
 - 스케일링: CQRS 자체는 읽기와 쓰기 작업의 분리를 통한 스케일링을 가능하게 하지만, Materialized View는 읽기 성능을 향상시키는 데  중점을 둔다.
 - 결론: CQRS+Materialized View 구조는 CQRS만 사용할 때보다 더 빠른 읽기 작업을 위해 설계된 구조이다.
-- 단점: CQRS특성 상 Eventual Consistency만 적용 가능하다
+- 단점: 이벤트 기반으로 뷰를 비동기 갱신하므로 Eventual Consistency를 감수해야 한다
 
 ## SideCar
 ```mermaid

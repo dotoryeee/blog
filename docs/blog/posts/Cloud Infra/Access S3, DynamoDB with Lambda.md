@@ -21,7 +21,7 @@ categories:
 
 1. Lambda에서 사용할 권한을 Role로 만들어줍니다
     
-    CloudWatch에 의해 이벤트가 실행되므로 반드시 CloudWatch쓰기 권한을 부여해야 합니다
+    Lambda가 실행 로그를 CloudWatch에 기록하므로 반드시 CloudWatch쓰기 권한을 부여해야 합니다
     
     ![Access S3, DynamoDB with Lambda/Untitled.png](Access S3, DynamoDB with Lambda/Untitled.png)
     
@@ -186,63 +186,62 @@ categories:
     ```python
     # Load-Inventory Lambda function
 
-    # This function is triggered by an object being created in an Amazon S3 bucket. 
+    # This function is triggered by an object being created in an Amazon S3 bucket.
 
-    # The file is downloaded and each line is inserted into a DynamoDB table. 
-    import json, urllib, boto3, csv 
+    # The file is downloaded and each line is inserted into a DynamoDB table.
+    import json, urllib.parse, boto3, csv
 
-    # Connect to S3 and DynamoDB 
-    s3 = boto3.resource('s3') 
+    # Connect to S3 and DynamoDB
+    s3 = boto3.resource('s3')
     dynamodb = boto3.resource('dynamodb')
-        
-    # Connect to the DynamoDB tables 
-    inventoryTable = dynamodb.Table('Inventory'); 
 
-    # This handler is executed every time the Lambda function is triggered 
-    def lambda_handler(event, context): 
+    # Connect to the DynamoDB tables
+    inventoryTable = dynamodb.Table('Inventory');
 
-    # Show the incoming event in the debug log 
-    print("Event received by Lambda function: " + json.dumps(event, indent=2)) 
+    # This handler is executed every time the Lambda function is triggered
+    def lambda_handler(event, context):
 
-    # Get the bucket and object key from the event 
-    bucket = event['Records'][0]['s3']['bucket']['name'] 
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key']) 
-    localFilename = '/tmp/inventory.txt' 
+        # Show the incoming event in the debug log
+        print("Event received by Lambda function: " + json.dumps(event, indent=2))
 
-    # Download the file from S3 to the local filesystem 
-    try: 
-        s3.meta.client.download_file(bucket, key, localFilename) 
-    except Exception as e: 
-        print(e) 
-        print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket)) 
-        raise e 
+        # Get the bucket and object key from the event
+        bucket = event['Records'][0]['s3']['bucket']['name']
+        key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'])
+        localFilename = '/tmp/inventory.txt'
 
-    # Read the Inventory CSV file 
-    with open(localFilename) as csvfile: 
-        reader = csv.DictReader(csvfile, delimiter=',')
+        # Download the file from S3 to the local filesystem
+        try:
+            s3.meta.client.download_file(bucket, key, localFilename)
+        except Exception as e:
+            print(e)
+            print('Error getting object {} from bucket {}. Make sure they exist and your bucket is in the same region as this function.'.format(key, bucket))
+            raise e
 
-    # Read each row in the file 
-    rowCount = 0 
+        # Read the Inventory CSV file
+        with open(localFilename) as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=',')
 
-    for row in reader: 
-        rowCount += 1 
+            # Read each row in the file
+            rowCount = 0
+            for row in reader:
+                rowCount += 1
 
-    # Show the row in the debug log 
-    print(row['store'], row['item'], row['count']) 
+                # Show the row in the debug log
+                print(row['store'], row['item'], row['count'])
 
-    try:
-        # Insert Store, Item, and Count into the Inventory table 
-        inventoryTable.put_item( 
-            Item={ 
-                'Store': row['store'], 
-                'Item': row['item'], 
-                'Count': int(row['count'])}) 
-    except Exception as e: 
-        print(e) 
-        print("Unable to insert data into DynamoDB table".format(e)) 
+                try:
+                    # Insert Store, Item, and Count into the Inventory table
+                    inventoryTable.put_item(
+                        Item={
+                            'Store': row['store'],
+                            'Item': row['item'],
+                            'Count': int(row['count'])})
+                except Exception as e:
+                    print(e)
+                    print("Unable to insert data into DynamoDB table".format(e))
 
-    # Finished! 
-    return "%d counts inserted" % rowCount
+        # Finished!
+        return "%d counts inserted" % rowCount
     ```
         
 4. 코드를 Deploy 해줍니다

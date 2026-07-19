@@ -80,17 +80,20 @@ categories:
     ```s
     GET ljw_index/_mapping
     ```
-10. 인덱스 명시적 매핑 (ljw_index 인덱스의 gender 필드 타입을 keyword로 변경하는 예시)
+10. 인덱스 명시적 매핑 (ljw_index 인덱스에 gender 필드를 keyword 타입으로 매핑하는 예시)
     ```s
-    PUT ljw_index
+    PUT ljw_index/_mapping
     {
-        "mappings": {
-            "properties": {
-                "gender": {"type": "keyword"}
-            }
+        "properties": {
+            "gender": {"type": "keyword"}
         }
     }
     ```
+
+    !!! warning
+
+        이미 존재하는 인덱스에 매핑을 추가할 때는 PUT <인덱스>/_mapping을 사용한다(PUT <인덱스>는 인덱스 생성용이라 재호출 시 resource_already_exists_exception 발생). 이미 매핑된 필드의 타입은 변경할 수 없어 타입을 바꾸려면 새 인덱스로 재색인(reindex)해야 한다
+
     Data type 참조: [ElasticSearch data mapping type](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html)
 
     !!! note "텍스트 데이터의 두 가지 타입(text, keyword)의 특성"
@@ -104,7 +107,7 @@ categories:
     ```s
     POST _analyze
     {
-        "analyzer": "starndard",
+        "analyzer": "standard",
         "text": "the token test"
     }
 

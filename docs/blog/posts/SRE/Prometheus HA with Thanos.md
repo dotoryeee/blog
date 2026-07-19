@@ -52,12 +52,12 @@ services:
     networks:
       - thanos
 
-  thanos-store: # Prometheus 인스턴스의 데이터를 수집하여 AWS S3에 저장합니다
+  thanos-store: # AWS S3에 저장된 과거 데이터 블록을 읽어 thanos-query에 제공합니다
     image: thanosio/thanos:v0.22.1
     container_name: thanos-store
     command:
       - "store"
-      - "--tsdb.path=/tsdb"
+      - "--data-dir=/tsdb"
       - "--objstore.config-file=/etc/thanos/storage.yaml"
       - "--grpc-address=0.0.0.0:10901"
     volumes:
@@ -92,22 +92,28 @@ services:
     command:
       - "compact"
       - "--data-dir=/tsdb"
+      - "--objstore.config-file=/etc/thanos/storage.yaml"
       - "--http-address=0.0.0.0:10903"
-      - "--wait=2h" #wait 옵션의 기본값은 5m이지만 경우에도 일부 블록들이 충분히 생성되기 전에 컴팩션을 수행하게 될 수 있으므로 2h로 조정
+      - "--wait" #컴팩션 완료 후 종료하지 않고 새 작업을 대기하는 boolean 플래그
+      - "--wait-interval=2h" #wait-interval의 기본값은 5m이지만 일부 블록들이 충분히 생성되기 전에 컴팩션을 수행하게 될 수 있으므로 2h로 조정
     volumes:
       - ./thanos-data:/tsdb
+      - ./storage.yaml:/etc/thanos/storage.yaml
+    environment:
+      - "AWS_ACCESS_KEY_ID=<aws-access-key>"
+      - "AWS_SECRET_ACCESS_KEY=<aws-secret-key>"
+      - "AWS_REGION=<aws-region>"
     ports:
       - "10903:10903"
     networks:
       - thanos
 
-  thanos-receive: #Prometheus 또는 다른 Thanos Receive 컨테이너에서 메트릭을 수집하고 Thanos Store로 전송합니다
+  thanos-receive: #Prometheus의 remote_write로 메트릭을 수집하여 AWS S3에 업로드합니다
     image: thanosio/thanos:v0.22.1
     container_name: thanos-receive
     command:
       - "receive"
       - "--tsdb.path=/tsdb"
-      - "--objstore.bucket=<s3-bucket-name>"
       - "--objstore.config-file=/etc/thanos/storage.yaml"
     volumes:
       - ./thanos-data:/tsdb
@@ -122,3 +128,7 @@ services:
       - thanos
 
 ```
+
+!!! notice
+
+    💡 위 구성은 Prometheus에 Sidecar가 없어 실시간 데이터 조회와 S3 업로드 주체가 빠져 있으므로 각 Prometheus에 Sidecar를 붙이거나 remote_write로 receive에 전송하고 thanos-query에 sidecar/receive endpoint를 등록해야 HA 쿼리가 성립합니다

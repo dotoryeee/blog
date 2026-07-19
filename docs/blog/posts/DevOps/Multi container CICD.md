@@ -132,7 +132,7 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
     */   
     //--------------! API !--------------------/
     //DB 테이블에 있는 모든 데이터를 프론트로 보내기
-    app.get('/api/values'), function (req, res, next) { //핸들러 생성
+    app.get('/api/values', function (req, res, next) { //핸들러 생성
         db.pool.query("SELECT * FROM lists;", //DB에서 모든 데이터 가져오기
             (err, results, fields) => {
                 if (err)
@@ -143,8 +143,8 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
     })
 
     //프론트에서 입력한 값을 DB 테이블에 입력
-    app.post('/api/values', function (res, req, next) {
-        db.pool.query(`INSERT INTO lists (values) VALUES("${req.body.value}");`, //bodyParser 사용
+    app.post('/api/values', function (req, res, next) {
+        db.pool.query(`INSERT INTO lists (value) VALUES("${req.body.value}");`, //bodyParser 사용
             (err, results, fields) => {
                 if (err)
                     return res.status(500).send(err)
@@ -155,9 +155,9 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
 
     //------------! START EXPRESS !-----------------/
 
-    app.listen(EXPRESS_PORT, ()) => {
+    app.listen(EXPRESS_PORT, () => {
         console.log("app running on PORT 5000")
-    }
+    })
     ```
       
 
@@ -233,7 +233,7 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
       //submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장
       const submitHandler = (event) => { //이벤트를 받아옵니다
         event.preventDefault(); //오동작 방지를 위해 기본 동작을 제거합니다
-        axios.post('/api/value', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
+        axios.post('/api/values', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
           { value: value }) //키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value
           .then(response => { //백엔드에서 처리 후 회신받은 데이터를 response에 받아옴
             if (response.data.success) { //response가 성공했다면 <- server.js 42행 참고
@@ -296,7 +296,7 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
       //submitHandler역할 : 값을 input 박스에 입력하고 확인 버튼을 누르면 데이터값이 DB에 저장
       const submitHandler = (event) => { //이벤트를 받아옵니다
         event.preventDefault(); //오동작 방지를 위해 기본 동작을 제거합니다
-        axios.post('/api/value', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
+        axios.post('/api/values', //데이터 전달을 위해 백엔드에 POST request를 보냅니다
           { value: value }) //키값 : value / 데이터값 : value / 참조 : 40행 리스트의 0번 = value
           .then(response => { //백엔드에서 처리 후 회신받은 데이터를 response에 받아옴
             if (response.data.success) { //response가 성공했다면 <- server.js 42행 참고
@@ -438,7 +438,7 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
     #Nginx를 가동하고 윗 단계에서 생성한 빌드파일들을 nginx에 복사합니다
     FROM nginx
     EXPOSE 3000
-    #nginx 컨테이너가 3000번 포트를 listen 하도록 합니다
+    #컨테이너가 3000번 포트를 사용함을 문서화하는 메타데이터입니다(실제 listen은 nginx 설정이 담당합니다)
     COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
     #default.conf설정파일 미리 만들고 nginx컨테이너 안에 적용하도록 복사합니다
     COPY --from=builder /app/build /usr/share/nginx/html
@@ -589,7 +589,7 @@ MySQL용 conf 파일을 이용해 설정할 수 있습니다
     ```
 
     ```sql
-    DTOP DATABASE IF EXISTS myapp;
+    DROP DATABASE IF EXISTS myapp;
     -- 이전에 생성된 myapp DB가 존재할 경우 삭제
     CREATE DATABASE myapp;
     USE myapp;

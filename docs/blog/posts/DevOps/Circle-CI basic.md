@@ -63,6 +63,7 @@ categories:
       deploy-s3:
         executor: aws-cli/default
         steps:
+          - checkout
           - attach_workspace:
               at: .
           - persist_to_workspace:

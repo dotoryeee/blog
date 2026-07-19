@@ -17,7 +17,7 @@ categories:
     1. 비밀키를 생성합니다
 
     ```s
-    ssh-keygen -t rsa -b 2048 -f ~/dotoryeee.pem -q -P 
+    ssh-keygen -t rsa -b 2048 -f ~/dotoryeee.pem -q -N ""
     ```
         
     2. pem을 사용하려면 권한을 수정해야 합니다
@@ -185,7 +185,7 @@ categories:
 
         key_name = aws_key_pair.practice_01.key_name
 
-        security_groups = [aws_security_group.practice_01.id]
+        vpc_security_group_ids = [aws_security_group.practice_01.id]
 
         tags = {
             Name = "doto_EC2_01"
@@ -200,7 +200,7 @@ categories:
 
         key_name = aws_key_pair.practice_01.key_name
 
-        security_groups = [aws_security_group.practice_01.id]
+        vpc_security_group_ids = [aws_security_group.practice_01.id]
 
         tags = {
             Name = "doto_EC2_02"
@@ -800,7 +800,7 @@ categories:
 
       subnet_id = aws_subnet.public.id
 
-      security_groups = [aws_security_group.public_ec2.id]
+      vpc_security_group_ids = [aws_security_group.public_ec2.id]
 
       key_name = aws_key_pair.dotoryeee.key_name
 
@@ -815,7 +815,7 @@ categories:
 
       subnet_id = aws_subnet.public.id
 
-      security_groups = [aws_security_group.public_ec2.id]
+      vpc_security_group_ids = [aws_security_group.public_ec2.id]
 
       key_name = aws_key_pair.dotoryeee.key_name
 

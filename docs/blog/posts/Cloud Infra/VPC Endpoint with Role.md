@@ -49,10 +49,10 @@ categories:
     
     ![VPC Endpoint with Role/Untitled%205.png](VPC Endpoint with Role/Untitled%205.png)
     
-6. 다음 명령을 사용해 AWS Boto가 정상 작동하는 것을 확인합니다
+6. 다음 명령을 사용해 AWS CLI가 정상 작동하는 것을 확인합니다
 
     ```s
-    aws --version // aws boto 버전 확인
+    aws --version // aws CLI 버전 확인
     ```
     
     ![VPC Endpoint with Role/Untitled%206.png](VPC Endpoint with Role/Untitled%206.png)
@@ -170,5 +170,8 @@ rm ~/.aws/credentials
         --region us-east-2
     ```
 
+    !!! warning
+        💡 Gateway Endpoint는 리전 단위이므로 실습 리전인 ap-northeast-2로 지정해야 접근됩니다
+    
     [자습서: 전역 테이블 생성](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/V2globaltables.tutorial.html)
     

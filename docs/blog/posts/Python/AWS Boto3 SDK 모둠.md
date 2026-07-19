@@ -35,7 +35,7 @@ categories:
     def modify_instance_type(instance_id):
         try:
             ec2.modify_instance_attribute(
-                InstanceId=instance_id, Attribute="instanceType", Value=TARGET_INSTANCE_TYPE
+                InstanceId=instance_id, InstanceType={"Value": TARGET_INSTANCE_TYPE}
             )
             print(f"SUCCESS : {instance_id} INSTANCE CHANGED TO {TARGET_INSTANCE_TYPE}")
         except:

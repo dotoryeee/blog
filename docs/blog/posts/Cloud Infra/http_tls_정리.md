@@ -65,7 +65,7 @@ sequenceDiagram
 |TLS 1.3|1-RTT, 0-RTT|AES-GCM, ChaCha20|PFS 강제 적용, 0-RTT 지원|
 
 - TLS 1.3에서는 0-RTT를 통해 세션 복구 속도를 대폭 개선
-- TLS 1.2는 RSA 기반 키 교환을 지원하지만, TLS 1.3에서는 ECDHE만 사용
+- TLS 1.2는 RSA 기반 키 교환을 지원하지만, TLS 1.3에서는 (EC)DHE 또는 PSK 기반 키 교환만 사용(정적 RSA 키 교환 제거)
 
 ## TLS 1.3에서 0-RTT(Zero-RTT) 동작 원리
 ``` mermaid
@@ -96,8 +96,8 @@ sequenceDiagram
 ## TLS 1.2에서 ECDHE 사용 시 단점
 |단점|설명|
 |---|--------|
-|CPU 부하 증가|RSA보다 연산량 많음 (타원곡선 연산 필요)|
-|세션 재사용 불가|Ephemeral Key(임시 키) 사용으로 세션 복구 불가능|
+|CPU 부하 증가|임시 키 생성·서명 연산 추가 (정적 RSA 키 교환 대비)|
+|세션 키 자체 재사용 불가|임시 키라 세션 키 재사용은 불가하나 session ID/ticket 재개는 정상 동작|
 |메모리 사용 증가|클라이언트별 임시 키 저장 필요|
 
 - TLS 1.3에서는 키 교환 과정을 최적화하여 이러한 단점을 해결함

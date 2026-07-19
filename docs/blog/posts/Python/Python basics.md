@@ -69,7 +69,7 @@ categories:
     4. black
 7. PR시 불필요한 논쟁을 줄이기 위해 코딩 컨벤션을 강제하고 자동 포매팅 도구를 설정한다
     1. flake8 (PEP-8만 준수하면 됨, 엄격하지 않음)
-    2. black (변수 타입이 중간에 변하면 안됨, 후행 쉼표 강제 등 매우 엄격)
+    2. black (코드 포맷을 자동으로 통일, 후행 쉼표 강제 등 매우 엄격)
 8. 표준을 준수하도록 위 과정을 CI 빌드 과정에 포함해야 한다
 9.  Makefile을 이용한 자동 검사 설정 예시 (CI에 활용 가능)<br>
    Makefile을 활용하여  CI도구가 가능한 적은 설정 옵션을 가지게 한다.
@@ -89,7 +89,7 @@ categories:
     
     .PHONY: clean
     clean: 
-        find ./ type -f -name "*.pyc" -exec rm -rf {} \;
+        find ./ -type f -name "*.pyc" -exec rm -rf {} \;
     ```
 
     ```s
@@ -147,7 +147,7 @@ categories:
             db_backup()
     ```
 
-15. contextlib 모듈 사용 [Python >= 3.5](https://docs.python.org/3/library/contextlib.html)
+15. contextlib 모듈 사용 [Python >= 2.5](https://docs.python.org/3/library/contextlib.html)
     
 
 
