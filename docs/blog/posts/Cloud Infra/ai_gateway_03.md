@@ -21,11 +21,11 @@ hide:
 
 |솔루션|배포 형태 / 라이선스|라우팅·폴백|캐싱|가드레일|관측성|비고|
 |------|------------------|---------|-----|-------|------|-----|
-|LiteLLM|셀프호스팅(Docker·Helm). MIT 오픈소스, Enterprise 유료 티어(SSO·RBAC·감사 로그).|지원. 폴백 체인·num_retries·다중 키 로드밸런싱.|Exact·Semantic 모두 지원.|지원. hook 플러그인·외부 가드레일 연동.|지원. 토큰·비용 추적, 로그, Admin UI.|OpenAI 호환 단일 API, 140+ 프로바이더. k8s는 Helm 차트로 배포.|
+|LiteLLM|셀프호스팅(Docker·Helm). MIT 오픈소스, Enterprise 유료 티어(SSO·RBAC·감사 로그).|지원. 폴백 체인·num_retries·다중 키 로드밸런싱.|Exact·Semantic 모두 지원.|지원. hook 플러그인·외부 가드레일 연동.|지원. 토큰·비용 추적, 로그, Admin UI.|OpenAI 호환 단일 API, 100+ 프로바이더. k8s는 Helm 차트로 배포.|
 |Kong AI Gateway|셀프호스팅(Kong Gateway 플러그인)·Konnect SaaS. Gateway는 Apache 2.0, 고급 AI 기능은 Enterprise 유료.|지원. AI Proxy Advanced의 다중 LB 알고리즘·재시도·폴백(고급은 Enterprise).|Semantic 캐시(Enterprise).|지원. AI Prompt Guard(OSS), PII 마스킹·시맨틱 가드레일(Enterprise).|지원. 토큰·지연·비용, OpenTelemetry.|기존 Kong 운영 조직에 적합. 기능별 플러그인 조합. KIC로 k8s 연동.|
-|Portkey|셀프호스팅·관리형 SaaS. MIT 오픈소스(2026년 거버넌스·관측 기능까지 오픈소스화).|지원. 가중치 로드밸런싱·조건부 라우팅·폴백·자동 재시도.|Simple·Semantic 모두 지원.|지원. 40+ 가드레일 플러그인.|지원. 요청·비용·지연 대시보드.|1,600+ LLM. 가드레일 통합이 강점. Docker·k8s 셀프호스팅.|
+|Portkey|셀프호스팅·관리형 SaaS. MIT 오픈소스(2026년 거버넌스·관측 기능까지 오픈소스화).|지원. 가중치 로드밸런싱·조건부 라우팅·폴백·자동 재시도.|Simple·Semantic 모두 지원.|지원. 50+ 가드레일 플러그인.|지원. 요청·비용·지연 대시보드.|1,600+ LLM. 가드레일 통합이 강점. Docker·k8s 셀프호스팅.|
 |Cloudflare AI Gateway|완전 관리형(셀프호스팅 없음). 상용, 무료 티어 + 유료.|지원. Dynamic Routing·자동 폴백.|Exact 캐시.|지원. 콘텐츠 모더레이션·DLP.|지원. Analytics·로깅.|프로바이더 앞단 프록시. 인프라 운영 부담 없음. k8s 무관.|
-|Envoy AI Gateway|셀프호스팅(Kubernetes). Apache 2.0 오픈소스.|지원. 통합 모델 카탈로그·자동 failover.|미지원(시맨틱 캐시 로드맵).|코어 미제공(상용 애드온으로 보강).|지원. OpenTelemetry·OpenInference 트레이싱.|Gateway API·Inference Extension 기반 k8s 네이티브. Envoy Gateway 확장.|
+|Envoy AI Gateway|셀프호스팅(Kubernetes). Apache 2.0 오픈소스.|지원. 통합 모델 카탈로그·자동 failover.|미지원.|코어 미제공(상용 애드온으로 보강).|지원. OpenTelemetry·OpenInference 트레이싱.|Gateway API·Inference Extension 기반 k8s 네이티브. Envoy Gateway 확장.|
 
 ---
 

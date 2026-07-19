@@ -33,7 +33,7 @@ categories:
 - macOS의 Docker는 Metal GPU를 쓰지 못해 CPU 추론으로 동작하지만 게이트웨이 데모에는 충분합니다
 
 !!! warning
-    💡 추론 성능이 필요하면 네이티브 Ollama를 설치하고 api_base를 host.docker.internal로 연결합니다
+    💡 네이티브 Ollama 설치 시 api_base를 host.docker.internal로 연결합니다
 
 ## 게이트웨이 구축
 
@@ -237,11 +237,11 @@ categories:
 
     ![login](ai_gateway_02/1.PNG)
 
-2. Models 메뉴에서 등록한 모델 2개를 확인할 수 있습니다
+2. Models 메뉴에 등록한 모델 2개가 올라와 있습니다
 
     ![model management](ai_gateway_02/2.PNG)
 
-3. Virtual Keys 메뉴에서 발급한 키의 사용량과 예산도 확인할 수 있습니다
+3. Virtual Keys 메뉴에는 발급한 키의 사용량과 예산이 표시됩니다
 
     ![virtual keys](ai_gateway_02/3.PNG)
 
@@ -253,7 +253,7 @@ categories:
 
     폴백 실습에서 발생시킨 Failure 기록까지 그대로 남아있습니다
 
-## 마무리
+## 결론
 
 ---
 

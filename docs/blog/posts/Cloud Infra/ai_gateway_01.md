@@ -28,7 +28,7 @@ API Gateway는 요청(Request) 단위의 마이크로서비스 트래픽을, AI 
 
 | 비교 항목 | API Gateway | AI Gateway |
 |-----------|-------------|------------|
-| 과금·미터링 단위 | 요청(Request) 수 기준 | 토큰(Token) 사용량 기준 |
+| 과금·미터링 단위 | 요청 수 기준 | 토큰 사용량 기준 |
 | 라우팅 기준 | URL 경로·HTTP 메서드 | 모델·비용·지연(Latency) 기반 동적 라우팅 |
 | 캐싱 | 정확 일치(Exact Match) 캐시 | 의미 기반(Semantic) 캐시 |
 | 스트리밍 | 일반 응답 프록시 | SSE(Server-Sent Events) 스트리밍 네이티브 |
@@ -66,7 +66,7 @@ graph LR
 
 ---
 
-## 동작 원리
+## 동작 방식
 
 ### 요청 처리 파이프라인
 
@@ -77,8 +77,8 @@ sequenceDiagram
     participant Cache
     participant Provider
     App->>Gateway: 요청 (virtual key 포함)
-    Gateway->>Gateway: 인증 — virtual key 검증
-    Gateway->>Gateway: rate limit·예산(Budget) 검사
+    Gateway->>Gateway: 인증 (virtual key 검증)
+    Gateway->>Gateway: rate limit·예산 검사
     Gateway->>Cache: 캐시 조회
     Cache-->>Gateway: 미스(Miss)
     Gateway->>Gateway: 라우팅 결정 (배포 선택)
@@ -124,15 +124,15 @@ sequenceDiagram
 
 | 기능 | 설명 |
 |------|------|
-| 통합 API(Unified API) | 프로바이더별 API를 OpenAI 호환 단일 스키마로 정규화 |
+| 통합 API | 프로바이더별 API를 OpenAI 호환 단일 스키마로 정규화 |
 | 모델 라우팅 | 비용·지연·품질 기준으로 요청을 적절한 모델로 분배 |
-| 폴백·재시도(Fallback) | 프로바이더 오류·throttling 시 다른 모델로 자동 전환 |
+| 폴백·재시도 | 프로바이더 오류·throttling 시 다른 모델로 자동 전환 |
 | 로드 밸런싱 | 여러 키·리전에 요청을 분산해 rate limit 회피 |
-| 시맨틱 캐싱(Semantic Cache) | 의미가 같은 프롬프트의 응답을 재사용해 토큰 비용 절감 |
-| 가상 키(Virtual Key) | 실제 키를 숨기고 앱별 발급·회수 가능한 대체 키 제공 |
+| 시맨틱 캐싱 | 의미가 같은 프롬프트의 응답을 재사용해 토큰 비용 절감 |
+| 가상 키 | 실제 키를 숨기고 앱별 발급·회수 가능한 대체 키 제공 |
 | 비용·예산 관리 | 팀·모델별 토큰 비용 추적과 예산 한도 초과 차단 |
-| 가드레일(Guardrail) | 프롬프트 인젝션·PII·유해 콘텐츠 입출력 필터링 |
-| 관측성(Observability) | 요청·응답 로그, 지연, 토큰·비용 메트릭 수집 |
+| 가드레일 | 프롬프트 인젝션·PII·유해 콘텐츠 입출력 필터링 |
+| 관측성 | 요청·응답 로그, 지연, 토큰·비용 메트릭 수집 |
 
 ---
 
@@ -143,7 +143,6 @@ sequenceDiagram
 - Cloudflare AI Gateway: 완전 관리형(Managed), 캐싱·분석을 프로바이더 앞단에 추가
 - Envoy AI Gateway: Envoy·Kubernetes 프리미티브 기반의 클라우드 네이티브 게이트웨이
 
-각 솔루션의 아키텍처·기능·운영 부담 상세 비교는 연재 후속 편에서 정리 예정.
 
 ---
 
