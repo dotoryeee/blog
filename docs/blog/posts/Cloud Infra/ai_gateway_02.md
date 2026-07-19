@@ -76,7 +76,8 @@ categories:
           - ./litellm_config.yaml:/app/config.yaml
         command: ["--config", "/app/config.yaml", "--port", "4000"]
         environment:
-          LITELLM_MASTER_KEY: sk-blog-master-1234    #관리자용 마스터 키
+          LITELLM_MASTER_KEY: sk-dotoryeee-1234    #관리자용 마스터 키
+          UI_USERNAME: dotoryeee                     #Admin UI 로그인 계정
           DATABASE_URL: postgresql://llmproxy:dbpassword@db:5432/litellm
           STORE_MODEL_IN_DB: "True"
         depends_on:
@@ -133,7 +134,7 @@ categories:
     curl -s http://localhost:4000/health/liveliness
     "I'm alive!"
 
-    curl -s http://localhost:4000/v1/models -H "Authorization: Bearer sk-blog-master-1234"
+    curl -s http://localhost:4000/v1/models -H "Authorization: Bearer sk-dotoryeee-1234"
     {
         "data": [
             {"id": "llama-small", "object": "model", ...},
@@ -151,7 +152,7 @@ categories:
 
     ```s
     curl -s http://localhost:4000/v1/chat/completions \
-      -H "Authorization: Bearer sk-blog-master-1234" \
+      -H "Authorization: Bearer sk-dotoryeee-1234" \
       -H "Content-Type: application/json" \
       -d '{"model":"qwen-small","messages":[{"role":"user","content":"What is an API gateway? One sentence."}],"max_tokens":50}'
     ```
@@ -174,12 +175,12 @@ categories:
 
     ```s
     curl -s http://localhost:4000/key/generate \
-      -H "Authorization: Bearer sk-blog-master-1234" \
+      -H "Authorization: Bearer sk-dotoryeee-1234" \
       -H "Content-Type: application/json" \
-      -d '{"key_alias":"team-a","models":["llama-small","qwen-small"],"rpm_limit":2}'
+      -d '{"key_alias":"dotoryeee-key","models":["llama-small","qwen-small"],"rpm_limit":2}'
     {
-      "key": "sk-g-io1mplPga1mKCEKhiCeA",
-      "key_alias": "team-a",
+      "key": "sk-2TLJ91iCDREGN_0mDJFFeA",
+      "key_alias": "dotoryeee-key",
       "models": ["llama-small", "qwen-small"],
       "rpm_limit": 2
     }
@@ -189,14 +190,14 @@ categories:
 
     ```s
     curl -s http://localhost:4000/v1/chat/completions \
-      -H "Authorization: Bearer sk-g-io1mplPga1mKCEKhiCeA" \
+      -H "Authorization: Bearer sk-2TLJ91iCDREGN_0mDJFFeA" \
       -H "Content-Type: application/json" \
       -d '{"model":"qwen-small","messages":[{"role":"user","content":"hi"}],"max_tokens":5}'    #동일 요청 3회 반복
 
     call 1 -> HTTP:200
     call 2 -> HTTP:200
     call 3 -> HTTP:429
-      에러: Rate limit exceeded for api_key: 341f82ff... Limit type: requests.
+      에러: Rate limit exceeded for api_key: ebd5686b... Limit type: requests.
     ```
 
 ## 프로바이더 장애 폴백
@@ -214,7 +215,7 @@ categories:
 
     ```s
     curl -s -D - http://localhost:4000/v1/chat/completions \
-      -H "Authorization: Bearer sk-blog-master-1234" \
+      -H "Authorization: Bearer sk-dotoryeee-1234" \
       -H "Content-Type: application/json" \
       -d '{"model":"llama-small","messages":[{"role":"user","content":"hi"}],"max_tokens":30}' | grep x-litellm
 
@@ -232,17 +233,25 @@ categories:
 
 ---
 
-1. http://localhost:4000/ui 에 접속해 admin 계정(비밀번호는 마스터 키)으로 로그인하면 등록된 모델을 확인할 수 있습니다
+1. http://localhost:4000/ui 에 접속해 dotoryeee 계정(비밀번호는 마스터 키)으로 로그인합니다
 
-    ![model management](ai_gateway_02/1.PNG)
+    ![login](ai_gateway_02/1.PNG)
 
-    등록한 모델 2개가 게이트웨이에 올라와 있습니다
+2. Models 메뉴에서 등록한 모델 2개를 확인할 수 있습니다
 
-2. Virtual Keys 메뉴에서 발급한 키의 사용량과 예산도 확인할 수 있습니다
+    ![model management](ai_gateway_02/2.PNG)
 
-    ![virtual keys](ai_gateway_02/2.PNG)
+3. Virtual Keys 메뉴에서 발급한 키의 사용량과 예산도 확인할 수 있습니다
 
-    team-a 키가 발급되어 있고 Spend 추적이 동작합니다
+    ![virtual keys](ai_gateway_02/3.PNG)
+
+    dotoryeee-key 키가 발급되어 있고 Spend 추적이 동작합니다
+
+4. Logs 메뉴에서 요청별 처리 결과와 소요 시간을 추적할 수 있습니다
+
+    ![request logs](ai_gateway_02/4.PNG)
+
+    폴백 실습에서 발생시킨 Failure 기록까지 그대로 남아있습니다
 
 ## 마무리
 

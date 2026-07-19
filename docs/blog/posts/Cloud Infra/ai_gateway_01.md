@@ -66,6 +66,60 @@ graph LR
 
 ---
 
+## 동작 원리
+
+### 요청 처리 파이프라인
+
+```mermaid
+sequenceDiagram
+    participant App
+    participant Gateway
+    participant Cache
+    participant Provider
+    App->>Gateway: 요청 (virtual key 포함)
+    Gateway->>Gateway: 인증 — virtual key 검증
+    Gateway->>Gateway: rate limit·예산(Budget) 검사
+    Gateway->>Cache: 캐시 조회
+    Cache-->>Gateway: 미스(Miss)
+    Gateway->>Gateway: 라우팅 결정 (배포 선택)
+    Gateway->>Provider: 모델 호출
+    Provider-->>Gateway: 응답 + usage
+    Gateway->>Gateway: 미터링 기록 (토큰·비용 누적)
+    Gateway-->>App: 최종 응답
+```
+
+- 인증 → 예산·rate limit 검사 → 캐시 조회 → 라우팅 → 호출 → 미터링 순으로 통과하는 단방향 파이프라인
+- 캐시 히트(Hit) 시 라우팅·프로바이더 호출을 건너뛰고 즉시 응답 → 해당 요청의 토큰 비용 0
+
+### 미터링(Metering)
+- 비스트리밍: 프로바이더 응답의 usage 필드에서 입력·출력 토큰 수 확보
+- 스트리밍: 종료 청크의 usage로 집계하거나, 미제공 시 tokenizer(tiktoken 등)로 추정
+- 비용 산출: 토큰 수 × 모델별 단가표(입력·출력 1K 토큰당 요금)로 요청별 비용 계산
+- 누적: 키(Key)·팀(Team)·모델 차원으로 DB에 spend 적재
+- 환류: 누적값이 예산 한도·rate limit 초과 판정의 근거로 재사용됨
+
+### 로드밸런싱
+- 동일 모델의 여러 배포(키·리전·프로바이더)를 하나의 모델 그룹(Model Group)으로 묶음
+- rate limit(RPM/TPM) 여유가 남은 배포를 우선 선택해 throttling 회피
+
+| 전략 | 설명 |
+|------|------|
+| 가중치 라운드로빈 | 배포별 weight·RPM/TPM 비율에 따른 확률적 분산 |
+| 최소 지연(Latency-based) | 최근 응답 지연이 가장 낮은 배포 선택 |
+| 사용량 기반(Usage-based) | 실시간 TPM/RPM 소비량이 가장 적은 배포 선택 |
+
+### 폴백 판정
+- 일시적 오류(429·5xx·타임아웃): 동일 배포에서 지정 횟수만큼 재시도 → 소진 시 폴백 체인의 다음 모델로 전환
+- 비일시적 오류(컨텍스트 윈도우 초과 등): 재시도 무의미 → 즉시 폴백
+- 폴백 체인의 다음 모델도 실패하면 순서대로 후속 후보로 계속 이동
+
+### 캐시 조회
+- exact: 요청을 정규화·해시해 완전 일치 항목이 있으면 히트
+- semantic: 프롬프트 임베딩의 코사인 유사도가 임계값(similarity threshold) 이상이면 히트
+- exact 우선 조회 → 미스 시 semantic 조회 순으로 판정
+
+---
+
 ## 핵심 기능 정리
 
 | 기능 | 설명 |
