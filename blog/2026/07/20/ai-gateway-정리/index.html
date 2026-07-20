@@ -8,13 +8,11 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EA%B4%80%EC%B8%A1%EC%84%B1-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">
       
-      
-        <link rel="next" href="../ai-gateway-%EA%B0%80%EB%93%9C%EB%A0%88%EC%9D%BC-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -25,7 +23,7 @@
     
     
       
-        <title>AI Gateway 관측성 정리 - dotoryeee's blog</title>
+        <title>AI Gateway 정리 - dotoryeee's blog</title>
       
     
     
@@ -119,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AI Gateway 관측성 정리
+              AI Gateway 정리
             
           </span>
         </div>
@@ -1527,10 +1525,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#llm" class="md-nav__link">
+  <a href="#ai-gateway_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        LLM 관측이 다른 이유
+        AI Gateway란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Gateway와의 차이
       
     </span>
   </a>
@@ -1541,40 +1550,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        요청 단위 관측: 응답 헤더
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ttft" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TTFT 실측
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prometheus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        메트릭: Prometheus
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#opentelemetry" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        트레이싱: OpenTelemetry
+        필요한 이유
       
     </span>
   </a>
@@ -1585,7 +1561,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        운영: 무엇에 알람을 거는가
+        구조
       
     </span>
   </a>
@@ -1594,6 +1570,200 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동작 방식
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="동작 방식">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        요청 처리 파이프라인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        미터링(Metering)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로드밸런싱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        폴백 판정
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐시 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        핵심 기능 정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        솔루션 비교
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="솔루션 비교">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        선택 가이드
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        가드레일
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="가드레일">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        위협 모델 정리
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        가드레일 동작 위치
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        구현 방식 비교
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#litellm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LiteLLM 설정 예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        운영 주의
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1659,7 +1829,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-19 00:00:00+00:00" class="md-ellipsis">Jul 19, 2026</time>
+                        <time datetime="2026-07-20 00:00:00+00:00" class="md-ellipsis">Jul 20, 2026</time>
                       </div>
                     </li>
                     
@@ -1672,7 +1842,7 @@
                             
                               <a href="../../../../category/cloud/">Cloud</a>, 
                               <a href="../../../../category/ai/">AI</a>, 
-                              <a href="../../../../category/sre/">SRE</a></span>
+                              <a href="../../../../category/security/">Security</a></span>
                         </div>
                       </li>
                     
@@ -1683,7 +1853,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              6 min read
+                              12 min read
                             
                           </span>
                         </div>
@@ -1707,245 +1877,492 @@
 
 
 
-<h1 id="ai-gateway">AI Gateway 관측성 정리</h1>
+<h1 id="ai-gateway">AI Gateway 정리</h1>
 <!-- more -->
 
-<p>관측성(Observability)이란 게이트웨이를 지나는 요청의 내부 상태를 로그·메트릭·트레이스로 밖에서 파악 가능하게 만드는 성질</p>
+<h2 id="ai-gateway_1">AI Gateway란</h2>
+<p>AI Gateway란 애플리케이션과 여러 LLM 프로바이더 사이에서 LLM 트래픽을 단일 API로 중계하고 통제하는 게이트웨이 계층</p>
+<ul>
+<li>위치: 앱과 OpenAI·Anthropic·Bedrock 등 모델 프로바이더 사이의 중간 계층</li>
+<li>인터페이스: 프로바이더별 SDK를 OpenAI 호환 단일 API로 통일</li>
+<li>역할: 라우팅·캐싱·폴백·과금·가드레일·관측을 한 곳에서 집행</li>
+<li>성격: 앱 코드 변경 없이 모델·프로바이더를 교체 가능한 제어 계층(Control Plane)</li>
+<li>별칭: LLM Gateway, LLM Proxy, LLM Router로도 불림</li>
+</ul>
 <hr />
-<h2 id="llm">LLM 관측이 다른 이유</h2>
-<p>일반 백엔드 지표에 토큰·비용·첫 토큰 지연 차원이 더해지는 것이 LLM 관측의 특징</p>
+<h2 id="api-gateway">API Gateway와의 차이</h2>
+<p>API Gateway는 요청(Request) 단위의 마이크로서비스 트래픽을, AI Gateway는 토큰(Token) 단위의 LLM 트래픽을 다루는 것이 핵심 차이</p>
 <table>
 <thead>
 <tr>
-<th>관측 차원</th>
-<th>일반 API 백엔드</th>
-<th>LLM 백엔드</th>
+<th>비교 항목</th>
+<th>API Gateway</th>
+<th>AI Gateway</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>지연</td>
-<td>요청~응답 시간</td>
-<td>요청~응답 + TTFT(첫 토큰까지) 분리</td>
+<td>과금·미터링 단위</td>
+<td>요청 수 기준</td>
+<td>토큰 사용량 기준</td>
 </tr>
 <tr>
-<td>처리량</td>
-<td>초당 요청 수(RPS)</td>
-<td>RPS + 초당 토큰 수</td>
+<td>라우팅 기준</td>
+<td>URL 경로·HTTP 메서드</td>
+<td>모델·비용·지연(Latency) 기반 동적 라우팅</td>
 </tr>
 <tr>
-<td>비용</td>
-<td>인프라 고정비</td>
-<td>요청마다 토큰 종량 과금</td>
+<td>캐싱</td>
+<td>정확 일치(Exact Match) 캐시</td>
+<td>의미 기반(Semantic) 캐시</td>
 </tr>
 <tr>
-<td>실패</td>
-<td>4xx/5xx</td>
-<td>4xx/5xx + 폴백·재시도 발생</td>
+<td>스트리밍</td>
+<td>일반 응답 프록시</td>
+<td>SSE(Server-Sent Events) 스트리밍 네이티브</td>
+</tr>
+<tr>
+<td>가드레일</td>
+<td>WAF 수준의 요청 필터링</td>
+<td>프롬프트 인젝션·PII 등 콘텐츠 계층 필터링</td>
+</tr>
+<tr>
+<td>폴백</td>
+<td>일반적으로 미제공</td>
+<td>프로바이더 간 자동 폴백(429 → 타 프로바이더 재시도)</td>
+</tr>
+<tr>
+<td>관측성</td>
+<td>요청 수·상태 코드·지연</td>
+<td>토큰·비용·모델별 사용량 분석</td>
 </tr>
 </tbody>
 </table>
+<hr />
+<h2 id="_1">필요한 이유</h2>
 <ul>
-<li>스트리밍 응답은 전체 지연 하나로 못 봄 → 첫 토큰(TTFT)과 완료 시간을 분리 측정</li>
-<li>비용이 요청마다 달라지고 폴백·재시도가 정상 경로에 섞임 → 토큰·spend와 실제 처리 백엔드를 요청 단위로 기록 필요</li>
+<li>프로바이더 종속 제거: 멀티 프로바이더를 단일 API로 추상화해 특정 벤더 종속(Lock-in) 회피</li>
+<li>API 키 중앙 관리: 실제 키는 게이트웨이가 보관하고 앱에는 가상 키(Virtual Key)만 발급해 유출 방지</li>
+<li>비용 통제: 팀·사용자·모델별 토큰 사용량 추적과 예산(Budget) 한도 집행</li>
+<li>장애 폴백: 프로바이더 장애·429 발생 시 다른 모델로 자동 전환해 가용성 확보</li>
+<li>관측성 확보: 요청·응답 로그, 지연, 토큰 비용을 한 곳에서 추적</li>
 </ul>
 <hr />
-<h2 id="_1">요청 단위 관측: 응답 헤더</h2>
-<p>응답 헤더 한 벌이 요청별 지연 분해와 라우팅 결과를 그대로 실음</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:10}&#39;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">call</span><span class="o">-</span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="m">4</span><span class="n">fca4ae9</span><span class="m">-2075-4</span><span class="n">c3f</span><span class="m">-8</span><span class="n">b74</span><span class="m">-8655</span><span class="n">cccb42dd</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">response</span><span class="o">-</span><span class="n">duration</span><span class="o">-</span><span class="n">ms</span><span class="o">:</span><span class="w"> </span><span class="m">395.33</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">overhead</span><span class="o">-</span><span class="n">duration</span><span class="o">-</span><span class="n">ms</span><span class="o">:</span><span class="w"> </span><span class="m">6.84</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">group</span><span class="o">:</span><span class="w"> </span><span class="n">qwen</span><span class="o">-</span><span class="n">small</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">attempted</span><span class="o">-</span><span class="n">retries</span><span class="o">:</span><span class="w"> </span><span class="m">0</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">attempted</span><span class="o">-</span><span class="n">fallbacks</span><span class="o">:</span><span class="w"> </span><span class="m">0</span>
-</code></pre></div>
+<h2 id="_2">구조</h2>
+<pre class="mermaid"><code>graph LR
+    App1["웹 앱(Web App)"] --&gt; GW["AI Gateway"]
+    App2["에이전트(Agent)"] --&gt; GW
+    App3["배치 작업(Batch Job)"] --&gt; GW
+    GW --&gt; OpenAI["OpenAI"]
+    GW --&gt; Anthropic["Anthropic"]
+    GW --&gt; Bedrock["Amazon Bedrock"]
+    GW --&gt; Local["로컬 모델(Local Model)"]</code></pre>
+<ul>
+<li>좌측: 여러 앱·에이전트가 프로바이더별 SDK 대신 게이트웨이 단일 엔드포인트로 요청</li>
+<li>중앙: AI Gateway가 라우팅·캐싱·폴백·가드레일·과금을 일괄 처리</li>
+<li>우측: 상용 프로바이더와 사내 로컬 모델을 동일한 인터페이스로 연결</li>
+</ul>
+<hr />
+<h2 id="_3">동작 방식</h2>
+<h3 id="_4">요청 처리 파이프라인</h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App
+    participant Gateway
+    participant Cache
+    participant Provider
+    App-&gt;&gt;Gateway: 요청 (virtual key 포함)
+    Gateway-&gt;&gt;Gateway: 인증 (virtual key 검증)
+    Gateway-&gt;&gt;Gateway: rate limit·예산 검사
+    Gateway-&gt;&gt;Cache: 캐시 조회
+    Cache--&gt;&gt;Gateway: 미스(Miss)
+    Gateway-&gt;&gt;Gateway: 라우팅 결정 (배포 선택)
+    Gateway-&gt;&gt;Provider: 모델 호출
+    Provider--&gt;&gt;Gateway: 응답 + usage
+    Gateway-&gt;&gt;Gateway: 미터링 기록 (토큰·비용 누적)
+    Gateway--&gt;&gt;App: 최종 응답</code></pre>
+<ul>
+<li>인증 → 예산·rate limit 검사 → 캐시 조회 → 라우팅 → 호출 → 미터링 순으로 통과하는 단방향 파이프라인</li>
+<li>캐시 히트(Hit) 시 라우팅·프로바이더 호출을 건너뛰고 즉시 응답 → 해당 요청의 토큰 비용 0</li>
+</ul>
+<h3 id="metering">미터링(Metering)</h3>
+<ul>
+<li>비스트리밍: 프로바이더 응답의 usage 필드에서 입력·출력 토큰 수 확보</li>
+<li>스트리밍: 종료 청크의 usage로 집계하거나, 미제공 시 tokenizer(tiktoken 등)로 추정</li>
+<li>비용 산출: 토큰 수 × 모델별 단가표(입력·출력 1K 토큰당 요금)로 요청별 비용 계산</li>
+<li>누적: 키(Key)·팀(Team)·모델 차원으로 DB에 spend 적재</li>
+<li>환류: 누적값이 예산 한도·rate limit 초과 판정의 근거로 재사용됨</li>
+</ul>
+<h3 id="_5">로드밸런싱</h3>
+<ul>
+<li>동일 모델의 여러 배포(키·리전·프로바이더)를 하나의 모델 그룹(Model Group)으로 묶음</li>
+<li>rate limit(RPM/TPM) 여유가 남은 배포를 우선 선택해 throttling 회피</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th>헤더</th>
-<th>의미</th>
+<th>전략</th>
+<th>설명</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>x-litellm-call-id</code></td>
-<td>요청 추적용 고유 ID, 로그·트레이스 상관에 사용</td>
+<td>가중치 라운드로빈</td>
+<td>배포별 weight·RPM/TPM 비율에 따른 확률적 분산</td>
 </tr>
 <tr>
-<td><code>x-litellm-response-duration-ms</code></td>
-<td>백엔드 응답까지 총 소요 시간</td>
+<td>최소 지연(Latency-based)</td>
+<td>최근 응답 지연이 가장 낮은 배포 선택</td>
 </tr>
 <tr>
-<td><code>x-litellm-overhead-duration-ms</code></td>
-<td>게이트웨이 자체 처리로 더해진 시간</td>
-</tr>
-<tr>
-<td><code>x-litellm-attempted-retries</code></td>
-<td>이 응답이 나오기까지 재시도 횟수</td>
-</tr>
-<tr>
-<td><code>x-litellm-attempted-fallbacks</code></td>
-<td>폴백 발생 횟수, 0 초과면 대체 백엔드가 처리</td>
+<td>사용량 기반(Usage-based)</td>
+<td>실시간 TPM/RPM 소비량이 가장 적은 배포 선택</td>
 </tr>
 </tbody>
 </table>
+<h3 id="_6">폴백 판정</h3>
 <ul>
-<li>response-duration과 overhead-duration이 분리돼 지연 원인이 백엔드인지 게이트웨이인지 구분 가능</li>
-<li>attempted-fallbacks가 0보다 크면 요청한 별칭이 아닌 대체 백엔드가 응답 (폴백이 발생했다는 신호)</li>
-<li>키 단위 누적 spend는 <code>/key/info</code>, 요청 단위 감사 로그는 <code>/spend/logs</code>로 조회</li>
+<li>일시적 오류(429·5xx·타임아웃): 동일 배포에서 지정 횟수만큼 재시도 → 소진 시 폴백 체인의 다음 모델로 전환</li>
+<li>비일시적 오류(컨텍스트 윈도우 초과 등): 재시도 무의미 → 즉시 폴백</li>
+<li>폴백 체인의 다음 모델도 실패하면 순서대로 후속 후보로 계속 이동</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="s2">&quot;chatcmpl-db7a1fa7-ea4f-4b80-8a53-21b3f5bae931&quot;</span><span class="p">,</span><span class="nt">&quot;call_type&quot;</span><span class="p">:</span><span class="s2">&quot;acompletion&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w"> </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;ollama/llama3.2:1b&quot;</span><span class="p">,</span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="mi">124</span><span class="p">,</span><span class="nt">&quot;spend&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span><span class="nt">&quot;cache_hit&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h2 id="ttft">TTFT 실측</h2>
-<p>TTFT(Time To First Token)이란 요청 전송부터 첫 토큰이 도착하기까지의 시간으로, 스트리밍 체감 속도를 좌우하는 지표</p>
+<h3 id="_7">캐시 조회</h3>
 <ul>
-<li>전체 지연은 마지막 토큰까지, TTFT는 첫 토큰까지 → 사용자 체감은 TTFT가 결정</li>
-<li>curl -w의 time_starttransfer(첫 바이트)와 time_total(완료)로 분해 측정</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">WFMT</span><span class="o">=</span><span class="s">&#39;TTFB=%{time_starttransfer}s  total=%{time_total}s\n&#39;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># 논스트리밍 (stream:false)</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">TTFB</span><span class="o">=</span><span class="m">2.785</span><span class="n">s</span><span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="m">2.785</span><span class="n">s</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># 스트리밍 (stream:true)</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">TTFB</span><span class="o">=</span><span class="m">0.208</span><span class="n">s</span><span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="m">4.009</span><span class="n">s</span>
-</code></pre></div>
-<ul>
-<li>논스트리밍은 TTFB와 total이 사실상 같음 → 전체 생성이 끝날 때까지 클라이언트가 대기</li>
-<li>스트리밍은 첫 바이트가 0.2초, 완료가 약 4초 → 첫 토큰을 먼저 흘려보내 체감 지연을 줄임</li>
-<li>프로메테우스 <code>litellm_llm_api_time_to_first_token_metric</code>도 스트리밍 호출에서만 기록됨 (같은 요청 sum=0.181)</li>
+<li>exact: 요청을 정규화·해시해 완전 일치 항목이 있으면 히트</li>
+<li>semantic: 프롬프트 임베딩의 코사인 유사도가 임계값(similarity threshold) 이상이면 히트</li>
+<li>exact 우선 조회 → 미스 시 semantic 조회 순으로 판정</li>
 </ul>
 <hr />
-<h2 id="prometheus">메트릭: Prometheus</h2>
-<p>callbacks에 prometheus 한 줄로 /metrics 엔드포인트가 열리고 요청·지연·토큰·비용이 시계열로 쌓임</p>
-<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">drop_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;prometheus&quot;</span><span class="p p-Indicator">]</span><span class="w">     </span><span class="c1"># /metrics 엔드포인트 노출</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">sL</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">metrics</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">litellm_proxy_total_requests_metric_total</span><span class="p">{</span><span class="n">requested_model</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="n">status_code</span><span class="o">=</span><span class="s">&quot;200&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">litellm_request_total_latency_metric_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s">&quot;0.5&quot;</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;qwen2.5:0.5b&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">litellm_llm_api_time_to_first_token_metric_sum</span><span class="p">{</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;qwen2.5:0.5b&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">0.181239</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">litellm_overhead_latency_metric_sum</span><span class="p">{</span><span class="n">model_group</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">0.003282</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">litellm_deployment_success_responses_total</span><span class="p">{</span><span class="n">model_group</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
-</code></pre></div>
+<h2 id="_8">핵심 기능 정리</h2>
 <table>
 <thead>
 <tr>
-<th>메트릭</th>
-<th>관측 대상</th>
+<th>기능</th>
+<th>설명</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>litellm_request_total_latency_metric</code></td>
-<td>요청 전체 지연 히스토그램</td>
+<td>통합 API</td>
+<td>프로바이더별 API를 OpenAI 호환 단일 스키마로 정규화</td>
 </tr>
 <tr>
-<td><code>litellm_llm_api_time_to_first_token_metric</code></td>
-<td>TTFT 히스토그램(스트리밍)</td>
+<td>모델 라우팅</td>
+<td>비용·지연·품질 기준으로 요청을 적절한 모델로 분배</td>
 </tr>
 <tr>
-<td><code>litellm_overhead_latency_metric</code></td>
-<td>게이트웨이 자체 오버헤드</td>
+<td>폴백·재시도</td>
+<td>프로바이더 오류·throttling 시 다른 모델로 자동 전환</td>
 </tr>
 <tr>
-<td><code>litellm_spend_metric</code> / <code>litellm_total_tokens_metric</code></td>
-<td>비용·토큰 누적</td>
+<td>로드 밸런싱</td>
+<td>여러 키·리전에 요청을 분산해 rate limit 회피</td>
 </tr>
 <tr>
-<td><code>litellm_deployment_success/failure_responses_total</code></td>
-<td>백엔드별 성공·실패 수</td>
+<td>시맨틱 캐싱</td>
+<td>의미가 같은 프롬프트의 응답을 재사용해 토큰 비용 절감</td>
 </tr>
 <tr>
-<td><code>litellm_deployment_successful_fallbacks_total</code></td>
-<td>폴백 발생 횟수</td>
+<td>가상 키</td>
+<td>실제 키를 숨기고 앱별 발급·회수 가능한 대체 키 제공</td>
+</tr>
+<tr>
+<td>비용·예산 관리</td>
+<td>팀·모델별 토큰 비용 추적과 예산 한도 초과 차단</td>
+</tr>
+<tr>
+<td>가드레일</td>
+<td>프롬프트 인젝션·PII·유해 콘텐츠 입출력 필터링</td>
+</tr>
+<tr>
+<td>관측성</td>
+<td>요청·응답 로그, 지연, 토큰·비용 메트릭 수집</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>이 랩은 LiteLLM 1.94.0 community이며 <code>has_license:false</code> 상태에서 <code>/metrics</code>가 그대로 동작 → 프로메테우스 메트릭은 무료 코어에 포함</li>
-<li>Enterprise 티어가 더하는 것은 SSO·RBAC·감사 로그 같은 거버넌스 기능이지 기본 메트릭·트레이싱이 아님 (community/Enterprise 라이선스 경계와 동일)</li>
-<li>다만 프로메테우스 통합의 무료·유료 경계는 버전마다 달라진 이력 → 배포 버전에서 직접 확인 권장</li>
-</ul>
 <hr />
-<h2 id="opentelemetry">트레이싱: OpenTelemetry</h2>
-<p>요청 하나를 내부 단계별 span으로 쪼개 어느 구간에서 시간이 샜는지 추적하는 표준이 OpenTelemetry(OTEL)</p>
-<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;otel&quot;</span><span class="p p-Indicator">]</span><span class="w">                          </span><span class="c1"># 트레이스 전송</span>
-</code></pre></div>
-<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">      </span><span class="nt">OTEL_EXPORTER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">otlp_http</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">      </span><span class="nt">OTEL_ENDPOINT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318</span><span class="w"> </span><span class="c1"># 수집기 주소</span>
-</code></pre></div>
-<p>otel-collector를 debug exporter로 띄우고 요청 한 건을 보내면 하나의 trace_id 아래 내부 span이 도착함</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">service.name</span><span class="o">:</span><span class="w"> </span><span class="n">litellm</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">Trace</span><span class="w"> </span><span class="n">ID</span><span class="o">:</span><span class="w"> </span><span class="n">c69af1f904d85841782a2f8bb8d585c2</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="n">auth</span><span class="w">                </span><span class="c1"># 키 인증</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="n">postgres</span><span class="w">            </span><span class="c1"># 사용자 조회</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="n">proxy_pre_call</span><span class="w">      </span><span class="c1"># pre-call 훅</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="n">router</span><span class="w">              </span><span class="c1"># 배포 선택</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="n">litellm_request</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="n">raw_gen_ai_request</span><span class="w">  </span><span class="c1"># 실제 백엔드 LLM 호출</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="n">batch_write_to_db</span><span class="w">   </span><span class="c1"># spend 비동기 기록</span>
-</code></pre></div>
-<ul>
-<li>한 요청 = 한 trace_id, 인증·라우팅·백엔드 호출이 각각 span → 지연이 게이트웨이 내부인지 백엔드인지 분리</li>
-<li>OTEL도 community 무료. 같은 OTLP로 Jaeger·Tempo·Datadog 등 백엔드에 그대로 전송</li>
-<li>프롬프트·응답 본문까지 보는 LLM 특화 관측은 <code>callbacks: ["langfuse"]</code> + LANGFUSE_* 환경변수로 교체 (설정 예시)</li>
-</ul>
-<hr />
-<h2 id="_2">운영: 무엇에 알람을 거는가</h2>
-<p>관측의 목적은 대시보드가 아니라 개입 시점을 잡는 것 → 아래 네 축을 우선 알람화</p>
+<h2 id="_9">솔루션 비교</h2>
+<p>셀프호스팅 운영 부담을 기준으로 대표 5개 AI Gateway 솔루션을 배포 형태·핵심 기능·라이선스 관점에서 비교</p>
 <table>
 <thead>
 <tr>
-<th>축</th>
-<th>메트릭</th>
-<th>알람 신호</th>
+<th>솔루션</th>
+<th>배포 형태 / 라이선스</th>
+<th>라우팅·폴백</th>
+<th>캐싱</th>
+<th>가드레일</th>
+<th>관측성</th>
+<th>비고</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>오류율</td>
-<td><code>litellm_proxy_failed_requests_metric</code></td>
-<td>5xx 비율이 기준선 초과</td>
+<td>LiteLLM</td>
+<td>셀프호스팅(Docker·Helm). MIT 오픈소스, Enterprise 유료 티어(SSO·RBAC·감사 로그).</td>
+<td>지원. 폴백 체인·num_retries·다중 키 로드밸런싱.</td>
+<td>Exact·Semantic 모두 지원.</td>
+<td>지원. hook 플러그인·외부 가드레일 연동.</td>
+<td>지원. 토큰·비용 추적, 로그, Admin UI.</td>
+<td>OpenAI 호환 단일 API, 100+ 프로바이더. k8s는 Helm 차트로 배포.</td>
 </tr>
 <tr>
-<td>폴백 발생</td>
-<td><code>litellm_deployment_successful_fallbacks_total</code></td>
-<td>증가 시 주 프로바이더 장애 조기 신호</td>
+<td>Kong AI Gateway</td>
+<td>셀프호스팅(Kong Gateway 플러그인)·Konnect SaaS. Gateway는 Apache 2.0, 고급 AI 기능은 Enterprise 유료.</td>
+<td>지원. AI Proxy Advanced의 다중 LB 알고리즘·재시도·폴백(고급은 Enterprise).</td>
+<td>Semantic 캐시(Enterprise).</td>
+<td>지원. AI Prompt Guard(OSS), PII 마스킹·시맨틱 가드레일(Enterprise).</td>
+<td>지원. 토큰·지연·비용, OpenTelemetry.</td>
+<td>기존 Kong 운영 조직에 적합. 기능별 플러그인 조합. KIC로 k8s 연동.</td>
 </tr>
 <tr>
-<td>예산 소진</td>
-<td><code>litellm_remaining_api_key_budget_metric</code></td>
-<td>키별 잔여 예산이 임계 이하</td>
+<td>Portkey</td>
+<td>셀프호스팅·관리형 SaaS. MIT 오픈소스(2026년 거버넌스·관측 기능까지 오픈소스화).</td>
+<td>지원. 가중치 로드밸런싱·조건부 라우팅·폴백·자동 재시도.</td>
+<td>Simple·Semantic 모두 지원.</td>
+<td>지원. 50+ 가드레일 플러그인.</td>
+<td>지원. 요청·비용·지연 대시보드.</td>
+<td>1,600+ LLM. 가드레일 통합이 강점. Docker·k8s 셀프호스팅.</td>
 </tr>
 <tr>
-<td>TTFT 악화</td>
-<td><code>litellm_llm_api_time_to_first_token_metric</code></td>
-<td>p95 TTFT가 기준 초과</td>
+<td>Cloudflare AI Gateway</td>
+<td>완전 관리형(셀프호스팅 없음). 상용, 무료 티어 + 유료.</td>
+<td>지원. Dynamic Routing·자동 폴백.</td>
+<td>Exact 캐시.</td>
+<td>지원. 콘텐츠 모더레이션·DLP.</td>
+<td>지원. Analytics·로깅.</td>
+<td>프로바이더 앞단 프록시. 인프라 운영 부담 없음. k8s 무관.</td>
+</tr>
+<tr>
+<td>Envoy AI Gateway</td>
+<td>셀프호스팅(Kubernetes). Apache 2.0 오픈소스.</td>
+<td>지원. 통합 모델 카탈로그·자동 failover.</td>
+<td>미지원.</td>
+<td>코어 미제공(상용 애드온으로 보강).</td>
+<td>지원. OpenTelemetry·OpenInference 트레이싱.</td>
+<td>Gateway API·Inference Extension 기반 k8s 네이티브. Envoy Gateway 확장.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_10">선택 가이드</h3>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>추천</th>
+<th>사유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>빠른 셀프호스팅 시작</td>
+<td>LiteLLM</td>
+<td>Docker 한 방 기동, OpenAI 호환, MIT. 폴백·키 관리 즉시 사용.</td>
+</tr>
+<tr>
+<td>기존 Kong 운영 조직</td>
+<td>Kong AI Gateway</td>
+<td>이미 쓰는 API 플랫폼에 AI 플러그인만 추가. 학습 곡선 최소.</td>
+</tr>
+<tr>
+<td>가드레일·거버넌스 중심</td>
+<td>Portkey</td>
+<td>다수 가드레일 내장, 완전 오픈소스, 1,600+ LLM 커버.</td>
+</tr>
+<tr>
+<td>운영 부담 최소 완전 관리형</td>
+<td>Cloudflare AI Gateway</td>
+<td>프로바이더 앞단에 얹기만 하면 됨. 서버·업그레이드 관리 불필요.</td>
+</tr>
+<tr>
+<td>Kubernetes 네이티브</td>
+<td>Envoy AI Gateway</td>
+<td>Gateway API 표준 기반, Apache 2.0, 기존 Envoy 운영과 통합.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_11">가드레일</h2>
+<p>가드레일(Guardrail)이란 게이트웨이 계층에서 LLM 입출력을 검사하고 정책 위반 시 차단·마스킹하는 콘텐츠 통제 계층</p>
+<h3 id="_12">위협 모델 정리</h3>
+<p>게이트웨이가 막아야 할 대상은 앱이 아니라 프롬프트·응답에 실린 콘텐츠</p>
+<table>
+<thead>
+<tr>
+<th>위협</th>
+<th>설명</th>
+<th>게이트웨이 대응</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>프롬프트 인젝션(Prompt Injection)</td>
+<td>사용자 입력에 지시문을 섞어 시스템 프롬프트를 무력화</td>
+<td>pre-call 입력 검사, 패턴·인젝션 분류기</td>
+</tr>
+<tr>
+<td>탈옥(Jailbreak)</td>
+<td>역할극·인코딩으로 안전 정책을 우회</td>
+<td>입력 검사 + 전용 탈옥 분류기(Prompt Shields류)</td>
+</tr>
+<tr>
+<td>PII 유출 (입력)</td>
+<td>사용자가 개인정보를 프롬프트에 그대로 포함</td>
+<td>pre-call 입력 마스킹·차단</td>
+</tr>
+<tr>
+<td>PII 유출 (출력)</td>
+<td>모델 응답에 개인정보·학습 데이터가 노출</td>
+<td>post-call 출력 마스킹·차단</td>
+</tr>
+<tr>
+<td>유해 콘텐츠</td>
+<td>혐오·폭력·성적 응답 생성</td>
+<td>콘텐츠 모더레이션 분류로 차단</td>
+</tr>
+<tr>
+<td>시스템 프롬프트 유출</td>
+<td>추출 공격으로 내부 지침·규칙이 노출</td>
+<td>출력 검사로 지침 문자열 차단</td>
+</tr>
+<tr>
+<td>과금 남용</td>
+<td>가상 키 유출로 토큰을 과소비</td>
+<td>가상 키·rate limit·예산 한도로 별도 통제</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>게이트웨이 자체 병목은 <code>litellm_overhead_latency_metric</code> 급증으로 잡음 → 백엔드가 멀쩡한데 지연이 늘면 게이트웨이 의심</li>
-<li>폴백은 200으로 응답되는 "성공한 장애"라 지표를 안 보면 놓침 → 폴백 카운터를 반드시 알람에 포함</li>
+<li>입력·출력은 서로 다른 위협 → 한쪽 훅만으로는 절반만 방어</li>
+<li>인젝션·탈옥·유출은 경계가 겹침 → 단일 분류기보다 다층 배치가 현실적</li>
+</ul>
+<h3 id="_13">가드레일 동작 위치</h3>
+<p>LiteLLM은 요청 파이프라인의 위치별로 훅을 걸 수 있음</p>
+<ul>
+<li>pre-call: LLM 호출 전 입력을 검사해 프로바이더 도달 전에 차단·마스킹으로 개입</li>
+<li>post-call: 응답 수신 후 입력과 출력을 함께 검사해 유출·유해 응답을 최종 차단</li>
+<li>during-call: LLM 호출과 병렬로 입력만 검사, 추가 지연을 줄이는 용도(블로킹 아님)</li>
+<li>logging-only: 요청 흐름은 그대로 두고 로그에만 마스킹 적용</li>
+</ul>
+<p>탐지 후 처리 방식은 세 가지로 갈림</p>
+<table>
+<thead>
+<tr>
+<th>모드</th>
+<th>동작</th>
+<th>적합</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>차단(Block)</td>
+<td>정책 위반 시 요청·응답 자체를 4xx로 거부</td>
+<td>인젝션·금칙 주제</td>
+</tr>
+<tr>
+<td>마스킹(Mask)</td>
+<td>탐지 구간만 placeholder로 치환하고 통과</td>
+<td>PII 처리</td>
+</tr>
+<tr>
+<td>로깅(Logging)</td>
+<td>흐름 변경 없이 탐지 사실만 기록</td>
+<td>정책 튜닝·관측</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_14">구현 방식 비교</h3>
+<p>정확도와 비용은 대체로 같은 방향으로 올라감</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>동작</th>
+<th>장점</th>
+<th>단점·비용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정규식·휴리스틱</td>
+<td>고정 패턴·키워드 매칭</td>
+<td>빠름, 무료, 외부 의존성 없음</td>
+<td>문맥을 못 봐 오탐·미탐이 큼</td>
+</tr>
+<tr>
+<td>PII 탐지 엔진 (Presidio)</td>
+<td>NER·정규식·체크섬 조합, 신뢰도 점수 산출</td>
+<td>MIT 오픈소스, 셀프호스팅, 다국어 지원</td>
+<td>별도 서비스 운영 부담, 완전 탐지 보장 없음</td>
+</tr>
+<tr>
+<td>LLM 판정 (LLM Judge)</td>
+<td>별도 LLM이 입출력을 정책 기준으로 평가</td>
+<td>문맥 이해, 자연어로 유연한 정책 표현</td>
+<td>검사 호출마다 토큰 비용·지연 가산</td>
+</tr>
+<tr>
+<td>벤더 관리형</td>
+<td>Bedrock Guardrails·Azure AI Content Safety·Lakera 등 관리형 API</td>
+<td>운영 부담 없음, 정책 세트·분류기 완비</td>
+<td>텍스트 단위 종량 과금, 외부 전송 발생</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Presidio는 무료 OSS로, Analyzer가 엔티티 위치·유형·신뢰도를 반환하고 Anonymizer가 치환</li>
+<li>Bedrock Guardrails는 정책별 종량 과금 → 콘텐츠 필터·민감정보 필터는 유료, 단어·정규식 기반 필터는 무료</li>
+<li>Azure AI Content Safety는 혐오·성적·폭력·자해 4개 범주 + 인젝션 탐지(Prompt Shields), 텍스트 레코드 단위 과금</li>
+<li>벤더 가드레일 대부분은 유료 관리형 → 오픈소스 코어와 경계 확인 필요</li>
+</ul>
+<h3 id="litellm">LiteLLM 설정 예시</h3>
+<p>게이트웨이의 litellm_config.yaml에 guardrails 블록을 추가하는 형태. 설정 형태는 다음과 같음(공식 문서 기준)</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">guardrails</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-input-mask&quot;</span><span class="w">       </span><span class="c1"># 입력 PII 처리</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span><span class="w">                  </span><span class="c1"># Presidio 엔진 연동(별도 컨테이너 기동)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pre_call&quot;</span><span class="w">                      </span><span class="c1"># LLM 호출 전 입력 검사</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">presidio_score_thresholds</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">ALL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span><span class="w">                            </span><span class="c1"># 신뢰도 0.7 미만 탐지는 무시</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">pii_entities_config</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nt">EMAIL_ADDRESS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MASK&quot;</span><span class="w">               </span><span class="c1"># 이메일은 마스킹 후 통과</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">CREDIT_CARD</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BLOCK&quot;</span><span class="w">                </span><span class="c1"># 카드번호는 요청 자체를 차단</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-output-check&quot;</span><span class="w">      </span><span class="c1"># 출력 검사</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;post_call&quot;</span><span class="w">                     </span><span class="c1"># 응답 수신 후 입력+출력 검사</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">default_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                      </span><span class="c1"># 모든 요청에 자동 적용</span>
+</code></pre></div>
+<ul>
+<li>mode는 배열도 허용 → <code>mode: [pre_call, post_call]</code>로 입출력 동시 검사</li>
+<li>guardrail 값을 aporia·bedrock·lakera 등으로 바꾸면 벤더 가드레일로 교체됨</li>
+<li>MASK는 <code>&lt;CREDIT_CARD&gt;</code> 형태 placeholder로 치환, BLOCK은 요청을 거부</li>
+</ul>
+<h3 id="_15">운영 주의</h3>
+<ul>
+<li>오탐↔미탐 트레이드오프: 신뢰도 임계값을 낮추면 오탐↑, 높이면 미탐↑ → 도메인별 튜닝 필요</li>
+<li>지연 추가: pre-call·post-call은 요청 경로에 직렬로 붙어 응답 지연↑, during-call 병렬화로 완화</li>
+<li>가드레일 자체 비용: LLM 판정·벤더 가드레일은 검사 호출이 곧 과금이라 원 호출 비용에 가산됨</li>
+<li>감사 로그: 차단·마스킹 이벤트를 별도 로그로 남겨 정책 튜닝과 규정 준수 근거로 활용</li>
+<li>단일 가드레일로는 완전 차단이 불가능해 입출력 양방향에 서로 다른 방식을 겹쳐 배치하는 편이 현실적</li>
 </ul>
 <hr />
-<h2 id="_3">결론</h2>
+<h3 id="_16">참고</h3>
 <ul>
-<li>응답 헤더·<code>/spend/logs</code>로 요청 단위, 프로메테우스로 시계열, OTEL로 요청 내부까지 세 층위로 관측이 완성됨</li>
-<li>프로메테우스·OTEL 모두 LiteLLM community에서 무료 동작을 확인, Enterprise는 거버넌스 기능에 한정</li>
-<li>알람은 오류율·폴백·예산·TTFT 네 축이면 대부분의 사고를 조기에 포착</li>
-<li>게이트웨이를 세우는 일이 "한 곳으로 모으기"였다면, 관측성은 "그 안을 밖에서 들여다보기"</li>
+<li>Kong AI Gateway 공식 문서: <a href="https://developer.konghq.com/ai-gateway/">https://developer.konghq.com/ai-gateway/</a></li>
+<li>Cloudflare AI Gateway Features: <a href="https://developers.cloudflare.com/ai-gateway/features/">https://developers.cloudflare.com/ai-gateway/features/</a></li>
+<li>Envoy AI Gateway 공식 문서: <a href="https://aigateway.envoyproxy.io/docs/">https://aigateway.envoyproxy.io/docs/</a></li>
+<li>LiteLLM Guardrails Quick Start: <a href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start">https://docs.litellm.ai/docs/proxy/guardrails/quick_start</a></li>
+<li>Microsoft Presidio 공식 문서: <a href="https://microsoft.github.io/presidio/">https://microsoft.github.io/presidio/</a></li>
+<li>Amazon Bedrock Guardrails 문서: <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html">https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html</a></li>
+</ul>
+<hr />
+<h2 id="_17">결론</h2>
+<ul>
+<li>AI Gateway는 앱과 여러 LLM 프로바이더 사이의 단일 제어 계층으로 요청이 아닌 토큰 기준으로 트래픽을 통제</li>
+<li>라우팅·캐싱·폴백·미터링·가드레일·관측을 한 곳에 모아 벤더 종속 제거·비용 통제·가용성·안전을 동시 확보</li>
+<li>솔루션은 셀프호스팅 유연성(LiteLLM·Portkey), 관리형 편의(Cloudflare), k8s 표준(Envoy), 기존 API 플랫폼 재활용(Kong)으로 갈림</li>
+<li>가드레일은 pre-call·post-call 양방향에 서로 다른 방식을 겹쳐야 완전에 근접</li>
+<li>API Gateway는 "요청을 나르는 문", AI Gateway는 "토큰을 지키는 문"이라고 이해하면 됌</li>
 </ul>
 
 
@@ -1993,7 +2410,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ss, strace 트러블슈팅 옵션 정리">
+          <a href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/" class="md-footer__link md-footer__link--prev" aria-label="Previous: LiteLLM으로 AI Gateway 구축과 운영">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2003,27 +2420,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                ss, strace 트러블슈팅 옵션 정리
+                LiteLLM으로 AI Gateway 구축과 운영
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../ai-gateway-%EA%B0%80%EB%93%9C%EB%A0%88%EC%9D%BC-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: AI Gateway 가드레일 정리">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                AI Gateway 가드레일 정리
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

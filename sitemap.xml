@@ -33,31 +33,11 @@
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway%EB%9E%80/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EC%86%94%EB%A3%A8%EC%85%98-%EB%B9%84%EA%B5%90/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EB%9D%BC%EC%9A%B0%ED%8C%85%EA%B3%BC-%ED%8F%B4%EB%B0%B1-%EC%A0%84%EB%9E%B5/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EC%BA%90%EC%8B%B1%EA%B3%BC-%EB%B9%84%EC%9A%A9-%EA%B4%80%EB%A6%AC/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EA%B0%80%EB%93%9C%EB%A0%88%EC%9D%BC-%EC%A0%95%EB%A6%AC/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EA%B4%80%EC%B8%A1%EC%84%B1-%EC%A0%95%EB%A6%AC/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/2026/07/20/litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
@@ -182,6 +162,10 @@
     </url>
     <url>
          <loc>https://dotoryeee.github.io/blog/blog/2025/03/10/websocket-%EC%A0%95%EB%A6%AC/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://dotoryeee.github.io/blog/blog/2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
@@ -357,10 +341,6 @@
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/network/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
          <loc>https://dotoryeee.github.io/blog/blog/category/ai/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
@@ -374,6 +354,10 @@
     </url>
     <url>
          <loc>https://dotoryeee.github.io/blog/blog/category/server/</loc>
+         <lastmod>2026-07-20</lastmod>
+    </url>
+    <url>
+         <loc>https://dotoryeee.github.io/blog/blog/category/network/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
@@ -461,10 +445,6 @@
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/page/8/</loc>
-         <lastmod>2026-07-20</lastmod>
-    </url>
-    <url>
          <loc>https://dotoryeee.github.io/blog/blog/archive/2025/03/page/2/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
@@ -485,11 +465,11 @@
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/cloud/page/3/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/server/page/2/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/server/page/2/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/server/page/3/</loc>
          <lastmod>2026-07-20</lastmod>
     </url>
 </urlset>

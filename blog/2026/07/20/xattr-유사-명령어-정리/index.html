@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/19/ai-gateway-%EA%B0%80%EB%93%9C%EB%A0%88%EC%9D%BC-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../ai-gateway-%EA%B4%80%EC%B8%A1%EC%84%B1-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../ai-gateway-%EC%BA%90%EC%8B%B1%EA%B3%BC-%EB%B9%84%EC%9A%A9-%EA%B4%80%EB%A6%AC/">
+        <link rel="next" href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>AI Gateway 가드레일 정리 - dotoryeee's blog</title>
+        <title>xattr 유사 명령어 정리 - dotoryeee's blog</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ai-gateway" class="md-skip">
+        <a href="#xattr" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AI Gateway 가드레일 정리
+              xattr 유사 명령어 정리
             
           </span>
         </div>
@@ -1508,7 +1508,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1527,10 +1527,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#xattr_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        위협 모델 정리
+        확장 속성(xattr)이란
       
     </span>
   </a>
@@ -1538,10 +1538,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#xattr-macos" class="md-nav__link">
     <span class="md-ellipsis">
       
-        가드레일 동작 위치
+        xattr (macOS)
       
     </span>
   </a>
@@ -1549,44 +1549,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#getfattr-setfattr-linux" class="md-nav__link">
     <span class="md-ellipsis">
       
-        구현 방식 비교
+        getfattr / setfattr (Linux)
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#litellm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LiteLLM 설정 예시
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        운영 주의
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="운영 주의">
+    <nav class="md-nav" aria-label="getfattr / setfattr (Linux)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#linux" class="md-nav__link">
     <span class="md-ellipsis">
       
-        참고
+        Linux 네임스페이스
       
     </span>
   </a>
@@ -1599,7 +1577,62 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#chattr-lsattr-inode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chattr / lsattr (inode 플래그)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getfacl-setfacl-getcap-setcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        getfacl / setfacl · getcap / setcap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        크기 제한과 파일시스템 의존성
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xattr_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        복사·백업 시 xattr 보존
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사용 사례
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1665,7 +1698,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-19 00:00:00+00:00" class="md-ellipsis">Jul 19, 2026</time>
+                        <time datetime="2026-07-20 00:00:00+00:00" class="md-ellipsis">Jul 20, 2026</time>
                       </div>
                     </li>
                     
@@ -1676,9 +1709,7 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/cloud/">Cloud</a>, 
-                              <a href="../../../../category/ai/">AI</a>, 
-                              <a href="../../../../category/security/">Security</a></span>
+                              <a href="../../../../category/server/">Server</a></span>
                         </div>
                       </li>
                     
@@ -1689,7 +1720,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              5 min read
+                              7 min read
                             
                           </span>
                         </div>
@@ -1713,192 +1744,327 @@
 
 
 
-<h1 id="ai-gateway">AI Gateway 가드레일 정리</h1>
+<h1 id="xattr">xattr 유사 명령어 정리</h1>
 <!-- more -->
 
-<p>가드레일(Guardrail)이란 게이트웨이 계층에서 LLM 입출력을 검사하고 정책 위반 시 차단·마스킹하는 콘텐츠 통제 계층</p>
-<hr />
-<h2 id="_1">위협 모델 정리</h2>
-<p>게이트웨이가 막아야 할 대상은 앱이 아니라 프롬프트·응답에 실린 콘텐츠</p>
+<h2 id="xattr_1">확장 속성(xattr)이란</h2>
+<p>파일 데이터와 inode 기본 메타데이터(권한, 소유자, 타임스탬프) 외에 <code>이름=값</code> 쌍을 파일에 덧붙여 저장하는 파일시스템 기능.</p>
+<ul>
+<li>macOS는 단일 xattr 명령으로 전부 다룸</li>
+<li>Linux는 목적별로 명령이 갈라짐. 상당수는 결국 같은 xattr 저장소를 쓰지만 인터페이스가 다름</li>
+<li>chattr/lsattr만 계층이 다름. xattr가 아니라 inode 플래그를 건드림</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th>위협</th>
+<th>명령</th>
+<th>플랫폼</th>
+<th>다루는 대상</th>
+<th>실제 저장 위치</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xattr</td>
+<td>macOS</td>
+<td>임의 이름=값, 쿼런틴</td>
+<td>xattr (com.apple.* 등)</td>
+</tr>
+<tr>
+<td>getfattr/setfattr</td>
+<td>Linux</td>
+<td>임의 이름=값</td>
+<td>xattr (user 네임스페이스)</td>
+</tr>
+<tr>
+<td>getfacl/setfacl</td>
+<td>Linux</td>
+<td>POSIX ACL</td>
+<td>xattr (system.posix_acl_access)</td>
+</tr>
+<tr>
+<td>getcap/setcap</td>
+<td>Linux</td>
+<td>파일 capabilities</td>
+<td>xattr (security.capability)</td>
+</tr>
+<tr>
+<td>chattr/lsattr</td>
+<td>Linux</td>
+<td>inode 플래그 (+i/+a 등)</td>
+<td>xattr 아님 (inode 필드)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="xattr-macos">xattr (macOS)</h2>
+<table>
+<thead>
+<tr>
+<th>옵션</th>
 <th>설명</th>
-<th>게이트웨이 대응</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>프롬프트 인젝션(Prompt Injection)</td>
-<td>사용자 입력에 지시문을 섞어 시스템 프롬프트를 무력화</td>
-<td>pre-call 입력 검사, 패턴·인젝션 분류기</td>
+<td>-l</td>
+<td>모든 속성 이름과 값 출력</td>
 </tr>
 <tr>
-<td>탈옥(Jailbreak)</td>
-<td>역할극·인코딩으로 안전 정책을 우회</td>
-<td>입력 검사 + 전용 탈옥 분류기(Prompt Shields류)</td>
+<td>-p 이름</td>
+<td>특정 속성 값만 출력</td>
 </tr>
 <tr>
-<td>PII 유출 (입력)</td>
-<td>사용자가 개인정보를 프롬프트에 그대로 포함</td>
-<td>pre-call 입력 마스킹·차단</td>
+<td>-w 이름 값</td>
+<td>속성 쓰기</td>
 </tr>
 <tr>
-<td>PII 유출 (출력)</td>
-<td>모델 응답에 개인정보·학습 데이터가 노출</td>
-<td>post-call 출력 마스킹·차단</td>
+<td>-d 이름</td>
+<td>특정 속성 삭제</td>
 </tr>
 <tr>
-<td>유해 콘텐츠</td>
-<td>혐오·폭력·성적 응답 생성</td>
-<td>콘텐츠 모더레이션 분류로 차단</td>
+<td>-c</td>
+<td>모든 속성 제거</td>
 </tr>
 <tr>
-<td>시스템 프롬프트 유출</td>
-<td>추출 공격으로 내부 지침·규칙이 노출</td>
-<td>출력 검사로 지침 문자열 차단</td>
-</tr>
-<tr>
-<td>과금 남용</td>
-<td>가상 키 유출로 토큰을 과소비</td>
-<td>가상 키·rate limit·예산 한도로 별도 통제</td>
+<td>-r</td>
+<td>디렉터리 하위까지 재귀 (-rd 형태로 조합)</td>
 </tr>
 </tbody>
 </table>
+<p>macOS 26.5.2 실측:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s">&quot;hello dotoryeee&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="w"> </span><span class="n">com.dotoryeee.author</span><span class="w"> </span><span class="s">&quot;dotoryeee&quot;</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">com.apple.provenance</span><span class="o">:</span><span class="w"> </span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">com.dotoryeee.author</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">com.apple.provenance</span>
+</code></pre></div>
 <ul>
-<li>입력·출력은 서로 다른 위협 → 한쪽 훅만으로는 절반만 방어</li>
-<li>인젝션·탈옥·유출은 경계가 겹침 → 단일 분류기보다 다층 배치가 현실적</li>
+<li>xattr -c로 지워도 com.apple.provenance는 시스템이 다시 붙임 → 사용자 속성만 정리됨</li>
+<li>인터넷에서 받은 파일에는 com.apple.quarantine가 붙어 Gatekeeper 실행 경고의 근거가 됨</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">com.apple.quarantine</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dl.txt</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="m">0083</span><span class="p">;</span><span class="m">6</span><span class="n">a5e100a</span><span class="p">;</span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">app</span><span class="p">;</span><span class="m">21366</span><span class="n">EB2</span><span class="m">-48E8-47</span><span class="n">A6</span><span class="m">-9E33</span><span class="o">-</span><span class="n">B1D3B3D98202</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">com.apple.quarantine</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dl.txt</span><span class="w">   </span><span class="c1">#쿼런틴 해제</span>
+</code></pre></div>
+<ul>
+<li>값은 <code>플래그;시각(hex);다운로드주체;UUID</code> 4필드. 실제 다운로드 파일에서도 같은 구조 확인. 디렉터리 전체는 xattr -dr로 해제</li>
 </ul>
 <hr />
-<h2 id="_2">가드레일 동작 위치</h2>
-<p>LiteLLM은 요청 파이프라인의 위치별로 훅을 걸 수 있음</p>
+<h2 id="getfattr-setfattr-linux">getfattr / setfattr (Linux)</h2>
+<p>user 네임스페이스에 임의 메타데이터를 붙이는 명령. attr 패키지에 포함.</p>
+<p>Ubuntu 24.04 (attr 2.5.2) 실측:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># setfattr -n user.author -v &quot;dotoryeee&quot; dotoryeee.txt</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># setfattr -n user.comment -v &quot;custom metadata&quot; dotoryeee.txt</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># getfattr -d dotoryeee.txt</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># file: dotoryeee.txt</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">user.author</span><span class="o">=</span><span class="s">&quot;dotoryeee&quot;</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">user.comment</span><span class="o">=</span><span class="s">&quot;custom metadata&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># setfattr -x user.comment dotoryeee.txt   #속성 삭제</span>
+</code></pre></div>
 <ul>
-<li>pre-call: LLM 호출 전 입력을 검사해 프로바이더 도달 전에 차단·마스킹으로 개입</li>
-<li>post-call: 응답 수신 후 입력과 출력을 함께 검사해 유출·유해 응답을 최종 차단</li>
-<li>during-call: LLM 호출과 병렬로 입력만 검사, 추가 지연을 줄이는 용도(블로킹 아님)</li>
-<li>logging-only: 요청 흐름은 그대로 두고 로그에만 마스킹 적용</li>
+<li>getfattr -d는 user 네임스페이스만 덤프. 다른 네임스페이스까지 보려면 -m - 필요. -e hex로 바이너리 값은 16진수 표기</li>
 </ul>
-<p>탐지 후 처리 방식은 세 가지로 갈림</p>
+<h3 id="linux">Linux 네임스페이스</h3>
+<p>xattr 이름은 <code>네임스페이스.이름</code> 규칙. 접두어에 따라 권한과 용도가 갈림.</p>
 <table>
 <thead>
 <tr>
-<th>모드</th>
-<th>동작</th>
-<th>적합</th>
+<th>네임스페이스</th>
+<th>용도</th>
+<th>권한</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>차단(Block)</td>
-<td>정책 위반 시 요청·응답 자체를 4xx로 거부</td>
-<td>인젝션·금칙 주제</td>
+<td>user</td>
+<td>사용자 임의 메타데이터</td>
+<td>일반 사용자 (일반 파일)</td>
 </tr>
 <tr>
-<td>마스킹(Mask)</td>
-<td>탐지 구간만 placeholder로 치환하고 통과</td>
-<td>PII 처리</td>
+<td>security</td>
+<td>SELinux 레이블, capabilities</td>
+<td>보안 모듈·root</td>
 </tr>
 <tr>
-<td>로깅(Logging)</td>
-<td>흐름 변경 없이 탐지 사실만 기록</td>
-<td>정책 튜닝·관측</td>
+<td>system</td>
+<td>POSIX ACL 등 커널 기능</td>
+<td>커널 중재</td>
+</tr>
+<tr>
+<td>trusted</td>
+<td>권한 있는 프로세스 전용</td>
+<td>CAP_SYS_ADMIN</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>macOS에는 이 네임스페이스 구분이 없음. com.apple.* 같은 역방향 도메인 이름 관례로만 구분</li>
+<li>setfacl·setcap은 결국 system·security 네임스페이스 xattr를 대신 써주는 전용 도구</li>
+</ul>
 <hr />
-<h2 id="_3">구현 방식 비교</h2>
-<p>정확도와 비용은 대체로 같은 방향으로 올라감</p>
+<h2 id="chattr-lsattr-inode">chattr / lsattr (inode 플래그)</h2>
+<p>이름이 비슷해 xattr로 오해하기 쉽지만 xattr가 아님. ext 계열의 inode 플래그를 켜고 끔.</p>
+<table>
+<thead>
+<tr>
+<th>플래그</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+i (immutable)</td>
+<td>수정·삭제·이름변경·링크 전부 차단</td>
+</tr>
+<tr>
+<td>+a (append-only)</td>
+<td>덧붙이기만 허용, 덮어쓰기·삭제 차단</td>
+</tr>
+</tbody>
+</table>
+<p>Ubuntu 24.04 (--cap-add LINUX_IMMUTABLE) 실측:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># chattr +i dotoryeee-i.txt</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># lsattr dotoryeee-i.txt</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">----</span><span class="n">i</span><span class="o">---------</span><span class="n">e</span><span class="o">-------</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">i.txt</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># echo v2 &gt; dotoryeee-i.txt</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">bash</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">i.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Operation</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">permitted</span><span class="w">   </span><span class="c1">#root도 차단됨</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># chattr -i dotoryeee-i.txt                       #해제해야 다시 쓰기 가능</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># chattr +a dotoryeee-a.txt</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># echo line2 &gt;&gt; dotoryeee-a.txt     #append는 통과</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># echo x &gt; dotoryeee-a.txt          #truncate는 차단</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">bash</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">a.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Operation</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">permitted</span>
+</code></pre></div>
+<ul>
+<li>+i는 root 권한으로도 못 지움 → 설정 파일 변조·삭제 방어에 사용</li>
+<li>+a는 로그 파일에 적합. 덧붙이기만 되고 과거 기록 위변조 불가</li>
+<li>플래그 조작 자체가 CAP_LINUX_IMMUTABLE 필요. 컨테이너 기본 권한으로는 chattr +i가 막힘</li>
+</ul>
+<hr />
+<h2 id="getfacl-setfacl-getcap-setcap">getfacl / setfacl · getcap / setcap</h2>
+<p>둘 다 전용 명령이지만 값은 xattr에 저장됨.</p>
+<p>POSIX ACL 실측 (setfacl → system.posix_acl_access):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># setfacl -m u:dotoryeee:rw dotoryeee-acl.txt</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># getfacl dotoryeee-acl.txt</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">user</span><span class="o">::</span><span class="n">rw</span><span class="o">-</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">user</span><span class="o">:</span><span class="n">dotoryeee</span><span class="o">:</span><span class="n">rw</span><span class="o">-</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">mask</span><span class="o">::</span><span class="n">rw</span><span class="o">-</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">other</span><span class="o">::</span><span class="n">r</span><span class="o">--</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># ls -l dotoryeee-acl.txt</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">acl.txt</span><span class="w">   </span><span class="c1">#끝의 +가 ACL 존재 표시</span>
+</code></pre></div>
+<p>capabilities 실측 (setcap → security.capability):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># setcap cap_net_raw+ep dotoryeee-ping</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># getcap dotoryeee-ping</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">ping</span><span class="w"> </span><span class="n">cap_net_raw</span><span class="o">=</span><span class="n">ep</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># getfattr -m - -d -e hex dotoryeee-ping</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">security.capability</span><span class="o">=</span><span class="mh">0x0100000200200000000000000000000000000000</span>
+</code></pre></div>
+<ul>
+<li>setuid 바이너리는 root 권한을 통째로 얹지만, capability는 필요한 하나만 부여 → 권한 최소화</li>
+<li>SELinux 레이블도 security.selinux xattr에 저장됨 (예시: ls -Z로 확인. 위 컨테이너는 SELinux 미적용이라 미실측)</li>
+</ul>
+<hr />
+<h2 id="_1">크기 제한과 파일시스템 의존성</h2>
+<ul>
+<li>VFS 상한: 이름 255바이트, 값 64KB, 이름 목록 64KB (man 7 xattr)</li>
+<li>개별 파일시스템이 더 빡빡한 실제 한도를 강제</li>
+</ul>
+<p>Ubuntu 24.04 overlay(ext4 계열) 실측:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># setfattr -n user.big -v &lt;65537바이트&gt; f.txt</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Argument</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">too</span><span class="w"> </span><span class="n">long</span><span class="w">     </span><span class="c1">#VFS 64KB 초과 → E2BIG</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># setfattr -n user.big -v &lt;4096바이트&gt; f.txt</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">device</span><span class="w">    </span><span class="c1">#ext4 xattr 블록(~4KB) 초과 → ENOSPC</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># setfattr -n user.&lt;256자 이름&gt; ...</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Numerical</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">range</span><span class="w">   </span><span class="c1">#이름 255 초과 → ERANGE</span>
+</code></pre></div>
+<ul>
+<li>ext4는 inode 여유 공간과 xattr 블록 1개(보통 4KB)에 저장 → 파일당 xattr 총량이 4KB 안팎에서 막힘</li>
+<li>값 64KB는 VFS가 허용해도 파일시스템이 먼저 ENOSPC로 거절. 실제 한도는 파일시스템에 종속</li>
+</ul>
+<hr />
+<h2 id="xattr_2">복사·백업 시 xattr 보존</h2>
+<p>xattr는 파일 데이터가 아니라 별도 메타데이터라 복사·업로드 과정에서 유실되기 쉬움.</p>
+<p>Ubuntu 24.04 실측 (user.author 속성을 붙인 뒤 각 방식으로 복사):</p>
 <table>
 <thead>
 <tr>
 <th>방식</th>
-<th>동작</th>
-<th>장점</th>
-<th>단점·비용</th>
+<th>xattr 보존</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>정규식·휴리스틱</td>
-<td>고정 패턴·키워드 매칭</td>
-<td>빠름, 무료, 외부 의존성 없음</td>
-<td>문맥을 못 봐 오탐·미탐이 큼</td>
+<td>cp -p</td>
+<td>❌</td>
 </tr>
 <tr>
-<td>PII 탐지 엔진 (Presidio)</td>
-<td>NER·정규식·체크섬 조합, 신뢰도 점수 산출</td>
-<td>MIT 오픈소스, 셀프호스팅, 다국어 지원</td>
-<td>별도 서비스 운영 부담, 완전 탐지 보장 없음</td>
+<td>cp --preserve=all</td>
+<td>✅</td>
 </tr>
 <tr>
-<td>LLM 판정 (LLM Judge)</td>
-<td>별도 LLM이 입출력을 정책 기준으로 평가</td>
-<td>문맥 이해, 자연어로 유연한 정책 표현</td>
-<td>검사 호출마다 토큰 비용·지연 가산</td>
+<td>rsync -aX</td>
+<td>✅</td>
 </tr>
 <tr>
-<td>벤더 관리형</td>
-<td>Bedrock Guardrails·Azure AI Content Safety·Lakera 등 관리형 API</td>
-<td>운영 부담 없음, 정책 세트·분류기 완비</td>
-<td>텍스트 단위 종량 과금, 외부 전송 발생</td>
+<td>tar --xattrs</td>
+<td>✅</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>Presidio는 무료 OSS로, Analyzer가 엔티티 위치·유형·신뢰도를 반환하고 Anonymizer가 치환</li>
-<li>Bedrock Guardrails는 정책별 종량 과금 → 콘텐츠 필터·민감정보 필터는 유료, 단어·정규식 기반 필터는 무료</li>
-<li>Azure AI Content Safety는 혐오·성적·폭력·자해 4개 범주 + 인젝션 탐지(Prompt Shields), 텍스트 레코드 단위 과금</li>
-<li>벤더 가드레일 대부분은 유료 관리형 → 오픈소스 코어와 경계 확인 필요</li>
+<li>cp -p는 권한·소유자·시각만 보존. xattr는 --preserve=all(또는 -a)가 있어야 따라옴</li>
+<li>macOS cp는 기본으로 xattr를 보존 (플랫폼 차이). 실측에서 복사본의 xattr -l 값이 그대로 유지됨</li>
+<li>S3·FTP처럼 데이터 스트림만 전송하는 경로는 xattr가 넘어가지 않음 → 쿼런틴·ACL·capability가 목적지에서 사라짐</li>
 </ul>
 <hr />
-<h2 id="litellm">LiteLLM 설정 예시</h2>
-<p>게이트웨이의 litellm_config.yaml에 guardrails 블록을 추가하는 형태. 설정 형태는 다음과 같음(공식 문서 기준)</p>
-<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">guardrails</span><span class="p">:</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-input-mask&quot;</span><span class="w">       </span><span class="c1"># 입력 PII 처리</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span><span class="w">                  </span><span class="c1"># Presidio 엔진 연동(별도 컨테이너 기동)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pre_call&quot;</span><span class="w">                      </span><span class="c1"># LLM 호출 전 입력 검사</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">presidio_score_thresholds</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">ALL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span><span class="w">                            </span><span class="c1"># 신뢰도 0.7 미만 탐지는 무시</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">pii_entities_config</span><span class="p">:</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nt">EMAIL_ADDRESS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MASK&quot;</span><span class="w">               </span><span class="c1"># 이메일은 마스킹 후 통과</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">CREDIT_CARD</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BLOCK&quot;</span><span class="w">                </span><span class="c1"># 카드번호는 요청 자체를 차단</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-output-check&quot;</span><span class="w">      </span><span class="c1"># 출력 검사</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;post_call&quot;</span><span class="w">                     </span><span class="c1"># 응답 수신 후 입력+출력 검사</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">default_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                      </span><span class="c1"># 모든 요청에 자동 적용</span>
-</code></pre></div>
+<h2 id="_2">사용 사례</h2>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>명령</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>다운로드 파일 Gatekeeper 경고 해제 (macOS)</td>
+<td>xattr -d com.apple.quarantine <file></td>
+</tr>
+<tr>
+<td>파일에 커스텀 메타데이터 부착 (Linux)</td>
+<td>setfattr -n user.&lt;키&gt; -v &lt;값&gt; <file></td>
+</tr>
+<tr>
+<td>설정 파일 변조·삭제 방지</td>
+<td>chattr +i <file></td>
+</tr>
+<tr>
+<td>로그 위변조 방지 (덧붙이기만 허용)</td>
+<td>chattr +a <file></td>
+</tr>
+<tr>
+<td>특정 사용자에게만 추가 권한 부여</td>
+<td>setfacl -m u:<user>:rw <file></td>
+</tr>
+<tr>
+<td>setuid 없이 특정 권한만 부여</td>
+<td>setcap cap_net_raw+ep <binary></td>
+</tr>
+<tr>
+<td>xattr까지 보존하는 백업</td>
+<td>rsync -aX 또는 tar --xattrs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">결론</h2>
 <ul>
-<li>mode는 배열도 허용 → <code>mode: [pre_call, post_call]</code>로 입출력 동시 검사</li>
-<li>guardrail 값을 aporia·bedrock·lakera 등으로 바꾸면 벤더 가드레일로 교체됨</li>
-<li>MASK는 <code>&lt;CREDIT_CARD&gt;</code> 형태 placeholder로 치환, BLOCK은 요청을 거부</li>
-</ul>
-<hr />
-<h2 id="_4">운영 주의</h2>
-<ul>
-<li>오탐↔미탐 트레이드오프: 신뢰도 임계값을 낮추면 오탐↑, 높이면 미탐↑ → 도메인별 튜닝 필요</li>
-<li>지연 추가: pre-call·post-call은 요청 경로에 직렬로 붙어 응답 지연↑, during-call 병렬화로 완화</li>
-<li>가드레일 자체 비용: LLM 판정·벤더 가드레일은 검사 호출이 곧 과금이라 원 호출 비용에 가산됨</li>
-<li>감사 로그: 차단·마스킹 이벤트를 별도 로그로 남겨 정책 튜닝과 규정 준수 근거로 활용</li>
-<li>단일 가드레일로는 완전 차단이 불가능해 입출력 양방향에 서로 다른 방식을 겹쳐 배치하는 편이 현실적</li>
-</ul>
-<hr />
-<h3 id="_5">참고</h3>
-<ul>
-<li>LiteLLM Guardrails Quick Start: <a href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start">https://docs.litellm.ai/docs/proxy/guardrails/quick_start</a></li>
-<li>Microsoft Presidio 공식 문서: <a href="https://microsoft.github.io/presidio/">https://microsoft.github.io/presidio/</a></li>
-<li>Amazon Bedrock Guardrails 문서: <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html">https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html</a></li>
-</ul>
-<hr />
-<h2 id="_6">결론</h2>
-<ul>
-<li>가드레일은 위협을 pre-call·post-call 훅에서 차단·마스킹·로깅으로 처리하는 정책 계층</li>
-<li>구현은 정규식 → Presidio → LLM 판정 → 벤더 관리형 순으로 정확도와 비용이 함께 상승</li>
-<li>가드레일 자체가 지연·비용·오탐을 유발 → 임계값 튜닝과 감사 로그가 운영의 핵심</li>
-<li>입력 검사는 "안으로 못 들어오게", 출력 검사는 "밖으로 못 나가게" 막는 양방향 문</li>
+<li>xattr는 "파일에 이름표를 붙이는 창구", chattr는 "파일 자체를 잠그는 자물쇠"</li>
+<li>setfacl·setcap·쿼런틴은 이름표가 붙는 네임스페이스만 다를 뿐 결국 같은 xattr 저장소를 공유</li>
+<li>복사·업로드 한 번에 사라질 수 있는 메타데이터라 백업은 -X, --xattrs로 명시해 챙길 것</li>
 </ul>
 
 
@@ -1946,7 +2112,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../ai-gateway-%EA%B4%80%EC%B8%A1%EC%84%B1-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AI Gateway 관측성 정리">
+          <a href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ss, strace 트러블슈팅 옵션 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1956,20 +2122,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                AI Gateway 관측성 정리
+                ss, strace 트러블슈팅 옵션 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../ai-gateway-%EC%BA%90%EC%8B%B1%EA%B3%BC-%EB%B9%84%EC%9A%A9-%EA%B4%80%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: AI Gateway 캐싱과 비용 관리">
+          <a href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/" class="md-footer__link md-footer__link--next" aria-label="Next: LiteLLM으로 AI Gateway 구축과 운영">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                AI Gateway 캐싱과 비용 관리
+                LiteLLM으로 AI Gateway 구축과 운영
               </div>
             </div>
             <div class="md-footer__button md-icon">

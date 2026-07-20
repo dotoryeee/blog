@@ -1,0 +1,2991 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">
+      
+      
+        <link rel="prev" href="../xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="next" href="../ai-gateway-%EC%A0%95%EB%A6%AC/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LiteLLM으로 AI Gateway 구축과 운영 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#litellm-ai-gateway" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LiteLLM으로 AI Gateway 구축과 운영
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    맨땅에 헤딩 전문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026 July
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 September
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 March
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024 March
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024 February
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 November
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 October
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 February
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 January
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021 April
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1993 September
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CICD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ElasticSearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grafana/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grafana
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/route53/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Route53
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    study
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/udemy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    udemy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    메모장
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    메모장
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS CLI 모둠
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux command 모음
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker compose 모음
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        목표
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        구성
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        게이트웨이 구축
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        통합 API 호출
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-key-rate-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual Key와 Rate Limit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로드밸런싱과 라우팅 전략
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="로드밸런싱과 라우팅 전략">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        가중치와 지연 라우팅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        재시도와 타임아웃
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        폴백
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="폴백">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        폴백 체인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐싱
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="캐싱">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐시 히트 실측
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        시맨틱 캐시
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐시 운영 주의점
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        비용 추적과 예산
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="비용 추적과 예산">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        캐시 히트와 비용
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예산 초과 차단
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관측성
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="관측성">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM 관측이 다른 이유
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        요청 단위 관측: 응답 헤더
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TTFT 실측
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        메트릭: Prometheus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opentelemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        트레이싱: OpenTelemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        무엇에 알람을 거는가
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#admin-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin UI 확인
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-20 00:00:00+00:00" class="md-ellipsis">Jul 20, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/cloud/">Cloud</a>, 
+                              <a href="../../../../category/ai/">AI</a>, 
+                              <a href="../../../../category/sre/">SRE</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              25 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="litellm-ai-gateway">LiteLLM으로 AI Gateway 구축과 운영</h1>
+<!-- more -->
+
+<h2 id="_1">목표</h2>
+<hr />
+<ul>
+<li>AI Gateway를 로컬에서 직접 구축하고 라우팅·캐싱·비용·관측까지 한 스택에서 실측한다</li>
+<li>LiteLLM Proxy 뒤에 Ollama 로컬 모델 2개를 붙여서 클라우드 비용 없이 진행한다</li>
+<li>통합 API 호출, virtual key와 rate limit, 로드밸런싱과 폴백, 캐시 히트, 예산 차단, 프로메테우스·OTEL 관측을 응답 헤더와 컨테이너 로그로 확인한다</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>💡 백엔드가 Ollama 로컬 모델이라 API 키와 클라우드 비용이 전혀 들지 않는다</p>
+</div>
+<h2 id="_2">구성</h2>
+<hr />
+<ul>
+<li>LiteLLM Proxy: AI Gateway 본체, OpenAI 호환 엔드포인트 제공</li>
+<li>Ollama: 백엔드 LLM 서버 (llama3.2:1b, qwen2.5:0.5b 두 모델을 별도 프로바이더처럼 등록)</li>
+<li>PostgreSQL: virtual key 관리용 DB</li>
+<li>Redis: 완전 일치 요청을 해시로 캐싱하는 캐시 백엔드</li>
+<li>macOS의 Docker는 Metal GPU를 쓰지 못해 CPU 추론으로 동작하지만 게이트웨이 데모에는 충분하다</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 네이티브 Ollama 설치 시 api_base를 host.docker.internal로 연결한다</p>
+</div>
+<h2 id="_3">게이트웨이 구축</h2>
+<hr />
+<ol>
+<li>
+<p>작업 디렉터리를 생성하고 docker compose 파일을 작성한다. redis 서비스를 처음부터 함께 올려 캐싱까지 한 번에 준비한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">ai</span><span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">lab</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">ai</span><span class="o">-</span><span class="n">gateway</span><span class="o">-</span><span class="n">lab</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">vi</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>
+</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">docker-compose.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span>
+<span class="normal"><a href="#__codelineno-1-41">41</a></span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span>
+<span class="normal"><a href="#__codelineno-1-43">43</a></span>
+<span class="normal"><a href="#__codelineno-1-44">44</a></span>
+<span class="normal"><a href="#__codelineno-1-45">45</a></span>
+<span class="normal"><a href="#__codelineno-1-46">46</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="nt">ollama</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/ollama:latest</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;11434:11434&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama_data:/root/.ollama</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">  </span><span class="nt">db</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16-alpine</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">litellm_db</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llmproxy</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dbpassword</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">      </span><span class="nt">POSTGRES_DB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">litellm</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pg_data:/var/lib/postgresql/data</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">  </span><span class="nt">redis</span><span class="p">:</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis:7-alpine</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">litellm_redis</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;6379:6379&quot;</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25"></a>
+<a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">  </span><span class="nt">litellm</span><span class="p">:</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/berriai/litellm:main-latest</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">litellm</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;4000:4000&quot;</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./litellm_config.yaml:/app/config.yaml</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--config&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;/app/config.yaml&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--port&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;4000&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="w">      </span><span class="nt">LITELLM_MASTER_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sk-dotoryeee-1234</span><span class="w">    </span><span class="c1">#관리자용 마스터 키</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">      </span><span class="nt">UI_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dotoryeee</span><span class="w">                     </span><span class="c1">#Admin UI 로그인 계정</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="w">      </span><span class="nt">DATABASE_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://llmproxy:dbpassword@db:5432/litellm</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="w">      </span><span class="nt">STORE_MODEL_IN_DB</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43"></a>
+<a id="__codelineno-1-44" name="__codelineno-1-44"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45"></a><span class="w">  </span><span class="nt">ollama_data</span><span class="p">:</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="w">  </span><span class="nt">pg_data</span><span class="p">:</span>
+</code></pre></div></td></tr></table></div>
+</li>
+<li>
+<p>게이트웨이 설정 파일을 작성한다. 모델 별칭과 폴백 체인이 핵심이다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">litellm_config.yaml</span>
+</code></pre></div>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">litellm_config.yaml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nt">model_list</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama-small</span><span class="w">          </span><span class="c1"># 게이트웨이에서 노출할 모델 별칭</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span><span class="w">      </span><span class="c1"># 실제 백엔드 모델</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qwen-small</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/qwen2.5:0.5b</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="nt">litellm_settings</span><span class="p">:</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">  </span><span class="nt">drop_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">  </span><span class="nt">num_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">  </span><span class="nt">fallbacks</span><span class="p">:</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">llama-small</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;qwen-small&quot;</span><span class="p p-Indicator">]</span><span class="w">    </span><span class="c1"># llama 실패 시 qwen으로 폴백</span>
+</code></pre></div></td></tr></table></div>
+</li>
+<li>
+<p>스택을 기동하고 백엔드 모델 2개를 다운로드한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">compose</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="o">-</span><span class="n">d</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">pull</span><span class="w"> </span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">ollama</span><span class="w"> </span><span class="n">list</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">NAME</span><span class="w">            </span><span class="n">ID</span><span class="w">              </span><span class="n">SIZE</span><span class="w">      </span><span class="n">MODIFIED</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span><span class="w">    </span><span class="n">a8b0c5157701</span><span class="w">    </span><span class="m">397</span><span class="w"> </span><span class="n">MB</span><span class="w">    </span><span class="n">Less</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="n">ago</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span><span class="w">     </span><span class="n">baf6a787fdff</span><span class="w">    </span><span class="m">1.3</span><span class="w"> </span><span class="n">GB</span><span class="w">    </span><span class="m">45</span><span class="w"> </span><span class="n">seconds</span><span class="w"> </span><span class="n">ago</span>
+</code></pre></div>
+</li>
+<li>
+<p>게이트웨이가 살아있는지, 모델이 등록됐는지 확인한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">health</span><span class="o">/</span><span class="n">liveliness</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">&quot;I&#39;m alive!&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">models</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">{</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="s">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="p">{</span><span class="s">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;llama-small&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;object&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;model&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">...</span><span class="p">},</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="p">{</span><span class="s">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;object&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;model&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">...</span><span class="p">}</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="s">&quot;object&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;list&quot;</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="api">통합 API 호출</h2>
+<hr />
+<ol>
+<li>
+<p>OpenAI 호환 API로 호출한다. 백엔드가 Ollama여도 앱 입장에서는 OpenAI SDK 그대로다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span>\
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;What is an API gateway? One sentence.&quot;}],&quot;max_tokens&quot;:50}&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qwen-small&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An API (Application Programming Interface) gateway is a software component that enables APIs to be accessed and processed more efficiently...&quot;</span><span class="p">}}],</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">&quot;usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">49</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">41</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">}</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>model 값만 바꾸면 다른 백엔드로 라우팅된다. 앱 코드 변경 없이 모델 교체가 되는 것이 통합 API의 핵심이다</p>
+</li>
+</ol>
+<h2 id="virtual-key-rate-limit">Virtual Key와 Rate Limit</h2>
+<hr />
+<ol>
+<li>
+<p>마스터 키로 팀용 virtual key를 발급한다. 실제 백엔드 키는 게이트웨이만 알고, 앱에는 이 키만 배포한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">key</span><span class="o">/</span><span class="n">generate</span><span class="w"> </span>\
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span>\
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;key_alias&quot;:&quot;dotoryeee-key&quot;,&quot;models&quot;:[&quot;llama-small&quot;,&quot;qwen-small&quot;],&quot;rpm_limit&quot;:2}&#39;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="s">&quot;key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;sk-2TLJ91iCDREGN_0mDJFFeA&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="s">&quot;key_alias&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;dotoryeee-key&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="s">&quot;models&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;llama-small&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;qwen-small&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="s">&quot;rpm_limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>발급한 키를 Authorization 헤더에 넣고 연속 3회 호출하면 rpm_limit 2를 초과한 세 번째 요청이 차단된다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-2TLJ91iCDREGN_0mDJFFeA&quot;</span><span class="w"> </span>\
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:5}&#39;</span><span class="w">    </span><span class="c1">#동일 요청 3회 반복</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">call</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">call</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">call</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">429</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span>에러<span class="o">:</span><span class="w"> </span><span class="n">Rate</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">exceeded</span><span class="w"> </span><span class="kr">for</span><span class="w"> </span><span class="n">api_key</span><span class="o">:</span><span class="w"> </span><span class="n">ebd5686b...</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">requests.</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="_4">로드밸런싱과 라우팅 전략</h2>
+<hr />
+<p>지금까지는 별칭 하나에 백엔드 하나를 붙인 형태다. 로드밸런싱은 같은 별칭에 여러 배포(Deployment)를 등록해 하나의 모델 그룹(Model Group)으로 묶는 방식이다.</p>
+<ol>
+<li>
+<p>기존 model_list에 chat-small 그룹을 추가한다. model_name이 같은 항목 두 개가 한 그룹이 된다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">litellm_config.yaml</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">model_list</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat-small</span><span class="w">          </span><span class="c1"># 같은 별칭 = 하나의 모델 그룹</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat-small</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/qwen2.5:0.5b</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">  </span><span class="nt">routing_strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple-shuffle</span><span class="w">   </span><span class="c1"># 기본값, 가중치 기반 무작위 분산</span>
+</code></pre></div>
+</li>
+<li>
+<p>게이트웨이를 재시작하고 chat-small로 10회 호출하면서 x-litellm-model-name 헤더로 어느 백엔드가 처리했는지 확인한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">compose</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">litellm</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kr">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">seq</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">10</span><span class="p">);</span><span class="w"> </span><span class="n">do</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;chat-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:1}&#39;</span><span class="w"> </span>\
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="n">done</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span>
+</code></pre></div>
+<p>요청 model은 계속 chat-small 하나인데 llama 7회, qwen 3회로 두 백엔드에 나뉘어 처리됐다.</p>
+</li>
+<li>
+<p>응답 헤더 전체를 보면 실제 처리한 배포의 id·모델·api_base와 소속 그룹이 함께 내려온다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kc">...</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="m">0</span><span class="n">aee5afdf1859546955d201eec6096e9214ce13d568906d08889fdcba9644a30</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="n">base</span><span class="o">:</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">ollama</span><span class="o">:</span><span class="m">11434</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">group</span><span class="o">:</span><span class="w"> </span><span class="n">chat</span><span class="o">-</span><span class="n">small</span>
+</code></pre></div>
+</li>
+<li>
+<p>Admin UI의 Models 메뉴에서도 chat-small 그룹에 배포 두 개가 붙은 것이 보인다</p>
+<p><img alt="chat-small load balancing" src="../../../../Cloud%20Infra/ai_gateway_litellm/1.PNG" /></p>
+</li>
+</ol>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>💡 두 배포가 같은 api_base라 분산은 x-litellm-model-name으로 구분한다</p>
+</div>
+<h3 id="_5">가중치와 지연 라우팅</h3>
+<ol>
+<li>
+<p>특정 배포로 트래픽을 더 몰고 싶으면 weight를 지정한다. qwen에 3, llama에 1을 주면 qwen이 3배 자주 선택된다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">model_list</span><span class="p">:</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat-small</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat-small</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/qwen2.5:0.5b</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">      </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</code></pre></div>
+</li>
+<li>
+<p>재시작 후 20회 호출하면 지정한 1:3 비율에 맞게 갈린다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># chat-small 20회 호출 집계</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="nf">b  </span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="m">5</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="nf">b </span><span class="p">(</span><span class="n">weight</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="m">15</span>
+</code></pre></div>
+</li>
+<li>
+<p>routing_strategy를 latency-based-routing으로 바꾸면 최근 응답이 빠른 배포를 우선한다. 0.5b인 qwen이 1b인 llama보다 빨라 트래픽이 qwen으로 쏠린다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">routing_strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latency-based-routing</span><span class="w">   </span><span class="c1"># 최근 지연이 낮은 배포 우선</span>
+</code></pre></div>
+</li>
+<li>
+<p>워밍업 호출로 지연 표본을 쌓은 뒤 12회 호출한 집계다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># latency-based-routing, 워밍업 후 12회 호출 집계</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">llama3.2</span><span class="o">:</span><span class="m">1</span><span class="n">b</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="m">11</span>
+</code></pre></div>
+<p>simple-shuffle의 절반씩 분산과 달리 대부분 빠른 qwen으로 갔다. 전략 한 줄로 분산 기준이 무작위에서 지연 기반으로 바뀐다.</p>
+</li>
+</ol>
+<h2 id="_6">재시도와 타임아웃</h2>
+<hr />
+<p>배포가 실패하거나 느릴 때 게이트웨이가 어떻게 버티는지 정하는 값들이다.</p>
+<ol>
+<li>
+<p>router_settings에 재시도·타임아웃·쿨다운을 함께 둔다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">routing_strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple-shuffle</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">num_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">        </span><span class="c1"># 실패 시 그룹 내 다른 배포로 최대 2회 재시도</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">           </span><span class="c1"># 30초 초과 시 Timeout 처리</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">allowed_fails</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w">      </span><span class="c1"># 1분 내 3회 실패하면 쿨다운 진입</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">cooldown_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">     </span><span class="c1"># 30초 동안 해당 배포를 라우팅에서 제외</span>
+</code></pre></div>
+</li>
+<li>
+<p>타임아웃을 확인하려고 timeout을 1로 낮추고 qwen-small에 긴 답변을 요청하면 1초에서 잘린다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Write a long essay.&quot;}],&quot;max_tokens&quot;:300}&#39;</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="p">{</span><span class="s">&quot;error&quot;</span><span class="o">:</span><span class="p">{</span><span class="s">&quot;message&quot;</span><span class="o">:</span><span class="s">&quot;litellm.APIConnectionError: OllamaException - litellm.Timeout:</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="s"> Connection timed out. Timeout passed=1.0, time taken=1.001 seconds. ...&quot;</span><span class="p">}}</span>
+</code></pre></div>
+</li>
+<li>
+<p>num_retries는 로그로 확인한다. 고장난 백엔드로 요청하면 지정한 횟수만큼 재시도한 기록이 남는다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">logs</span><span class="w"> </span><span class="n">litellm</span><span class="w"> </span><span class="m">2</span><span class="o">&gt;&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="s">&quot;Retried&quot;</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="kc">...</span><span class="w"> </span><span class="n">LiteLLM</span><span class="w"> </span><span class="n">Retried</span><span class="o">:</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="n">times</span><span class="p">,</span><span class="w"> </span><span class="n">LiteLLM</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">Retries</span><span class="o">:</span><span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+</li>
+</ol>
+<p>allowed_fails와 cooldown_time은 그룹에 정상 배포가 남아 있을 때 효과가 드러난다. 고장난 배포가 allowed_fails를 넘겨 실패하면 cooldown_time 동안 후보에서 빠지고, 재시도가 정상 배포로 넘겨 앱은 200을 받는다. 배포가 하나뿐이거나 전부 죽은 경우엔 그룹이 비지 않도록 쿨다운을 걸지 않는다.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 timeout 검증시 값을 1로 낮췄다가 확인 후 원래 값으로 되돌린다</p>
+</div>
+<h2 id="_7">폴백</h2>
+<hr />
+<p>폴백은 요청한 배포가 죽어도 대체 배포로 넘겨 앱이 장애를 모른 채 응답을 받게 하는 안전망이다. 먼저 1단 폴백을 실측하고 체인으로 늘린다.</p>
+<ol>
+<li>
+<p>llama-small의 api_base를 존재하지 않는 포트(11435)로 바꿔서 백엔드 장애를 만들고 게이트웨이를 재시작한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">litellm_config.yaml</span><span class="w">    </span><span class="c1">#api_base를 http://ollama:11435 로 변경</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">compose</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">litellm</span>
+</code></pre></div>
+</li>
+<li>
+<p>고장난 llama-small로 요청해도 폴백 덕분에 200 응답이 온다. 응답 헤더를 보면 실제로는 qwen이 처리했음을 확인할 수 있다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span>\
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;llama-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:30}&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="n">base</span><span class="o">:</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">ollama</span><span class="o">:</span><span class="m">11434</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">group</span><span class="o">:</span><span class="w"> </span><span class="n">qwen</span><span class="o">-</span><span class="n">small</span>
+</code></pre></div>
+</li>
+<li>
+<p>앱은 장애를 전혀 모른 채 응답을 받는다. 확인 후 api_base를 11434로 되돌린다</p>
+</li>
+</ol>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>💡 폴백 검증시 응답 본문의 model 필드는 요청한 별칭을 그대로 보여주니 반드시 x-litellm 헤더로 확인한다</p>
+</div>
+<h3 id="_8">폴백 체인</h3>
+<p>후보를 순서대로 이어 1단 폴백을 체인으로 늘릴 수 있다.</p>
+<ol>
+<li>
+<p>primary가 죽으면 backup, 그다음 standby로 넘어가는 2단 체인을 정의한다. 검증을 위해 primary와 backup은 열려있지 않은 포트로 두고 standby만 정상 백엔드에 붙인다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">model_list</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">primary</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11435</span><span class="w">    </span><span class="c1"># 고장</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11436</span><span class="w">    </span><span class="c1"># 고장</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">standby</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/qwen2.5:0.5b</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span><span class="w">    </span><span class="c1"># 정상</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="w">  </span><span class="nt">num_retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="w">  </span><span class="nt">fallbacks</span><span class="p">:</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;backup&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;standby&quot;</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># primary → backup → standby</span>
+</code></pre></div>
+</li>
+<li>
+<p>primary로 요청해도 200이 돌아온다. 헤더를 보면 primary와 backup을 건너뛰고 standby가 처리했다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;primary&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Reply with OK.&quot;}],&quot;max_tokens&quot;:10}&#39;</span><span class="w"> </span>\
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">ollama</span><span class="o">/</span><span class="n">qwen2.5</span><span class="o">:</span><span class="m">0.5</span><span class="n">b</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="n">base</span><span class="o">:</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">ollama</span><span class="o">:</span><span class="m">11434</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">group</span><span class="o">:</span><span class="w"> </span><span class="n">standby</span>
+</code></pre></div>
+</li>
+<li>
+<p>컨테이너 로그에는 backup까지 재시도하고 실패한 뒤 체인을 넘어간 흔적이 남는다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">logs</span><span class="w"> </span><span class="n">litellm</span><span class="w"> </span><span class="m">2</span><span class="o">&gt;&amp;</span><span class="m">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="s">&quot;Retried|Fallbacks&quot;</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="kc">...</span><span class="w"> </span><span class="n">Fallbacks</span><span class="o">=</span><span class="p">[{</span><span class="s">&#39;primary&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&#39;backup&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;standby&#39;</span><span class="p">]}]</span><span class="w"> </span><span class="n">LiteLLM</span><span class="w"> </span><span class="n">Retried</span><span class="o">:</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="n">times</span><span class="p">,</span><span class="w"> </span><span class="n">LiteLLM</span><span class="w"> </span><span class="n">Max</span><span class="w"> </span><span class="n">Retries</span><span class="o">:</span><span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+</li>
+<li>
+<p>Admin UI의 Logs 메뉴에는 고장난 배포로 향한 요청이 Failure로, 폴백이 넘겨받은 요청이 Success로 나란히 남는다</p>
+<p><img alt="fallback logs" src="../../../../Cloud%20Infra/ai_gateway_litellm/2.PNG" /></p>
+</li>
+</ol>
+<p>컨텍스트 초과 같은 비일시적 오류는 재시도가 무의미하므로 별도 경로로 폴백한다. 아래는 실측이 아니라 설정 예시다. 프롬프트가 모델의 컨텍스트 윈도우를 넘으면 context_window_fallbacks에 지정한 더 큰 모델로 곧장 넘긴다.</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">router_settings</span><span class="p">:</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">context_window_fallbacks</span><span class="p">:</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">gpt-4o-mini</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;gpt-4o&quot;</span><span class="p p-Indicator">]</span><span class="w">          </span><span class="c1"># 컨텍스트 초과 시 더 큰 모델로 (설정 예시)</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span><span class="nt">content_policy_fallbacks</span><span class="p">:</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">gpt-4o</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;claude-3-5-sonnet&quot;</span><span class="p p-Indicator">]</span><span class="w">    </span><span class="c1"># 콘텐츠 정책 차단 시 타 모델로 (설정 예시)</span>
+</code></pre></div>
+<h2 id="_9">캐싱</h2>
+<hr />
+<p>Redis는 이미 compose에 올라와 있으니 게이트웨이 설정에 캐시만 켜면 된다.</p>
+<ol>
+<li>
+<p>litellm_config.yaml의 litellm_settings에 캐시 설정을 붙인다. type을 redis로 두고 컨테이너 이름을 host로 지정한다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">drop_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">cache_params</span><span class="p">:</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis</span><span class="w">          </span><span class="c1"># 완전 일치 요청을 해시로 캐싱</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis</span><span class="w">          </span><span class="c1"># compose 서비스 이름</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6379</span>
+</code></pre></div>
+</li>
+<li>
+<p>게이트웨이를 재시작한 뒤 캐시 상태를 확인한다. cache/ping이 연결과 set 테스트까지 함께 알려준다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">compose</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">litellm</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">cache</span><span class="o">/</span><span class="n">ping</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="p">{</span><span class="s">&quot;status&quot;</span><span class="o">:</span><span class="s">&quot;healthy&quot;</span><span class="p">,</span><span class="s">&quot;cache_type&quot;</span><span class="o">:</span><span class="s">&quot;redis&quot;</span><span class="p">,</span><span class="s">&quot;ping_response&quot;</span><span class="o">:</span><span class="n">true</span><span class="p">,</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w"> </span><span class="s">&quot;set_cache_response&quot;</span><span class="o">:</span><span class="s">&quot;success&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="s">&quot;redis_version&quot;</span><span class="o">:</span><span class="s">&quot;7.4.9&quot;</span><span class="p">}</span>
+</code></pre></div>
+</li>
+</ol>
+<h3 id="_10">캐시 히트 실측</h3>
+<ol>
+<li>
+<p>temperature를 0으로 고정한 동일 요청을 두 번 보낸다. 응답 시간과 x-litellm-cache-key 헤더로 히트를 판별한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">REQ</span><span class="o">=</span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="s">  &quot;content&quot;:&quot;Name three primary colors. One line.&quot;}],&quot;max_tokens&quot;:30,&quot;temperature&quot;:0}&#39;</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="c1"># 1회차 (miss)</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="w"> </span><span class="s">&#39;%{time_total}s\n&#39;</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&quot;$REQ&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">cache</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="m">1.452753</span><span class="nf">s</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">(</span>헤더<span class="w"> </span>없음<span class="p">)</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="c1"># 2회차 (hit)</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="w"> </span><span class="s">&#39;%{time_total}s\n&#39;</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&quot;$REQ&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">cache</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="m">0.003956</span><span class="n">s</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="m">7640381168783</span><span class="n">f084d22e742fa267edf54c42976...</span>
+</code></pre></div>
+</li>
+<li>
+<p>1회차는 백엔드 추론이라 1.45초가 걸렸고, 2회차는 0.004초에 끝났다. 두 응답의 completion id가 chatcmpl-a527692f로 같아서 새로 생성하지 않고 저장된 응답을 그대로 내려보낸 것을 알 수 있다</p>
+</li>
+</ol>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>💡 캐시 히트 여부는 응답 본문의 model 값이 아니라 x-litellm-cache-key 헤더로 확인한다</p>
+</div>
+<h3 id="_11">시맨틱 캐시</h3>
+<p>지금까지의 redis 캐시는 요청을 해시로 비교하는 완전 일치 방식이라 프롬프트가 한 글자만 달라도 miss가 된다. 시맨틱 캐시(Semantic Cache)는 프롬프트를 임베딩으로 바꿔 유사도가 임계값 이상이면 히트로 처리한다. 실측에는 임베딩 모델이 필요해 아래는 실행 결과가 아니라 설정 예시다.</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">  </span><span class="nt">cache_params</span><span class="p">:</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis-semantic</span><span class="w">                          </span><span class="c1"># 완전 일치 대신 의미 유사도로 매칭</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="nt">similarity_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.8</span><span class="w">                      </span><span class="c1"># 0.8 이상이면 히트로 간주 (설정 예시)</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">    </span><span class="nt">redis_semantic_cache_embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-embed</span><span class="w"> </span><span class="c1"># model_list에 등록된 임베딩 모델</span>
+</code></pre></div>
+<p>임계값이 낮을수록 더 느슨하게 히트해 절감폭은 커지지만 엉뚱한 답을 재사용할 위험도 함께 올라간다. "리스트를 정렬하는 법"과 "파이썬에서 리스트 정렬"처럼 표현만 다른 질문을 한 답으로 묶고 싶을 때 쓴다.</p>
+<h3 id="_12">캐시 운영 주의점</h3>
+<ul>
+<li>TTL은 cache_params에 ttl로 초 단위 만료를 걸고, 요청별로 cache의 ttl이나 s-maxage로 덮어쓸 수 있음. 기본은 만료가 없어 값이 바뀌지 않는 질문에만 오래 두는 것이 안전</li>
+<li>supported_call_types로 캐시를 적용할 엔드포인트를 좁힐 수 있음. 기본은 completion과 embedding을 포함한 전 유형이 켜져 있음</li>
+<li>스트리밍 응답도 캐시돼 히트 시 저장된 내용을 청크로 재생하므로 앱 코드는 스트리밍인지 캐시인지 구분하지 않아도 됨</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 사용자·시간에 따라 답이 달라지는 요청은 캐시하면 오답을 재사용하니 TTL을 짧게 둔다</p>
+</div>
+<h2 id="_13">비용 추적과 예산</h2>
+<hr />
+<p>Ollama 백엔드는 LiteLLM 기본 단가가 0이라 아무리 호출해도 spend가 쌓이지 않는다. 유료 API의 비용 추적을 흉내내려면 model_list의 litellm_params에 토큰당 단가를 직접 넣는다.</p>
+<ol>
+<li>
+<p>두 모델에 입력·출력 단가를 지정한다. 데모용 값이고 실제 요금과는 무관하다</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nt">model_list</span><span class="p">:</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">llama-small</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ollama/llama3.2:1b</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">      </span><span class="nt">api_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://ollama:11434</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">      </span><span class="nt">input_cost_per_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0000005</span><span class="w">     </span><span class="c1"># 입력 토큰당 0.5μ$</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="w">      </span><span class="nt">output_cost_per_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0000015</span><span class="w">    </span><span class="c1"># 출력 토큰당 1.5μ$</span>
+</code></pre></div>
+</li>
+<li>
+<p>마스터 키로 추적용 virtual key를 발급한다. spend가 0.0에서 시작한다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">key</span><span class="o">/</span><span class="n">generate</span><span class="w"> </span>\
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;key_alias&quot;:&quot;dotoryeee-spend-key&quot;,&quot;models&quot;:[&quot;llama-small&quot;,&quot;qwen-small&quot;]}&#39;</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="p">{</span><span class="s">&quot;key_alias&quot;</span><span class="o">:</span><span class="s">&quot;dotoryeee-spend-key&quot;</span><span class="p">,</span><span class="s">&quot;spend&quot;</span><span class="o">:</span><span class="m">0.0</span><span class="p">,</span><span class="s">&quot;key&quot;</span><span class="o">:</span><span class="s">&quot;sk-06e-0bSJ-AqJ_E8jx8sK8g&quot;</span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>이 키로 서로 다른 프롬프트를 여러 번 호출하고 key/info로 누적 spend를 확인한다. spend 반영은 비동기라 몇 초 뒤 값이 확정된다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># 서로 다른 프롬프트 여러 건 호출 후</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="s">&quot;http://localhost:4000/key/info?key=sk-06e-0bSJ-AqJ_E8jx8sK8g&quot;</span><span class="w"> </span>\
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="s">&quot;key_alias&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;dotoryeee-spend-key&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="s">&quot;spend&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">0.0004005</span><span class="p">,</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="s">&quot;models&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;llama-small&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;qwen-small&quot;</span><span class="p">]</span>
+</code></pre></div>
+</li>
+</ol>
+<p>지정한 단가대로 토큰 사용량이 달러로 환산돼 키에 쌓였다. 단가를 넣지 않았다면 같은 호출에도 spend는 계속 0이었을 것이다.</p>
+<h3 id="_14">캐시 히트와 비용</h3>
+<ol>
+<li>
+<p>같은 키로 새 요청을 한 번(miss) 보내고 곧바로 동일 요청을 한 번 더(hit) 보낸 뒤 spend 변화를 본다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="c1"># spend before : 0.0004005</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="c1"># 새 요청 1회(miss) + 동일 요청 1회(hit)</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="c1"># spend after  : 0.0004385</span>
+</code></pre></div>
+</li>
+<li>
+<p>두 번 호출했는데 spend는 miss 한 건 값인 약 3.8e-5만 늘고 hit는 0을 더했다. 캐시는 지연을 줄이는 동시에 같은 요청의 토큰 비용을 없앤다</p>
+</li>
+</ol>
+<h3 id="_15">예산 초과 차단</h3>
+<ol>
+<li>
+<p>max_budget을 아주 작게 건 키를 발급한다. 한 호출 비용보다 조금 큰 0.0001달러로 둔다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">key</span><span class="o">/</span><span class="n">generate</span><span class="w"> </span>\
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;key_alias&quot;:&quot;dotoryeee-budget-key&quot;,&quot;models&quot;:[&quot;llama-small&quot;],&quot;max_budget&quot;:0.0001}&#39;</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="p">{</span><span class="s">&quot;key_alias&quot;</span><span class="o">:</span><span class="s">&quot;dotoryeee-budget-key&quot;</span><span class="p">,</span><span class="s">&quot;max_budget&quot;</span><span class="o">:</span><span class="m">0.0001</span><span class="p">,</span><span class="s">&quot;spend&quot;</span><span class="o">:</span><span class="m">0.0</span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p>이 키로 호출을 반복하면 누적 spend가 예산을 넘는 순간 차단된다. 응답 코드는 400이 아니라 429이고 type이 budget_exceeded다</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">call</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="n">call</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="n">call</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">429</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">  </span><span class="p">{</span><span class="s">&quot;error&quot;</span><span class="o">:</span><span class="p">{</span><span class="s">&quot;message&quot;</span><span class="o">:</span><span class="s">&quot;Budget has been exceeded! Key=dotoryeee-budget-key</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="s">   (sk-...yC7w) Current cost: 0.000126, Max budget: 0.0001&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">   </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="s">&quot;budget_exceeded&quot;</span><span class="p">}}</span>
+</code></pre></div>
+</li>
+<li>
+<p>Admin UI의 Virtual Keys 메뉴에서 dotoryeee-budget-key의 예산 소진 막대와 dotoryeee-spend-key의 누적 Spend를 함께 확인할 수 있다</p>
+<p><img alt="virtual keys spend budget" src="../../../../Cloud%20Infra/ai_gateway_litellm/3.PNG" /></p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 spend 반영이 비동기라 예산 직전 한두 건은 통과한 뒤 차단된다</p>
+</div>
+<h2 id="_16">관측성</h2>
+<hr />
+<p>관측성(Observability)이란 게이트웨이를 지나는 요청의 내부 상태를 로그·메트릭·트레이스로 밖에서 파악 가능하게 만드는 성질</p>
+<h3 id="llm">LLM 관측이 다른 이유</h3>
+<p>일반 백엔드 지표에 토큰·비용·첫 토큰 지연 차원이 더해지는 것이 LLM 관측의 특징</p>
+<table>
+<thead>
+<tr>
+<th>관측 차원</th>
+<th>일반 API 백엔드</th>
+<th>LLM 백엔드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>지연</td>
+<td>요청~응답 시간</td>
+<td>요청~응답 + TTFT(첫 토큰까지) 분리</td>
+</tr>
+<tr>
+<td>처리량</td>
+<td>초당 요청 수(RPS)</td>
+<td>RPS + 초당 토큰 수</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>인프라 고정비</td>
+<td>요청마다 토큰 종량 과금</td>
+</tr>
+<tr>
+<td>실패</td>
+<td>4xx/5xx</td>
+<td>4xx/5xx + 폴백·재시도 발생</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>스트리밍 응답은 전체 지연 하나로 못 봄 → 첫 토큰(TTFT)과 완료 시간을 분리 측정</li>
+<li>비용이 요청마다 달라지고 폴백·재시도가 정상 경로에 섞임 → 토큰·spend와 실제 처리 백엔드를 요청 단위로 기록 필요</li>
+</ul>
+<h3 id="_17">요청 단위 관측: 응답 헤더</h3>
+<p>응답 헤더 한 벌이 요청별 지연 분해와 라우팅 결과를 그대로 실음</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;qwen-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:10}&#39;</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">call</span><span class="o">-</span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="m">4</span><span class="n">fca4ae9</span><span class="m">-2075-4</span><span class="n">c3f</span><span class="m">-8</span><span class="n">b74</span><span class="m">-8655</span><span class="n">cccb42dd</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">response</span><span class="o">-</span><span class="n">duration</span><span class="o">-</span><span class="n">ms</span><span class="o">:</span><span class="w"> </span><span class="m">395.33</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">overhead</span><span class="o">-</span><span class="n">duration</span><span class="o">-</span><span class="n">ms</span><span class="o">:</span><span class="w"> </span><span class="m">6.84</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">group</span><span class="o">:</span><span class="w"> </span><span class="n">qwen</span><span class="o">-</span><span class="n">small</span>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">attempted</span><span class="o">-</span><span class="n">retries</span><span class="o">:</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="n">x</span><span class="o">-</span><span class="n">litellm</span><span class="o">-</span><span class="n">attempted</span><span class="o">-</span><span class="n">fallbacks</span><span class="o">:</span><span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>헤더</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x-litellm-call-id</code></td>
+<td>요청 추적용 고유 ID, 로그·트레이스 상관에 사용</td>
+</tr>
+<tr>
+<td><code>x-litellm-response-duration-ms</code></td>
+<td>백엔드 응답까지 총 소요 시간</td>
+</tr>
+<tr>
+<td><code>x-litellm-overhead-duration-ms</code></td>
+<td>게이트웨이 자체 처리로 더해진 시간</td>
+</tr>
+<tr>
+<td><code>x-litellm-attempted-retries</code></td>
+<td>이 응답이 나오기까지 재시도 횟수</td>
+</tr>
+<tr>
+<td><code>x-litellm-attempted-fallbacks</code></td>
+<td>폴백 발생 횟수, 0 초과면 대체 백엔드가 처리</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>response-duration과 overhead-duration이 분리돼 지연 원인이 백엔드인지 게이트웨이인지 구분 가능</li>
+<li>attempted-fallbacks가 0보다 크면 요청한 별칭이 아닌 대체 백엔드가 응답 (폴백이 발생했다는 신호)</li>
+<li>키 단위 누적 spend는 <code>/key/info</code>, 요청 단위 감사 로그는 <code>/spend/logs</code>로 조회</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="s2">&quot;chatcmpl-db7a1fa7-ea4f-4b80-8a53-21b3f5bae931&quot;</span><span class="p">,</span><span class="nt">&quot;call_type&quot;</span><span class="p">:</span><span class="s2">&quot;acompletion&quot;</span><span class="p">,</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w"> </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;ollama/llama3.2:1b&quot;</span><span class="p">,</span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="mi">124</span><span class="p">,</span><span class="nt">&quot;spend&quot;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">,</span><span class="nt">&quot;cache_hit&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="ttft">TTFT 실측</h3>
+<p>TTFT(Time To First Token)이란 요청 전송부터 첫 토큰이 도착하기까지의 시간으로, 스트리밍 체감 속도를 좌우하는 지표</p>
+<ul>
+<li>전체 지연은 마지막 토큰까지, TTFT는 첫 토큰까지 → 사용자 체감은 TTFT가 결정</li>
+<li>curl -w의 time_starttransfer(첫 바이트)와 time_total(완료)로 분해 측정</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">WFMT</span><span class="o">=</span><span class="s">&#39;TTFB=%{time_starttransfer}s  total=%{time_total}s\n&#39;</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="c1"># 논스트리밍 (stream:false)</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="n">TTFB</span><span class="o">=</span><span class="m">2.785</span><span class="n">s</span><span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="m">2.785</span><span class="n">s</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="c1"># 스트리밍 (stream:true)</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="n">TTFB</span><span class="o">=</span><span class="m">0.208</span><span class="n">s</span><span class="w">  </span><span class="n">total</span><span class="o">=</span><span class="m">4.009</span><span class="n">s</span>
+</code></pre></div>
+<ul>
+<li>논스트리밍은 TTFB와 total이 사실상 같음 → 전체 생성이 끝날 때까지 클라이언트가 대기</li>
+<li>스트리밍은 첫 바이트가 0.2초, 완료가 약 4초 → 첫 토큰을 먼저 흘려보내 체감 지연을 줄임</li>
+<li>프로메테우스 <code>litellm_llm_api_time_to_first_token_metric</code>도 스트리밍 호출에서만 기록됨 (같은 요청 sum=0.181)</li>
+</ul>
+<h3 id="prometheus">메트릭: Prometheus</h3>
+<p>callbacks에 prometheus 한 줄로 /metrics 엔드포인트가 열리고 요청·지연·토큰·비용이 시계열로 쌓임</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">  </span><span class="nt">drop_params</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;prometheus&quot;</span><span class="p p-Indicator">]</span><span class="w">     </span><span class="c1"># /metrics 엔드포인트 노출</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">sL</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">metrics</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="n">litellm_proxy_total_requests_metric_total</span><span class="p">{</span><span class="n">requested_model</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="n">status_code</span><span class="o">=</span><span class="s">&quot;200&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="n">litellm_request_total_latency_metric_bucket</span><span class="p">{</span><span class="n">le</span><span class="o">=</span><span class="s">&quot;0.5&quot;</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;qwen2.5:0.5b&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="n">litellm_llm_api_time_to_first_token_metric_sum</span><span class="p">{</span><span class="n">model</span><span class="o">=</span><span class="s">&quot;qwen2.5:0.5b&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">0.181239</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="n">litellm_overhead_latency_metric_sum</span><span class="p">{</span><span class="n">model_group</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">0.003282</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="n">litellm_deployment_success_responses_total</span><span class="p">{</span><span class="n">model_group</span><span class="o">=</span><span class="s">&quot;qwen-small&quot;</span><span class="p">,</span><span class="kc">...</span><span class="p">}</span><span class="w"> </span><span class="m">3.0</span>
+</code></pre></div>
+<p>프로메테우스를 랩 네트워크에 붙여 /metrics를 주기적으로 스크레이프. 마스터 키를 Bearer 토큰으로 실어 인증</p>
+<div class="highlight"><span class="filename">prometheus.yml</span><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nt">global</span><span class="p">:</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">scrape_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="nt">scrape_configs</span><span class="p">:</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">litellm</span>
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="nt">metrics_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">    </span><span class="nt">authorization</span><span class="p">:</span>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Bearer</span>
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="w">      </span><span class="nt">credentials</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sk-dotoryeee-1234</span><span class="w">    </span><span class="c1"># LiteLLM 마스터 키</span>
+<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="w">    </span><span class="nt">static_configs</span><span class="p">:</span>
+<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;litellm:4000&quot;</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># compose 서비스 이름</span>
+</code></pre></div>
+<p>스크레이프 후 표현식 브라우저 Table 뷰에서 <code>litellm_proxy_total_requests_metric_total</code> 조회 → requested_model·status_code·api_key_alias 라벨별 요청 수 집계</p>
+<p><img alt="prometheus table" src="../../../../Cloud%20Infra/ai_gateway_litellm/4.PNG" /></p>
+<p>dotoryeee-spend-key로 보낸 호출이 별도 시계열로 잡혀 키 별칭 단위 사용량 추적 가능</p>
+<table>
+<thead>
+<tr>
+<th>메트릭</th>
+<th>관측 대상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>litellm_request_total_latency_metric</code></td>
+<td>요청 전체 지연 히스토그램</td>
+</tr>
+<tr>
+<td><code>litellm_llm_api_time_to_first_token_metric</code></td>
+<td>TTFT 히스토그램(스트리밍)</td>
+</tr>
+<tr>
+<td><code>litellm_overhead_latency_metric</code></td>
+<td>게이트웨이 자체 오버헤드</td>
+</tr>
+<tr>
+<td><code>litellm_spend_metric</code> / <code>litellm_total_tokens_metric</code></td>
+<td>비용·토큰 누적</td>
+</tr>
+<tr>
+<td><code>litellm_deployment_success/failure_responses_total</code></td>
+<td>백엔드별 성공·실패 수</td>
+</tr>
+<tr>
+<td><code>litellm_deployment_successful_fallbacks_total</code></td>
+<td>폴백 발생 횟수</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>이 랩은 LiteLLM 1.94.0 community이며 <code>has_license:false</code> 상태에서 <code>/metrics</code>가 그대로 동작 → 프로메테우스 메트릭은 무료 코어에 포함</li>
+<li>Enterprise 티어가 더하는 것은 SSO·RBAC·감사 로그 같은 거버넌스 기능이지 기본 메트릭·트레이싱이 아님 (community/Enterprise 라이선스 경계와 동일)</li>
+<li>다만 프로메테우스 통합의 무료·유료 경계는 버전마다 달라진 이력 → 배포 버전에서 직접 확인 권장</li>
+</ul>
+<h3 id="opentelemetry">트레이싱: OpenTelemetry</h3>
+<p>요청 하나를 내부 단계별 span으로 쪼개 어느 구간에서 시간이 샜는지 추적하는 표준이 OpenTelemetry(OTEL)</p>
+<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="nt">litellm_settings</span><span class="p">:</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">  </span><span class="nt">callbacks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;otel&quot;</span><span class="p p-Indicator">]</span><span class="w">                          </span><span class="c1"># 트레이스 전송</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">      </span><span class="nt">OTEL_EXPORTER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">otlp_http</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">      </span><span class="nt">OTEL_ENDPOINT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://otel-collector:4318</span><span class="w"> </span><span class="c1"># 수집기 주소</span>
+</code></pre></div>
+<p>otel-collector를 debug exporter로 띄우고 요청 한 건을 보내면 하나의 trace_id 아래 내부 span이 도착함</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">service.name</span><span class="o">:</span><span class="w"> </span><span class="n">litellm</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="n">Trace</span><span class="w"> </span><span class="n">ID</span><span class="o">:</span><span class="w"> </span><span class="n">c69af1f904d85841782a2f8bb8d585c2</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span><span class="n">auth</span><span class="w">                </span><span class="c1"># 키 인증</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">  </span><span class="n">postgres</span><span class="w">            </span><span class="c1"># 사용자 조회</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">  </span><span class="n">proxy_pre_call</span><span class="w">      </span><span class="c1"># pre-call 훅</span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">  </span><span class="n">router</span><span class="w">              </span><span class="c1"># 배포 선택</span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="w">  </span><span class="n">litellm_request</span>
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a><span class="w">  </span><span class="n">raw_gen_ai_request</span><span class="w">  </span><span class="c1"># 실제 백엔드 LLM 호출</span>
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="w">  </span><span class="n">batch_write_to_db</span><span class="w">   </span><span class="c1"># spend 비동기 기록</span>
+</code></pre></div>
+<ul>
+<li>한 요청 = 한 trace_id, 인증·라우팅·백엔드 호출이 각각 span → 지연이 게이트웨이 내부인지 백엔드인지 분리</li>
+<li>OTEL도 community 무료. 같은 OTLP로 Jaeger·Tempo·Datadog 등 백엔드에 그대로 전송</li>
+<li>프롬프트·응답 본문까지 보는 LLM 특화 관측은 <code>callbacks: ["langfuse"]</code> + LANGFUSE_* 환경변수로 교체 (설정 예시)</li>
+</ul>
+<h3 id="_18">무엇에 알람을 거는가</h3>
+<p>관측의 목적은 대시보드가 아니라 개입 시점을 잡는 것 → 아래 네 축을 우선 알람화</p>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>메트릭</th>
+<th>알람 신호</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>오류율</td>
+<td><code>litellm_proxy_failed_requests_metric</code></td>
+<td>5xx 비율이 기준선 초과</td>
+</tr>
+<tr>
+<td>폴백 발생</td>
+<td><code>litellm_deployment_successful_fallbacks_total</code></td>
+<td>증가 시 주 프로바이더 장애 조기 신호</td>
+</tr>
+<tr>
+<td>예산 소진</td>
+<td><code>litellm_remaining_api_key_budget_metric</code></td>
+<td>키별 잔여 예산이 임계 이하</td>
+</tr>
+<tr>
+<td>TTFT 악화</td>
+<td><code>litellm_llm_api_time_to_first_token_metric</code></td>
+<td>p95 TTFT가 기준 초과</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>게이트웨이 자체 병목은 <code>litellm_overhead_latency_metric</code> 급증으로 잡음 → 백엔드가 멀쩡한데 지연이 늘면 게이트웨이 의심</li>
+<li>폴백은 200으로 응답되는 "성공한 장애"라 지표를 안 보면 놓침 → 폴백 카운터를 반드시 알람에 포함</li>
+</ul>
+<h2 id="admin-ui">Admin UI 확인</h2>
+<hr />
+<ol>
+<li>
+<p><a href="http://localhost:4000/ui">http://localhost:4000/ui</a> 에 접속해 dotoryeee 계정(비밀번호는 마스터 키)으로 로그인한다</p>
+<p><img alt="login" src="../../../../Cloud%20Infra/ai_gateway_litellm/5.PNG" /></p>
+</li>
+<li>
+<p>Models 메뉴에 등록한 모델이 올라와 있다</p>
+<p><img alt="model management" src="../../../../Cloud%20Infra/ai_gateway_litellm/6.PNG" /></p>
+</li>
+<li>
+<p>Virtual Keys 메뉴에는 발급한 키의 사용량과 예산이 표시된다</p>
+<p><img alt="virtual keys" src="../../../../Cloud%20Infra/ai_gateway_litellm/7.PNG" /></p>
+<p>dotoryeee-key 키가 발급되어 있고 Spend 추적이 동작한다</p>
+</li>
+<li>
+<p>Logs 메뉴에서 요청별 처리 결과와 소요 시간을 추적할 수 있다</p>
+<p><img alt="request logs" src="../../../../Cloud%20Infra/ai_gateway_litellm/8.PNG" /></p>
+<p>폴백 실습에서 발생시킨 Failure 기록까지 그대로 남아있다</p>
+</li>
+</ol>
+<h2 id="_19">결론</h2>
+<hr />
+<ul>
+<li>게이트웨이 하나로 통합 API, 키 관리, rate limit, 로드밸런싱, 폴백, 캐시, 비용 추적, 관측이 전부 한 스택에서 동작함을 확인했다</li>
+<li>백엔드를 Ollama에서 OpenAI/Bedrock으로 바꿔도 model_list에 항목만 추가하면 되고 당연히 앱 코드는 그대로다</li>
+<li>weight와 routing_strategy는 정상일 때 트래픽을 고르게 나누고, num_retries·timeout·폴백 체인은 배포가 순차로 죽어도 마지막 정상 후보까지 요청을 이어준다</li>
+<li>redis 캐시는 같은 요청의 두 번째 호출을 1.45초에서 0.004초로 줄이고 토큰 비용을 0으로 만들며, max_budget은 429 budget_exceeded로 예산을 강제한다</li>
+<li>응답 헤더·프로메테우스·OTEL 세 층위로 관측이 완성되고, 알람은 오류율·폴백·예산·TTFT 네 축이면 대부분의 사고를 조기에 포착한다</li>
+<li>게이트웨이를 세우는 일이 "한 곳으로 모으기"였다면, 운영은 "그 안을 밖에서 들여다보며 끊기지 않게 지키기"</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: xattr 유사 명령어 정리">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                xattr 유사 명령어 정리
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../ai-gateway-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: AI Gateway 정리">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                AI Gateway 정리
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
