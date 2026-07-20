@@ -16,7 +16,7 @@ categories:
 
 ---
 
-- 1편에서 정리한 AI Gateway를 로컬에서 직접 구축해봅니다
+- AI Gateway를 로컬에서 직접 구축해봅니다
 - LiteLLM Proxy 뒤에 Ollama 로컬 모델 2개를 붙여서 클라우드 비용 없이 진행합니다
 - 통합 API 호출, virtual key 발급, rate limit 차단, 프로바이더 장애 폴백까지 실제로 동작을 확인합니다
 
@@ -259,4 +259,3 @@ categories:
 
 - 게이트웨이 하나로 통합 API, 키 관리, rate limit, 폴백이 전부 동작함을 확인했습니다
 - 백엔드를 Ollama에서 OpenAI/Bedrock으로 바꿔도 model_list에 항목만 추가하면 됩니다. 당연히 앱 코드는 그대로입니다
-- 다음 편에서는 주요 AI Gateway 솔루션들을 기능·운영 관점으로 비교합니다

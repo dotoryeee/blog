@@ -60,8 +60,8 @@ x-litellm-attempted-fallbacks: 0
 |`x-litellm-attempted-fallbacks`|폴백 발생 횟수, 0 초과면 대체 백엔드가 처리|
 
 - response-duration과 overhead-duration이 분리돼 지연 원인이 백엔드인지 게이트웨이인지 구분 가능
-- attempted-fallbacks가 0보다 크면 요청한 별칭이 아닌 대체 백엔드가 응답 (2편 폴백과 같은 신호)
-- 키 단위 누적 spend는 5편 key/info, 요청 단위 감사 로그는 `/spend/logs`로 조회
+- attempted-fallbacks가 0보다 크면 요청한 별칭이 아닌 대체 백엔드가 응답 (폴백이 발생했다는 신호)
+- 키 단위 누적 spend는 `/key/info`, 요청 단위 감사 로그는 `/spend/logs`로 조회
 
 ```json
 {"request_id":"chatcmpl-db7a1fa7-ea4f-4b80-8a53-21b3f5bae931","call_type":"acompletion",
@@ -123,7 +123,7 @@ litellm_deployment_success_responses_total{model_group="qwen-small",...} 3.0
 |`litellm_deployment_successful_fallbacks_total`|폴백 발생 횟수|
 
 - 이 랩은 LiteLLM 1.94.0 community이며 `has_license:false` 상태에서 `/metrics`가 그대로 동작 → 프로메테우스 메트릭은 무료 코어에 포함
-- Enterprise 티어가 더하는 것은 SSO·RBAC·감사 로그 같은 거버넌스 기능이지 기본 메트릭·트레이싱이 아님 (3편 라이선스 경계와 동일)
+- Enterprise 티어가 더하는 것은 SSO·RBAC·감사 로그 같은 거버넌스 기능이지 기본 메트릭·트레이싱이 아님 (community/Enterprise 라이선스 경계와 동일)
 - 다만 프로메테우스 통합의 무료·유료 경계는 버전마다 달라진 이력 → 배포 버전에서 직접 확인 권장
 
 ---
@@ -184,5 +184,4 @@ Trace ID: c69af1f904d85841782a2f8bb8d585c2
 - 응답 헤더·`/spend/logs`로 요청 단위, 프로메테우스로 시계열, OTEL로 요청 내부까지 세 층위로 관측이 완성됨
 - 프로메테우스·OTEL 모두 LiteLLM community에서 무료 동작을 확인, Enterprise는 거버넌스 기능에 한정
 - 알람은 오류율·폴백·예산·TTFT 네 축이면 대부분의 사고를 조기에 포착
-- 1편 개념부터 구축·비교·라우팅·캐싱·가드레일을 지나 관측까지, 게이트웨이 한 겹으로 LLM 운영을 모았음
 - 게이트웨이를 세우는 일이 "한 곳으로 모으기"였다면, 관측성은 "그 안을 밖에서 들여다보기"

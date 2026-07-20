@@ -16,7 +16,7 @@ categories:
 
 ---
 
-- 4편 끝에서 예고한 캐싱(Caching)으로 같은 요청의 토큰 비용을 0으로 만드는 방법을 2편 랩에서 실측해봅니다
+- 캐싱(Caching)으로 같은 요청의 토큰 비용을 0으로 만드는 방법을 docker compose로 띄운 LiteLLM + Ollama 게이트웨이 랩에서 실측해봅니다
 - Redis 캐시를 붙여 동일 요청의 두 번째 호출이 백엔드를 거치지 않고 즉시 응답되는 것을 확인합니다
 - 커스텀 단가로 spend를 쌓고, 예산을 건 키로 초과 호출이 차단되는지, 시맨틱 캐시는 어디가 다른지까지 봅니다
 
@@ -27,7 +27,7 @@ categories:
 
 ---
 
-1. 2편 docker-compose.yml에 redis 서비스를 추가하고 litellm의 depends_on에 넣습니다
+1. 게이트웨이 랩의 docker-compose.yml에 redis 서비스를 추가하고 litellm의 depends_on에 넣습니다
 
     ```yaml title="docker-compose.yml"
     services:
@@ -208,5 +208,4 @@ litellm_settings:
 - redis 캐시 한 줄 설정으로 동일 요청의 두 번째 호출이 1.45초에서 0.004초로 줄고 토큰 비용은 0이 되었습니다
 - 커스텀 단가는 Ollama처럼 무료 백엔드에서도 비용 추적을 흉내낼 수 있게 하고, key/info의 spend로 키별 누적을 확인합니다
 - max_budget은 초과 시 429 budget_exceeded로 호출을 끊어 예산을 강제합니다. 완전 일치가 아쉬우면 시맨틱 캐시로 유사 질문까지 묶습니다
-- 다음 편에서는 가드레일로 프롬프트 인젝션과 민감정보 유출을 게이트웨이 단에서 막는 방법을 다룹니다
 - 캐시는 "같은 답은 다시 만들지 않기", 예산은 "정해진 만큼만 쓰기"로 나눠 두면 비용 설계가 헷갈리지 않습니다
