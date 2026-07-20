@@ -1,0 +1,2111 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/docker-%EC%97%86%EC%9D%B4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EA%B8%B0/">
+      
+      
+        <link rel="prev" href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="next" href="../%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>docker 없이 컨테이너 만들어보기 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#docker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              docker 없이 컨테이너 만들어보기
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    맨땅에 헤딩 전문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2026/07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026 July
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 September
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2025/03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025 March
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024 March
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2024/02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024 February
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 November
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 October
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 February
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2023/01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023 January
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/2021/04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021 April
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../archive/1993/09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1993 September
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Categories
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Categories
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CICD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/elasticsearch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ElasticSearch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/grafana/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grafana
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/prometheus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/route53/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Route53
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/study/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    study
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/udemy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    udemy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    메모장
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    메모장
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/AWS%20CLI%20%EB%AA%A8%EB%91%A0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS CLI 모둠
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/Linux%20command%20%EB%AA%A8%EC%9D%8C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux command 모음
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%EB%A9%94%EB%AA%A8%EC%9E%A5/docker_compose_templates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker compose 모음
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        목표
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실습 환경
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        namespace 손수 만들기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alpine-rootfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        alpine rootfs 로 루트 바꾸기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cgroup-v2-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cgroup v2 로 메모리 제한과 OOM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlayfs-copy-on-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        overlayfs 로 copy-on-write
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network-namespace-veth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        network namespace 와 veth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        runc 가 하는 일
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-20 00:00:00+00:00" class="md-ellipsis">Jul 20, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../../../category/docker/">Docker</a>, 
+                              <a href="../../../../category/server/">Server</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              14 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+<h1 id="docker">docker 없이 컨테이너 만들어보기</h1>
+<!-- more -->
+
+<h2 id="_1">목표</h2>
+<hr />
+<ul>
+<li>docker 명령 없이 리눅스 커널 기능만으로 컨테이너를 손으로 조립한다</li>
+<li>namespace 로 프로세스가 보는 세계를 격리하고, cgroup 으로 메모리를 제한하고, chroot 와 overlayfs 로 루트 파일시스템을 직접 만든다</li>
+<li>메모리 제한을 넘긴 프로세스가 커널 OOM 킬러에 죽는 것까지 실측한다</li>
+<li>마지막에 여기서 손으로 한 일이 runc 가 컨테이너를 띄울 때 하는 일과 같음을 확인한다</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>💡 전 과정을 macOS Docker Desktop 의 리눅스 VM 커널 위에서 돌려 클라우드 비용이 들지 않는다</p>
+</div>
+<h2 id="_2">실습 환경</h2>
+<hr />
+<p>컨테이너는 별도 게스트 커널 없이 호스트 커널을 그대로 쓴다. macOS 의 Docker Desktop 은 리눅스 VM 을 하나 띄우고 그 안에서 컨테이너를 돌리므로, 그 VM 커널이 여기서의 진짜 "호스트 커널"이다. 먼저 커널 버전을 본다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="n">alpine</span><span class="w"> </span><span class="n">uname</span><span class="w"> </span><span class="o">-</span><span class="n">srm</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Linux</span><span class="w"> </span><span class="m">6.12</span><span class="n">.</span><span class="m">76</span><span class="o">-</span><span class="n">linuxkit</span><span class="w"> </span><span class="n">aarch64</span>
+</code></pre></div>
+<p>이 커널을 호스트로 삼아, privileged 로 띄운 ubuntu:24.04 컨테이너 안에서 unshare, cgroup, overlayfs 를 직접 만진다. privileged 가 필요한 이유는 mount, cgroup 쓰기, veth 생성 같은 특권 연산을 써야 하기 때문이다. hostname 은 dotoryeee-host 로 지정해 뒤의 UTS 격리 대비를 분명히 한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">-</span><span class="n">it</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="o">--</span><span class="n">privileged</span><span class="w"> </span><span class="o">--</span><span class="n">hostname</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">host</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="w"> </span><span class="n">ubuntu</span><span class="o">:</span><span class="m">24.04</span><span class="w"> </span><span class="n">bash</span>
+</code></pre></div>
+<p>컨테이너에 들어오면 실습에 쓸 도구를 설치한다. unshare 와 chroot 는 util-linux 로 이미 들어 있고, iproute2(ip), iputils-ping, procps(ps), curl 만 더 깐다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">update</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">apt</span><span class="o">-</span><span class="n">get</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">iproute2</span><span class="w"> </span><span class="n">iputils</span><span class="o">-</span><span class="n">ping</span><span class="w"> </span><span class="n">procps</span><span class="w"> </span><span class="n">curl</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">unshare</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">unshare</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">util</span><span class="o">-</span><span class="n">linux</span><span class="w"> </span><span class="m">2.39</span><span class="n">.</span><span class="m">3</span>
+</code></pre></div>
+<p>자원 제한 실습에 쓸 cgroup 계층이 v2 인지 확인한다. cgroup2fs 로 나오면 단일 통합 계층이다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">stat</span><span class="w"> </span><span class="o">-</span><span class="n">fc</span><span class="w"> </span>%<span class="bp">T</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">cgroup2fs</span>
+</code></pre></div>
+<h2 id="namespace">namespace 손수 만들기</h2>
+<hr />
+<p>namespace 는 프로세스가 보는 자원의 범위를 종류별로 잘라 준다. unshare 는 새 namespace 를 만들고 그 안에서 명령을 실행하는 도구다. hostname 을 담는 UTS 부터 만져본다.</p>
+<ol>
+<li>
+<p>UTS namespace 를 새로 만들고 그 안에서만 hostname 을 dotoryeee-container 로 바꾼다. namespace 를 빠져나오면 호스트 hostname 은 그대로다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">hostname</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">host</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">unshare</span><span class="w"> </span><span class="o">--</span><span class="n">uts</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&#39;hostname dotoryeee-container; echo &quot; ns 내부: $(hostname)&quot;&#39;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w"> </span><span class="n">ns</span><span class="w"> </span>내부<span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">container</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">hostname</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">host</span>
+</code></pre></div>
+<p>ns 안에서 바꾼 hostname 이 밖으로 새지 않는다. 컨테이너마다 hostname 을 따로 갖는 것이 이 격리다.</p>
+</li>
+<li>
+<p>PID namespace 를 만든다. --fork 로 unshare 가 자식을 하나 포크해 그 자식이 새 PID 공간의 첫 프로세스가 되고, --mount-proc 로 새 /proc 을 물려 ps 가 ns 안의 프로세스만 본다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">unshare</span><span class="w"> </span><span class="o">--</span><span class="n">pid</span><span class="w"> </span><span class="o">--</span><span class="n">fork</span><span class="w"> </span><span class="o">--</span><span class="n">mount</span><span class="o">-</span><span class="n">proc</span><span class="w"> </span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&#39;echo &quot;ns-init PID = $$&quot;; sleep 60 &amp; ps -ef; :&#39;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">ns</span><span class="o">-</span><span class="n">init</span><span class="w"> </span><span class="n">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">UID</span><span class="w">          </span><span class="n">PID</span><span class="w">    </span><span class="n">PPID</span><span class="w">  </span><span class="n">C</span><span class="w"> </span><span class="n">STIME</span><span class="w"> </span><span class="n">TTY</span><span class="w">          </span><span class="n">TIME</span><span class="w"> </span><span class="n">CMD</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">root</span><span class="w">           </span><span class="m">1</span><span class="w">       </span><span class="m">0</span><span class="w">  </span><span class="m">0</span><span class="w"> </span><span class="m">13</span><span class="o">:</span><span class="m">58</span><span class="w"> </span><span class="o">?</span><span class="w">        </span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="w"> </span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="kc">...</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">root</span><span class="w">           </span><span class="m">2</span><span class="w">       </span><span class="m">1</span><span class="w">  </span><span class="m">0</span><span class="w"> </span><span class="m">13</span><span class="o">:</span><span class="m">58</span><span class="w"> </span><span class="o">?</span><span class="w">        </span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="w"> </span><span class="n">sleep</span><span class="w"> </span><span class="m">60</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">root</span><span class="w">           </span><span class="m">3</span><span class="w">       </span><span class="m">1</span><span class="w">  </span><span class="m">0</span><span class="w"> </span><span class="m">13</span><span class="o">:</span><span class="m">58</span><span class="w"> </span><span class="o">?</span><span class="w">        </span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="o">:</span><span class="m">00</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">-</span><span class="n">ef</span>
+</code></pre></div>
+<p>bash 가 PID 1 이 됐고 ps 에는 세 프로세스만 보인다. 호스트의 수많은 프로세스는 새 /proc 뷰에서 사라진다. 컨테이너 안에서 프로세스가 1번부터 시작하는 이유가 이것이다.</p>
+</li>
+<li>
+<p>mount namespace 를 만들어 그 안에서 tmpfs 를 마운트한다. 마운트도, 그 위에 만든 파일도 호스트에서는 보이지 않는다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">unshare</span><span class="w"> </span><span class="o">--</span><span class="n">mount</span><span class="w"> </span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&#39;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">  mount -t tmpfs none /tmp/ns-mnt</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">  touch /tmp/ns-mnt/only-in-ns</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">  echo &quot; ns 내부 mount:&quot;; grep ns-mnt /proc/mounts</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s">  echo &quot; ns 내부 파일:&quot;; ls /tmp/ns-mnt&#39;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w"> </span><span class="n">ns</span><span class="w"> </span>내부<span class="w"> </span><span class="n">mount</span><span class="o">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">none</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span><span class="w"> </span><span class="n">tmpfs</span><span class="w"> </span><span class="n">rw</span><span class="p">,</span><span class="n">relatime</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w"> </span><span class="n">ns</span><span class="w"> </span>내부<span class="w"> </span>파일<span class="o">:</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">only</span><span class="o">-</span><span class="kr">in</span><span class="o">-</span><span class="n">ns</span>
+</code></pre></div>
+<p>같은 경로를 호스트에서 보면 마운트도 파일도 없다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span><span class="w"> </span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">mounts</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="m">0</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">ls</span><span class="w"> </span><span class="o">-</span><span class="n">A</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span>
+</code></pre></div>
+</li>
+</ol>
+<h2 id="alpine-rootfs">alpine rootfs 로 루트 바꾸기</h2>
+<hr />
+<p>namespace 로 프로세스는 격리했지만 파일시스템은 아직 호스트(ubuntu)를 그대로 본다. 컨테이너는 이미지를 풀어 만든 별도 rootfs 를 루트로 쓴다. alpine 의 mini rootfs 를 받아 chroot 로 그 안에 들어가 본다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">root</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="o">://</span><span class="n">dl</span><span class="o">-</span><span class="n">cdn.alpinelinux.org</span><span class="o">/</span><span class="n">alpine</span><span class="o">/</span><span class="n">v3.21</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">aarch64</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">sO</span><span class="w"> </span><span class="o">$</span><span class="n">url</span><span class="o">/</span><span class="n">alpine</span><span class="o">-</span><span class="n">minirootfs</span><span class="m">-3.21</span><span class="n">.</span><span class="m">7</span><span class="o">-</span><span class="n">aarch64.tar.gz</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">alpine</span><span class="o">-</span><span class="n">rootfs</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">tar</span><span class="w"> </span><span class="o">-</span><span class="n">xzf</span><span class="w"> </span><span class="n">alpine</span><span class="o">-</span><span class="n">minirootfs</span><span class="m">-3.21</span><span class="n">.</span><span class="m">7</span><span class="o">-</span><span class="n">aarch64.tar.gz</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="n">alpine</span><span class="o">-</span><span class="n">rootfs</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">du</span><span class="w"> </span><span class="o">-</span><span class="n">sh</span><span class="w"> </span><span class="n">alpine</span><span class="o">-</span><span class="n">rootfs</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="m">8.5</span><span class="n">M</span><span class="w">    </span><span class="n">alpine</span><span class="o">-</span><span class="n">rootfs</span>
+</code></pre></div>
+<p>3.7MB 짜리 tar 하나가 풀리면 bin, etc, usr 를 갖춘 최소 리눅스 루트가 된다. chroot 로 진입하면 그 안에서 본 루트가 alpine 으로 바뀐다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">grep</span><span class="w"> </span><span class="n">PRETTY_NAME</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">os</span><span class="o">-</span><span class="n">release</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">PRETTY_NAME</span><span class="o">=</span><span class="s">&quot;Ubuntu 24.04.4 LTS&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">chroot</span><span class="w"> </span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">alpine</span><span class="o">-</span><span class="n">rootfs</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&#39;</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s">  echo &quot; chroot 안 os:&quot;; grep PRETTY_NAME /etc/os-release</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s">  echo &quot; /bin/sh 실체:&quot;; ls -l /bin/sh&#39;</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w"> </span><span class="n">chroot</span><span class="w"> </span>안<span class="w"> </span><span class="n">os</span><span class="o">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">PRETTY_NAME</span><span class="o">=</span><span class="s">&quot;Alpine Linux v3.21&quot;</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="w"> </span>실체<span class="o">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="n">lrwxrwxrwx</span><span class="w">    </span><span class="m">1</span><span class="w"> </span><span class="n">root</span><span class="w">     </span><span class="n">root</span><span class="w">            </span><span class="m">12</span><span class="w"> </span><span class="n">Apr</span><span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="m">05</span><span class="o">:</span><span class="m">40</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">busybox</span>
+</code></pre></div>
+<p>호스트는 Ubuntu 24.04 인데 chroot 안은 Alpine 3.21 이고, 셸도 alpine 의 busybox 다. 같은 커널 위에서 완전히 다른 배포판 루트로 프로세스를 돌린 것이다.</p>
+<p>chroot 는 루트 디렉터리 경로만 바꿀 뿐 마운트 네임스페이스를 건드리지 않아 탈옥 여지가 있다. 실제 런타임은 마운트 루트 자체를 갈아끼우는 pivot_root 를 쓰는데, 둘의 차이는 chroot, pivot_root, switch_root 비교 글에서 다뤘다.</p>
+<p>이제 앞의 namespace 와 이 rootfs 를 한 줄로 붙이면 컨테이너 골격이 나온다. UTS, PID, mount 를 한꺼번에 만들고, hostname 을 바꾸고, alpine 으로 chroot 한 뒤 그 안에서 /proc 을 새로 마운트한다. init.sh 는 alpine rootfs 안에 미리 넣어 둔 스크립트다.</p>
+<div class="highlight"><span class="filename">alpine-rootfs/init.sh</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">#!/bin/sh</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">proc</span><span class="w"> </span><span class="n">proc</span><span class="w"> </span><span class="o">/</span><span class="n">proc</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot; hostname : $(hostname)&quot;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot; os       : $(grep PRETTY_NAME /etc/os-release | cut -d= -f2)&quot;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot; 프로세스 트리:&quot;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="n">ps</span><span class="w"> </span><span class="o">-</span><span class="n">ef</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">unshare</span><span class="w"> </span><span class="o">--</span><span class="n">uts</span><span class="w"> </span><span class="o">--</span><span class="n">pid</span><span class="w"> </span><span class="o">--</span><span class="n">mount</span><span class="w"> </span><span class="o">--</span><span class="n">fork</span><span class="w"> </span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span>\
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="s">&#39;hostname dotoryeee-container; exec chroot /root/alpine-rootfs /bin/sh /init.sh&#39;</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w"> </span><span class="n">hostname</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">container</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w"> </span><span class="n">os</span><span class="w">       </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Alpine Linux v3.21&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w"> </span>프로세스<span class="w"> </span>트리<span class="o">:</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">PID</span><span class="w">   </span><span class="n">USER</span><span class="w">     </span><span class="n">TIME</span><span class="w">  </span><span class="n">COMMAND</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="m">1</span><span class="w"> </span><span class="n">root</span><span class="w">      </span><span class="m">0</span><span class="o">:</span><span class="m">00</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="w"> </span><span class="o">/</span><span class="n">init.sh</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="m">9</span><span class="w"> </span><span class="n">root</span><span class="w">      </span><span class="m">0</span><span class="o">:</span><span class="m">00</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="o">-</span><span class="n">ef</span>
+</code></pre></div>
+<p>hostname 은 dotoryeee-container, 루트는 alpine, 셸은 PID 1, 프로세스 트리에는 ns 안의 두 프로세스만 보인다. docker run 없이 만든 컨테이너다. 여기에 자원 제한과 이미지 레이어, 네트워크를 얹으면 실제 런타임이 하는 일에 가까워진다.</p>
+<h2 id="cgroup-v2-oom">cgroup v2 로 메모리 제한과 OOM</h2>
+<hr />
+<p>namespace 는 "무엇을 보는가"를 격리하지, "얼마나 쓰는가"는 막지 못한다. 메모리 상한은 cgroup 이 건다. cgroup v2 에서 자식 그룹이 memory 컨트롤러를 쓰려면 부모의 subtree_control 에 memory 를 위임해야 하는데, 프로세스가 직접 들어 있는 cgroup 은 자식으로 컨트롤러를 위임하지 못한다(no internal processes 규칙). 컨테이너 안 /sys/fs/cgroup 은 cgroup namespace 때문에 루트처럼 보여도 실제로는 위임된 비루트 서브트리라 이 규칙이 그대로 걸린다. 그래서 먼저 그 프로세스를 leaf 로 옮긴 뒤 위임한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">init</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kr">for</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">cat</span><span class="w"> </span><span class="n">cgroup.procs</span><span class="p">);</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="o">$</span><span class="n">pid</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">init</span><span class="o">/</span><span class="n">cgroup.procs</span><span class="w"> </span><span class="m">2</span><span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="p">;</span><span class="w"> </span><span class="n">done</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;+memory +pids&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">cgroup.subtree_control</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">cat</span><span class="w"> </span><span class="n">cgroup.subtree_control</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">memory</span><span class="w"> </span><span class="n">pids</span>
+</code></pre></div>
+<p>이제 dotoryeee 그룹을 만들고 메모리 상한을 20M 로, 스왑은 0 으로 잠근다. 스왑을 막아야 상한을 넘긴 순간 바로 OOM 이 발동한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">echo</span><span class="w"> </span><span class="m">20</span><span class="n">M</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">memory.max</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">echo</span><span class="w"> </span><span class="m">0</span><span class="w">   </span><span class="o">&gt;</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">memory.swap.max</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">memory.max</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="m">20971520</span>
+</code></pre></div>
+<p>이 그룹 안에서 메모리를 끝없이 먹는 프로세스를 돌린다. 셸이 자기 PID 를 cgroup.procs 에 써 넣어 스스로 그룹에 들어간 뒤, tail /dev/zero 로 무한한 0 을 한 줄로 쌓아 메모리를 늘린다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="s">&#39;</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="s">  echo $$ &gt; /sys/fs/cgroup/dotoryeee/cgroup.procs</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="s">  echo &quot; hog PID = $$ (dotoryeee 그룹에 등록)&quot;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="s">  exec tail /dev/zero&#39;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w"> </span><span class="n">hog</span><span class="w"> </span><span class="n">PID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2783</span><span class="w"> </span><span class="p">(</span><span class="n">dotoryeee</span><span class="w"> </span>그룹에<span class="w"> </span>등록<span class="p">)</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="n">bash</span><span class="o">:</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="m">9</span><span class="o">:</span><span class="w">  </span><span class="m">2783</span><span class="w"> </span><span class="n">Killed</span><span class="w">  </span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="kc">...</span>
+</code></pre></div>
+<p>프로세스가 Killed 됐다. 종료 코드와 그룹의 이벤트 카운터를 본다. oom_kill 이 1 로 올랐고 최대 사용량은 정확히 상한인 20M 에서 멈췄다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;종료 코드 = $?&quot;</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>종료<span class="w"> </span>코드<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">137</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">memory.events</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">low</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">high</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">max</span><span class="w"> </span><span class="m">39</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">oom</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">oom_kill</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="n">oom_group_kill</span><span class="w"> </span><span class="m">0</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">/</span><span class="n">memory.peak</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="m">20971520</span>
+</code></pre></div>
+<p>종료 코드 137 은 128+9, 즉 SIGKILL 이다. 커널 로그(dmesg)에는 어느 memcg 가 넘쳐 어떤 프로세스를 죽였는지가 그대로 남는다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">dmesg</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">iE</span><span class="w"> </span><span class="s">&#39;oom|killed process&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="m">-3</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">tail</span><span class="w"> </span><span class="n">invoked</span><span class="w"> </span><span class="n">oom</span><span class="o">-</span><span class="n">killer</span><span class="o">:</span><span class="w"> </span><span class="n">gfp_mask</span><span class="o">=</span><span class="mh">0xcc0</span><span class="p">(</span><span class="n">GFP_KERNEL</span><span class="p">),</span><span class="w"> </span><span class="n">order</span><span class="o">=</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">oom_score_adj</span><span class="o">=</span><span class="m">0</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kc">...</span><span class="w"> </span><span class="n">oom_memcg</span><span class="o">=/</span><span class="n">docker</span><span class="o">/</span><span class="m">22945</span><span class="kc">...</span><span class="o">/</span><span class="n">dotoryeee</span><span class="p">,</span><span class="n">task_memcg</span><span class="o">=/</span><span class="n">docker</span><span class="o">/</span><span class="m">22945</span><span class="kc">...</span><span class="o">/</span><span class="n">dotoryeee</span><span class="p">,</span><span class="n">task</span><span class="o">=</span><span class="n">tail...</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">Memory</span><span class="w"> </span><span class="n">cgroup</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">memory</span><span class="o">:</span><span class="w"> </span><span class="n">Killed</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="m">77559</span><span class="w"> </span><span class="p">(</span><span class="n">tail</span><span class="p">)</span><span class="w"> </span><span class="n">total</span><span class="o">-</span><span class="n">vm</span><span class="o">:</span><span class="m">22500</span><span class="n">kB</span><span class="p">,</span><span class="w"> </span><span class="n">anon</span><span class="o">-</span><span class="n">rss</span><span class="o">:</span><span class="m">20224</span><span class="n">kB...</span>
+</code></pre></div>
+<p>oom_memcg 가 우리가 만든 dotoryeee 그룹이고, RSS 가 20MB 근처에서 죽었다. 여기서 죽은 프로세스의 PID 는 77559 인데, 컨테이너 안에서 본 PID(2783)와 다르다. dmesg 는 VM 커널의 전역 PID 로 찍고, 컨테이너는 자기 PID namespace 의 번호로 보기 때문이다. docker run 의 memory 옵션이 하는 일이 바로 이 memory.max 쓰기다.</p>
+<h2 id="overlayfs-copy-on-write">overlayfs 로 copy-on-write</h2>
+<hr />
+<p>이미지는 읽기 전용 레이어를 쌓아 만든다. 컨테이너가 그 위에 쓰기 레이어를 얹어 하나의 루트로 보게 해 주는 것이 overlayfs 다. lowerdir(읽기 전용), upperdir(쓰기), merged(병합 뷰)를 직접 마운트해 동작을 본다.</p>
+<p>먼저 그냥 마운트하면 실패한다. Docker 컨테이너의 루트 자체가 이미 overlay2 라 그 위에 다시 overlay 를 얹지 못한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="p">{</span><span class="n">lower</span><span class="p">,</span><span class="n">upper</span><span class="p">,</span><span class="n">work</span><span class="p">,</span><span class="n">merged</span><span class="p">}</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">lowerdir</span><span class="o">=/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">lower</span><span class="p">,</span><span class="n">upperdir</span><span class="o">=/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">upper</span><span class="p">,</span><span class="n">workdir</span><span class="o">=/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">work</span><span class="w"> </span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">merged</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">mount</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">merged</span><span class="o">:</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="n">fs</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="n">option</span><span class="p">,</span><span class="w"> </span><span class="n">bad</span><span class="w"> </span><span class="n">superblock</span><span class="w"> </span><span class="kc">...</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">dmesg</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="m">-1</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">overlay</span><span class="o">:</span><span class="w"> </span><span class="n">filesystem</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">upper</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">supported</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">upperdir</span>
+</code></pre></div>
+<p>upperdir 를 overlay 가 아닌 파일시스템에 두면 된다. tmpfs 를 하나 깔고 그 위에서 다시 마운트한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">tmpfs</span><span class="w"> </span><span class="n">tmpfs</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">lower</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="n">work</span><span class="w"> </span><span class="n">merged</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;이미지 레이어의 원본 설정&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">lower</span><span class="o">/</span><span class="n">app.conf</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;readme (lower 전용)&quot;</span><span class="w">      </span><span class="o">&gt;</span><span class="w"> </span><span class="n">lower</span><span class="o">/</span><span class="n">readme.txt</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="n">overlay</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">lowerdir</span><span class="o">=/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">lower</span><span class="p">,</span><span class="n">upperdir</span><span class="o">=/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">upper</span><span class="p">,</span><span class="n">workdir</span><span class="o">=/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">work</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ovl</span><span class="o">/</span><span class="n">merged</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="n">ls</span><span class="w"> </span><span class="n">merged</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="n">app.conf</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="n">readme.txt</span>
+</code></pre></div>
+<p>merged 에는 lower 의 파일이 그대로 보인다. upper 는 아직 비어 있다. 이 상태에서 merged 쪽에서 lower 파일을 수정하면, 원본 lower 는 건드리지 않고 변경분이 upper 로 복사된다. 이것이 copy-on-write 다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;컨테이너가 추가한 줄&quot;</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">merged</span><span class="o">/</span><span class="n">app.conf</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;컨테이너 신규 파일&quot;</span><span class="w">   </span><span class="o">&gt;</span><span class="w"> </span><span class="n">merged</span><span class="o">/</span><span class="n">newfile.txt</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;--- upper (변경분만 저장) ---&quot;</span><span class="p">;</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="n">upper</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="o">---</span><span class="w"> </span><span class="nf">upper </span><span class="p">(</span>변경분만<span class="w"> </span>저장<span class="p">)</span><span class="w"> </span><span class="o">---</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">app.conf</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">newfile.txt</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;--- lower (원본 불변) ---&quot;</span><span class="p">;</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">lower</span><span class="o">/</span><span class="n">app.conf</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="o">---</span><span class="w"> </span><span class="nf">lower </span><span class="p">(</span>원본<span class="w"> </span>불변<span class="p">)</span><span class="w"> </span><span class="o">---</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>이미지<span class="w"> </span>레이어의<span class="w"> </span>원본<span class="w"> </span>설정
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;--- merged (병합 결과) ---&quot;</span><span class="p">;</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">merged</span><span class="o">/</span><span class="n">app.conf</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="o">---</span><span class="w"> </span><span class="nf">merged </span><span class="p">(</span>병합<span class="w"> </span>결과<span class="p">)</span><span class="w"> </span><span class="o">---</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>이미지<span class="w"> </span>레이어의<span class="w"> </span>원본<span class="w"> </span>설정
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>컨테이너가<span class="w"> </span>추가한<span class="w"> </span>줄
+</code></pre></div>
+<p>lower 의 app.conf 는 원본 한 줄 그대로인데, upper 에는 수정된 app.conf 와 새로 만든 newfile.txt 가 생겼다. 컨테이너를 지우면 upper(쓰기 레이어)만 사라지고 lower(이미지 레이어)는 남는 이유가 이 구조다.</p>
+<h2 id="network-namespace-veth">network namespace 와 veth</h2>
+<hr />
+<p>network namespace 는 네트워크 장치, 라우팅 테이블, 포트 공간을 통째로 격리한다. 빈 netns 두 개를 만들고 veth pair(가상 랜선의 양 끝)로 이어 서로 통신시킨다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns1</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns2</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="n">ip</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">veth1</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">veth</span><span class="w"> </span><span class="n">peer</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">veth2</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">ip</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">veth1</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns1</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">ip</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">veth2</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns2</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns1</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.1</span><span class="o">/</span><span class="m">24</span><span class="w"> </span><span class="n">dev</span><span class="w"> </span><span class="n">veth1</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns2</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="o">/</span><span class="m">24</span><span class="w"> </span><span class="n">dev</span><span class="w"> </span><span class="n">veth2</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns1</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">veth1</span><span class="w"> </span><span class="n">up</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns2</span><span class="w"> </span><span class="n">ip</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">veth2</span><span class="w"> </span><span class="n">up</span>
+</code></pre></div>
+<p>veth 한쪽씩을 각 netns 에 넣고 IP 를 부여했다. ns1 에서 ns2 로 ping 을 쏜다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">ip</span><span class="w"> </span><span class="n">netns</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">ctr</span><span class="o">-</span><span class="n">lab</span><span class="o">-</span><span class="n">ns1</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">PING</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="w"> </span><span class="p">(</span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="p">)</span><span class="w"> </span><span class="m">56</span><span class="p">(</span><span class="m">84</span><span class="p">)</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">data.</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="m">64</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="o">:</span><span class="w"> </span><span class="n">icmp_seq</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="n">time</span><span class="o">=</span><span class="m">0.017</span><span class="w"> </span><span class="n">ms</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="m">64</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="o">:</span><span class="w"> </span><span class="n">icmp_seq</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="n">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="n">time</span><span class="o">=</span><span class="m">0.016</span><span class="w"> </span><span class="n">ms</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="m">64</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="o">:</span><span class="w"> </span><span class="n">icmp_seq</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="n">ttl</span><span class="o">=</span><span class="m">64</span><span class="w"> </span><span class="n">time</span><span class="o">=</span><span class="m">0.016</span><span class="w"> </span><span class="n">ms</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="o">---</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0.2</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="n">statistics</span><span class="w"> </span><span class="o">---</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="m">3</span><span class="w"> </span><span class="n">packets</span><span class="w"> </span><span class="n">transmitted</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="n">received</span><span class="p">,</span><span class="w"> </span><span class="m">0</span>%<span class="w"> </span><span class="n">packet</span><span class="w"> </span><span class="n">loss</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="m">2042</span><span class="n">ms</span>
+</code></pre></div>
+<p>두 격리된 네트워크가 veth 로 이어져 통신한다. 이 veth 도 10.10.0.x 라우트도 호스트에는 전혀 없다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">ip</span><span class="w"> </span><span class="o">-</span><span class="n">br</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="n">show</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">veth</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="m">0</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="n">ip</span><span class="w"> </span><span class="n">route</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="m">10.10</span><span class="n">.</span><span class="m">0</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="m">0</span>
+</code></pre></div>
+<p>컨테이너 하나에 veth 한쪽을 넣고 반대쪽을 브리지에 붙이면 docker0 네트워크가 된다. 여기서는 브리지 대신 netns 를 하나 더 둬 pair 를 직접 이어 본 것이다.</p>
+<h2 id="runc">runc 가 하는 일</h2>
+<hr />
+<p>여기까지 손으로 한 일을 한 줄로 요약하면, unshare 로 namespace 를 만들고, chroot 로 루트를 갈고, cgroup 에 memory.max 를 쓰고, overlayfs 로 레이어를 겹치고, veth 로 netns 를 이었다. 이 순서가 그대로 저수준 런타임 runc 가 컨테이너를 띄울 때 하는 일이다.</p>
+<ul>
+<li>runc 는 OCI runtime-spec 의 config.json 을 읽어 namespace 조합, cgroup 한도, rootfs 경로, 마운트, 네트워크를 세팅한 뒤 컨테이너 프로세스를 exec 한다</li>
+<li>실무에서는 pivot_root 로 루트를 더 안전하게 갈고, user namespace 로 컨테이너 root 를 호스트 비특권 UID 에 매핑해 격리를 강화한다</li>
+<li>이 조각들이 어떤 계층(docker CLI, dockerd, containerd, shim, runc)을 거쳐 조립되는지는 컨테이너 내부 구조 정리 글에서 다뤘다</li>
+</ul>
+<p>컨테이너는 마법이 아니라 커널 기능 몇 개의 조합이다. namespace 로 격리하고 cgroup 으로 제한한 프로세스, 그 한 문장을 손으로 만들어 확인했다.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ss, strace 트러블슈팅 옵션 정리">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                ss, strace 트러블슈팅 옵션 정리
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="Next: 컨테이너 내부 구조 정리">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                컨테이너 내부 구조 정리
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

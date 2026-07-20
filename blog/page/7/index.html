@@ -908,6 +908,36 @@
   
   
     <li class="md-nav__item">
+      <a href="../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
       <a href="../../category/elasticsearch/" class="md-nav__link">
         
   
@@ -1238,36 +1268,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../category/docker/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    docker
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
       <a href="../../category/project/" class="md-nav__link">
         
   
@@ -1556,6 +1556,476 @@
           <li class="md-meta__item">
             in
             
+              <a href="../../category/cicd/" class="md-meta__link">CICD</a>, 
+              <a href="../../category/docker/" class="md-meta__link">Docker</a>, 
+              <a href="../../category/devops/" class="md-meta__link">DevOps</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              20 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="multi-container-cicd"><a class="toclink" href="../../1993/09/17/multi-container-cicd/">Multi container CICD</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/multi-container-cicd/#_1">구성도</a></h3>
+<ul>
+<li>
+<p>DEV Flow chart</p>
+<p><img alt="Multi container CICD/Untitled.png" src="../../DevOps/Multi%20container%20CICD/Untitled.png" /></p>
+</li>
+<li>
+<p>Service ENV</p>
+<p>Docker-compose를 사용해 모든 컨테이너 환경을 제어합니다</p>
+<p><img alt="Multi container CICD/Untitled%201.png" src="../../DevOps/Multi%20container%20CICD/Untitled%201.png" /></p>
+</li>
+</ul>
+<h3 id="_2"><a class="toclink" href="../../1993/09/17/multi-container-cicd/#_2">요약</a></h3>
+<hr />
+<ol>
+<li>멀티컨테이너를 이용해 개발환경과 운영환경을 구축합니다</li>
+<li>nodeJS백엔드 ↔ reactJS프론트엔드 간에 REST API 구조로 데이터를 전달합니다(axios)</li>
+<li>Nginx의 라우팅을 활용하여 
+URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(ReactJS)로 보내도록 설정합니다</li>
+<li>Docker Compose를 사용해 컨테이너간의 통신 등 개발환경을 구축합니다</li>
+<li>깃헙에 푸시하면 → Travis CI 테스트→ Docker Hub로 이미지를 전달하고 Beanstalk이 ECS를 이용해 이미지를 pull하고 ECS를 이용해 컨테이너를 Deploy하도록 합니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/multi-container-cicd/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">Docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              8 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-proxy-layer-for-mysql"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/">Docker Proxy Layer for MySQL</a></h2>
+<h3 id="proxy-layer"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/#proxy-layer">Proxy Layer의 필요성</a></h3>
+<hr />
+<ul>
+<li>외부(어플리케이션)에서 접속 시 3306포트의 MASTER DB가 에러가 발생했을 때, FailOver가 구현되어 SLAVE DB(3307)가 MASTER로 승격되더라도 3307포트로 자동으로 변경되지 않기 떄문에 사이에서 중재해줄 Layer가 필요합니다.</li>
+<li>
+<p>ex&gt;Nginx with Proxy</p>
+<p><img alt="Docker Proxy Layer for MySQL/Untitled.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled.png" /></p>
+</li>
+<li>
+<p>ex)Nginx without Proxy</p>
+<p><img alt="Docker Proxy Layer for MySQL/Untitled%201.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled%201.png" /></p>
+</li>
+</ul>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-proxy-layer-for-mysql/#_1">목표</a></h3>
+<hr />
+<ul>
+<li>ProxySQL을 이용해 Proxy Layer를 구현합니다</li>
+<li>READ, WRITE작업을 수행하는 호스트그룹과 Read작업만 수행하는 호스트 그룹을 생성합니다</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-proxy-layer-for-mysql/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">Docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              7 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-basics"><a class="toclink" href="../../1993/09/17/docker-basics/">Docker basics</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-basics/#_1">목표</a></h3>
+<hr />
+<ol>
+<li>도커를 복습 겸 간단하게 한 번 훑어봅니다</li>
+<li>간단한 node 백엔드를 작성하고 도커 이미지를 생성합니다</li>
+<li>Working Directory를 설정합니다</li>
+<li>node 종속성을 수정해 이미지 빌드 속도를 높여봅니다</li>
+<li>개발일을 할 떄 docker volume을 어떻게 활용할 수 있는지 한 번 살펴봅니다</li>
+<li>compose를 이용해 간단한 페이지를 만들어봅니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-basics/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">Docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              7 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-compose-and-web-gui"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/">Docker compose and web GUI</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-compose-and-web-gui/#_1">작업요약</a></h3>
+<hr />
+<ul>
+<li>Docker를 설치하는 과정에 필요한 파라미터 변수에 대해 알아봅니다</li>
+<li>빠른 이해와 편리한 사용을 위해 Portainer를 설치합니다</li>
+<li>Docker-Hub에서 컨테이너를 찾고 DVWA 컨테이너를 로드해봅니다</li>
+<li>YAML + Docker Compose를 이용해 코드로 관리하는 법을 알아봅니다</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-compose-and-web-gui/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/docker/" class="md-meta__link">Docker</a>, 
+              <a href="../../category/study/" class="md-meta__link">study</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              6 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="docker-volume-with-mysql"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/">Docker volume with MySQL</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/docker-volume-with-mysql/#_1">목표</a></h3>
+<hr />
+<ul>
+<li>CentOS8에 도커를 설치하고 MySQL 컨테이너를 로드합니다</li>
+<li>컨테이너를 종료하고 외부에서 접속하도록 다시 로드합니다</li>
+<li>컨테이너를 삭제해도 이전 데이터를 그대로 유지하는 stateful한 상태를 구현합니다</li>
+<li>Stateful 상태는 Volume설정을 통해 구현합니다</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/docker-volume-with-mysql/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/kubernetes/" class="md-meta__link">Kubernetes</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              1 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="k8s-jvm-heap-dump"><a class="toclink" href="../../1993/09/17/k8s%EC%97%90-%EB%B0%B0%ED%8F%AC%EB%90%9C-jvm-heap-dump-%EC%83%9D%EC%84%B1/">K8S에 배포된 JVM Heap Dump 생성</a></h2>
+<ul>
+<li>명령어
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">jmap</span><span class="w"> </span><span class="o">-</span><span class="n">dump</span><span class="o">:</span><span class="n">live</span><span class="p">,</span><span class="n">format</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">file</span><span class="o">=/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="m">1234</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">&lt;</span><span class="n">pod_name</span><span class="o">&gt;:/</span><span class="n">tmp</span><span class="o">/</span><span class="n">heapdump.hprof</span><span class="w"> </span><span class="n">heapdump.hprof</span>
+</code></pre></div></li>
+<li>옵션 설명<ul>
+<li>kubectl exec <pod_name>: 특정 파드에 접근하고 명령을 실행</li>
+<li>--: kubectl exec 명령어 옵션과 파드 내에서 실행할 명령어를 구분</li>
+<li>jmap: JVM memory map tool name</li>
+<li>-dump: jmap의 heap dump 생성 옵션</li>
+<li>live: GC에 의에 회수되지 않은 live object'만' 포함해서 덤프 생성. memory leak 분석에 용이해짐.</li>
+<li>format=b: dump file format을 binary로 설정. 어차피 다른 선택지가 없다.</li>
+<li>file=/tmp/heapdump.hprof: 파드의 /tmp 디렉토리에 heapdump.hprof 힙덤프 파일 생성</li>
+<li>1234: jmap으로 덤프 생성할 PID 입력</li>
+</ul>
+</li>
+</ul>
+
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/python/" class="md-meta__link">Python</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              3 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="boto3"><a class="toclink" href="../../1993/09/17/boto3-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%8B%9C/">Boto3 사용 예시</a></h2>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/boto3-%EC%82%AC%EC%9A%A9-%EC%98%88%EC%8B%9C/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
+              <a href="../../category/python/" class="md-meta__link">Python</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              6 min read
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="datadog-dashboard-crawling"><a class="toclink" href="../../1993/09/17/datadog-dashboard-crawling/">Datadog dashboard crawling</a></h2>
+<h3 id="_1"><a class="toclink" href="../../1993/09/17/datadog-dashboard-crawling/#_1">목적</a></h3>
+<p>Datadog dashboard에서 기본적으로 제공하는 report 기능이 빈약하여 dashboard를 직접 긁어 report를 렌더링 하기로 했습니다</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../1993/09/17/datadog-dashboard-crawling/">
+          Continue reading
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
+        
+          <li class="md-meta__item">
+            in
+            
               <a href="../../category/python/" class="md-meta__link">Python</a></li>
         
         
@@ -1655,516 +2125,6 @@
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="elasticsearch-domain-in-vpc"><a class="toclink" href="../../1993/09/17/elasticsearch-domain-in-vpc/">ElasticSearch domain in VPC</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/elasticsearch-domain-in-vpc/#_1">사전정보</a></h3>
-<ul>
-<li>AWS에서 SaaS 형태로 제공하는 ElasticSearch(이하 ES)의 경우 domain을 VPC내부 또는 외부에 생성할 수 있다</li>
-<li>보안을 위해 VPC 내부에 생성을 권고하는데, ES domain이 private subnet에 위치하는 경우 public subnet에 Nginx를 프록시 서버로 생성하고 redirection 해주어야 한다</li>
-<li>Redirection시 cognito를 이용한 사용자인증 유무에 따라 Nginx 설정이 다르다(아래 참조)</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/elasticsearch-domain-in-vpc/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/elasticsearch/" class="md-meta__link">ElasticSearch</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="elasticsearch"><a class="toclink" href="../../1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC/">ElasticSearch 정리</a></h2>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>변경 가능한 변수 부분은 "garden" keyword를 포함하고 있다</p>
-</div>
-<ol>
-<li>도큐먼트 삽입
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">PUT</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w">  </span><span class="p">{</span>
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span><span class="p">,</span>
-<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">    </span><span class="s">&quot;age&quot;</span><span class="o">:</span><span class="w"> </span><span class="m">29</span><span class="p">,</span>
-<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="w">    </span><span class="s">&quot;gender&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;male&quot;</span>
-<a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="p">}</span>
-</code></pre></div>
-    도큐먼트 삽입으로 인해서 ljw_index가 신규 생성됨 -&gt; ljw_index 인덱스 정보 확인
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span>
-</code></pre></div></li>
-<li>도큐먼트 조회<ol>
-<li>도큐먼트 아이디로 조회
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">doc</span><span class="o">/</span><span class="m">1</span><span class="w"> </span>
-</code></pre></div></li>
-<li>DSL 쿼리를 이용한 조회 예시. match를 사용해 전문 검색하는 예시로 역인덱싱된 garden term을 검색하는 중이다.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="n">GET</span><span class="w"> </span><span class="n">ljw_index</span><span class="o">/</span>_<span class="n">search</span>
-<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="p">{</span>
-<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">    </span><span class="s">&quot;query&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="w">        </span><span class="s">&quot;match&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="w">            </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;garden&quot;</span>
-<a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a><span class="p">}</span>
-</code></pre></div></li>
-</ol>
-</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/sre/" class="md-meta__link">SRE</a>, 
-              <a href="../../category/prometheus/" class="md-meta__link">Prometheus</a>, 
-              <a href="../../category/grafana/" class="md-meta__link">Grafana</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="prometheus-and-grafana"><a class="toclink" href="../../1993/09/17/prometheus-and-grafana/">Prometheus and Grafana</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/prometheus-and-grafana/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>프로메테우스와 그라파나를 연결합니다</li>
-<li>그라파나에 대시보드를 추가해 시각적인 정보를 생성합니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/prometheus-and-grafana/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              7 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-aws-iam"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/">Terraform AWS IAM</a></h2>
-<h3 id="iam-user"><a class="toclink" href="../../1993/09/17/terraform-aws-iam/#iam-user">IAM User</a></h3>
-<hr />
-<ol>
-<li>
-<p>IAM 작업 디렉터리를 생성합니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="n">iam</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">cd</span><span class="w"> </span><span class="n">iam</span>
-</code></pre></div>
-</li>
-<li>
-<p>이제 자연스럽게 provider를 먼저 생성합니다</p>
-<p>다만 IAM서비스는 리전에 종속되는 서비스가 아닌 만큼 아무 리전이나 지정해도 됩니다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">provider.tf</span>
-</code></pre></div>
-<div class="highlight"><span class="filename">provider.tf</span><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="err">provider</span><span class="w"> </span><span class="s2">&quot;aws&quot;</span><span class="p">{</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">        </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-northeast-2&quot;</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="p">}</span>
-</code></pre></div>
-</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-aws-iam/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-backend"><a class="toclink" href="../../1993/09/17/terraform-backend/">Terraform Backend</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-backend/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>Terraform의 Backend 기능을 이용해 state파일을 안전하게 관리해봅니다.</li>
-<li>.tfstate를 로컬이 아닌 S3에 저장하고 DynamoDB를 이용해 파일을 Locking합니다</li>
-<li>
-<p>Backend를 이용함에 따른 이점</p>
-<ul>
-<li>
-<p>Locking</p>
-<p>협업시 원격 저장소를 사용하여 여러명이 동시에 같은 state 접근하는것을 막습니다</p>
-</li>
-<li>
-<p>Backup</p>
-<p>원격저장소에 저장함으로써 데이터 유실을 방지합니다. 특히 S3에 저장하는 방법은 버전관리가 가능한 편리하고 안전한 방법입니다.</p>
-</li>
-</ul>
-</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-backend/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              32 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-practice"><a class="toclink" href="../../1993/09/17/terraform-practice/">Terraform Practice</a></h2>
-<aside>
-💡 테라폼을 아키텍처를 연습해봅니다
-
-</aside>
-
-<ul>
-<li>
-<p>EC2에 SSH 접속을 위한 키페어 생성</p>
-<ol>
-<li>비밀키를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">rsa</span><span class="w"> </span><span class="o">-</span><span class="n">b</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w"> </span><span class="o">-</span><span class="n">N</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-</code></pre></div>
-<ol>
-<li>pem을 사용하려면 권한을 수정해야 합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">chmod</span><span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span>
-</code></pre></div>
-<ol>
-<li>AWS에 넘겨줄 공개키를 생성합니다</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pem</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">~/</span><span class="n">dotoryeee.pub</span>
-</code></pre></div>
-</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-practice/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              4 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-deploy-vpc-and-subnet"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">Terraform deploy VPC and Subnet</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc-and-subnet/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>AWS 서비스의 근간이라고 할 수 있는 VPC부터 IaC를 구현해봅니다</li>
-<li>VPC에 서브넷도 생성해봅니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-deploy-vpc-and-subnet/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">Sep 17, 1993</time></li>
-        
-          <li class="md-meta__item">
-            in
-            
-              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              5 min read
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="terraform-deploy-vpc"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc/">Terraform deploy VPC</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/terraform-deploy-vpc/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>서브넷이 public인지 private인지 결정하는 것은 IGW유무입니다</li>
-<li>terraform을 이용해 IGW와 NAT Gateway를 생성봅니다</li>
-<li>네트워크 트래픽의 Destination을 알려주는, 이정표 역할을 하는 라우팅 테이블을 작성합니다</li>
-<li>라우트테이블은 생성 후 association(=매핑)을 진행합니다. Terraform으로 이를 구현해봅니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/terraform-deploy-vpc/">
-          Continue reading
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
       
         
           
@@ -2172,7 +2132,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12zm-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12z"/></svg></a> <a class="md-pagination__link" href="../6/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../5/">5</a> <a class="md-pagination__link" href="../6/">6</a> <span class="md-pagination__current">7</span>  
+  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12zm-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12z"/></svg></a> <a class="md-pagination__link" href="../6/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../5/">5</a> <a class="md-pagination__link" href="../6/">6</a> <span class="md-pagination__current">7</span> <a class="md-pagination__link" href="../8/">8</a> <a class="md-pagination__link" href="../8/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></a> <a class="md-pagination__link" href="../8/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.59 7.41 7 6l6 6-6 6-1.41-1.41L10.17 12zm6 0L13 6l6 6-6 6-1.41-1.41L16.17 12z"/></svg></a>
 </nav>
         
       
