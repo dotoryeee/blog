@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/ebpf-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../bpftrace%EC%99%80-cilium%EC%9C%BC%EB%A1%9C-ebpf-%EC%8B%A4%EC%8A%B5/">
       
       
-        <link rel="next" href="../bpftrace%EC%99%80-cilium%EC%9C%BC%EB%A1%9C-ebpf-%EC%8B%A4%EC%8A%B5/">
+        <link rel="next" href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>xattr 유사 명령어 정리 - dotoryeee's blog</title>
+        <title>eBPF 정리 - dotoryeee's blog</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#xattr" class="md-skip">
+        <a href="#ebpf" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              xattr 유사 명령어 정리
+              eBPF 정리
             
           </span>
         </div>
@@ -1508,7 +1508,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1527,44 +1527,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#xattr_1" class="md-nav__link">
+  <a href="#ebpf_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        확장 속성(xattr)이란
+        eBPF란
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#xattr-macos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        xattr (macOS)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getfattr-setfattr-linux" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        getfattr / setfattr (Linux)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="getfattr / setfattr (Linux)">
+    <nav class="md-nav" aria-label="eBPF란">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#linux" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Linux 네임스페이스
+        로드 파이프라인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        핵심 구성요소
       
     </span>
   </a>
@@ -1577,10 +1566,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#chattr-lsattr-inode" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        chattr / lsattr (inode 플래그)
+        커널 모듈과의 차이
       
     </span>
   </a>
@@ -1588,10 +1577,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#getfacl-setfacl-getcap-setcap" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        getfacl / setfacl · getcap / setcap
+        훅 위치 정리
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="훅 위치 정리">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XDP가 빠른 이유
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verifier 동작
       
     </span>
   </a>
@@ -1599,10 +1616,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#maps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        크기 제한과 파일시스템 의존성
+        maps 정리
       
     </span>
   </a>
@@ -1610,10 +1627,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#xattr_2" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        복사·백업 시 xattr 보존
+        개발 스택 비교
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="개발 스택 비교">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        선택 가이드
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ebpf_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eBPF 기반 제품
       
     </span>
   </a>
@@ -1621,7 +1666,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         사용 사례
@@ -1629,10 +1674,77 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="사용 사례">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관측(Observability)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        네트워킹(Networking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        보안(Security)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        한계와 운영 주의
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="한계와 운영 주의">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        참고
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1709,7 +1821,8 @@
                           <span class="md-ellipsis">
                             in
                             
-                              <a href="../../../../category/server/">Server</a></span>
+                              <a href="../../../../category/server/">Server</a>, 
+                              <a href="../../../../category/kubernetes/">Kubernetes</a></span>
                         </div>
                       </li>
                     
@@ -1720,7 +1833,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              7 min read
+                              9 min read
                             
                           </span>
                         </div>
@@ -1744,327 +1857,396 @@
 
 
 
-<h1 id="xattr">xattr 유사 명령어 정리</h1>
+<h1 id="ebpf">eBPF 정리</h1>
 <!-- more -->
 
-<h2 id="xattr_1">확장 속성(xattr)이란</h2>
-<p>파일 데이터와 inode 기본 메타데이터(권한, 소유자, 타임스탬프) 외에 <code>이름=값</code> 쌍을 파일에 덧붙여 저장하는 파일시스템 기능.</p>
+<h2 id="ebpf_1">eBPF란</h2>
+<p>eBPF(extended Berkeley Packet Filter)란 커널 소스 수정이나 모듈 적재 없이, 검증(Verification)을 통과한 프로그램을 커널 이벤트 지점에 안전하게 로드해 실행하는 기술</p>
 <ul>
-<li>macOS는 단일 xattr 명령으로 전부 다룸</li>
-<li>Linux는 목적별로 명령이 갈라짐. 상당수는 결국 같은 xattr 저장소를 쓰지만 인터페이스가 다름</li>
-<li>chattr/lsattr만 계층이 다름. xattr가 아니라 inode 플래그를 건드림</li>
+<li>성격: 커널 재컴파일·재부팅 없이 관측·네트워킹·보안 로직을 실행 중에 주입하는 커널 확장 계층</li>
+<li>안전성: verifier가 로드 전 정적 검증 → 무한 루프·메모리 위반 프로그램은 로드 거부</li>
+<li>실행: 검증 통과 후 JIT로 네이티브 기계어 변환 → 네이티브에 근접한 속도</li>
+<li>데이터 교환: 커널 상주 key-value 저장소인 maps로 유저스페이스와 상태 공유</li>
+<li>위치: 프로그램 타입(program type)이 attach 가능한 훅·헬퍼(helper)·맵 접근 범위를 결정</li>
 </ul>
+<h3 id="_1">로드 파이프라인</h3>
+<pre class="mermaid"><code>graph LR
+    Src["프로그램 작성&lt;br&gt;(C/Rust)"] --&gt; BC["eBPF 바이트코드"]
+    BC --&gt; Ver["Verifier&lt;br&gt;정적 검증"]
+    Ver --&gt; JIT["JIT 컴파일&lt;br&gt;(네이티브 기계어)"]
+    JIT --&gt; Hook["훅 attach&lt;br&gt;(kprobe/XDP/tc/LSM)"]
+    Hook --&gt; Map["Maps&lt;br&gt;유저스페이스 데이터 교환"]</code></pre>
+<ul>
+<li>작성: C나 Rust로 작성한 소스를 clang/LLVM이 eBPF 바이트코드로 컴파일</li>
+<li>검증: verifier가 제어 흐름·메모리·헬퍼 호출·종료 보장을 정적 분석 → 안전하지 않으면 거부</li>
+<li>컴파일: 검증 통과분만 JIT가 호스트 ISA 기계어로 변환(미지원 아키텍처는 인터프리터 실행)</li>
+<li>attach: kprobe·XDP·tc·LSM 등 program type이 지정한 훅에 프로그램 연결</li>
+<li>교환: 실행 결과를 maps에 적재 → 유저스페이스 로더가 읽어 집계·표시</li>
+</ul>
+<h3 id="_2">핵심 구성요소</h3>
 <table>
 <thead>
 <tr>
-<th>명령</th>
-<th>플랫폼</th>
-<th>다루는 대상</th>
-<th>실제 저장 위치</th>
+<th>구성요소</th>
+<th>역할</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>xattr</td>
-<td>macOS</td>
-<td>임의 이름=값, 쿼런틴</td>
-<td>xattr (com.apple.* 등)</td>
+<td>Verifier</td>
+<td>로드 전 안전성 정적 검증, 위반 시 거부</td>
 </tr>
 <tr>
-<td>getfattr/setfattr</td>
-<td>Linux</td>
-<td>임의 이름=값</td>
-<td>xattr (user 네임스페이스)</td>
+<td>JIT 컴파일러</td>
+<td>검증된 바이트코드를 네이티브 기계어로 변환</td>
 </tr>
 <tr>
-<td>getfacl/setfacl</td>
-<td>Linux</td>
-<td>POSIX ACL</td>
-<td>xattr (system.posix_acl_access)</td>
+<td>Maps</td>
+<td>커널·유저스페이스·프로그램 간 상태 공유 저장소</td>
 </tr>
 <tr>
-<td>getcap/setcap</td>
-<td>Linux</td>
-<td>파일 capabilities</td>
-<td>xattr (security.capability)</td>
+<td>Helper 함수</td>
+<td>커널이 노출한 제한된 API(맵 접근·시각·리다이렉트 등)</td>
 </tr>
 <tr>
-<td>chattr/lsattr</td>
-<td>Linux</td>
-<td>inode 플래그 (+i/+a 등)</td>
-<td>xattr 아님 (inode 필드)</td>
+<td>program type</td>
+<td>attach 가능한 훅과 접근 가능한 헬퍼·컨텍스트 결정</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="xattr-macos">xattr (macOS)</h2>
+<h2 id="_3">커널 모듈과의 차이</h2>
+<p>커널 모듈은 커널에 임의 코드를 직접 삽입하는 반면, eBPF는 verifier 검증을 거친 제한된 코드만 주입하는 것이 핵심 차이</p>
 <table>
 <thead>
 <tr>
-<th>옵션</th>
+<th>비교 항목</th>
+<th>커널 모듈(Kernel Module)</th>
+<th>eBPF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>크래시 영향</td>
+<td>버그 시 커널 패닉·전체 다운</td>
+<td>verifier가 사전 차단, 실패해도 로드 거부에 그침</td>
+</tr>
+<tr>
+<td>안전 검증</td>
+<td>없음, 개발자 책임</td>
+<td>로드 전 정적 verifier 통과 필수</td>
+</tr>
+<tr>
+<td>적재 방식</td>
+<td>insmod로 커널에 직접 삽입</td>
+<td>sys_bpf()로 검증 후 주입, 재부팅 불필요</td>
+</tr>
+<tr>
+<td>이식성</td>
+<td>커널 버전·빌드마다 재컴파일</td>
+<td>CO-RE로 단일 바이너리가 여러 커널 대응</td>
+</tr>
+<tr>
+<td>실행 범위</td>
+<td>커널 전역의 임의 코드 실행</td>
+<td>허용된 헬퍼·훅·맵으로 범위 제한</td>
+</tr>
+<tr>
+<td>권한</td>
+<td>CAP_SYS_MODULE, 사실상 전권</td>
+<td>CAP_BPF + 용도별 최소 권한</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">훅 위치 정리</h2>
+<p>program type별로 attach 지점이 정해지며, 크게 관측·네트워킹·보안 계층으로 갈림</p>
+<table>
+<thead>
+<tr>
+<th>훅</th>
+<th>계층</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kprobe/kretprobe</td>
+<td>커널 함수 진입·반환</td>
+<td>임의 커널 함수 동적 추적(관측)</td>
+</tr>
+<tr>
+<td>fentry/fexit</td>
+<td>커널 함수(BTF 기반)</td>
+<td>kprobe보다 낮은 오버헤드의 진입·반환 추적(관측)</td>
+</tr>
+<tr>
+<td>uprobe/uretprobe</td>
+<td>유저 함수</td>
+<td>유저스페이스 애플리케이션 함수 추적(관측)</td>
+</tr>
+<tr>
+<td>tracepoint</td>
+<td>커널 정적 지점</td>
+<td>커널이 노출한 안정적 이벤트 추적(관측)</td>
+</tr>
+<tr>
+<td>perf event</td>
+<td>PMU·샘플링</td>
+<td>CPU 프로파일링·주기적 샘플링(관측)</td>
+</tr>
+<tr>
+<td>XDP</td>
+<td>NIC 드라이버 RX 경로</td>
+<td>스택 진입 전 패킷 처리(네트워킹)</td>
+</tr>
+<tr>
+<td>tc(clsact)</td>
+<td>커널 네트워크 스택</td>
+<td>ingress·egress 패킷 분류·정형(네트워킹)</td>
+</tr>
+<tr>
+<td>BPF LSM</td>
+<td>LSM 보안 훅</td>
+<td>커널 보안 지점에 정책 부착·차단(보안)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>seccomp는 eBPF가 아닌 classic BPF(cBPF) 필터를 사용 → eBPF의 보안 경로는 BPF LSM이 중심</li>
+</ul>
+<h3 id="xdp">XDP가 빠른 이유</h3>
+<ul>
+<li>위치: NIC 드라이버 RX 경로에서 sk_buff 할당 이전에 실행 → 커널 스택 진입 전에 처리</li>
+<li>생략: netfilter·conntrack·소켓 계층 등 스택 처리를 건너뜀</li>
+<li>액션: XDP_PASS/DROP/TX/REDIRECT로 즉시 판정 → DDoS 드롭·L4 포워딩에 유리</li>
+<li>모드: Native(드라이버 지원 필요, 최속)와 Generic(skb 기반, 범용이나 느림)으로 갈림</li>
+</ul>
+<hr />
+<h2 id="verifier">verifier 동작</h2>
+<p>verifier는 로드 시점에 프로그램을 심볼릭 실행하며 안전성을 정적으로 증명하는 커널 검사기</p>
+<ul>
+<li>종료 보장: 제어 흐름 그래프에 순환이 없어야 함, 유계 루프만 허용 → 무한 루프 거부</li>
+<li>메모리 안전: 레지스터·스택·맵 접근 범위를 추적해 경계 밖 접근 차단</li>
+<li>타입 안전: 포인터와 스칼라 타입을 구분해 잘못된 역참조 거부</li>
+<li>헬퍼 검사: program type이 허용한 헬퍼만 호출 가능, 인자 타입도 검증</li>
+<li>상태 가지치기: 이미 지난 동일 상태에 도달하면 탐색을 잘라 검증 비용 관리</li>
+<li>실패 시: 로드 자체가 거부되어 실행 중 커널에는 아무 영향 없음</li>
+</ul>
+<hr />
+<h2 id="maps">maps 정리</h2>
+<p>maps는 eBPF 프로그램이 상태를 저장하고 유저스페이스와 데이터를 주고받는 커널 상주 저장소</p>
+<table>
+<thead>
+<tr>
+<th>맵 종류</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>-l</td>
-<td>모든 속성 이름과 값 출력</td>
+<td>Array</td>
+<td>정수 인덱스 기반 고정 크기 배열</td>
 </tr>
 <tr>
-<td>-p 이름</td>
-<td>특정 속성 값만 출력</td>
+<td>Hash</td>
+<td>임의 key-value 해시 테이블</td>
 </tr>
 <tr>
-<td>-w 이름 값</td>
-<td>속성 쓰기</td>
+<td>LRU Hash</td>
+<td>용량 초과 시 오래된 항목부터 제거</td>
 </tr>
 <tr>
-<td>-d 이름</td>
-<td>특정 속성 삭제</td>
+<td>Per-CPU</td>
+<td>CPU별 사본 유지로 락 경합 회피</td>
 </tr>
 <tr>
-<td>-c</td>
-<td>모든 속성 제거</td>
+<td>Ring Buffer</td>
+<td>커널에서 유저스페이스로 이벤트 스트리밍</td>
 </tr>
 <tr>
-<td>-r</td>
-<td>디렉터리 하위까지 재귀 (-rd 형태로 조합)</td>
+<td>Prog Array</td>
+<td>tail call 대상 프로그램 참조 배열</td>
 </tr>
 </tbody>
 </table>
-<p>macOS 26.5.2 실측:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s">&quot;hello dotoryeee&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="w"> </span><span class="n">com.dotoryeee.author</span><span class="w"> </span><span class="s">&quot;dotoryeee&quot;</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">com.apple.provenance</span><span class="o">:</span><span class="w"> </span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">com.dotoryeee.author</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="n">dotoryeee.txt</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">com.apple.provenance</span>
-</code></pre></div>
 <ul>
-<li>xattr -c로 지워도 com.apple.provenance는 시스템이 다시 붙임 → 사용자 속성만 정리됨</li>
-<li>인터넷에서 받은 파일에는 com.apple.quarantine가 붙어 Gatekeeper 실행 경고의 근거가 됨</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">com.apple.quarantine</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dl.txt</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="m">0083</span><span class="p">;</span><span class="m">6</span><span class="n">a5e100a</span><span class="p">;</span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">app</span><span class="p">;</span><span class="m">21366</span><span class="n">EB2</span><span class="m">-48E8-47</span><span class="n">A6</span><span class="m">-9E33</span><span class="o">-</span><span class="n">B1D3B3D98202</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">com.apple.quarantine</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dl.txt</span><span class="w">   </span><span class="c1">#쿼런틴 해제</span>
-</code></pre></div>
-<ul>
-<li>값은 <code>플래그;시각(hex);다운로드주체;UUID</code> 4필드. 실제 다운로드 파일에서도 같은 구조 확인. 디렉터리 전체는 xattr -dr로 해제</li>
+<li>공유 범위: 프로그램 간·호출 간·유저스페이스와 상태 공유</li>
+<li>접근: 유저스페이스는 파일 디스크립터(fd)로, 커널 프로그램은 헬퍼로 read/write</li>
 </ul>
 <hr />
-<h2 id="getfattr-setfattr-linux">getfattr / setfattr (Linux)</h2>
-<p>user 네임스페이스에 임의 메타데이터를 붙이는 명령. attr 패키지에 포함.</p>
-<p>Ubuntu 24.04 (attr 2.5.2) 실측:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># setfattr -n user.author -v &quot;dotoryeee&quot; dotoryeee.txt</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># setfattr -n user.comment -v &quot;custom metadata&quot; dotoryeee.txt</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># getfattr -d dotoryeee.txt</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># file: dotoryeee.txt</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">user.author</span><span class="o">=</span><span class="s">&quot;dotoryeee&quot;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">user.comment</span><span class="o">=</span><span class="s">&quot;custom metadata&quot;</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># setfattr -x user.comment dotoryeee.txt   #속성 삭제</span>
-</code></pre></div>
-<ul>
-<li>getfattr -d는 user 네임스페이스만 덤프. 다른 네임스페이스까지 보려면 -m - 필요. -e hex로 바이너리 값은 16진수 표기</li>
-</ul>
-<h3 id="linux">Linux 네임스페이스</h3>
-<p>xattr 이름은 <code>네임스페이스.이름</code> 규칙. 접두어에 따라 권한과 용도가 갈림.</p>
+<h2 id="_5">개발 스택 비교</h2>
+<p>관측 원라이너부터 이식성 있는 프로덕션 바이너리까지 도구별 적합 영역이 다름</p>
 <table>
 <thead>
 <tr>
-<th>네임스페이스</th>
-<th>용도</th>
-<th>권한</th>
+<th>도구</th>
+<th>형태</th>
+<th>언어</th>
+<th>적합</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>user</td>
-<td>사용자 임의 메타데이터</td>
-<td>일반 사용자 (일반 파일)</td>
+<td>bcc</td>
+<td>트레이싱 툴킷 + 바인딩</td>
+<td>Python·Lua, 커널부 C</td>
+<td>런타임 컴파일 기반 커널 관측 도구 다수, 대상 노드에 커널 헤더·LLVM 필요</td>
 </tr>
 <tr>
-<td>security</td>
-<td>SELinux 레이블, capabilities</td>
-<td>보안 모듈·root</td>
+<td>bpftrace</td>
+<td>고수준 트레이싱 DSL</td>
+<td>awk 유사 스크립트</td>
+<td>일회성 커널·유저 관측을 짧은 스크립트로 수행</td>
 </tr>
 <tr>
-<td>system</td>
-<td>POSIX ACL 등 커널 기능</td>
-<td>커널 중재</td>
+<td>libbpf</td>
+<td>C 라이브러리(업스트림 커널)</td>
+<td>C/C++</td>
+<td>CO-RE·BPF skeleton 지원, 단일 바이너리 배포</td>
 </tr>
 <tr>
-<td>trusted</td>
-<td>권한 있는 프로세스 전용</td>
-<td>CAP_SYS_ADMIN</td>
+<td>cilium/ebpf</td>
+<td>순수 Go 라이브러리</td>
+<td>Go</td>
+<td>libbpf 비의존, Go 앱에 eBPF 내장. Cilium·Tetragon 등이 사용</td>
+</tr>
+<tr>
+<td>aya</td>
+<td>Rust 라이브러리</td>
+<td>Rust(유저·커널 모두)</td>
+<td>libbpf 비의존, CO-RE 지원. 유저·커널 코드를 한 언어로 작성</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>macOS에는 이 네임스페이스 구분이 없음. com.apple.* 같은 역방향 도메인 이름 관례로만 구분</li>
-<li>setfacl·setcap은 결국 system·security 네임스페이스 xattr를 대신 써주는 전용 도구</li>
+<li>bcc는 대상 노드에서 커널 헤더로 런타임 컴파일 → libbpf CO-RE는 한 번 컴파일해 여러 커널에서 재사용</li>
+<li>프로덕션 배포는 libbpf(C)·cilium/ebpf(Go)·aya(Rust) 중 앱 언어에 맞춰 선택</li>
 </ul>
-<hr />
-<h2 id="chattr-lsattr-inode">chattr / lsattr (inode 플래그)</h2>
-<p>이름이 비슷해 xattr로 오해하기 쉽지만 xattr가 아님. ext 계열의 inode 플래그를 켜고 끔.</p>
-<table>
-<thead>
-<tr>
-<th>플래그</th>
-<th>의미</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>+i (immutable)</td>
-<td>수정·삭제·이름변경·링크 전부 차단</td>
-</tr>
-<tr>
-<td>+a (append-only)</td>
-<td>덧붙이기만 허용, 덮어쓰기·삭제 차단</td>
-</tr>
-</tbody>
-</table>
-<p>Ubuntu 24.04 (--cap-add LINUX_IMMUTABLE) 실측:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># chattr +i dotoryeee-i.txt</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># lsattr dotoryeee-i.txt</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">----</span><span class="n">i</span><span class="o">---------</span><span class="n">e</span><span class="o">-------</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">i.txt</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># echo v2 &gt; dotoryeee-i.txt</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">bash</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">i.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Operation</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">permitted</span><span class="w">   </span><span class="c1">#root도 차단됨</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># chattr -i dotoryeee-i.txt                       #해제해야 다시 쓰기 가능</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># chattr +a dotoryeee-a.txt</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># echo line2 &gt;&gt; dotoryeee-a.txt     #append는 통과</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># echo x &gt; dotoryeee-a.txt          #truncate는 차단</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">bash</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">a.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Operation</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">permitted</span>
-</code></pre></div>
-<ul>
-<li>+i는 root 권한으로도 못 지움 → 설정 파일 변조·삭제 방어에 사용</li>
-<li>+a는 로그 파일에 적합. 덧붙이기만 되고 과거 기록 위변조 불가</li>
-<li>플래그 조작 자체가 CAP_LINUX_IMMUTABLE 필요. 컨테이너 기본 권한으로는 chattr +i가 막힘</li>
-</ul>
-<hr />
-<h2 id="getfacl-setfacl-getcap-setcap">getfacl / setfacl · getcap / setcap</h2>
-<p>둘 다 전용 명령이지만 값은 xattr에 저장됨.</p>
-<p>POSIX ACL 실측 (setfacl → system.posix_acl_access):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># setfacl -m u:dotoryeee:rw dotoryeee-acl.txt</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># getfacl dotoryeee-acl.txt</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">user</span><span class="o">::</span><span class="n">rw</span><span class="o">-</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">user</span><span class="o">:</span><span class="n">dotoryeee</span><span class="o">:</span><span class="n">rw</span><span class="o">-</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">mask</span><span class="o">::</span><span class="n">rw</span><span class="o">-</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">other</span><span class="o">::</span><span class="n">r</span><span class="o">--</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># ls -l dotoryeee-acl.txt</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--+</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="kc">...</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">acl.txt</span><span class="w">   </span><span class="c1">#끝의 +가 ACL 존재 표시</span>
-</code></pre></div>
-<p>capabilities 실측 (setcap → security.capability):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># setcap cap_net_raw+ep dotoryeee-ping</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># getcap dotoryeee-ping</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">ping</span><span class="w"> </span><span class="n">cap_net_raw</span><span class="o">=</span><span class="n">ep</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># getfattr -m - -d -e hex dotoryeee-ping</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">security.capability</span><span class="o">=</span><span class="mh">0x0100000200200000000000000000000000000000</span>
-</code></pre></div>
-<ul>
-<li>setuid 바이너리는 root 권한을 통째로 얹지만, capability는 필요한 하나만 부여 → 권한 최소화</li>
-<li>SELinux 레이블도 security.selinux xattr에 저장됨 (예시: ls -Z로 확인. 위 컨테이너는 SELinux 미적용이라 미실측)</li>
-</ul>
-<hr />
-<h2 id="_1">크기 제한과 파일시스템 의존성</h2>
-<ul>
-<li>VFS 상한: 이름 255바이트, 값 64KB, 이름 목록 64KB (man 7 xattr)</li>
-<li>개별 파일시스템이 더 빡빡한 실제 한도를 강제</li>
-</ul>
-<p>Ubuntu 24.04 overlay(ext4 계열) 실측:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># setfattr -n user.big -v &lt;65537바이트&gt; f.txt</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Argument</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">too</span><span class="w"> </span><span class="n">long</span><span class="w">     </span><span class="c1">#VFS 64KB 초과 → E2BIG</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># setfattr -n user.big -v &lt;4096바이트&gt; f.txt</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">device</span><span class="w">    </span><span class="c1">#ext4 xattr 블록(~4KB) 초과 → ENOSPC</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># setfattr -n user.&lt;256자 이름&gt; ...</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">setfattr</span><span class="o">:</span><span class="w"> </span><span class="n">f.txt</span><span class="o">:</span><span class="w"> </span><span class="n">Numerical</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">range</span><span class="w">   </span><span class="c1">#이름 255 초과 → ERANGE</span>
-</code></pre></div>
-<ul>
-<li>ext4는 inode 여유 공간과 xattr 블록 1개(보통 4KB)에 저장 → 파일당 xattr 총량이 4KB 안팎에서 막힘</li>
-<li>값 64KB는 VFS가 허용해도 파일시스템이 먼저 ENOSPC로 거절. 실제 한도는 파일시스템에 종속</li>
-</ul>
-<hr />
-<h2 id="xattr_2">복사·백업 시 xattr 보존</h2>
-<p>xattr는 파일 데이터가 아니라 별도 메타데이터라 복사·업로드 과정에서 유실되기 쉬움.</p>
-<p>Ubuntu 24.04 실측 (user.author 속성을 붙인 뒤 각 방식으로 복사):</p>
-<table>
-<thead>
-<tr>
-<th>방식</th>
-<th>xattr 보존</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cp -p</td>
-<td>❌</td>
-</tr>
-<tr>
-<td>cp --preserve=all</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>rsync -aX</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>tar --xattrs</td>
-<td>✅</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>cp -p는 권한·소유자·시각만 보존. xattr는 --preserve=all(또는 -a)가 있어야 따라옴</li>
-<li>macOS cp는 기본으로 xattr를 보존 (플랫폼 차이). 실측에서 복사본의 xattr -l 값이 그대로 유지됨</li>
-<li>S3·FTP처럼 데이터 스트림만 전송하는 경로는 xattr가 넘어가지 않음 → 쿼런틴·ACL·capability가 목적지에서 사라짐</li>
-</ul>
-<hr />
-<h2 id="_2">사용 사례</h2>
+<h3 id="_6">선택 가이드</h3>
 <table>
 <thead>
 <tr>
 <th>상황</th>
-<th>명령</th>
+<th>추천</th>
+<th>사유</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>다운로드 파일 Gatekeeper 경고 해제 (macOS)</td>
-<td>xattr -d com.apple.quarantine <file></td>
+<td>즉석 커널 관측</td>
+<td>bpftrace</td>
+<td>짧은 스크립트로 원라이너 추적</td>
 </tr>
 <tr>
-<td>파일에 커스텀 메타데이터 부착 (Linux)</td>
-<td>setfattr -n user.&lt;키&gt; -v &lt;값&gt; <file></td>
+<td>이식성 있는 C 배포</td>
+<td>libbpf</td>
+<td>CO-RE·skeleton으로 단일 바이너리</td>
 </tr>
 <tr>
-<td>설정 파일 변조·삭제 방지</td>
-<td>chattr +i <file></td>
+<td>Go 앱에 내장</td>
+<td>cilium/ebpf</td>
+<td>순수 Go, 외부 의존 최소</td>
 </tr>
 <tr>
-<td>로그 위변조 방지 (덧붙이기만 허용)</td>
-<td>chattr +a <file></td>
-</tr>
-<tr>
-<td>특정 사용자에게만 추가 권한 부여</td>
-<td>setfacl -m u:<user>:rw <file></td>
-</tr>
-<tr>
-<td>setuid 없이 특정 권한만 부여</td>
-<td>setcap cap_net_raw+ep <binary></td>
-</tr>
-<tr>
-<td>xattr까지 보존하는 백업</td>
-<td>rsync -aX 또는 tar --xattrs</td>
+<td>Rust 단일 언어</td>
+<td>aya</td>
+<td>유저·커널 코드를 Rust로 통일</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_3">결론</h2>
+<hr />
+<h2 id="ebpf_2">eBPF 기반 제품</h2>
+<p>관측·네트워킹·보안 각 영역에서 eBPF를 코어로 쓰는 대표 제품과 라이선스 정리</p>
+<table>
+<thead>
+<tr>
+<th>제품</th>
+<th>영역</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cilium</td>
+<td>네트워킹·CNI</td>
+<td>eBPF 기반 CNI, kube-proxy 대체 라우팅. Apache 2.0(CNCF)</td>
+</tr>
+<tr>
+<td>Hubble</td>
+<td>관측</td>
+<td>Cilium 위에 얹는 네트워크 흐름·서비스 의존성 관측. Apache 2.0</td>
+</tr>
+<tr>
+<td>Falco</td>
+<td>런타임 보안</td>
+<td>커널 이벤트 기반 이상 행위 탐지·알림. Apache 2.0(CNCF)</td>
+</tr>
+<tr>
+<td>Tetragon</td>
+<td>보안 정책</td>
+<td>프로세스·시스템콜 관측 + 실시간 런타임 시행(enforcement). Apache 2.0</td>
+</tr>
+<tr>
+<td>Pixie</td>
+<td>관측(APM)</td>
+<td>코드 수정 없이 자동 계측으로 애플리케이션 텔레메트리 수집. Apache 2.0(CNCF)</td>
+</tr>
+<tr>
+<td>Katran</td>
+<td>L4 로드밸런서</td>
+<td>XDP 기반 고성능 L4 LB 포워딩 플레인(C++ + eBPF). GPL-2.0(Meta)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">사용 사례</h2>
+<p>동일한 로드·검증·attach 구조가 관측·네트워킹·보안 세 영역에 그대로 재사용됨</p>
+<h3 id="observability">관측(Observability)</h3>
 <ul>
-<li>xattr는 "파일에 이름표를 붙이는 창구", chattr는 "파일 자체를 잠그는 자물쇠"</li>
-<li>setfacl·setcap·쿼런틴은 이름표가 붙는 네임스페이스만 다를 뿐 결국 같은 xattr 저장소를 공유</li>
-<li>복사·업로드 한 번에 사라질 수 있는 메타데이터라 백업은 -X, --xattrs로 명시해 챙길 것</li>
+<li>시스템콜·커널 함수·네트워크 이벤트를 애플리케이션 코드 수정 없이 추적</li>
+<li>커널·유저 양쪽 함수에 훅 가능 → 재배포 없이 관측 지점 추가</li>
+<li>커널 안에서 집계 후 요약만 유저스페이스로 전달 → 데이터 복사·오버헤드 절감</li>
+<li>사례: bpftrace 원라이너, Pixie 자동 계측, Hubble 서비스 흐름 관측</li>
+</ul>
+<h3 id="networking">네트워킹(Networking)</h3>
+<ul>
+<li>XDP·tc로 패킷을 스택 앞단에서 파싱·필터·리다이렉트</li>
+<li>kube-proxy의 iptables 규칙 대신 eBPF 맵 기반 로드밸런싱으로 대체</li>
+<li>서비스 수 증가에도 룩업이 선형 규칙 스캔이 아닌 맵 조회라 확장에 유리</li>
+<li>사례: Cilium CNI, Katran L4 로드밸런서, XDP 기반 DDoS 드롭</li>
+</ul>
+<h3 id="security">보안(Security)</h3>
+<ul>
+<li>BPF LSM으로 커널 보안 훅에 정책을 부착하고 위반 시 차단</li>
+<li>프로세스 실행·파일 접근·네트워크 연결을 실시간 관측·시행</li>
+<li>커널 이벤트를 직접 보므로 유저스페이스 우회·후킹 회피에 강함</li>
+<li>사례: Falco 이상 탐지, Tetragon 런타임 정책 시행</li>
+</ul>
+<hr />
+<h2 id="_8">한계와 운영 주의</h2>
+<ul>
+<li>verifier 제약: 무한 루프 금지, 유계 루프(bounded loop)만 허용. 명령어·분기 탐색량 상한 → 복잡 로직은 함수 분할·tail call로 우회</li>
+<li>커널 버전 의존: program type·헬퍼·훅이 커널 버전별로 다름. BPF LSM은 5.7+, CAP_BPF는 5.8+ 등 최소 버전 존재</li>
+<li>CO-RE 전제: 이식성은 대상 커널의 BTF(BPF Type Format) 정보에 의존 → BTF 미제공 커널은 bcc식 헤더 기반 재빌드 필요</li>
+<li>권한: 로드에 CAP_BPF, 네트워킹은 +CAP_NET_ADMIN, 트레이싱은 +CAP_PERFMON 필요. 과거엔 CAP_SYS_ADMIN 단일 요구, 6.9의 BPF token으로 위임 가능</li>
+<li>오버헤드: 훅이 패킷·시스템콜 같은 핫패스에 직렬로 붙으면 지연 가산 → 관측 대상 빈도에 비례</li>
+<li>디버깅: verifier 실패 메시지 해석 난이도↑, 커널 컨텍스트라 일반 디버거 사용 제약 → bpftool·verifier 로그에 의존</li>
+</ul>
+<hr />
+<h3 id="_9">참고</h3>
+<ul>
+<li>What is eBPF? (ebpf.io): <a href="https://ebpf.io/what-is-ebpf/">https://ebpf.io/what-is-ebpf/</a></li>
+<li>BPF CO-RE (eBPF Docs): <a href="https://docs.ebpf.io/concepts/core/">https://docs.ebpf.io/concepts/core/</a></li>
+<li>BPF Documentation (kernel.org): <a href="https://docs.kernel.org/bpf/">https://docs.kernel.org/bpf/</a></li>
+</ul>
+<hr />
+<h2 id="_10">결론</h2>
+<ul>
+<li>eBPF는 커널을 재컴파일·재부팅하지 않고 검증된 프로그램을 이벤트 지점에 안전하게 주입하는 실행 계층</li>
+<li>verifier(안전)·JIT(속도)·maps(데이터 교환)·CO-RE(이식성)가 커널 모듈 대비 우위의 네 축</li>
+<li>관측은 bcc·bpftrace·Pixie, 네트워킹은 Cilium·Katran, 보안은 Falco·Tetragon으로 영역이 갈림</li>
+<li>커널 모듈은 "커널에 직접 심는 코드", eBPF는 "커널이 검증하고 돌려주는 코드"로 이해하면 됌</li>
 </ul>
 
 
@@ -2112,7 +2294,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../19/ss-strace-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EC%98%B5%EC%85%98-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ss, strace 트러블슈팅 옵션 정리">
+          <a href="../bpftrace%EC%99%80-cilium%EC%9C%BC%EB%A1%9C-ebpf-%EC%8B%A4%EC%8A%B5/" class="md-footer__link md-footer__link--prev" aria-label="Previous: bpftrace와 Cilium으로 eBPF 실습">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2122,20 +2304,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                ss, strace 트러블슈팅 옵션 정리
+                bpftrace와 Cilium으로 eBPF 실습
               </div>
             </div>
           </a>
         
         
           
-          <a href="../bpftrace%EC%99%80-cilium%EC%9C%BC%EB%A1%9C-ebpf-%EC%8B%A4%EC%8A%B5/" class="md-footer__link md-footer__link--next" aria-label="Next: bpftrace와 Cilium으로 eBPF 실습">
+          <a href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/" class="md-footer__link md-footer__link--next" aria-label="Next: LiteLLM으로 AI Gateway 구축과 운영">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                bpftrace와 Cilium으로 eBPF 실습
+                LiteLLM으로 AI Gateway 구축과 운영
               </div>
             </div>
             <div class="md-footer__button md-icon">
