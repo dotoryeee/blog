@@ -1762,7 +1762,7 @@
 <tr>
 <td>과금 남용</td>
 <td>가상 키 유출로 토큰을 과소비</td>
-<td>가상 키·rate limit·예산 한도 (2편에서 다룸)</td>
+<td>가상 키·rate limit·예산 한도로 별도 통제</td>
 </tr>
 </tbody>
 </table>
@@ -1853,7 +1853,7 @@
 </ul>
 <hr />
 <h2 id="litellm">LiteLLM 설정 예시</h2>
-<p>2편의 litellm_config.yaml에 guardrails 블록을 추가하는 형태. 설정 형태는 다음과 같음(공식 문서 기준)</p>
+<p>게이트웨이의 litellm_config.yaml에 guardrails 블록을 추가하는 형태. 설정 형태는 다음과 같음(공식 문서 기준)</p>
 <div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">guardrails</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-input-mask&quot;</span><span class="w">       </span><span class="c1"># 입력 PII 처리</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
@@ -1898,7 +1898,6 @@
 <li>가드레일은 위협을 pre-call·post-call 훅에서 차단·마스킹·로깅으로 처리하는 정책 계층</li>
 <li>구현은 정규식 → Presidio → LLM 판정 → 벤더 관리형 순으로 정확도와 비용이 함께 상승</li>
 <li>가드레일 자체가 지연·비용·오탐을 유발 → 임계값 튜닝과 감사 로그가 운영의 핵심</li>
-<li>다음 편에서는 게이트웨이 관측성(로그·메트릭·트레이싱)을 정리할 예정</li>
 <li>입력 검사는 "안으로 못 들어오게", 출력 검사는 "밖으로 못 나가게" 막는 양방향 문</li>
 </ul>
 

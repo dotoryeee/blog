@@ -1701,20 +1701,20 @@
 <h2 id="_1">목표</h2>
 <hr />
 <ul>
-<li>3편 끝에서 예고한 라우팅·폴백(Routing·Fallback) 전략을 2편 랩 환경에서 직접 실측해봅니다</li>
+<li>라우팅·폴백(Routing·Fallback) 전략을 docker compose로 띄운 LiteLLM + Ollama 게이트웨이 랩에서 직접 실측해봅니다</li>
 <li>같은 별칭에 백엔드 두 개를 묶어 로드밸런싱하고 weight와 routing_strategy로 분산을 조정합니다</li>
 <li>재시도·타임아웃과 2단 폴백 체인을 응답 헤더와 컨테이너 로그로 검증합니다</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>💡 2편에서 띄운 ollama·litellm 스택을 그대로 쓰므로 추가 비용이 없습니다</p>
+<p>💡 로컬 ollama·litellm 스택을 그대로 쓰므로 추가 비용이 없습니다</p>
 </div>
 <h2 id="_2">로드밸런싱</h2>
 <hr />
-<p>2편에서는 llama-small, qwen-small처럼 별칭 하나에 백엔드 하나를 붙였습니다. 로드밸런싱은 같은 별칭에 여러 배포(Deployment)를 등록해 하나의 모델 그룹(Model Group)으로 묶는 방식입니다.</p>
+<p>랩의 기본 구성은 llama-small, qwen-small처럼 별칭 하나에 백엔드 하나를 붙인 형태입니다. 로드밸런싱은 같은 별칭에 여러 배포(Deployment)를 등록해 하나의 모델 그룹(Model Group)으로 묶는 방식입니다.</p>
 <ol>
 <li>
-<p>2편 model_list에 chat-small 그룹을 추가합니다. model_name이 같은 항목 두 개가 한 그룹이 됩니다</p>
+<p>기존 model_list에 chat-small 그룹을 추가합니다. model_name이 같은 항목 두 개가 한 그룹이 됩니다</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">vi</span><span class="w"> </span><span class="n">litellm_config.yaml</span>
 </code></pre></div>
 <div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">model_list</span><span class="p">:</span>
@@ -1849,7 +1849,7 @@
 </div>
 <h2 id="_5">폴백 체인</h2>
 <hr />
-<p>2편의 폴백은 llama-small이 죽으면 qwen-small로 넘기는 1단이었습니다. 폴백은 후보를 순서대로 이어 체인으로 늘릴 수 있습니다.</p>
+<p>폴백은 llama-small이 죽으면 qwen-small로 넘기는 1단이 기본이고, 후보를 순서대로 이어 체인으로 늘릴 수 있습니다.</p>
 <ol>
 <li>
 <p>primary가 죽으면 backup, 그다음 standby로 넘어가는 2단 체인을 정의합니다. 검증을 위해 primary와 backup은 열려있지 않은 포트로 두고 standby만 정상 백엔드에 붙입니다</p>
@@ -1906,7 +1906,6 @@
 <li>같은 model_name에 배포를 여러 개 등록하면 코드 변경 없이 하나의 모델 그룹으로 로드밸런싱됩니다</li>
 <li>weight는 분산 비율을, routing_strategy는 분산 기준(무작위·지연·사용량)을 정합니다</li>
 <li>num_retries·timeout·cooldown_time은 실패를 흡수하는 안전망이고, 폴백 체인은 배포가 순차로 죽어도 마지막 정상 후보까지 요청을 이어줍니다</li>
-<li>다음 편에서는 캐싱과 비용 최적화로 같은 요청의 토큰 비용을 0으로 만드는 방법을 다룹니다</li>
 <li>로드밸런싱은 "정상일 때 고르게", 폴백은 "고장났을 때 안 끊기게"로 나눠 두면 설정이 헷갈리지 않습니다</li>
 </ul>
 
