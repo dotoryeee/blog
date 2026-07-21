@@ -1533,7 +1533,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 12분
+                              읽는시간 13분
                             
                           </span>
                         </div>
@@ -1796,6 +1796,7 @@
 <li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier Instant Retrieval)</li>
 <li>만료(Expiration): 지정 기간 후 객체 삭제, 미완료 멀티파트 업로드·이전 버전 정리도 라이프사이클로 처리</li>
 <li>Standard → Standard-IA·One Zone-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
+<li>출처: <a href="https://aws.amazon.com/ko/about-aws/whats-new/2026/07/s3-removes-30-day-transitions-standard-ia-one-zone-ia/">https://aws.amazon.com/ko/about-aws/whats-new/2026/07/s3-removes-30-day-transitions-standard-ia-one-zone-ia/</a></li>
 <li>Glacier 3종 직행은 원래부터 생성 즉시 가능 → 30일 경과 제한은 애초에 IA 계열에만 있던 규칙</li>
 <li>사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → Standard-IA를 거친다면 30일 뒤부터 Glacier Instant Retrieval 지정 가능</li>
 <li>전환 자체가 요청 → 객체 1,000건당 전환 요청 비용 발생</li>
@@ -1903,9 +1904,11 @@
 <ul>
 <li>조건부 쓰기(2024-08): PutObject·CompleteMultipartUpload에 If-None-Match 헤더 지원 → 같은 키의 덮어쓰기 방지, 별도 존재 확인 요청 불필요. 범용·디렉터리 버킷 모두 지원, 추가 비용 없음</li>
 <li>조건부 덮어쓰기(2024-11): If-Match 헤더로 ETag가 일치할 때만 덮어쓰기 → 동시 갱신 충돌을 요청 단에서 차단</li>
+<li>ETag는 객체의 버전 식별자 → 단일 PUT 객체는 데이터의 MD5와 같지만 멀티파트·KMS 암호화 객체는 MD5와 다름, 무결성 검증은 체크섬 기능(SHA-256 등)으로</li>
 <li>S3 Tables(2024 re:Invent): 완전관리형 Apache Iceberg 테이블 → 범용 버킷에 둔 Iceberg 대비 최대 10배 높은 초당 트랜잭션, Spark·Trino·Athena·Redshift 연동</li>
 <li>S3 Metadata: 객체 메타데이터를 질의 가능한 테이블로 자동 생성 → 대규모 버킷의 객체 검색·분석 용도</li>
 <li>Express One Zone 요금 인하(2025): 스토리지·요청 요금을 대폭 낮춤(출처: AWS News Blog, 2025). 정확한 인하율·과금 방식은 변동이 크니 현행 요금표에서 확인</li>
+<li>IA 전환 30일 제한 폐지(2026-07): Standard-IA·One Zone-IA로 생성 즉시 라이프사이클 전환 가능 → 30일 대기를 전제로 한 기존 설계 관행이 무의미해짐</li>
 <li>최소 과금 단위·모니터링 요금 등 구조는 유지 → 소형 객체·불규칙 접근에 대한 판단 기준은 그대로</li>
 </ul>
 <hr />
