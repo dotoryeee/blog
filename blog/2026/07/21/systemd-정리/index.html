@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="AI Gateway가 토큰 단위로 LLM 트래픽을 통제하는 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 5종 비교, 가드레일 설계까지 정리">
+        <meta name="description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">
+        <link rel="prev" href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../../21/systemd-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>AI Gateway 정리 - dotoryeee's blog</title>
+        <title>systemd 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AI Gateway 정리 - dotoryeee's blog" />
-<meta property="og:description" content="AI Gateway가 토큰 단위로 LLM 트래픽을 통제하는 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 5종 비교, 가드레일 설계까지 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="systemd 정리 - dotoryeee's blog" />
+<meta property="og:description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="AI Gateway 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="AI Gateway가 토큰 단위로 LLM 트래픽을 통제하는 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 5종 비교, 가드레일 설계까지 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/20/ai-gateway-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="systemd 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ai-gateway" class="md-skip">
+        <a href="#systemd" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AI Gateway 정리
+              systemd 정리
             
           </span>
         </div>
@@ -1314,24 +1314,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ai-gateway_1" class="md-nav__link">
+  <a href="#systemd_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AI Gateway란
+        systemd란
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="systemd란">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sysv-init" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SysV init과의 차이
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#api-gateway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API Gateway와의 차이
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1339,7 +1345,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        필요한 이유
+        유닛 종류 정리
       
     </span>
   </a>
@@ -1350,193 +1356,127 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        구조
+        서비스 유닛 구조
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="서비스 유닛 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type 종류
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        동작 방식
+        의존성 지시자
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="동작 방식">
-      <ul class="md-nav__list">
+</li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        요청 처리 파이프라인
+        감독과 자동 복구
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#metering" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        미터링(Metering)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+        <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        로드밸런싱
+        리소스 제어
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="리소스 제어">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        slice 계층
       
     </span>
   </a>
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        부팅과 target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs-cron" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        타이머 vs cron
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#journald" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        journald 정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        폴백 판정
+        주요 명령 정리
       
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="주요 명령 정리">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        캐시 조회
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        핵심 기능 정리
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        솔루션 비교
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="솔루션 비교">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        선택 가이드
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        가드레일
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="가드레일">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_12" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        위협 모델 정리
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_13" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        가드레일 동작 위치
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_14" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        구현 방식 비교
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#litellm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LiteLLM 설정 예시
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_15" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        운영 주의
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_16" class="md-nav__link">
     <span class="md-ellipsis">
       
         참고
@@ -1552,7 +1492,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_17" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1618,7 +1558,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-20 00:00:00+00:00" class="md-ellipsis">2026. 7. 20.</time>
+                        <time datetime="2026-07-21 00:00:00+00:00" class="md-ellipsis">2026. 7. 21.</time>
                       </div>
                     </li>
                     
@@ -1629,7 +1569,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/ai/">AI</a></span>
+                              <a href="../../../../category/linux/">Linux</a></span>
                         </div>
                       </li>
                     
@@ -1640,7 +1580,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 12분
+                              읽는시간 9분
                             
                           </span>
                         </div>
@@ -1668,521 +1608,611 @@
       
       
       
-        <a href="../../../../../tags/#tag:ai-gateway" class="md-tag">AI Gateway</a>
+        <a href="../../../../../tags/#tag:boot" class="md-tag">Boot</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:llm" class="md-tag">LLM</a>
+        <a href="../../../../../tags/#tag:cgroups" class="md-tag">Cgroups</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:litellm" class="md-tag">LiteLLM</a>
+        <a href="../../../../../tags/#tag:logging" class="md-tag">Logging</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:security" class="md-tag">Security</a>
+        <a href="../../../../../tags/#tag:systemd" class="md-tag">systemd</a>
       
     
   </nav>
 
 
 
-<h1 id="ai-gateway">AI Gateway 정리</h1>
+<h1 id="systemd">systemd 정리</h1>
 <!-- more -->
 
-<h2 id="ai-gateway_1">AI Gateway란</h2>
-<p>AI Gateway란 애플리케이션과 여러 LLM 프로바이더 사이에서 LLM 트래픽을 단일 API로 중계하고 통제하는 게이트웨이 계층</p>
+<h2 id="systemd_1">systemd란</h2>
+<p>systemd란 PID 1로 뜨는 init 겸, 서비스·소켓·타이머·마운트를 유닛(Unit)이라는 단일 모델로 선언적으로 감독하는 시스템·서비스 관리자</p>
 <ul>
-<li>위치: 앱과 OpenAI·Anthropic·Bedrock 등 모델 프로바이더 사이의 중간 계층</li>
-<li>인터페이스: 프로바이더별 SDK를 OpenAI 호환 단일 API로 통일</li>
-<li>역할: 라우팅·캐싱·폴백·과금·가드레일·관측을 한 곳에서 집행</li>
-<li>성격: 앱 코드 변경 없이 모델·프로바이더를 교체 가능한 제어 계층(Control Plane)</li>
-<li>별칭: LLM Gateway, LLM Proxy, LLM Router로도 불림</li>
+<li>성격: 부팅 초기화부터 데몬 감독·로깅·리소스 제어까지 한 계층으로 통합</li>
+<li>모델: 셸 스크립트 대신 <code>[Unit]</code> 형식의 선언적 유닛 파일로 상태를 기술</li>
+<li>실행: 의존성 그래프를 계산해 독립 유닛을 병렬로 기동 → 부팅 시간 단축</li>
+<li>추적: PID 파일이 아니라 cgroup으로 프로세스 그룹 전체를 소유·추적</li>
+<li>관리 도구: 상태·제어는 <code>systemctl</code>, 로그는 <code>journalctl</code>로 단일화</li>
 </ul>
-<hr />
-<h2 id="api-gateway">API Gateway와의 차이</h2>
-<p>API Gateway는 요청(Request) 단위의 마이크로서비스 트래픽을, AI Gateway는 토큰(Token) 단위의 LLM 트래픽을 다루는 것이 핵심 차이</p>
+<h3 id="sysv-init">SysV init과의 차이</h3>
 <table>
 <thead>
 <tr>
 <th>비교 항목</th>
-<th>API Gateway</th>
-<th>AI Gateway</th>
+<th>SysV init</th>
+<th>systemd</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>과금·미터링 단위</td>
-<td>요청 수 기준</td>
-<td>토큰 사용량 기준</td>
+<td>PID 1 범위</td>
+<td>init 프로세스만</td>
+<td>init + 서비스·소켓·타이머·마운트 통합</td>
 </tr>
 <tr>
-<td>라우팅 기준</td>
-<td>URL 경로·HTTP 메서드</td>
-<td>모델·비용·지연(Latency) 기반 동적 라우팅</td>
+<td>기동 방식</td>
+<td>rc 셸 스크립트 순차 실행</td>
+<td>선언적 유닛 + 의존성 기반 병렬 실행</td>
 </tr>
 <tr>
-<td>캐싱</td>
-<td>정확 일치(Exact Match) 캐시</td>
-<td>의미 기반(Semantic) 캐시</td>
+<td>부팅 상태</td>
+<td>runlevel 0~6 숫자</td>
+<td>명명된 target 유닛</td>
 </tr>
 <tr>
-<td>스트리밍</td>
-<td>일반 응답 프록시</td>
-<td>SSE(Server-Sent Events) 스트리밍 네이티브</td>
+<td>서비스 제어</td>
+<td>service·chkconfig</td>
+<td>systemctl</td>
 </tr>
 <tr>
-<td>가드레일</td>
-<td>WAF 수준의 요청 필터링</td>
-<td>프롬프트 인젝션·PII 등 콘텐츠 계층 필터링</td>
+<td>프로세스 추적</td>
+<td>PID 파일에 의존</td>
+<td>cgroup으로 그룹 단위 추적</td>
 </tr>
 <tr>
-<td>폴백</td>
-<td>일반적으로 미제공</td>
-<td>프로바이더 간 자동 폴백(429 → 타 프로바이더 재시도)</td>
+<td>로깅</td>
+<td>외부 syslog 의존</td>
+<td>journald 내장</td>
 </tr>
 <tr>
-<td>관측성</td>
-<td>요청 수·상태 코드·지연</td>
-<td>토큰·비용·모델별 사용량 분석</td>
+<td>자동 복구</td>
+<td>없음, 외부 도구 필요</td>
+<td>Restart·Watchdog 내장</td>
+</tr>
+<tr>
+<td>온디맨드 기동</td>
+<td>없음</td>
+<td>소켓·경로·타이머 활성화 지원</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_1">필요한 이유</h2>
-<ul>
-<li>프로바이더 종속 제거: 멀티 프로바이더를 단일 API로 추상화해 특정 벤더 종속(Lock-in) 회피</li>
-<li>API 키 중앙 관리: 실제 키는 게이트웨이가 보관하고 앱에는 가상 키(Virtual Key)만 발급해 유출 방지</li>
-<li>비용 통제: 팀·사용자·모델별 토큰 사용량 추적과 예산(Budget) 한도 집행</li>
-<li>장애 폴백: 프로바이더 장애·429 발생 시 다른 모델로 자동 전환해 가용성 확보</li>
-<li>관측성 확보: 요청·응답 로그, 지연, 토큰 비용을 한 곳에서 추적</li>
-</ul>
-<hr />
-<h2 id="_2">구조</h2>
-<pre class="mermaid"><code>graph LR
-    App1["웹 앱(Web App)"] --&gt; GW["AI Gateway"]
-    App2["에이전트(Agent)"] --&gt; GW
-    App3["배치 작업(Batch Job)"] --&gt; GW
-    GW --&gt; OpenAI["OpenAI"]
-    GW --&gt; Anthropic["Anthropic"]
-    GW --&gt; Bedrock["Amazon Bedrock"]
-    GW --&gt; Local["로컬 모델(Local Model)"]</code></pre>
-<ul>
-<li>좌측: 여러 앱·에이전트가 프로바이더별 SDK 대신 게이트웨이 단일 엔드포인트로 요청</li>
-<li>중앙: AI Gateway가 라우팅·캐싱·폴백·가드레일·과금을 일괄 처리</li>
-<li>우측: 상용 프로바이더와 사내 로컬 모델을 동일한 인터페이스로 연결</li>
-</ul>
-<hr />
-<h2 id="_3">동작 방식</h2>
-<h3 id="_4">요청 처리 파이프라인</h3>
-<pre class="mermaid"><code>sequenceDiagram
-    participant App
-    participant Gateway
-    participant Cache
-    participant Provider
-    App-&gt;&gt;Gateway: 요청 (virtual key 포함)
-    Gateway-&gt;&gt;Gateway: 인증 (virtual key 검증)
-    Gateway-&gt;&gt;Gateway: rate limit·예산 검사
-    Gateway-&gt;&gt;Cache: 캐시 조회
-    Cache--&gt;&gt;Gateway: 미스(Miss)
-    Gateway-&gt;&gt;Gateway: 라우팅 결정 (배포 선택)
-    Gateway-&gt;&gt;Provider: 모델 호출
-    Provider--&gt;&gt;Gateway: 응답 + usage
-    Gateway-&gt;&gt;Gateway: 미터링 기록 (토큰·비용 누적)
-    Gateway--&gt;&gt;App: 최종 응답</code></pre>
-<ul>
-<li>인증 → 예산·rate limit 검사 → 캐시 조회 → 라우팅 → 호출 → 미터링 순으로 통과하는 단방향 파이프라인</li>
-<li>캐시 히트(Hit) 시 라우팅·프로바이더 호출을 건너뛰고 즉시 응답 → 해당 요청의 토큰 비용 0</li>
-</ul>
-<h3 id="metering">미터링(Metering)</h3>
-<ul>
-<li>비스트리밍: 프로바이더 응답의 usage 필드에서 입력·출력 토큰 수 확보</li>
-<li>스트리밍: 종료 청크의 usage로 집계하거나, 미제공 시 tokenizer(tiktoken 등)로 추정</li>
-<li>비용 산출: 토큰 수 × 모델별 단가표(입력·출력 1K 토큰당 요금)로 요청별 비용 계산</li>
-<li>누적: 키(Key)·팀(Team)·모델 차원으로 DB에 spend 적재</li>
-<li>환류: 누적값이 예산 한도·rate limit 초과 판정의 근거로 재사용됨</li>
-</ul>
-<h3 id="_5">로드밸런싱</h3>
-<ul>
-<li>동일 모델의 여러 배포(키·리전·프로바이더)를 하나의 모델 그룹(Model Group)으로 묶음</li>
-<li>rate limit(RPM/TPM) 여유가 남은 배포를 우선 선택해 throttling 회피</li>
-</ul>
+<h2 id="_1">유닛 종류 정리</h2>
+<p>유닛은 systemd가 관리하는 자원의 단위이며, 접미사가 종류를 결정함(총 11종)</p>
 <table>
 <thead>
 <tr>
-<th>전략</th>
-<th>설명</th>
+<th>유닛</th>
+<th>용도</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>가중치 라운드로빈</td>
-<td>배포별 weight·RPM/TPM 비율에 따른 확률적 분산</td>
+<td>.service</td>
+<td>데몬·프로세스 실행·감독</td>
 </tr>
 <tr>
-<td>최소 지연(Latency-based)</td>
-<td>최근 응답 지연이 가장 낮은 배포 선택</td>
+<td>.socket</td>
+<td>소켓 listen 후 트래픽 도달 시 서비스 온디맨드 기동</td>
 </tr>
 <tr>
-<td>사용량 기반(Usage-based)</td>
-<td>실시간 TPM/RPM 소비량이 가장 적은 배포 선택</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_6">폴백 판정</h3>
-<ul>
-<li>일시적 오류(429·5xx·타임아웃): 동일 배포에서 지정 횟수만큼 재시도 → 소진 시 폴백 체인의 다음 모델로 전환</li>
-<li>비일시적 오류(컨텍스트 윈도우 초과 등): 재시도 무의미 → 즉시 폴백</li>
-<li>폴백 체인의 다음 모델도 실패하면 순서대로 후속 후보로 계속 이동</li>
-</ul>
-<h3 id="_7">캐시 조회</h3>
-<ul>
-<li>exact: 요청을 정규화·해시해 완전 일치 항목이 있으면 히트</li>
-<li>semantic: 프롬프트 임베딩의 코사인 유사도가 임계값(similarity threshold) 이상이면 히트</li>
-<li>exact 우선 조회 → 미스 시 semantic 조회 순으로 판정</li>
-</ul>
-<hr />
-<h2 id="_8">핵심 기능 정리</h2>
-<table>
-<thead>
-<tr>
-<th>기능</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>통합 API</td>
-<td>프로바이더별 API를 OpenAI 호환 단일 스키마로 정규화</td>
+<td>.timer</td>
+<td>시각·경과 시간 기준으로 유닛 활성화(cron 대체)</td>
 </tr>
 <tr>
-<td>모델 라우팅</td>
-<td>비용·지연·품질 기준으로 요청을 적절한 모델로 분배</td>
+<td>.target</td>
+<td>유닛 묶음·동기화 지점(부팅 상태 표현)</td>
 </tr>
 <tr>
-<td>폴백·재시도</td>
-<td>프로바이더 오류·throttling 시 다른 모델로 자동 전환</td>
+<td>.mount</td>
+<td>파일시스템 마운트 지점 관리</td>
 </tr>
 <tr>
-<td>로드 밸런싱</td>
-<td>여러 키·리전에 요청을 분산해 rate limit 회피</td>
+<td>.automount</td>
+<td>접근 시점에 마운트를 지연 트리거</td>
 </tr>
 <tr>
-<td>시맨틱 캐싱</td>
-<td>의미가 같은 프롬프트의 응답을 재사용해 토큰 비용 절감</td>
+<td>.path</td>
+<td>파일·디렉터리 변화 감시 후 유닛 활성화</td>
 </tr>
 <tr>
-<td>가상 키</td>
-<td>실제 키를 숨기고 앱별 발급·회수 가능한 대체 키 제공</td>
+<td>.slice</td>
+<td>cgroup 계층 노드, 리소스 제어 그룹</td>
 </tr>
 <tr>
-<td>비용·예산 관리</td>
-<td>팀·모델별 토큰 비용 추적과 예산 한도 초과 차단</td>
+<td>.swap</td>
+<td>스왑 장치·파일 관리</td>
 </tr>
 <tr>
-<td>가드레일</td>
-<td>프롬프트 인젝션·PII·유해 콘텐츠 입출력 필터링</td>
+<td>.device</td>
+<td>udev가 노출한 커널 장치</td>
 </tr>
 <tr>
-<td>관측성</td>
-<td>요청·응답 로그, 지연, 토큰·비용 메트릭 수집</td>
+<td>.scope</td>
+<td>systemd가 아닌 외부에서 생성된 프로세스 그룹 관리</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_9">솔루션 비교</h2>
-<p>셀프호스팅 운영 부담을 기준으로 대표 5개 AI Gateway 솔루션을 배포 형태·핵심 기능·라이선스 관점에서 비교</p>
+<h2 id="_2">서비스 유닛 구조</h2>
+<p>서비스 유닛은 <code>[Unit]</code>·<code>[Service]</code>·<code>[Install]</code> 세 섹션으로 구성됨</p>
 <table>
 <thead>
 <tr>
-<th>솔루션</th>
-<th>배포 형태 / 라이선스</th>
-<th>라우팅·폴백</th>
-<th>캐싱</th>
-<th>가드레일</th>
-<th>관측성</th>
-<th>비고</th>
+<th>섹션</th>
+<th>담는 내용</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>LiteLLM</td>
-<td>셀프호스팅(Docker·Helm). MIT 오픈소스, Enterprise 유료 티어(SSO·RBAC·감사 로그).</td>
-<td>지원. 폴백 체인·num_retries·다중 키 로드밸런싱.</td>
-<td>Exact·Semantic 모두 지원.</td>
-<td>지원. hook 플러그인·외부 가드레일 연동.</td>
-<td>지원. 토큰·비용 추적, 로그, Admin UI.</td>
-<td>OpenAI 호환 단일 API, 100+ 프로바이더. k8s는 Helm 차트로 배포.</td>
+<td>[Unit]</td>
+<td>설명(Description)·의존성(After·Requires 등)·조건(Condition)</td>
 </tr>
 <tr>
-<td>Kong AI Gateway</td>
-<td>셀프호스팅(Kong Gateway 플러그인)·Konnect SaaS. Gateway는 Apache 2.0, 고급 AI 기능은 Enterprise 유료.</td>
-<td>지원. AI Proxy Advanced의 다중 LB 알고리즘·재시도·폴백(고급은 Enterprise).</td>
-<td>Semantic 캐시(Enterprise).</td>
-<td>지원. AI Prompt Guard(OSS), PII 마스킹·시맨틱 가드레일(Enterprise).</td>
-<td>지원. 토큰·지연·비용, OpenTelemetry.</td>
-<td>기존 Kong 운영 조직에 적합. 기능별 플러그인 조합. KIC로 k8s 연동.</td>
+<td>[Service]</td>
+<td>실행 명령(ExecStart)·Type·Restart·타임아웃·리소스 제어</td>
 </tr>
 <tr>
-<td>Portkey</td>
-<td>셀프호스팅·관리형 SaaS. MIT 오픈소스(2026년 거버넌스·관측 기능까지 오픈소스화).</td>
-<td>지원. 가중치 로드밸런싱·조건부 라우팅·폴백·자동 재시도.</td>
-<td>Simple·Semantic 모두 지원.</td>
-<td>지원. 50+ 가드레일 플러그인.</td>
-<td>지원. 요청·비용·지연 대시보드.</td>
-<td>1,600+ LLM. 가드레일 통합이 강점. Docker·k8s 셀프호스팅.</td>
-</tr>
-<tr>
-<td>Cloudflare AI Gateway</td>
-<td>완전 관리형(셀프호스팅 없음). 상용, 무료 티어 + 유료.</td>
-<td>지원. Dynamic Routing·자동 폴백.</td>
-<td>Exact 캐시.</td>
-<td>지원. 콘텐츠 모더레이션·DLP.</td>
-<td>지원. Analytics·로깅.</td>
-<td>프로바이더 앞단 프록시. 인프라 운영 부담 없음. k8s 무관.</td>
-</tr>
-<tr>
-<td>Envoy AI Gateway</td>
-<td>셀프호스팅(Kubernetes). Apache 2.0 오픈소스.</td>
-<td>지원. 통합 모델 카탈로그·자동 failover.</td>
-<td>미지원.</td>
-<td>코어 미제공(상용 애드온으로 보강).</td>
-<td>지원. OpenTelemetry·OpenInference 트레이싱.</td>
-<td>Gateway API·Inference Extension 기반 k8s 네이티브. Envoy Gateway 확장.</td>
+<td>[Install]</td>
+<td>enable 시 심링크 대상(WantedBy·RequiredBy)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="_10">선택 가이드</h3>
+<h3 id="type">Type 종류</h3>
+<p>Type은 systemd가 "기동 완료"를 판정하는 기준을 정함</p>
 <table>
 <thead>
 <tr>
-<th>상황</th>
-<th>추천</th>
-<th>사유</th>
+<th>Type</th>
+<th>완료 판정 시점</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>빠른 셀프호스팅 시작</td>
-<td>LiteLLM</td>
-<td>Docker 한 방 기동, OpenAI 호환, MIT. 폴백·키 관리 즉시 사용.</td>
+<td>simple</td>
+<td>메인 프로세스 fork 직후(기본값), execve 이전</td>
 </tr>
 <tr>
-<td>기존 Kong 운영 조직</td>
-<td>Kong AI Gateway</td>
-<td>이미 쓰는 API 플랫폼에 AI 플러그인만 추가. 학습 곡선 최소.</td>
+<td>exec</td>
+<td>메인 바이너리 execve 완료까지 대기</td>
 </tr>
 <tr>
-<td>가드레일·거버넌스 중심</td>
-<td>Portkey</td>
-<td>다수 가드레일 내장, 완전 오픈소스, 1,600+ LLM 커버.</td>
+<td>forking</td>
+<td>부모가 fork 후 종료하면 완료, 전통 UNIX 데몬 방식</td>
 </tr>
 <tr>
-<td>운영 부담 최소 완전 관리형</td>
-<td>Cloudflare AI Gateway</td>
-<td>프로바이더 앞단에 얹기만 하면 됨. 서버·업그레이드 관리 불필요.</td>
+<td>oneshot</td>
+<td>메인 프로세스 종료 후 완료, active 유지엔 RemainAfterExit=yes</td>
 </tr>
 <tr>
-<td>Kubernetes 네이티브</td>
-<td>Envoy AI Gateway</td>
-<td>Gateway API 표준 기반, Apache 2.0, 기존 Envoy 운영과 통합.</td>
+<td>dbus</td>
+<td>BusName에 지정한 D-Bus 이름 획득 시 완료</td>
+</tr>
+<tr>
+<td>notify</td>
+<td>서비스가 sd_notify()로 READY=1 전송 시 완료</td>
+</tr>
+<tr>
+<td>notify-reload</td>
+<td>notify + reload 시 RELOADING=1·READY=1 처리</td>
+</tr>
+<tr>
+<td>idle</td>
+<td>다른 active 작업 완료까지 실행 지연, 콘솔 출력 정돈용</td>
 </tr>
 </tbody>
 </table>
+<h3 id="_3">의존성 지시자</h3>
+<p>요구(requirement)와 순서(ordering)는 별개 축이며 각각 따로 지정해야 함</p>
+<table>
+<thead>
+<tr>
+<th>지시자</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requires</td>
+<td>강한 요구, 함께 활성화. 요구 대상 실패 시(After 병행) 기동 중단</td>
+</tr>
+<tr>
+<td>Wants</td>
+<td>약한 요구, 함께 시도하되 실패해도 본 유닛엔 영향 없음</td>
+</tr>
+<tr>
+<td>Requisite</td>
+<td>요구 대상이 이미 떠 있지 않으면 즉시 실패, After와 병행 권장</td>
+</tr>
+<tr>
+<td>BindsTo</td>
+<td>Requires + 대상이 예기치 않게 멈추면 본 유닛도 정지</td>
+</tr>
+<tr>
+<td>PartOf</td>
+<td>단방향 전파, 대상의 정지·재시작만 본 유닛에 반영</td>
+</tr>
+<tr>
+<td>Conflicts</td>
+<td>부정 의존, 한쪽 기동 시 상대 유닛 정지</td>
+</tr>
+<tr>
+<td>After / Before</td>
+<td>순서만 지정, 요구 여부와 무관</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>요구 지시자는 순서를 만들지 않음 → 순서가 필요하면 After·Before를 따로 지정</li>
+<li>흔한 조합: Wants + After → "있으면 좋고, 있다면 그 뒤에 기동"</li>
+</ul>
 <hr />
-<h2 id="_11">가드레일</h2>
-<p>가드레일(Guardrail)이란 게이트웨이 계층에서 LLM 입출력을 검사하고 정책 위반 시 차단·마스킹하는 콘텐츠 통제 계층</p>
-<h3 id="_12">위협 모델 정리</h3>
-<p>게이트웨이가 막아야 할 대상은 앱이 아니라 프롬프트·응답에 실린 콘텐츠</p>
+<h2 id="_4">감독과 자동 복구</h2>
+<p>프로세스 종료를 감지해 정책에 따라 재기동하는 감독 기능이 [Service]에 내장됨</p>
 <table>
 <thead>
 <tr>
-<th>위협</th>
-<th>설명</th>
-<th>게이트웨이 대응</th>
+<th>Restart 값</th>
+<th>재시작 조건</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>프롬프트 인젝션(Prompt Injection)</td>
-<td>사용자 입력에 지시문을 섞어 시스템 프롬프트를 무력화</td>
-<td>pre-call 입력 검사, 패턴·인젝션 분류기</td>
+<td>no</td>
+<td>재시작 안 함(기본값)</td>
 </tr>
 <tr>
-<td>탈옥(Jailbreak)</td>
-<td>역할극·인코딩으로 안전 정책을 우회</td>
-<td>입력 검사 + 전용 탈옥 분류기(Prompt Shields류)</td>
+<td>on-success</td>
+<td>정상 종료(exit 0·지정 시그널)에만 재시작</td>
 </tr>
 <tr>
-<td>PII 유출 (입력)</td>
-<td>사용자가 개인정보를 프롬프트에 그대로 포함</td>
-<td>pre-call 입력 마스킹·차단</td>
+<td>on-failure</td>
+<td>비정상 exit·시그널·타임아웃·워치독 실패 시 재시작</td>
 </tr>
 <tr>
-<td>PII 유출 (출력)</td>
-<td>모델 응답에 개인정보·학습 데이터가 노출</td>
-<td>post-call 출력 마스킹·차단</td>
+<td>on-abnormal</td>
+<td>시그널·타임아웃·워치독 등 비정상 종료에만 재시작</td>
 </tr>
 <tr>
-<td>유해 콘텐츠</td>
-<td>혐오·폭력·성적 응답 생성</td>
-<td>콘텐츠 모더레이션 분류로 차단</td>
+<td>on-watchdog</td>
+<td>워치독 타임아웃 만료 시에만 재시작</td>
 </tr>
 <tr>
-<td>시스템 프롬프트 유출</td>
-<td>추출 공격으로 내부 지침·규칙이 노출</td>
-<td>출력 검사로 지침 문자열 차단</td>
+<td>on-abort</td>
+<td>clean 처리되지 않은 시그널로 중단 시 재시작</td>
 </tr>
 <tr>
-<td>과금 남용</td>
-<td>가상 키 유출로 토큰을 과소비</td>
-<td>가상 키·rate limit·예산 한도로 별도 통제</td>
+<td>always</td>
+<td>종료 원인과 무관하게 항상 재시작</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>입력·출력은 서로 다른 위협 → 한쪽 훅만으로는 절반만 방어</li>
-<li>인젝션·탈옥·유출은 경계가 겹침 → 단일 분류기보다 다층 배치가 현실적</li>
+<li>RestartSec: 재시작 전 대기 시간, 기본 100ms</li>
+<li>RestartSteps·RestartMaxDelaySec: 재시작 간격을 지수 백오프로 증가(예: 10s→20s→40s→상한)</li>
+<li>WatchdogSec: 서비스가 주기적으로 WATCHDOG=1을 보내야 하는 데드라인. 놓치면 failed 처리 후 SIGABRT</li>
+<li>StartLimitIntervalSec·StartLimitBurst: 지정 구간 안의 재시작 횟수 상한. 초과 시 재시작을 멈춰 크래시 루프 차단</li>
 </ul>
-<h3 id="_13">가드레일 동작 위치</h3>
-<p>LiteLLM은 요청 파이프라인의 위치별로 훅을 걸 수 있음</p>
-<ul>
-<li>pre-call: LLM 호출 전 입력을 검사해 프로바이더 도달 전에 차단·마스킹으로 개입</li>
-<li>post-call: 응답 수신 후 입력과 출력을 함께 검사해 유출·유해 응답을 최종 차단</li>
-<li>during-call: LLM 호출과 병렬로 입력만 검사, 추가 지연을 줄이는 용도(블로킹 아님)</li>
-<li>logging-only: 요청 흐름은 그대로 두고 로그에만 마스킹 적용</li>
-</ul>
-<p>탐지 후 처리 방식은 세 가지로 갈림</p>
+<hr />
+<h2 id="_5">리소스 제어</h2>
+<p>서비스마다 cgroup v2 노드가 매핑되어 메모리·CPU·I/O를 유닛 단위로 제한함</p>
 <table>
 <thead>
 <tr>
-<th>모드</th>
-<th>동작</th>
-<th>적합</th>
+<th>지시자</th>
+<th>대응 cgroup 속성</th>
+<th>효과</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>차단(Block)</td>
-<td>정책 위반 시 요청·응답 자체를 4xx로 거부</td>
-<td>인젝션·금칙 주제</td>
+<td>MemoryMax</td>
+<td>memory.max</td>
+<td>절대 상한, 초과 시 cgroup 내부 OOM killer 발동</td>
 </tr>
 <tr>
-<td>마스킹(Mask)</td>
-<td>탐지 구간만 placeholder로 치환하고 통과</td>
-<td>PII 처리</td>
+<td>MemoryHigh</td>
+<td>memory.high</td>
+<td>스로틀 지점, 넘으면 프로세스가 강하게 감속</td>
 </tr>
 <tr>
-<td>로깅(Logging)</td>
-<td>흐름 변경 없이 탐지 사실만 기록</td>
-<td>정책 튜닝·관측</td>
+<td>MemoryMin</td>
+<td>memory.min</td>
+<td>reclaim 보호, 이 값까지는 회수 대상에서 후순위</td>
+</tr>
+<tr>
+<td>CPUQuota</td>
+<td>cpu.max</td>
+<td>% 값으로 CPU 시간 쿼터 지정</td>
+</tr>
+<tr>
+<td>CPUWeight</td>
+<td>cpu.weight</td>
+<td>같은 slice 내 CPU 시간 비례 분배</td>
+</tr>
+<tr>
+<td>IOWeight</td>
+<td>io.weight</td>
+<td>같은 slice 내 블록 I/O 대역 비례 분배</td>
+</tr>
+<tr>
+<td>TasksMax</td>
+<td>pids.max</td>
+<td>생성 가능한 태스크(프로세스·스레드) 수 상한</td>
+</tr>
+<tr>
+<td>AllowedCPUs</td>
+<td>cpuset.cpus</td>
+<td>실행 가능한 CPU 코어 집합 고정</td>
 </tr>
 </tbody>
 </table>
-<h3 id="_14">구현 방식 비교</h3>
-<p>정확도와 비용은 대체로 같은 방향으로 올라감</p>
-<table>
-<thead>
-<tr>
-<th>방식</th>
-<th>동작</th>
-<th>장점</th>
-<th>단점·비용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>정규식·휴리스틱</td>
-<td>고정 패턴·키워드 매칭</td>
-<td>빠름, 무료, 외부 의존성 없음</td>
-<td>문맥을 못 봐 오탐·미탐이 큼</td>
-</tr>
-<tr>
-<td>PII 탐지 엔진 (Presidio)</td>
-<td>NER·정규식·체크섬 조합, 신뢰도 점수 산출</td>
-<td>MIT 오픈소스, 셀프호스팅, 다국어 지원</td>
-<td>별도 서비스 운영 부담, 완전 탐지 보장 없음</td>
-</tr>
-<tr>
-<td>LLM 판정 (LLM Judge)</td>
-<td>별도 LLM이 입출력을 정책 기준으로 평가</td>
-<td>문맥 이해, 자연어로 유연한 정책 표현</td>
-<td>검사 호출마다 토큰 비용·지연 가산</td>
-</tr>
-<tr>
-<td>벤더 관리형</td>
-<td>Bedrock Guardrails·Azure AI Content Safety·Lakera 등 관리형 API</td>
-<td>운영 부담 없음, 정책 세트·분류기 완비</td>
-<td>텍스트 단위 종량 과금, 외부 전송 발생</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Presidio는 무료 OSS로, Analyzer가 엔티티 위치·유형·신뢰도를 반환하고 Anonymizer가 치환</li>
-<li>Bedrock Guardrails는 정책별 종량 과금 → 콘텐츠 필터·민감정보 필터는 유료, 단어·정규식 기반 필터는 무료</li>
-<li>Azure AI Content Safety는 혐오·성적·폭력·자해 4개 범주 + 인젝션 탐지(Prompt Shields), 텍스트 레코드 단위 과금</li>
-<li>벤더 가드레일 대부분은 유료 관리형 → 오픈소스 코어와 경계 확인 필요</li>
-</ul>
-<h3 id="litellm">LiteLLM 설정 예시</h3>
-<p>게이트웨이의 litellm_config.yaml에 guardrails 블록을 추가하는 형태. 설정 형태는 다음과 같음(공식 문서 기준)</p>
-<div class="highlight"><span class="filename">litellm_config.yaml</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">guardrails</span><span class="p">:</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-input-mask&quot;</span><span class="w">       </span><span class="c1"># 입력 PII 처리</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span><span class="w">                  </span><span class="c1"># Presidio 엔진 연동(별도 컨테이너 기동)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pre_call&quot;</span><span class="w">                      </span><span class="c1"># LLM 호출 전 입력 검사</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">presidio_score_thresholds</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">ALL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span><span class="w">                            </span><span class="c1"># 신뢰도 0.7 미만 탐지는 무시</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">pii_entities_config</span><span class="p">:</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nt">EMAIL_ADDRESS</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;MASK&quot;</span><span class="w">               </span><span class="c1"># 이메일은 마스킹 후 통과</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">CREDIT_CARD</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;BLOCK&quot;</span><span class="w">                </span><span class="c1"># 카드번호는 요청 자체를 차단</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">guardrail_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;pii-output-check&quot;</span><span class="w">      </span><span class="c1"># 출력 검사</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">litellm_params</span><span class="p">:</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">guardrail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">presidio</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;post_call&quot;</span><span class="w">                     </span><span class="c1"># 응답 수신 후 입력+출력 검사</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">      </span><span class="nt">default_on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                      </span><span class="c1"># 모든 요청에 자동 적용</span>
+<h3 id="slice">slice 계층</h3>
+<p>slice는 cgroup 트리의 중간 노드이며 리소스 제어가 계층으로 상속됨</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="m">-.</span><span class="n">slice</span><span class="w">                 </span><span class="c1">#루트 slice</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├─<span class="w"> </span><span class="n">system.slice</span><span class="w">         </span><span class="c1">#시스템 데몬(sshd 등)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─<span class="w"> </span><span class="n">user.slice</span><span class="w">           </span><span class="c1">#로그인 사용자</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│<span class="w">  </span>└─<span class="w"> </span><span class="n">user</span><span class="o">@</span><span class="m">1000</span><span class="n">.service</span><span class="w"> </span><span class="c1">#uid 1000 사용자 매니저</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>└─<span class="w"> </span><span class="n">machine.slice</span><span class="w">        </span><span class="c1">#가상머신·컨테이너</span>
 </code></pre></div>
 <ul>
-<li>mode는 배열도 허용 → <code>mode: [pre_call, post_call]</code>로 입출력 동시 검사</li>
-<li>guardrail 값을 aporia·bedrock·lakera 등으로 바꾸면 벤더 가드레일로 교체됨</li>
-<li>MASK는 <code>&lt;CREDIT_CARD&gt;</code> 형태 placeholder로 치환, BLOCK은 요청을 거부</li>
-</ul>
-<h3 id="_15">운영 주의</h3>
-<ul>
-<li>오탐↔미탐 트레이드오프: 신뢰도 임계값을 낮추면 오탐↑, 높이면 미탐↑ → 도메인별 튜닝 필요</li>
-<li>지연 추가: pre-call·post-call은 요청 경로에 직렬로 붙어 응답 지연↑, during-call 병렬화로 완화</li>
-<li>가드레일 자체 비용: LLM 판정·벤더 가드레일은 검사 호출이 곧 과금이라 원 호출 비용에 가산됨</li>
-<li>감사 로그: 차단·마스킹 이벤트를 별도 로그로 남겨 정책 튜닝과 규정 준수 근거로 활용</li>
-<li>단일 가드레일로는 완전 차단이 불가능해 입출력 양방향에 서로 다른 방식을 겹쳐 배치하는 편이 현실적</li>
+<li>Max·High는 절대 한도, Weight는 형제 유닛 사이의 상대 비율</li>
+<li>상위 slice에 건 제한이 하위 유닛 합계에 함께 적용됨</li>
 </ul>
 <hr />
-<h3 id="_16">참고</h3>
+<h2 id="target">부팅과 target</h2>
+<p>target은 유닛 묶음이자 동기화 지점이며, SysV의 runlevel 숫자를 명명된 상태로 대체함</p>
+<table>
+<thead>
+<tr>
+<th>target</th>
+<th>역할</th>
+<th>runlevel 별칭</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sysinit.target</td>
+<td>초기 마운트·스왑 등 기본 초기화</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>basic.target</td>
+<td>소켓·타이머·경로까지 준비된 기본 동기화 지점</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>multi-user.target</td>
+<td>비그래픽 다중 사용자 환경</td>
+<td>runlevel3.target</td>
+</tr>
+<tr>
+<td>graphical.target</td>
+<td>GUI 로그인, multi-user.target을 포함</td>
+<td>runlevel5.target</td>
+</tr>
+<tr>
+<td>rescue.target</td>
+<td>기본 서비스 + 마운트만 올린 복구 모드</td>
+<td>runlevel1.target</td>
+</tr>
+<tr>
+<td>emergency.target</td>
+<td>PID 1과 셸만 뜨는 최소 모드</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>poweroff.target / reboot.target</td>
+<td>종료·재부팅 상태</td>
+<td>runlevel0 / runlevel6</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>LiteLLM으로 게이트웨이를 세워 라우팅·폴백·캐시·예산을 실측한 실습: <a href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/">LiteLLM으로 AI Gateway 구축과 운영</a></li>
-<li>Kong AI Gateway 공식 문서: <a href="https://developer.konghq.com/ai-gateway/">https://developer.konghq.com/ai-gateway/</a></li>
-<li>Cloudflare AI Gateway Features: <a href="https://developers.cloudflare.com/ai-gateway/features/">https://developers.cloudflare.com/ai-gateway/features/</a></li>
-<li>Envoy AI Gateway 공식 문서: <a href="https://aigateway.envoyproxy.io/docs/">https://aigateway.envoyproxy.io/docs/</a></li>
-<li>LiteLLM Guardrails Quick Start: <a href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start">https://docs.litellm.ai/docs/proxy/guardrails/quick_start</a></li>
-<li>Microsoft Presidio 공식 문서: <a href="https://microsoft.github.io/presidio/">https://microsoft.github.io/presidio/</a></li>
-<li>Amazon Bedrock Guardrails 문서: <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html">https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html</a></li>
+<li>default.target: 부팅 시 진입하는 목표, 보통 multi-user.target이나 graphical.target으로 심링크</li>
+<li>graphical.target은 multi-user.target을 pull in → 그래픽 상태는 다중 사용자 상태의 상위 집합</li>
+<li>부팅은 target 도달에 필요한 유닛을 의존성 그래프로 계산해 독립분을 병렬 기동</li>
 </ul>
 <hr />
-<h2 id="_17">결론</h2>
+<h2 id="vs-cron">타이머 vs cron</h2>
+<p>systemd timer는 유닛 활성화 방식의 스케줄러이며 cron 대비 의존성·로깅·복구가 강함</p>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>cron</th>
+<th>systemd timer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정밀도</td>
+<td>분 단위</td>
+<td>초 단위 + AccuracySec로 조정</td>
+</tr>
+<tr>
+<td>트리거 종류</td>
+<td>벽시계(realtime)만</td>
+<td>OnCalendar(realtime) + OnBootSec·OnUnitActiveSec 등 monotonic</td>
+</tr>
+<tr>
+<td>유닛 의존성</td>
+<td>없음</td>
+<td>After·Requires 등 유닛 의존성 지정</td>
+</tr>
+<tr>
+<td>로깅</td>
+<td>mail·syslog 별도</td>
+<td>journald에 서비스 로그로 통합</td>
+</tr>
+<tr>
+<td>놓친 작업 보정</td>
+<td>없음(anacron 별도)</td>
+<td>Persistent=true로 비활성 중 놓친 실행 catch up</td>
+</tr>
+<tr>
+<td>랜덤 분산</td>
+<td>없음</td>
+<td>RandomizedDelaySec로 동시 실행 분산</td>
+</tr>
+<tr>
+<td>리소스 제어</td>
+<td>없음</td>
+<td>대상 서비스에 cgroup·slice 그대로 적용</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>AI Gateway는 앱과 여러 LLM 프로바이더 사이의 단일 제어 계층으로 요청이 아닌 토큰 기준으로 트래픽을 통제</li>
-<li>라우팅·캐싱·폴백·미터링·가드레일·관측을 한 곳에 모아 벤더 종속 제거·비용 통제·가용성·안전을 동시 확보</li>
-<li>솔루션은 셀프호스팅 유연성(LiteLLM·Portkey), 관리형 편의(Cloudflare), k8s 표준(Envoy), 기존 API 플랫폼 재활용(Kong)으로 갈림</li>
-<li>가드레일은 pre-call·post-call 양방향에 서로 다른 방식을 겹쳐야 완전에 근접</li>
-<li>API Gateway는 "요청을 나르는 문", AI Gateway는 "토큰을 지키는 문"이라고 이해하면 됌</li>
+<li>타이머 유닛은 실행을 직접 하지 않고, 동명 <code>.service</code>(또는 Unit= 지정 유닛)를 활성화</li>
+<li>monotonic 타이머는 이벤트 경과 기준(OnBootSec 등), realtime 타이머는 달력 표현(OnCalendar)</li>
+<li>AccuracySec 기본 1분 → wake-up을 묶어 전력 절약, 정밀 실행엔 값을 낮춤</li>
+</ul>
+<hr />
+<h2 id="journald">journald 정리</h2>
+<p>journald는 로그를 구조화된 인덱스 바이너리 저널로 수집·저장하는 systemd 로깅 데몬</p>
+<ul>
+<li>수집원: 커널 메시지·syslog 호출·네이티브 API·서비스 stdout/stderr·audit</li>
+<li>구조화: 레코드마다 필드가 붙어 필드 단위 필터링 가능(journalctl 검색이 빠른 이유)</li>
+<li>신뢰 필드: <code>_PID</code>·<code>_UID</code>·<code>_SYSTEMD_UNIT</code>처럼 밑줄 접두 필드는 journald가 검증해 부여</li>
+<li>사용자 필드: <code>MESSAGE</code>·<code>PRIORITY</code>처럼 접두 없는 필드는 애플리케이션이 제공</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설정·값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>저장 위치</td>
+<td>휘발 <code>/run/log/journal</code>, 영속 <code>/var/log/journal</code></td>
+</tr>
+<tr>
+<td>Storage 옵션</td>
+<td>volatile · persistent · auto · none</td>
+</tr>
+<tr>
+<td>rate limit</td>
+<td>기본 30초당 10000건 초과 시 드롭(RateLimitIntervalSec·RateLimitBurst)</td>
+</tr>
+<tr>
+<td>용량 관리</td>
+<td>SystemMaxUse 기본 파일시스템 10%(상한 4GB), SystemKeepFree 15%</td>
+</tr>
+<tr>
+<td>압축</td>
+<td>512바이트 초과 객체 압축(Compress)</td>
+</tr>
+<tr>
+<td>syslog 연동</td>
+<td>ForwardToSyslog로 rsyslog 등에 동시 전달</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>rsyslog와의 저장 방식·원격 전송·메타데이터 차이는 별도 글(<a href="../../../../2025/03/13/rsyslog-journald-%EB%B9%84%EA%B5%90/">rsyslog, journald 비교</a>)로 위임</li>
+<li>journald는 systemd의 한 유닛(systemd-journald.service)이라 부팅·감독·cgroup 모델을 그대로 공유</li>
+</ul>
+<hr />
+<h2 id="_6">주요 명령 정리</h2>
+<p>상태·제어는 systemctl, 로그 조회는 journalctl로 나뉨</p>
+<table>
+<thead>
+<tr>
+<th>명령</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>systemctl status &lt;unit&gt;</code></td>
+<td>상태·최근 로그·cgroup 트리 확인</td>
+</tr>
+<tr>
+<td><code>systemctl start/stop/restart &lt;unit&gt;</code></td>
+<td>유닛 기동·정지·재기동</td>
+</tr>
+<tr>
+<td><code>systemctl enable/disable &lt;unit&gt;</code></td>
+<td>부팅 시 자동 기동 등록·해제</td>
+</tr>
+<tr>
+<td><code>systemctl list-units --type=service</code></td>
+<td>로드된 서비스 유닛 목록</td>
+</tr>
+<tr>
+<td><code>systemctl list-dependencies &lt;unit&gt;</code></td>
+<td>의존성 트리 출력</td>
+</tr>
+<tr>
+<td><code>systemctl cat/edit &lt;unit&gt;</code></td>
+<td>유닛 파일 열람·드롭인 오버라이드</td>
+</tr>
+<tr>
+<td><code>systemctl get-default / set-default</code></td>
+<td>default.target 조회·변경</td>
+</tr>
+<tr>
+<td><code>journalctl -u &lt;unit&gt;</code></td>
+<td>특정 유닛 로그만 조회</td>
+</tr>
+<tr>
+<td><code>journalctl -f</code></td>
+<td>실시간 로그 추적(tail)</td>
+</tr>
+<tr>
+<td><code>journalctl -b</code></td>
+<td>이번 부팅 이후 로그만</td>
+</tr>
+<tr>
+<td><code>journalctl -p err</code></td>
+<td>우선순위(err 이상)로 필터</td>
+</tr>
+<tr>
+<td><code>systemd-analyze blame</code></td>
+<td>유닛별 기동 소요 시간 정렬</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="_7">참고</h3>
+<ul>
+<li>systemd.service (freedesktop.org): <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html</a></li>
+<li>systemd.resource-control (freedesktop.org): <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.resource-control.html</a></li>
+<li>systemd.timer (freedesktop.org): <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html">https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html</a></li>
+</ul>
+<hr />
+<h2 id="_8">결론</h2>
+<ul>
+<li>systemd는 init·서비스 감독·타이머·마운트·로깅을 유닛이라는 한 모델로 묶은 관리자</li>
+<li>서비스는 Type으로 기동 완료를, Restart·Watchdog으로 자동 복구를, cgroup·slice로 리소스를 통제</li>
+<li>부팅은 target 도달을 위한 의존성 그래프 병렬 실행, 스케줄은 timer가 cron을 대체</li>
+<li>cron은 "시각이 되면 명령을 실행", systemd timer는 "시각이 되면 유닛을 활성화"로 이해하면 됌</li>
 </ul>
 
 
@@ -2230,7 +2260,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../litellm%EC%9C%BC%EB%A1%9C-ai-gateway-%EA%B5%AC%EC%B6%95%EA%B3%BC-%EC%9A%B4%EC%98%81/" class="md-footer__link md-footer__link--prev" aria-label="이전: LiteLLM으로 AI Gateway 구축과 운영">
+          <a href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AI Gateway 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2240,20 +2270,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                LiteLLM으로 AI Gateway 구축과 운영
+                AI Gateway 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../21/systemd-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: systemd 정리">
+          <a href="../s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: S3 성능·비용 최적화 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                systemd 정리
+                S3 성능·비용 최적화 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
