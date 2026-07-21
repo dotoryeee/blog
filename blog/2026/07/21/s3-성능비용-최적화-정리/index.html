@@ -1675,8 +1675,8 @@
 <ul>
 <li>내구성은 모든 클래스가 99.999999999%(11 nines) 동일 → 차이는 가용성·AZ 수·검색 속도·단가</li>
 <li>단일 AZ 클래스(One Zone-IA, Express One Zone)는 AZ 물리 손실에 견디지 못함 → 재생성 가능하거나 사본인 데이터에만 권장</li>
-<li>Standard-IA·One Zone-IA·Glacier IR은 128KB 미만 객체도 128KB로 과금</li>
-<li>Glacier Flexible·Deep Archive는 객체당 40KB 메타데이터 추가 과금(32KB는 Glacier 요율, 8KB는 Standard 요율)</li>
+<li>Standard-IA·One Zone-IA·Glacier Instant Retrieval은 128KB 미만 객체도 128KB로 과금</li>
+<li>Glacier Flexible Retrieval·Deep Archive는 객체당 40KB 메타데이터 추가 과금(32KB는 Glacier 요율, 8KB는 Standard 요율)</li>
 </ul>
 <h3 id="glacier">Glacier 복원 모드</h3>
 <table>
@@ -1778,33 +1778,36 @@
     S["Standard&lt;br&gt;저장 $0.025/GB·월(50TB까지)&lt;br&gt;최소 보관 없음"]
     IA["Standard-IA&lt;br&gt;저장 $0.0138/GB·월&lt;br&gt;최소 보관 30일, 검색 $0.01/GB"]
     ZIA["One Zone-IA&lt;br&gt;저장 $0.011/GB·월&lt;br&gt;최소 보관 30일, 검색 $0.01/GB, 단일 AZ"]
-    GIR["Glacier IR&lt;br&gt;저장 $0.005/GB·월&lt;br&gt;최소 보관 90일, 검색 $0.03/GB"]
-    FR["Glacier FR&lt;br&gt;저장 $0.0045/GB·월, 최소 보관 90일&lt;br&gt;복원 Standard $0.011/GB, Expedited $0.033/GB, Bulk 무료"]
-    GDA["Deep Archive&lt;br&gt;저장 $0.002/GB·월, 최소 보관 180일&lt;br&gt;복원 Standard $0.022/GB, Bulk $0.005/GB"]
+    GIR["Glacier Instant Retrieval&lt;br&gt;저장 $0.005/GB·월&lt;br&gt;최소 보관 90일, 검색 $0.03/GB"]
+    FR["Glacier Flexible Retrieval&lt;br&gt;저장 $0.0045/GB·월, 최소 보관 90일&lt;br&gt;복원 Standard $0.011/GB, Expedited $0.033/GB, Bulk 무료"]
+    GDA["Glacier Deep Archive&lt;br&gt;저장 $0.002/GB·월, 최소 보관 180일&lt;br&gt;복원 Standard $0.022/GB, Bulk $0.005/GB"]
     DEL["만료·삭제&lt;br&gt;최소 보관 충족 후면 추가 과금 없음&lt;br&gt;미충족 이탈은 잔여 기간 과금"]
     S --&gt;|"생성 즉시 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| IA
     S --&gt;|"생성 즉시 가능&lt;br&gt;전환 $0.01/1,000건"| ZIA
     S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.02/1,000건"| GIR
     S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.03258/1,000건"| FR
     S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.06/1,000건"| GDA
-    IA --&gt;|"IA 30일 충족 후&lt;br&gt;전환 $0.02/1,000건"| GIR
-    GIR --&gt;|"GIR 90일 충족 후&lt;br&gt;전환 $0.03258/1,000건"| FR
-    GIR -.-&gt;|"GIR 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
-    FR --&gt;|"FR 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
+    IA --&gt;|"최소 보관 30일 충족 후&lt;br&gt;전환 $0.02/1,000건"| GIR
+    GIR --&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.03258/1,000건"| FR
+    GIR -.-&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
+    FR --&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
     GDA --&gt; DEL</code></pre>
 <ul>
-<li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier IR)</li>
+<li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier Instant Retrieval)</li>
 <li>만료(Expiration): 지정 기간 후 객체 삭제, 미완료 멀티파트 업로드·이전 버전 정리도 라이프사이클로 처리</li>
-<li>Standard → IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
-<li>사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → IA 경유 Glacier IR은 IA에서 30일 뒤부터</li>
-<li>Standard에서는 중간 단계 없이 Glacier IR·FR·Deep Archive로 직행 가능 → 모두 생성 즉시 지정 가능</li>
+<li>Standard → Standard-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
+<li>사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → Standard-IA를 거친다면 30일 뒤부터 Glacier Instant Retrieval 지정 가능</li>
+<li>Standard에서는 중간 단계 없이 Glacier 3종으로 직행 가능 → 모두 생성 즉시 지정 가능</li>
 <li>전환 자체가 요청 → 객체 1,000건당 전환 요청 비용 발생</li>
 <li>과금 단가는 라이프사이클 규칙 충족 시점부터 대상 클래스 기준 → 물리 이동이 늦어도 충족일부터 새 단가·최소 보관 기간 시작(Intelligent-Tiering만 물리 전환 후 변경)</li>
 </ul>
 <h3 id="_3">전환 함정</h3>
 <ul>
-<li>작은 객체 다수를 IA·Glacier로 내리면 손해 → 128KB 미만도 128KB로 과금되고 전환 요청비까지 붙음</li>
+<li>작은 객체 다수를 IA 계열·Glacier 계열로 내리면 손해 → 128KB 미만도 128KB로 과금되고 전환 요청비까지 붙음</li>
 <li>최소 보관 기간 전 삭제·재전환 시 조기 삭제 요금 → Standard-IA에서 30일 전에 지우면 남은 기간만큼 과금</li>
+<li>조기 삭제는 결국 최소 보관 기간 전체를 낸 셈이 됨 → Glacier Deep Archive 전환 20일 뒤 지워도 잔여 160일분이 과금되어 총 180일치 부담</li>
+<li>최소 보관을 못 채우는 중간 기착은 단일 규칙에선 지정 자체가 불가 → Glacier Instant Retrieval 진입 90일 이전 시점의 Glacier Deep Archive 전환은 규칙 생성이 거부됨</li>
+<li>규칙을 둘로 쪼개면 조기 전환은 가능하나 잔여 기간 과금 → Glacier Instant Retrieval에 30일만 머물다 넘겨도 90일치 부담, 짧게 머물 바엔 Glacier Deep Archive 직행이 저렴</li>
 <li>Glacier로 전환하면 객체당 40KB 메타데이터가 얹힘 → 수백만 개의 초소형 객체 아카이브는 오히려 비쌈</li>
 <li>접근 패턴이 불규칙하면 수동 라이프사이클보다 Intelligent-Tiering이 나음 → 전환 타이밍을 사람이 못 맞춤</li>
 </ul>
@@ -1858,7 +1861,7 @@
 </tr>
 <tr>
 <td>검색 비용</td>
-<td>IA·Glacier는 GET·복원 시 GB당 요금, 자주 꺼내면 Standard보다 비쌈</td>
+<td>IA 계열·Glacier 계열은 GET·복원 시 GB당 요금, 자주 꺼내면 Standard보다 비쌈</td>
 <td>접근 빈도 실측 후 클래스 결정</td>
 </tr>
 <tr>
