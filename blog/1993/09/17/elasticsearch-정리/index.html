@@ -1,10 +1,12 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="ko" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="엘라스틱서치 도큐먼트 CRUD부터 매핑·애널라이저·인덱스 템플릿·롤오버·노드 role까지 실습 명령어로 정리">
       
       
       
@@ -19,6 +21,9 @@
       
         
       
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../../feed_rss_updated.xml">
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
@@ -67,9 +72,32 @@
 
     
     
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
   <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
 
-  </head>
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ElasticSearch 정리 - dotoryeee's blog" />
+<meta property="og:description" content="엘라스틱서치 도큐먼트 CRUD부터 매핑·애널라이저·인덱스 템플릿·롤오버·노드 role까지 실습 명령어로 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="ElasticSearch 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="엘라스틱서치 도큐먼트 CRUD부터 매핑·애널라이저·인덱스 템플릿·롤오버·노드 role까지 실습 명령어로 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/1993/09/17/elasticsearch-%EC%A0%95%EB%A6%AC.png" />
+</head>
   
   
     
@@ -87,7 +115,7 @@
       
         
         <a href="#elasticsearch" class="md-skip">
-          Skip to content
+          콘텐츠로 이동
         </a>
       
     </div>
@@ -101,7 +129,7 @@
   
 
 <header class="md-header md-header--shadow" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
   <img src="../../../../../logo.svg" alt="logo">
@@ -159,7 +187,7 @@
 
 
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
       
@@ -306,7 +334,7 @@
   <span class="md-ellipsis">
     
   
-    Archive
+    아카이브
   
 
     
@@ -322,7 +350,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Archive
+    아카이브
   
 
           </label>
@@ -344,7 +372,7 @@
   <span class="md-ellipsis">
     
   
-    2026 July
+    2026 7월
   
 
     
@@ -374,7 +402,7 @@
   <span class="md-ellipsis">
     
   
-    2025 September
+    2025 9월
   
 
     
@@ -404,7 +432,7 @@
   <span class="md-ellipsis">
     
   
-    2025 March
+    2025 3월
   
 
     
@@ -434,7 +462,7 @@
   <span class="md-ellipsis">
     
   
-    2024 March
+    2024 3월
   
 
     
@@ -464,7 +492,7 @@
   <span class="md-ellipsis">
     
   
-    2024 February
+    2024 2월
   
 
     
@@ -494,7 +522,7 @@
   <span class="md-ellipsis">
     
   
-    2023 November
+    2023 11월
   
 
     
@@ -524,7 +552,7 @@
   <span class="md-ellipsis">
     
   
-    2023 October
+    2023 10월
   
 
     
@@ -554,7 +582,7 @@
   <span class="md-ellipsis">
     
   
-    2023 February
+    2023 2월
   
 
     
@@ -584,7 +612,7 @@
   <span class="md-ellipsis">
     
   
-    2023 January
+    2023 1월
   
 
     
@@ -614,7 +642,7 @@
   <span class="md-ellipsis">
     
   
-    2021 April
+    2021 4월
   
 
     
@@ -644,7 +672,7 @@
   <span class="md-ellipsis">
     
   
-    1993 September
+    1993 9월
   
 
     
@@ -693,7 +721,7 @@
   <span class="md-ellipsis">
     
   
-    Categories
+    카테고리
   
 
     
@@ -709,7 +737,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Categories
+    카테고리
   
 
           </label>
@@ -1515,7 +1543,7 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+<nav class="md-nav md-nav--secondary" aria-label="목차">
   
   
   
@@ -1539,7 +1567,7 @@
                 <a href="../../../../" class="md-nav__link">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
                   <span class="md-ellipsis">
-                    Back to index
+                    Index로 돌아가기
                   </span>
                 </a>
               </div>
@@ -1568,7 +1596,7 @@
               <li class="md-nav__item md-nav__item--section">
                 <div class="md-post__title">
                   <span class="md-ellipsis">
-                    Metadata
+                    메타데이터
                   </span>
                 </div>
                 <nav class="md-nav">
@@ -1576,7 +1604,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="1993-09-17 00:00:00+00:00" class="md-ellipsis">Sep 17, 1993</time>
+                        <time datetime="1993-09-17 00:00:00+00:00" class="md-ellipsis">1993. 9. 17.</time>
                       </div>
                     </li>
                     
@@ -1585,7 +1613,7 @@
                         <div class="md-nav__link">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
                           <span class="md-ellipsis">
-                            in
+                            카테고리
                             
                               <a href="../../../../category/sre/">SRE</a>, 
                               <a href="../../../../category/elasticsearch/">ElasticSearch</a></span>
@@ -1599,7 +1627,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              7 min read
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -2131,7 +2159,7 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
+  맨위로
 </button>
         
       </main>
@@ -2142,17 +2170,17 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
       
         
       
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../prometheus-and-grafana/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Prometheus and Grafana">
+          <a href="../prometheus-and-grafana/" class="md-footer__link md-footer__link--prev" aria-label="이전: Prometheus and Grafana">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                Previous
+                이전
               </span>
               <div class="md-ellipsis">
                 Prometheus and Grafana
@@ -2162,10 +2190,10 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
         
         
           
-          <a href="../elasticsearch-domain-in-vpc/" class="md-footer__link md-footer__link--next" aria-label="Next: ElasticSearch domain in VPC">
+          <a href="../elasticsearch-domain-in-vpc/" class="md-footer__link md-footer__link--next" aria-label="다음: ElasticSearch domain in VPC">
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                Next
+                다음
               </span>
               <div class="md-ellipsis">
                 ElasticSearch domain in VPC
@@ -2236,7 +2264,7 @@ keyword 타입으로 저장할 경우 "jeongwon" 키워드로 검색할 수 없�
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
     
     
       <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
