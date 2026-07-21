@@ -5,6 +5,10 @@
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
+         <loc>https://dotoryeee.github.io/blog/tags/</loc>
+         <lastmod>2026-07-21</lastmod>
+    </url>
+    <url>
          <loc>https://dotoryeee.github.io/blog/blog/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
@@ -377,27 +381,15 @@
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/cloud/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
          <loc>https://dotoryeee.github.io/blog/blog/category/ai/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/security/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/linux/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
          <loc>https://dotoryeee.github.io/blog/blog/category/sre/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/server/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/kubernetes/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
@@ -417,19 +409,19 @@
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/route53/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/kubernetes/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/aa/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/security/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/udemy/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/database/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/study/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/architecture/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
@@ -438,26 +430,6 @@
     </url>
     <url>
          <loc>https://dotoryeee.github.io/blog/blog/category/python/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/project/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/cicd/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/elasticsearch/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/prometheus/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/grafana/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
@@ -509,19 +481,7 @@
          <lastmod>2026-07-21</lastmod>
     </url>
     <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/cloud/page/2/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/cloud/page/3/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/server/page/2/</loc>
-         <lastmod>2026-07-21</lastmod>
-    </url>
-    <url>
-         <loc>https://dotoryeee.github.io/blog/blog/category/server/page/3/</loc>
+         <loc>https://dotoryeee.github.io/blog/blog/category/linux/page/2/</loc>
          <lastmod>2026-07-21</lastmod>
     </url>
 </urlset>
