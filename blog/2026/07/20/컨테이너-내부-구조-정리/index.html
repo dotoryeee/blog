@@ -1484,27 +1484,10 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="런타임 선택지">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        참고
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1592,7 +1575,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 8분
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -2107,15 +2090,7 @@
 <li>런타임 교체는 쿠버네티스 RuntimeClass로 워크로드별 지정 가능</li>
 </ul>
 <hr />
-<h3 id="_9">참고</h3>
-<ul>
-<li>docker 없이 커널 기능만으로 컨테이너를 손수 조립한 실습: <a href="../docker-%EC%97%86%EC%9D%B4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EA%B8%B0/">docker 없이 컨테이너 만들어보기</a></li>
-<li>Linux namespaces (man7): <a href="https://man7.org/linux/man-pages/man7/namespaces.7.html">https://man7.org/linux/man-pages/man7/namespaces.7.html</a></li>
-<li>Dockershim Removal FAQ (Kubernetes): <a href="https://kubernetes.io/blog/2022/02/17/dockershim-faq/">https://kubernetes.io/blog/2022/02/17/dockershim-faq/</a></li>
-<li>About the OCI (opencontainers.org): <a href="https://opencontainers.org/about/overview/">https://opencontainers.org/about/overview/</a></li>
-</ul>
-<hr />
-<h2 id="_10">결론</h2>
+<h2 id="_9">결론</h2>
 <ul>
 <li>컨테이너는 namespace(격리)·cgroup(제한)·레이어 이미지로 조합한 격리 프로세스</li>
 <li>docker CLI→dockerd→containerd→shim→runc 계층을 거쳐 실제 프로세스가 됨</li>

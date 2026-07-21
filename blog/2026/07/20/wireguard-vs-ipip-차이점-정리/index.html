@@ -1483,27 +1483,10 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="운영 주의">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        참고
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1856,16 +1839,7 @@
 <li>공통: 비대칭 경로·PMTU 블랙홀 주의. DF 비트 + 경로상 ICMP 차단이 겹치면 대형 패킷만 조용히 드롭됨</li>
 </ul>
 <hr />
-<h3 id="_9">참고</h3>
-<ul>
-<li>두 터널을 컨테이너에 직접 올려 평문·암호문과 처리량·MTU를 실측한 실습: <a href="../ipip%EC%99%80-wireguard-%ED%84%B0%EB%84%90-%EC%A7%81%EC%A0%91-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B3%A0-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/">IPIP와 WireGuard 터널 직접 구성하고 비교하기</a></li>
-<li>WireGuard: Next Generation Kernel Network Tunnel (백서): <a href="https://www.wireguard.com/papers/wireguard.pdf">https://www.wireguard.com/papers/wireguard.pdf</a></li>
-<li>WireGuard Protocol &amp; Cryptography: <a href="https://www.wireguard.com/protocol/">https://www.wireguard.com/protocol/</a></li>
-<li>RFC 2003 IP Encapsulation within IP: <a href="https://www.rfc-editor.org/rfc/rfc2003">https://www.rfc-editor.org/rfc/rfc2003</a></li>
-<li>Calico Overlay networking (VXLAN·IPIP): <a href="https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip">https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip</a></li>
-</ul>
-<hr />
-<h2 id="_10">결론</h2>
+<h2 id="_9">결론</h2>
 <ul>
 <li>IPIP는 바깥 IP 헤더 20B만 더하는 최소 캡슐화, 암호화·인증 없음 → 신뢰된 사설망 내부 라우팅용</li>
 <li>WireGuard는 Noise_IK 핸드셰이크 + cryptokey routing으로 인증·암호화를 기본 내장 → 비신뢰 구간 터널용</li>
