@@ -103,6 +103,7 @@ graph TD
 - 전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier Instant Retrieval)
 - 만료(Expiration): 지정 기간 후 객체 삭제, 미완료 멀티파트 업로드·이전 버전 정리도 라이프사이클로 처리
 - Standard → Standard-IA·One Zone-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용
+- 출처: https://aws.amazon.com/ko/about-aws/whats-new/2026/07/s3-removes-30-day-transitions-standard-ia-one-zone-ia/
 - Glacier 3종 직행은 원래부터 생성 즉시 가능 → 30일 경과 제한은 애초에 IA 계열에만 있던 규칙
 - 사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → Standard-IA를 거친다면 30일 뒤부터 Glacier Instant Retrieval 지정 가능
 - 전환 자체가 요청 → 객체 1,000건당 전환 요청 비용 발생
