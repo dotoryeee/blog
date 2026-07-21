@@ -27,9 +27,6 @@ hide:
 - bpftrace로 시스템 콜을 시스템 전체에서 추적하고, 같은 워크로드를 strace로 추적했을 때와 오버헤드를 수치로 비교한다
 - kind 클러스터에 Cilium을 kube-proxy replacement 모드로 올려 kube-proxy 없이 서비스가 동작함을 확인하고, Hubble로 흐름을 관측한다
 
-!!! tip
-    💡 전 과정을 로컬 Docker와 kind 위에서 돌려 클라우드 비용이 들지 않는다
-
 ## eBPF와 추적 도구
 
 ---

@@ -26,9 +26,6 @@ hide:
 - 애플리케이션 코드를 고치지 않는 zero-code 계측으로 파이썬 서비스 두 개를 띄우고, Collector의 debug exporter 로그에서 span 수신을 눈으로 확인한다
 - traceparent 헤더가 서비스 경계를 넘어 전달되는 증거를 앱 로그와 span의 부모 관계로 교차 검증한다
 
-!!! tip
-    💡 Collector와 Jaeger, 계측 대상 앱을 전부 docker compose로 로컬에서 돌려 클라우드 비용이 들지 않는다
-
 계측 개념과 Collector 구성요소(receiver, processor, exporter), 신호 3종, 샘플링 방식은 OpenTelemetry 정리 글에서 다뤘다. 이 글은 그 위에서 파이프라인을 실제로 세우고, 한 요청이 두 서비스를 거쳐 하나의 trace로 묶이는지 확인하는 데 집중한다.
 
 ## 실습 구성

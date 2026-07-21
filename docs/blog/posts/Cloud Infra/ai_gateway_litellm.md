@@ -24,11 +24,8 @@ hide:
 ---
 
 - AI Gateway를 로컬에서 직접 구축하고 라우팅·캐싱·비용·관측까지 한 스택에서 실측한다
-- LiteLLM Proxy 뒤에 Ollama 로컬 모델 2개를 붙여서 클라우드 비용 없이 진행한다
+- LiteLLM Proxy 뒤에 Ollama 로컬 모델 2개를 붙여서 진행한다
 - 통합 API 호출, virtual key와 rate limit, 로드밸런싱과 폴백, 캐시 히트, 예산 차단, 프로메테우스·OTEL 관측을 응답 헤더와 컨테이너 로그로 확인한다
-
-!!! tip
-    💡 백엔드가 Ollama 로컬 모델이라 API 키와 클라우드 비용이 전혀 들지 않는다
 
 ## 구성
 
