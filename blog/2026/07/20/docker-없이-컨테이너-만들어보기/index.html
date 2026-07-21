@@ -1583,10 +1583,6 @@
 <li>메모리 제한을 넘긴 프로세스가 커널 OOM 킬러에 죽는 것까지 실측한다</li>
 <li>마지막에 여기서 손으로 한 일이 runc 가 컨테이너를 띄울 때 하는 일과 같음을 확인한다</li>
 </ul>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>💡 전 과정을 macOS Docker Desktop 의 리눅스 VM 커널 위에서 돌려 클라우드 비용이 들지 않는다</p>
-</div>
 <h2 id="_2">실습 환경</h2>
 <hr />
 <p>컨테이너는 별도 게스트 커널 없이 호스트 커널을 그대로 쓴다. macOS 의 Docker Desktop 은 리눅스 VM 을 하나 띄우고 그 안에서 컨테이너를 돌리므로, 그 VM 커널이 여기서의 진짜 "호스트 커널"이다. 먼저 커널 버전을 본다.</p>

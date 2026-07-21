@@ -1588,10 +1588,6 @@
 <li>iperf3로 터널 없음, IPIP, WireGuard 세 경로의 처리량을 재고 MTU를 실측한다</li>
 </ul>
 <p>프로토콜 원리와 항목별 비교표는 WireGuard vs IPIP 차이점 정리 글에서 다루고, 이 글은 손으로 올려 값을 뽑는 데 집중한다.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>💡 전 과정을 로컬 Docker 컨테이너 두 개 위에서 돌려 클라우드 비용이 들지 않는다</p>
-</div>
 <h2 id="_2">실습 환경</h2>
 <hr />
 <p>macOS의 Docker Desktop은 linuxkit 리눅스 VM 위에서 컨테이너를 돌린다. 그 VM 커널이 ipip와 wireguard 모듈을 이미 제공하므로 노드 역할의 컨테이너 두 개를 같은 브리지 네트워크에 붙이면 물리 노드 두 대처럼 쓸 수 있다. NET_ADMIN과 privileged를 줘야 터널 인터페이스를 만들 수 있다.</p>
