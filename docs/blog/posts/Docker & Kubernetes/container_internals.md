@@ -197,14 +197,6 @@ OCI 이미지는 매니페스트(manifest)가 config와 레이어 blob을 다이
 
 ---
 
-### 참고
-- docker 없이 커널 기능만으로 컨테이너를 손수 조립한 실습: [docker 없이 컨테이너 만들어보기](container_lab.md)
-- Linux namespaces (man7): https://man7.org/linux/man-pages/man7/namespaces.7.html
-- Dockershim Removal FAQ (Kubernetes): https://kubernetes.io/blog/2022/02/17/dockershim-faq/
-- About the OCI (opencontainers.org): https://opencontainers.org/about/overview/
-
----
-
 ## 결론
 - 컨테이너는 namespace(격리)·cgroup(제한)·레이어 이미지로 조합한 격리 프로세스
 - docker CLI→dockerd→containerd→shim→runc 계층을 거쳐 실제 프로세스가 됨

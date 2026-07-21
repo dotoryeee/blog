@@ -192,17 +192,6 @@ spec:
 
 ---
 
-### 참고
-- kind에 Argo CD를 올려 sync·drift·롤백을 직접 확인한 실습: [kind에 ArgoCD 올려 GitOps 동작 확인하기](gitops_argocd_lab.md)
-- OpenGitOps Principles v1.0.0: https://opengitops.dev/
-- Argo CD Architectural Overview: https://argo-cd.readthedocs.io/en/stable/operator-manual/architecture/
-- Automated Sync Policy: https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
-- Sync Phases and Waves: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-waves/
-- Resource Health: https://argo-cd.readthedocs.io/en/stable/operator-manual/health/
-- Flux Components: https://fluxcd.io/flux/components/
-
----
-
 ## 결론
 - GitOps는 배포 상태의 단일 진실 원천을 Git으로 고정하고 에이전트가 상시 조정하는 운영 모델
 - Argo CD는 desired(Git)와 live(클러스터)의 차이를 지우는 조정 루프가 전부

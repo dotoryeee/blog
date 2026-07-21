@@ -187,15 +187,6 @@ Collector는 앱 가까이 붙는 에이전트형과, 독립 서비스로 모으
 
 ---
 
-### 참고
-- Collector와 Jaeger로 두 서비스의 요청을 한 trace로 묶어 본 실습: [OpenTelemetry Collector로 분산 트레이싱 실습](otel_lab.md)
-- What is OpenTelemetry? (opentelemetry.io): https://opentelemetry.io/docs/what-is-opentelemetry/
-- Signals (opentelemetry.io): https://opentelemetry.io/docs/concepts/signals/
-- Collector Architecture (opentelemetry.io): https://opentelemetry.io/docs/collector/architecture/
-- Sampling (opentelemetry.io): https://opentelemetry.io/docs/concepts/sampling/
-
----
-
 ## 결론
 - OpenTelemetry는 계측을 한 번만 해두면 백엔드를 갈아 끼워도 재작성이 없는 벤더 중립 관측성 규격
 - 신호는 trace·metric·log 3종이며, 컨텍스트 전파와 Baggage가 세 신호를 하나의 요청으로 묶음

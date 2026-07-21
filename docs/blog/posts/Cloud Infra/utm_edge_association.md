@@ -101,10 +101,6 @@ graph LR
 - GWLB는 flow 단위로 어플라이언스에 고정(sticky) → 어플라이언스 장애 시 기존 flow 처리 동작 확인 필요
 - GWLB는 원본 패킷을 GENEVE로 감싸 그대로 전달하므로 UTM에서 NAT 없이 투명(inline) 검사 가능
 
-### 참고
-
-- 출처: https://docs.aws.amazon.com/vpc/latest/userguide/gateway-route-tables.html
-
 ## 결론
 
 - 단일 VPC 인바운드 검사는 edge association + GWLB 조합이 표준, ENI 직접 지정은 소규모/PoC용

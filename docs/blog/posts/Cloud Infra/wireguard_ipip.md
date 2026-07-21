@@ -172,15 +172,6 @@ Endpoint = 203.0.113.5:51820
 
 ---
 
-### 참고
-- 두 터널을 컨테이너에 직접 올려 평문·암호문과 처리량·MTU를 실측한 실습: [IPIP와 WireGuard 터널 직접 구성하고 비교하기](wireguard_ipip_lab.md)
-- WireGuard: Next Generation Kernel Network Tunnel (백서): https://www.wireguard.com/papers/wireguard.pdf
-- WireGuard Protocol & Cryptography: https://www.wireguard.com/protocol/
-- RFC 2003 IP Encapsulation within IP: https://www.rfc-editor.org/rfc/rfc2003
-- Calico Overlay networking (VXLAN·IPIP): https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip
-
----
-
 ## 결론
 - IPIP는 바깥 IP 헤더 20B만 더하는 최소 캡슐화, 암호화·인증 없음 → 신뢰된 사설망 내부 라우팅용
 - WireGuard는 Noise_IK 핸드셰이크 + cryptokey routing으로 인증·암호화를 기본 내장 → 비신뢰 구간 터널용

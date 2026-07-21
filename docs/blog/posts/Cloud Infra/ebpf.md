@@ -196,14 +196,6 @@ maps는 eBPF 프로그램이 상태를 저장하고 유저스페이스와 데이
 
 ---
 
-### 참고
-- bpftrace·Cilium으로 오버헤드와 서비스 네트워킹을 직접 잰 실습: [bpftrace와 Cilium으로 eBPF 실습](ebpf_lab.md)
-- What is eBPF? (ebpf.io): https://ebpf.io/what-is-ebpf/
-- BPF CO-RE (eBPF Docs): https://docs.ebpf.io/concepts/core/
-- BPF Documentation (kernel.org): https://docs.kernel.org/bpf/
-
----
-
 ## 결론
 - eBPF는 커널을 재컴파일·재부팅하지 않고 검증된 프로그램을 이벤트 지점에 안전하게 주입하는 실행 계층
 - verifier(안전)·JIT(속도)·maps(데이터 교환)·CO-RE(이식성)가 커널 모듈 대비 우위의 네 축

@@ -250,17 +250,6 @@ guardrails:
 
 ---
 
-### 참고
-- LiteLLM으로 게이트웨이를 세워 라우팅·폴백·캐시·예산을 실측한 실습: [LiteLLM으로 AI Gateway 구축과 운영](ai_gateway_litellm.md)
-- Kong AI Gateway 공식 문서: https://developer.konghq.com/ai-gateway/
-- Cloudflare AI Gateway Features: https://developers.cloudflare.com/ai-gateway/features/
-- Envoy AI Gateway 공식 문서: https://aigateway.envoyproxy.io/docs/
-- LiteLLM Guardrails Quick Start: https://docs.litellm.ai/docs/proxy/guardrails/quick_start
-- Microsoft Presidio 공식 문서: https://microsoft.github.io/presidio/
-- Amazon Bedrock Guardrails 문서: https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html
-
----
-
 ## 결론
 - AI Gateway는 앱과 여러 LLM 프로바이더 사이의 단일 제어 계층으로 요청이 아닌 토큰 기준으로 트래픽을 통제
 - 라우팅·캐싱·폴백·미터링·가드레일·관측을 한 곳에 모아 벤더 종속 제거·비용 통제·가용성·안전을 동시 확보
