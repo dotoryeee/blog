@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - AWS
+description: "REST API Gateway에 Lambda 두 개를 root·resource 경로로 연결하고 GET 파라미터 매핑과 curl 호출까지 확인한 실습"
 ---
 # API Gateway with Lambda
 

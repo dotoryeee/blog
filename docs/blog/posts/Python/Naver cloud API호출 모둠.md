@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Python
+description: "네이버 클라우드 API를 HMAC 서명으로 호출해 서버 목록 조회·시작·타겟그룹 등록하는 파이썬 스니펫 모음"
 ---
 # Naver cloud API 호출 예시
 <!-- more -->

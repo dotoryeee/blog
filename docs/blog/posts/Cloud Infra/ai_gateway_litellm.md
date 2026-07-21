@@ -7,6 +7,7 @@ categories:
   - Cloud
   - AI
   - SRE
+description: "LiteLLM Proxy와 Ollama 로컬 모델로 게이트웨이를 세워 라우팅·폴백·캐시 히트·예산 차단·프로메테우스 관측까지 응답 헤더로 실측한 기록"
 hide:
   - toc
 ---

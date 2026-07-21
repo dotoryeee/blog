@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+description: "테라폼 state 파일을 S3에 저장하고 DynamoDB terraform-lock 테이블로 잠가 로컬 상태를 원격 백엔드로 옮긴 실습 기록"
 ---
 # Terraform Backend
 

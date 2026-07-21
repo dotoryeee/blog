@@ -6,6 +6,7 @@ authors:
 categories:
   - Docker
   - Server
+description: "docker 없이 unshare·cgroup·chroot·overlayfs·veth만으로 컨테이너를 손수 조립하고 20M 메모리 제한 OOM까지 실측한 기록"
 hide:
   - toc
 ---

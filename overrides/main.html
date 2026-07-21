@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
 {% block extrahead %}
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
   <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="{{ config.site_name }}" />
+  <meta property="og:locale" content="ko_KR" />
 {% endblock %}

@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "HTTP Flooding·SYN·DNS 증폭 등 DDoS 유형을 OSI 계층별로 나눠 Nginx·iptables·커널 파라미터 대응 설정을 표로 정리"
 hide:
   - toc
 ---

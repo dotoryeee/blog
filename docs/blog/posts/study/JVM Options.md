@@ -6,6 +6,7 @@ authors:
 categories:
   - study
   - java
+description: "Xms·Xmx·G1 region 등 JVM 메모리 옵션 정리와 CMS에서 G1, G1에서 ZGC로 전환할 때 주의점"
 ---
 # JVM Options
 

@@ -6,6 +6,7 @@ authors:
 categories:
   - Network
   - Server
+description: "IPIP와 WireGuard의 캡슐화·암호화 원리와 Noise_IK 핸드셰이크·cryptokey routing 차이를 비교표로 정리"
 ---
 # WireGuard vs IPIP 차이점 정리
 

@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - DevOps
+description: "mkdocs gh-deploy 푸시는 됐는데 글이 404, GitHub Pages 빌드가 building에서 멈춘 원인을 gh api로 격리하고 재빌드로 푼 기록"
 ---
 
 # GitHub Pages 배포 미반영 이슈 요약

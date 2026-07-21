@@ -7,6 +7,7 @@ categories:
   - CICD
   - Docker
   - DevOps
+description: "React·Node·Nginx·MySQL 멀티컨테이너를 docker-compose로 묶고 Nginx 라우팅과 Travis CI로 AWS Beanstalk ECS까지 배포한 기록"
 ---
 # Multi container CICD
 

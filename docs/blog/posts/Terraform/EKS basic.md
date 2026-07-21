@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+description: "terraform-aws-modules로 EKS 1.26 최소 클러스터를 올리며 노드그룹 AZ 인스턴스 이슈와 configmap 연결 오류를 잡은 기록"
 ---
 # basis EKS cluster w/ terraform
 K8S 연습을 위한 최소한의 EKS cluter 구축 terraform 코드입니다.

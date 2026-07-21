@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - SRE
+description: "OpenTelemetry Collector와 Jaeger를 docker compose로 세워 Flask 두 서비스의 요청이 traceparent로 한 trace에 묶이는지 zero-code 계측으로 실측한 기록"
 hide:
   - toc
 ---

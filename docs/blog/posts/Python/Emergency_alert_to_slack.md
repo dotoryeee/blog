@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Python
+description: "재난안전문자 공공 API를 AWS Lambda로 10분마다 호출해 지정 지역 발생 시 Slack 알림 보내기까지 구현 기록"
 ---
 # 재난안전문자 공공 API 활용하기
 

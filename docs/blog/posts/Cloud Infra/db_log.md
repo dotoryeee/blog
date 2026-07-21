@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "WAL·Redo·Undo·Binlog 등 DB 로그 종류와 MySQL·PostgreSQL 차이, Aurora가 로그를 공유 스토리지에서 다루는 방식까지 비교"
 ---
 # DB 로그와 Aurora 정리
 

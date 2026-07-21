@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+description: "EKS에 프로메테우스·그라파나 모니터링과 Logstash·OpenSearch·Cognito 로깅 스택을 테라폼으로 함께 구축한 기록"
 ---
 # deploy EKS and EFK
 EKS 구성 및 아래 스택을 추가 구성합니다<br>

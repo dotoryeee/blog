@@ -6,6 +6,7 @@ authors:
 categories:
   - SRE
   - ElasticSearch
+description: "VPC 프라이빗 서브넷의 ElasticSearch 도메인을 Nginx 프록시로 리다이렉션, Cognito 인증 유무별 설정 정리"
 ---
 # ElasticSearch domain in VPC
 

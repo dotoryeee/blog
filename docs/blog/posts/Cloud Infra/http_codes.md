@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Network
+description: "200·301·404·500·503 등 주요 HTTP 상태 코드 20개를 원인·동작 방식과 401·403, 500·502·503 차이까지 정리"
 ---
 # HTTP status code 정리
 

@@ -6,6 +6,7 @@ authors:
 categories:
   - CICD
   - DevOps
+description: "CircleCI orbs로 프론트는 AWS S3에, 백엔드는 CodeDeploy로 EC2에 올리는 배포 파이프라인을 IAM 권한부터 설정한 기록"
 ---
 # Circle-CI Basics
 <!-- more -->

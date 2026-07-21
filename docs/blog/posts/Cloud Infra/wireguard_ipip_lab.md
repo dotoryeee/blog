@@ -6,6 +6,7 @@ authors:
 categories:
   - Network
   - Server
+description: "Docker 컨테이너 두 대에 IPIP·WireGuard 터널을 직접 올려 tcpdump로 평문·암호문을 대조하고 iperf3 처리량과 MTU까지 실측한 기록"
 ---
 
 # IPIP와 WireGuard 터널 직접 구성하고 비교하기

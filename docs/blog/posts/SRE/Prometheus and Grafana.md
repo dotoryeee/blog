@@ -7,6 +7,7 @@ categories:
   - SRE
   - Prometheus
   - Grafana
+description: "도커 MySQL 3대에 node·mysqld exporter를 붙여 Prometheus로 수집하고 Grafana 대시보드까지 연결한 실습"
 ---
 # Prometheus and Grafana
 

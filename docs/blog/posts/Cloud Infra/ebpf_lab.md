@@ -6,6 +6,7 @@ authors:
 categories:
   - Server
   - Kubernetes
+description: "bpftrace와 Cilium으로 커널 추적과 서비스 네트워킹을 실측하고 strace 대비 이벤트당 약 2600배 낮은 오버헤드를 수치로 비교한 기록"
 hide:
   - toc
 ---

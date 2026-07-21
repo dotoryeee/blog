@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "리눅스 swap 파티션과 파일 방식 비교, swappiness 튜닝과 서버·DB·컨테이너별 용량 가이드까지 정리"
 ---
 # Swap 정리
 

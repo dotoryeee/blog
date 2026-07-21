@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "net.core.somaxconn과 fs.file-max의 역할 차이를 파일 디스크립터 관점에서 비교하고 OS별 기본값·ulimit -n 관계까지 정리"
 ---
 # net.core.somaxconn vs fs.file-max 파라미터
 

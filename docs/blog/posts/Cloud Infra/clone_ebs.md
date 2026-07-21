@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - AWS
+description: "rsync로 EBS 볼륨을 다른 EBS로 복제해 용량 축소·파일시스템 변경에 쓰는 절차, -axcHAWS·numeric-ids 옵션까지 기록"
 ---
 # rsync로 EBS 복제하는 방법
 

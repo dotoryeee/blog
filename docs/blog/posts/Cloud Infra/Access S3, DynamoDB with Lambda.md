@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - AWS
+description: "S3 객체 생성 이벤트로 Lambda를 트리거해 파일을 처리하고 DynamoDB에 적재, test event로 반복 검증한 실습"
 ---
 # Access S3, DynamoDB with Lambda
 

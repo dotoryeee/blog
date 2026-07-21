@@ -6,6 +6,7 @@ authors:
 categories:
   - Server
   - Kubernetes
+description: "eBPF의 verifier·JIT·maps·CO-RE 구조와 커널 모듈과의 차이, 훅 위치·개발 스택·Cilium·Falco 같은 대표 제품까지 정리"
 hide:
   - toc
 ---

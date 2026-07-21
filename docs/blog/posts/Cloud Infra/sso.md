@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "SSO 프로토콜(OAuth2·OIDC·SAML·JWT) 비교와 EKS Pod Identity·IRSA 인증 프로세스 차이를 시퀀스 다이어그램으로 정리"
 ---
 # SSO 요약
 

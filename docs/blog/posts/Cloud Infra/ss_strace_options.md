@@ -6,6 +6,7 @@ authors:
 categories:
   - Server
   - Network
+description: "ss -nltp로 포트 점유 프로세스를 찾고 strace로 실패 시스템 콜을 역추적하는 트러블슈팅 옵션 조합 정리"
 ---
 
 # ss, strace 트러블슈팅 옵션 정리

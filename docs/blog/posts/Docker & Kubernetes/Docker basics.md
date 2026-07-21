@@ -6,6 +6,7 @@ authors:
 categories:
   - docker
   - study
+description: "Node 앱으로 Dockerfile·WORKDIR·레이어 캐싱(빌드 6.7초에서 1.8초)·볼륨·compose까지 훑은 도커 복습 기록"
 ---
 # Docker basics
 

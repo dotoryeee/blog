@@ -1,4 +1,18 @@
 mkdocs
-mkdocs-material
+mkdocs-material[imaging]
 pymdown-extensions
 mkdocs-rtd-dropdown
+mkdocs-rss-plugin
+
+# The "[imaging]" extra on mkdocs-material installs CairoSVG + Pillow, required by
+# the built-in social plugin to auto-generate og:image social cards.
+#
+# These Python packages additionally need native system libraries that pip cannot
+# install. Install them via your OS package manager before building:
+#
+#   macOS (Homebrew):
+#     brew install cairo freetype libffi libjpeg libpng zlib pngquant
+#
+#   Debian/Ubuntu CI (e.g. GitHub Actions):
+#     sudo apt-get install -y libcairo2-dev libfreetype6-dev libffi-dev \
+#       libjpeg-dev libpng-dev zlib1g-dev pngquant

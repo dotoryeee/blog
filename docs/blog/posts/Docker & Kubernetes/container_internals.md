@@ -6,6 +6,7 @@ authors:
 categories:
   - Docker
   - Kubernetes
+description: "namespace·cgroup부터 dockerd·containerd·runc 계층과 dockershim 제거, overlayfs, gVisor·Kata 런타임 선택지까지 표로 정리"
 hide:
   - toc
 ---

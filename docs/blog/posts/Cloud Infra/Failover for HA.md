@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - docker
+description: "Orchestrator GUI로 MySQL 마스터 장애 시 자동 페일오버를 Docker 컨테이너로 구성하고 인위적 다운으로 승격·복구까지 실습한 기록"
 ---
 # Failover for HA
 

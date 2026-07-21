@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - ElasticSearch
+description: "Kibana 로딩 실패 시 Nginx proxy_buffer 조정과 filebeat가 삭제된 파일을 계속 물고 있는 버그 해결 기록"
 ---
 # ELK error 모음
 

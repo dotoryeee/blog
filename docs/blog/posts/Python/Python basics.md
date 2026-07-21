@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Python
+description: "PEP-8 네이밍·dataclass·context manager·flake8/black 등 파이썬 클린코드 학습 내용 정리"
 ---
 # Python 정리
 

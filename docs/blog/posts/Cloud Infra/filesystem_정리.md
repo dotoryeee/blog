@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "RAID 0~10과 LVM 조합, 오브젝트·블록 스토리지, EXT4·XFS·ZFS 파일시스템, Inode, Instance Store와 EBS를 표로 비교한 정리"
 ---
 # Storage 정리
 

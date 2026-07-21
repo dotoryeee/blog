@@ -6,6 +6,7 @@ authors:
 categories:
   - DevOps
   - Kubernetes
+description: "kind 클러스터에 ArgoCD를 올려 guestbook을 sync하고, kubectl로 낸 drift가 selfHeal로 2초 만에 되돌아가는 과정과 롤백까지 실측한 기록"
 hide:
   - toc
 ---

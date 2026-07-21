@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+description: "테라폼으로 IAM 유저·그룹·역할·정책과 EC2 인스턴스 프로파일을 차례로 만들며 키 없이 EC2에 권한을 붙이는 실습 기록"
 ---
 # Terraform AWS IAM
 

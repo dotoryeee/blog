@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+description: "테라폼으로 IGW와 EIP 기반 NAT 게이트웨이, 퍼블릭·프라이빗 라우팅 테이블과 어소시에이션·라우팅 규칙까지 연결한 기록"
 ---
 # Terraform deploy VPC
 

@@ -6,6 +6,7 @@ authors:
 categories:
   - Network
   - Security
+description: "HTTP와 HTTPS 통신 흐름, HTTP/1.1~3과 TLS 1.0~1.3 차이, 0-RTT·프리마스터 키·ECDHE까지 시퀀스 다이어그램으로 정리"
 ---
 # HTTP와 TLS 간단 정리
 

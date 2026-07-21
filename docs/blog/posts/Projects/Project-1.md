@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - project
+description: "Flask 인력풀 서비스를 Terraform·Travis CI·CodeDeploy·도커 스웜으로 배포한 멀티컨테이너 토이 프로젝트 기록"
 ---
 # 2021-Toy-1
 

@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Server
+description: "macOS xattr와 Linux getfattr·setfacl·setcap·chattr가 다루는 대상과 저장 위치 차이를 실측으로 비교 정리"
 ---
 
 # xattr 유사 명령어 정리

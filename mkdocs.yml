@@ -1,9 +1,11 @@
 site_name: dotoryeee's blog
 site_url: https://dotoryeee.github.io/blog/
+site_description: 클라우드 인프라·SRE·쿠버네티스·DevOps를 맨땅에 헤딩하며 실습하고 정리한 기록
 
 theme:
   name: material
   custom_dir: overrides
+  language: ko
   logo: logo.svg
   font:
     text: Changa
@@ -41,7 +43,19 @@ plugins:
       pagination_format: "$link_first $link_previous ~2~ $link_next $link_last"
       draft_on_serve: false
       draft: false
-      
+  - social:
+      cards: true
+      cards_layout_options:
+        background_color: "#ff6e42"
+        color: "#ffffff"
+        font_family: Changa
+  - rss:
+      match_path: blog/posts/.*
+      date_from_meta:
+        as_creation: git
+        as_update: git
+      categories:
+        - categories
 
 markdown_extensions:
   - admonition

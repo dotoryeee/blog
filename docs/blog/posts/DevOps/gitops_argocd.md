@@ -6,6 +6,7 @@ authors:
 categories:
   - DevOps
   - Kubernetes
+description: "GitOps 네 원칙과 ArgoCD 아키텍처, push·pull 모델 차이, 동기화 정책, Flux와의 비교까지 표로 정리"
 hide:
   - toc
 ---

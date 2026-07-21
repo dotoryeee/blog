@@ -6,6 +6,7 @@ authors:
 categories:
   - CICD
   - DevOps
+description: "React 단일 컨테이너를 Docker·docker-compose로 개발·운영 환경 나누고, Travis CI로 GitHub에서 AWS Beanstalk까지 자동 배포한 기록"
 ---
 # CICD on Single container
 

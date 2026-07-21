@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "RTO와 RPO 개념과 비용 트레이드오프, MTTR·MTBF·DR·HA 용어, Legacy와 AWS 개선안, PITR 동작까지 정리"
 ---
 # RTO vs RPO
 

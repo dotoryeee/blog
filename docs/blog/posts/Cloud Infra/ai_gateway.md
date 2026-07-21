@@ -7,6 +7,7 @@ categories:
   - Cloud
   - AI
   - Security
+description: "AI Gateway가 토큰 단위로 LLM 트래픽을 통제하는 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 5종 비교, 가드레일 설계까지 정리"
 hide:
   - toc
 ---

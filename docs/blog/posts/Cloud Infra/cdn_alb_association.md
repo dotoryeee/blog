@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "CloudFront와 ALB를 함께 쓸 때 성능·보안·비용·캐싱 차이를 표로 비교하고 동적 콘텐츠 캐싱 시 Cache-Control 주의점을 정리"
 hide:
   - toc
 ---

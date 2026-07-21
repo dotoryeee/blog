@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Python
+description: "Docker 컨테이너의 Selenium 헤드리스 크롬으로 Datadog 대시보드를 긁어 Jinja2 리포트로 렌더링한 기록"
 ---
 # Datadog dashboard crawling
 

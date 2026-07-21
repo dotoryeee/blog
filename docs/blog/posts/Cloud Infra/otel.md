@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - SRE
+description: "OpenTelemetry의 신호 3종, API·SDK·Collector·OTLP 구성, 수동·자동 계측과 head·tail 샘플링, Collector 배포 패턴까지 정리"
 hide:
   - toc
 ---

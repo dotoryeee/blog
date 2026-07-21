@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Server
+description: "rsyslog와 journald의 저장 방식·검색·원격 전송·메타데이터 차이를 표로 비교하고 journalctl 사용 예시까지 정리"
 ---
 # rsyslog, journald 비교
 

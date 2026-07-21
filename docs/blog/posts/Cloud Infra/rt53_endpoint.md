@@ -6,6 +6,7 @@ authors:
 categories:
   - AWS
   - Route53
+description: "Route53 Private Hosted Zone을 TGW로 연결된 타 VPC에서 Inbound Endpoint를 DNS 서버 삼아 쿼리한 테스트 기록"
 ---
 # Route53 Endpoint for Private Hosted Zone
 

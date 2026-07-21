@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - AWS
+description: "S3의 SSE-S3·SSE-C·SSE-KMS·DSSE-KMS 네 방식 차이와 업로드 CLI 옵션, SSE-KMS boto3 up/download 코드까지 정리"
 ---
 # S3 object encryption
 

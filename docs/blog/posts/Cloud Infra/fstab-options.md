@@ -6,6 +6,7 @@ authors:
 categories:
   - Cloud
   - Server
+description: "/etc/fstab의 EBS·EFS·Swap 마운트 옵션을 noatime·discard·_netdev·noresvport 등 항목별로 비교한 정리"
 ---
 # Linux Storage 마운트 옵션
 

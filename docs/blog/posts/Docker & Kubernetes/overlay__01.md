@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - Kubernetes
+description: "IPIP·VXLAN·Geneve 오버레이의 캡슐화 오버헤드와 IPsec·WireGuard 암호화까지 더한 MTU 계산을 표로 비교"
 ---
 # Overlay 비교
 

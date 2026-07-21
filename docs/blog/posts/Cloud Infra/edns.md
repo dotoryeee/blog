@@ -5,6 +5,7 @@ authors:
   - dotoryeee
 categories:
   - server
+description: "EDNS가 OPT 레코드로 DNS를 확장하는 방식과 2019 DNS Flag Day 영향, 사용·미사용 시 패킷 크기·DNSSEC 차이를 비교"
 ---
 # EDNS 란
 
