@@ -3,6 +3,7 @@ site_url: https://dotoryeee.github.io/blog/
 
 theme:
   name: material
+  custom_dir: overrides
   logo: logo.svg
   font:
     text: Changa
