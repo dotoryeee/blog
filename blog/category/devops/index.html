@@ -679,36 +679,6 @@
 
               
             
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../../archive/1993/09/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    1993 9월
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -1514,6 +1484,180 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="./" class="md-meta__link">DevOps</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 8분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="cicd-on-single-container"><a class="toclink" href="../../2021/04/17/cicd-on-single-container/">CICD on Single container</a></h2>
+<p><img alt="CICD on Single container/Untitled.png" src="../../DevOps/CICD%20on%20Single%20container/Untitled.png" /></p>
+<h3 id="_1"><a class="toclink" href="../../2021/04/17/cicd-on-single-container/#_1">목표</a></h3>
+<hr />
+<ol>
+<li>도커, 도커컴포즈를 이용한 테스트베드, 운영환경 실행환경 구성</li>
+<li>Travis CI를 이용해 Github → Travic CI → AWS Beanstalk 파이프라인 구현</li>
+<li>CICD 체험이 목적이기 떄문에 Nginx, 리액트는 작업하지 않습니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2021/04/17/cicd-on-single-container/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="./" class="md-meta__link">DevOps</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 5분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="circle-ci-basics"><a class="toclink" href="../../2021/04/17/circle-ci-basics/">Circle-CI Basics</a></h2>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2021/04/17/circle-ci-basics/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="./" class="md-meta__link">DevOps</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 20분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="multi-container-cicd"><a class="toclink" href="../../2021/04/17/multi-container-cicd/">Multi container CICD</a></h2>
+<h3 id="_1"><a class="toclink" href="../../2021/04/17/multi-container-cicd/#_1">구성도</a></h3>
+<ul>
+<li>
+<p>DEV Flow chart</p>
+<p><img alt="Multi container CICD/Untitled.png" src="../../DevOps/Multi%20container%20CICD/Untitled.png" /></p>
+</li>
+<li>
+<p>Service ENV</p>
+<p>Docker-compose를 사용해 모든 컨테이너 환경을 제어합니다</p>
+<p><img alt="Multi container CICD/Untitled%201.png" src="../../DevOps/Multi%20container%20CICD/Untitled%201.png" /></p>
+</li>
+</ul>
+<h3 id="_2"><a class="toclink" href="../../2021/04/17/multi-container-cicd/#_2">요약</a></h3>
+<hr />
+<ol>
+<li>멀티컨테이너를 이용해 개발환경과 운영환경을 구축합니다</li>
+<li>nodeJS백엔드 ↔ reactJS프론트엔드 간에 REST API 구조로 데이터를 전달합니다(axios)</li>
+<li>Nginx의 라우팅을 활용하여 
+URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(ReactJS)로 보내도록 설정합니다</li>
+<li>Docker Compose를 사용해 컨테이너간의 통신 등 개발환경을 구축합니다</li>
+<li>깃헙에 푸시하면 → Travis CI 테스트→ Docker Hub로 이미지를 전달하고 Beanstalk이 ECS를 이용해 이미지를 pull하고 ECS를 이용해 컨테이너를 Deploy하도록 합니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2021/04/17/multi-container-cicd/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2021-04-14 00:00:00+00:00">2021. 4. 14.</time></li>
         
           <li class="md-meta__item">
@@ -1570,180 +1714,6 @@
     
       <nav class="md-post__action">
         <a href="../../2021/04/14/2021-toy-1/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">1993. 9. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="./" class="md-meta__link">DevOps</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 8분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="cicd-on-single-container"><a class="toclink" href="../../1993/09/17/cicd-on-single-container/">CICD on Single container</a></h2>
-<p><img alt="CICD on Single container/Untitled.png" src="../../DevOps/CICD%20on%20Single%20container/Untitled.png" /></p>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/cicd-on-single-container/#_1">목표</a></h3>
-<hr />
-<ol>
-<li>도커, 도커컴포즈를 이용한 테스트베드, 운영환경 실행환경 구성</li>
-<li>Travis CI를 이용해 Github → Travic CI → AWS Beanstalk 파이프라인 구현</li>
-<li>CICD 체험이 목적이기 떄문에 Nginx, 리액트는 작업하지 않습니다</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/cicd-on-single-container/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">1993. 9. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="./" class="md-meta__link">DevOps</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 5분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="circle-ci-basics"><a class="toclink" href="../../1993/09/17/circle-ci-basics/">Circle-CI Basics</a></h2>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/circle-ci-basics/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="1993-09-17 00:00:00+00:00">1993. 9. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="./" class="md-meta__link">DevOps</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 20분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="multi-container-cicd"><a class="toclink" href="../../1993/09/17/multi-container-cicd/">Multi container CICD</a></h2>
-<h3 id="_1"><a class="toclink" href="../../1993/09/17/multi-container-cicd/#_1">구성도</a></h3>
-<ul>
-<li>
-<p>DEV Flow chart</p>
-<p><img alt="Multi container CICD/Untitled.png" src="../../DevOps/Multi%20container%20CICD/Untitled.png" /></p>
-</li>
-<li>
-<p>Service ENV</p>
-<p>Docker-compose를 사용해 모든 컨테이너 환경을 제어합니다</p>
-<p><img alt="Multi container CICD/Untitled%201.png" src="../../DevOps/Multi%20container%20CICD/Untitled%201.png" /></p>
-</li>
-</ul>
-<h3 id="_2"><a class="toclink" href="../../1993/09/17/multi-container-cicd/#_2">요약</a></h3>
-<hr />
-<ol>
-<li>멀티컨테이너를 이용해 개발환경과 운영환경을 구축합니다</li>
-<li>nodeJS백엔드 ↔ reactJS프론트엔드 간에 REST API 구조로 데이터를 전달합니다(axios)</li>
-<li>Nginx의 라우팅을 활용하여 
-URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(ReactJS)로 보내도록 설정합니다</li>
-<li>Docker Compose를 사용해 컨테이너간의 통신 등 개발환경을 구축합니다</li>
-<li>깃헙에 푸시하면 → Travis CI 테스트→ Docker Hub로 이미지를 전달하고 Beanstalk이 ECS를 이용해 이미지를 pull하고 ECS를 이용해 컨테이너를 Deploy하도록 합니다</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../1993/09/17/multi-container-cicd/">
           계속 읽기
         </a>
       </nav>
