@@ -1773,17 +1773,18 @@
 <hr />
 <h2 id="_2">라이프사이클과 전환</h2>
 <p>라이프사이클(Lifecycle) 규칙은 객체 나이·태그·프리픽스 기준으로 클래스 자동 전환과 만료를 처리하는 버킷 정책</p>
-<pre class="mermaid"><code>graph TD
-    subgraph B["사용 사례 2: 백업 즉시 IA 전환(2026-07부터)"]
-        S2["Standard&lt;br&gt;(0일)"] --&gt;|"생성 즉시 전환&lt;br&gt;전환 요청비"| IA2["Standard-IA&lt;br&gt;충족 시점부터 IA 단가"]
-        IA2 --&gt;|"30일 전 삭제·재전환"| EARLY["잔여 기간 과금&lt;br&gt;(최소 보관 30일은 유지)"]
-        IA2 --&gt;|"30일 경과 후 삭제"| OK2["추가 과금 없음"]
-    end
+<pre class="mermaid"><code>graph LR
     subgraph W["사용 사례 1: 장기 아카이브 폭포수"]
         S["Standard&lt;br&gt;(0일)"] --&gt;|"전환 요청비(1,000건당)"| IA["Standard-IA (30일+)&lt;br&gt;단가↓ GET시 GB당 검색비"]
         IA --&gt;|"전환 요청비"| GIR["Glacier IR (90일+)&lt;br&gt;단가↓↓ 검색비↑"]
         GIR --&gt;|"전환 요청비"| GDA["Deep Archive (180일+)&lt;br&gt;최저 단가 + 객체당 40KB 메타 가산"]
         GDA --&gt;|"만료(360일+)"| EXP["삭제&lt;br&gt;최소 보관 충족 → 추가 과금 없음"]
+    end</code></pre>
+<pre class="mermaid"><code>graph LR
+    subgraph B["사용 사례 2: 백업 즉시 IA 전환(2026-07부터)"]
+        S2["Standard&lt;br&gt;(0일)"] --&gt;|"생성 즉시 전환&lt;br&gt;전환 요청비"| IA2["Standard-IA&lt;br&gt;충족 시점부터 IA 단가"]
+        IA2 --&gt;|"30일 전 삭제·재전환"| EARLY["잔여 기간 과금&lt;br&gt;(최소 보관 30일은 유지)"]
+        IA2 --&gt;|"30일 경과 후 삭제"| OK2["추가 과금 없음"]
     end</code></pre>
 <ul>
 <li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier IR)</li>
