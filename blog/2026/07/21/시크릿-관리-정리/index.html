@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리">
+        <meta name="description" content="쿠버네티스 시크릿 관리 3유형(Sealed Secrets·External Secrets Operator·Vault) 비교와 동적 시크릿 동작, 상황별 선택 기준 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../systemd-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>systemd 정리 - dotoryeee's blog</title>
+        <title>시크릿 관리 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="systemd 정리 - dotoryeee's blog" />
-<meta property="og:description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="시크릿 관리 정리 - dotoryeee's blog" />
+<meta property="og:description" content="쿠버네티스 시크릿 관리 3유형(Sealed Secrets·External Secrets Operator·Vault) 비교와 동적 시크릿 동작, 상황별 선택 기준 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="systemd 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책, cgroup 리소스 제어, 타이머, target 부팅, journald 구조를 표로 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/systemd-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="시크릿 관리 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="쿠버네티스 시크릿 관리 3유형(Sealed Secrets·External Secrets Operator·Vault) 비교와 동적 시크릿 동작, 상황별 선택 기준 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#systemd" class="md-skip">
+        <a href="#_1" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              systemd 정리
+              시크릿 관리 정리
             
           </span>
         </div>
@@ -1314,72 +1314,88 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#systemd_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        systemd란
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="systemd란">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sysv-init" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SysV init과의 차이
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        유닛 종류 정리
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        서비스 유닛 구조
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="서비스 유닛 구조">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#type" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Type 종류
+        시크릿 관리란
       
     </span>
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        접근 방식 3유형
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sealed-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sealed Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-secrets-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        External Secrets Operator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vault
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vault">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        의존성 지시자
+        핵심 구성 요소
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        동적 시크릿
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        쿠버네티스 연동 3종
       
     </span>
   </a>
@@ -1392,10 +1408,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#3_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        감독과 자동 복구
+        3유형 비교
       
     </span>
   </a>
@@ -1406,57 +1422,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        리소스 제어
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="리소스 제어">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#slice" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        slice 계층
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#target" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        부팅과 target
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#vs-cron" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        타이머 vs cron
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#journald" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        journald 정리
+        사용 사례
       
     </span>
   </a>
@@ -1465,17 +1431,6 @@
       
         <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        주요 명령 정리
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1552,7 +1507,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/linux/">Linux</a></span>
+                              <a href="../../../../category/security/">Security</a></span>
                         </div>
                       </li>
                     
@@ -1563,7 +1518,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 9분
+                              읽는시간 6분
                             
                           </span>
                         </div>
@@ -1591,604 +1546,290 @@
       
       
       
-        <a href="../../../../../tags/#tag:boot" class="md-tag">Boot</a>
+        <a href="../../../../../tags/#tag:external-secrets" class="md-tag">External Secrets</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:cgroups" class="md-tag">Cgroups</a>
+        <a href="../../../../../tags/#tag:gitops" class="md-tag">GitOps</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:logging" class="md-tag">Logging</a>
+        <a href="../../../../../tags/#tag:sealed-secrets" class="md-tag">Sealed Secrets</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:systemd" class="md-tag">systemd</a>
+        <a href="../../../../../tags/#tag:vault" class="md-tag">Vault</a>
       
     
   </nav>
 
 
 
-<h1 id="systemd">systemd 정리</h1>
+<h1 id="_1">시크릿 관리 정리</h1>
 <!-- more -->
 
-<h2 id="systemd_1">systemd란</h2>
-<p>systemd란 PID 1로 뜨는 init 겸, 서비스·소켓·타이머·마운트를 유닛(Unit)이라는 단일 모델로 선언적으로 감독하는 시스템·서비스 관리자</p>
+<h2 id="_2">시크릿 관리란</h2>
+<p>시크릿 관리(Secret Management)란 DB 비밀번호·API 키·인증서 같은 민감 값을 코드와 이미지 밖에서 저장·배포·회전(Rotation)·폐기하는 체계</p>
+<p>쿠버네티스 기본 Secret만으로는 부족해서 별도 체계가 필요해짐.</p>
 <ul>
-<li>성격: 부팅 초기화부터 데몬 감독·로깅·리소스 제어까지 한 계층으로 통합</li>
-<li>모델: 셸 스크립트 대신 <code>[Unit]</code> 형식의 선언적 유닛 파일로 상태를 기술</li>
-<li>실행: 의존성 그래프를 계산해 독립 유닛을 병렬로 기동 → 부팅 시간 단축</li>
-<li>추적: PID 파일이 아니라 cgroup으로 프로세스 그룹 전체를 소유·추적</li>
-<li>관리 도구: 상태·제어는 <code>systemctl</code>, 로그는 <code>journalctl</code>로 단일화</li>
+<li>base64는 인코딩이지 암호화가 아님 → 매니페스트를 읽을 수 있으면 곧 평문</li>
+<li>etcd 저장도 기본은 평문 → encryption at rest는 별도로 설정해야 함</li>
+<li>Git에 한 번 올라간 시크릿은 지워도 커밋 이력에 영구 잔존</li>
+<li>"모든 것을 Git에 둔다"는 GitOps 전제와 정면 충돌 → <a href="../../20/gitops%EC%99%80-argocd-%EC%A0%95%EB%A6%AC/">GitOps와 ArgoCD 정리</a>에서 남겨둔 숙제</li>
 </ul>
-<h3 id="sysv-init">SysV init과의 차이</h3>
+<hr />
+<h2 id="3">접근 방식 3유형</h2>
+<table>
+<thead>
+<tr>
+<th>유형</th>
+<th>대표 도구</th>
+<th>동작 방식</th>
+<th>장점</th>
+<th>단점</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>암호화 후 Git 저장</td>
+<td>Sealed Secrets, SOPS</td>
+<td>시크릿을 암호화해 Git에 커밋, 클러스터 안에서만 복호화</td>
+<td>추가 인프라 없음, GitOps 워크플로 유지</td>
+<td>회전·감사 없음, 키 유실 시 복구 불가</td>
+</tr>
+<tr>
+<td>외부 스토어 동기화</td>
+<td>External Secrets Operator</td>
+<td>AWS Secrets Manager 등 외부 스토어를 참조해 k8s Secret 생성</td>
+<td>원본이 Git 밖, 스토어 교체 유연</td>
+<td>외부 스토어 의존, 결과물은 결국 k8s Secret</td>
+</tr>
+<tr>
+<td>중앙 시크릿 서버</td>
+<td>Vault, OpenBao</td>
+<td>전용 서버가 저장·발급·회전·감사를 전담</td>
+<td>동적 시크릿, TTL 자동 회수, 전 요청 감사</td>
+<td>서버 운영 부담(HA·unseal), 학습 곡선</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="sealed-secrets">Sealed Secrets</h2>
+<p>Sealed Secrets란 시크릿을 비대칭 암호화해 Git에 올릴 수 있게 만드는 Bitnami Labs의 쿠버네티스 컨트롤러</p>
+<pre class="mermaid"><code>graph LR
+    Dev["개발자&lt;br&gt;kubeseal로 암호화"] --&gt; Git["Git 저장소&lt;br&gt;SealedSecret CRD"]
+    Git --&gt; Ctrl["컨트롤러&lt;br&gt;개인키로 복호화"]
+    Ctrl --&gt; Sec["k8s Secret 생성"]</code></pre>
+<ul>
+<li>kubeseal CLI가 컨트롤러의 공개키로 암호화 → 개발자는 암호화만 가능하고 복호화는 클러스터만 가능</li>
+<li>암호문인 SealedSecret 리소스는 Git에 올려도 안전 → pull request 리뷰·이력 관리가 일반 매니페스트와 동일</li>
+<li>기본 scope는 네임스페이스·이름에 바인딩 → 다른 네임스페이스로 복사해 재사용하는 우회를 차단</li>
+<li>컨트롤러 개인키가 단일 장애점 → 키를 백업하지 않으면 클러스터 재구축 시 전부 재암호화</li>
+<li>회전 기능 없음 → 값을 바꾸려면 다시 암호화해 커밋하는 수동 절차</li>
+<li>2025년 Bitnami 컨테이너 카탈로그 유료화와는 무관하게 독립 배포·유지보수 지속</li>
+</ul>
+<hr />
+<h2 id="external-secrets-operator">External Secrets Operator</h2>
+<p>External Secrets Operator(ESO)란 외부 시크릿 스토어의 값을 읽어 k8s Secret으로 동기화하는 오퍼레이터</p>
+<ul>
+<li>SecretStore CRD가 "어디서"(스토어 종류·인증), ExternalSecret CRD가 "무엇을"(키 경로) 정의</li>
+<li>프로바이더: AWS Secrets Manager·SSM Parameter Store, GCP Secret Manager, Azure Key Vault, Vault 등 다수</li>
+<li>Git에는 참조(CRD)만 커밋되고 실제 값은 외부 스토어에 존재 → GitOps와 양립</li>
+<li><code>refreshInterval</code> 주기로 재동기화 → 스토어에서 값을 회전하면 클러스터로 자동 전파</li>
+<li>CNCF Sandbox 프로젝트(2022) → 2025년 봄 유지보수 공백으로 릴리스가 멈췄다가 후원 확충으로 회복, v1 API 안정화</li>
+<li>결과물은 여전히 k8s Secret → etcd 암호화와 RBAC 최소화는 별도로 챙겨야 함</li>
+</ul>
+<hr />
+<h2 id="vault">Vault</h2>
+<p>Vault란 HashiCorp가 만든 중앙 시크릿 관리 서버로, 저장을 넘어 발급·회전·폐기·감사까지 시크릿 생명주기 전체를 다루는 도구</p>
+<p>소속과 라이선스가 자주 바뀌어 선택 전 확인이 필요함.</p>
+<ul>
+<li>2023년 오픈소스(MPL 2.0)에서 BUSL 1.1로 전환 → 경쟁 호스팅 서비스 구축만 제한, 일반 사용은 무료</li>
+<li>2025년 IBM의 HashiCorp 인수 완료 → 현재는 IBM 소프트웨어 제품군</li>
+<li>라이선스 전환에 반발한 커뮤니티가 마지막 MPL 버전을 포크 → Linux Foundation 산하 OpenBao로 발전 중</li>
+</ul>
+<h3 id="_3">핵심 구성 요소</h3>
+<table>
+<thead>
+<tr>
+<th>구성 요소</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Secret Engine</td>
+<td>시크릿 저장·생성 백엔드. KV(정적 저장), database(임시 계정 발급), transit(암호화 대행), pki(인증서 발급)</td>
+</tr>
+<tr>
+<td>Auth Method</td>
+<td>클라이언트 인증 방식. kubernetes(ServiceAccount 토큰 검증), approle, oidc 등</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>경로 기반 접근 제어. 어떤 주체가 어떤 시크릿 경로를 읽을지 정의</td>
+</tr>
+<tr>
+<td>Lease/TTL</td>
+<td>발급된 시크릿의 유효 기간. 만료 시 자동 폐기</td>
+</tr>
+<tr>
+<td>Seal/Unseal</td>
+<td>재시작 시 마스터 키 조각(Shamir)으로 봉인 해제. 클라우드 KMS에 맡기는 auto-unseal 가능</td>
+</tr>
+<tr>
+<td>Audit Device</td>
+<td>모든 요청·응답을 감사 로그로 기록</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">동적 시크릿</h3>
+<p>동적 시크릿(Dynamic Secrets)이란 요청 시점에 실제 계정을 만들어 TTL과 함께 발급하고, 만료되면 자동 회수하는 방식</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant App
+    participant Vault
+    participant DB
+    App-&gt;&gt;Vault: 로그인(ServiceAccount 토큰)
+    Vault--&gt;&gt;App: Vault 토큰 발급
+    App-&gt;&gt;Vault: DB 자격증명 요청
+    Vault-&gt;&gt;DB: CREATE USER(임시 계정 생성)
+    Vault--&gt;&gt;App: 임시 계정 + TTL
+    Note over App,DB: TTL 동안만 유효한 계정으로 접속
+    Vault-&gt;&gt;DB: TTL 만료시 DROP USER(자동 회수)</code></pre>
+<ul>
+<li>고정 비밀번호가 존재하지 않음 → 유출돼도 TTL이 지나면 무효</li>
+<li>회전을 사람이 아니라 시스템이 수행 → "비밀번호 언제 바꿨더라"가 사라짐</li>
+<li>감사 로그에 누가 언제 어떤 계정을 발급받았는지 전부 남음 → 유출 시 추적 범위가 계정 단위로 좁혀짐</li>
+</ul>
+<h3 id="3_1">쿠버네티스 연동 3종</h3>
+<table>
+<thead>
+<tr>
+<th>연동 방식</th>
+<th>동작</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent Injector</td>
+<td>사이드카가 시크릿을 파일로 주입</td>
+<td>앱 수정 없음, Pod마다 사이드카 오버헤드</td>
+</tr>
+<tr>
+<td>CSI Provider</td>
+<td>볼륨 마운트 시점에 주입</td>
+<td>k8s Secret 객체를 만들지 않는 구성 가능</td>
+</tr>
+<tr>
+<td>Vault Secrets Operator</td>
+<td>CRD 선언으로 k8s Secret 동기화</td>
+<td>셋 중 최신, GitOps 친화</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3_2">3유형 비교</h2>
 <table>
 <thead>
 <tr>
 <th>비교 항목</th>
-<th>SysV init</th>
-<th>systemd</th>
+<th>Sealed Secrets</th>
+<th>External Secrets Operator</th>
+<th>Vault</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PID 1 범위</td>
-<td>init 프로세스만</td>
-<td>init + 서비스·소켓·타이머·마운트 통합</td>
+<td>시크릿 원본 위치</td>
+<td>Git(암호문)</td>
+<td>외부 스토어</td>
+<td>Vault 서버</td>
 </tr>
 <tr>
-<td>기동 방식</td>
-<td>rc 셸 스크립트 순차 실행</td>
-<td>선언적 유닛 + 의존성 기반 병렬 실행</td>
+<td>동적 시크릿</td>
+<td>미지원</td>
+<td>미지원(스토어 기능에 의존)</td>
+<td>지원</td>
 </tr>
 <tr>
-<td>부팅 상태</td>
-<td>runlevel 0~6 숫자</td>
-<td>명명된 target 유닛</td>
+<td>회전</td>
+<td>수동(재암호화 후 커밋)</td>
+<td>스토어 회전 → 자동 동기화</td>
+<td>TTL 기반 자동 회수</td>
 </tr>
 <tr>
-<td>서비스 제어</td>
-<td>service·chkconfig</td>
-<td>systemctl</td>
+<td>감사 로그</td>
+<td>Git 이력이 전부</td>
+<td>스토어 측 로그</td>
+<td>전 요청 감사 로그</td>
 </tr>
 <tr>
-<td>프로세스 추적</td>
-<td>PID 파일에 의존</td>
-<td>cgroup으로 그룹 단위 추적</td>
+<td>운영 부담</td>
+<td>컨트롤러 1개</td>
+<td>오퍼레이터 + 외부 스토어</td>
+<td>서버 클러스터(HA·unseal) 운영</td>
 </tr>
 <tr>
-<td>로깅</td>
-<td>외부 syslog 의존</td>
-<td>journald 내장</td>
+<td>도입 난도</td>
+<td>낮음</td>
+<td>중간</td>
+<td>높음</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">사용 사례</h2>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>추천 방식</th>
+<th>추천 사유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>소규모 클러스터, 외부 의존 최소화</td>
+<td>Sealed Secrets</td>
+<td>컨트롤러 하나로 끝나고 Git 워크플로 유지</td>
 </tr>
 <tr>
-<td>자동 복구</td>
-<td>없음, 외부 도구 필요</td>
-<td>Restart·Watchdog 내장</td>
+<td>클라우드 시크릿 스토어를 이미 운영</td>
+<td>External Secrets Operator</td>
+<td>기존 스토어를 단일 원본으로 재사용</td>
 </tr>
 <tr>
-<td>온디맨드 기동</td>
-<td>없음</td>
-<td>소켓·경로·타이머 활성화 지원</td>
+<td>DB 계정 자동 발급·회전, 감사 요구</td>
+<td>Vault</td>
+<td>동적 시크릿과 전 요청 감사 로그</td>
+</tr>
+<tr>
+<td>멀티 클라우드·수백 서비스 규모</td>
+<td>Vault</td>
+<td>스토어 종속 없는 중앙 정책·발급 체계</td>
+</tr>
+<tr>
+<td>BUSL 라이선스가 걸림</td>
+<td>OpenBao</td>
+<td>MPL 2.0을 유지하는 Vault 포크</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_1">유닛 종류 정리</h2>
-<p>유닛은 systemd가 관리하는 자원의 단위이며, 접미사가 종류를 결정함(총 11종)</p>
-<table>
-<thead>
-<tr>
-<th>유닛</th>
-<th>용도</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>.service</td>
-<td>데몬·프로세스 실행·감독</td>
-</tr>
-<tr>
-<td>.socket</td>
-<td>소켓 listen 후 트래픽 도달 시 서비스 온디맨드 기동</td>
-</tr>
-<tr>
-<td>.timer</td>
-<td>시각·경과 시간 기준으로 유닛 활성화(cron 대체)</td>
-</tr>
-<tr>
-<td>.target</td>
-<td>유닛 묶음·동기화 지점(부팅 상태 표현)</td>
-</tr>
-<tr>
-<td>.mount</td>
-<td>파일시스템 마운트 지점 관리</td>
-</tr>
-<tr>
-<td>.automount</td>
-<td>접근 시점에 마운트를 지연 트리거</td>
-</tr>
-<tr>
-<td>.path</td>
-<td>파일·디렉터리 변화 감시 후 유닛 활성화</td>
-</tr>
-<tr>
-<td>.slice</td>
-<td>cgroup 계층 노드, 리소스 제어 그룹</td>
-</tr>
-<tr>
-<td>.swap</td>
-<td>스왑 장치·파일 관리</td>
-</tr>
-<tr>
-<td>.device</td>
-<td>udev가 노출한 커널 장치</td>
-</tr>
-<tr>
-<td>.scope</td>
-<td>systemd가 아닌 외부에서 생성된 프로세스 그룹 관리</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_2">서비스 유닛 구조</h2>
-<p>서비스 유닛은 <code>[Unit]</code>·<code>[Service]</code>·<code>[Install]</code> 세 섹션으로 구성됨</p>
-<table>
-<thead>
-<tr>
-<th>섹션</th>
-<th>담는 내용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>[Unit]</td>
-<td>설명(Description)·의존성(After·Requires 등)·조건(Condition)</td>
-</tr>
-<tr>
-<td>[Service]</td>
-<td>실행 명령(ExecStart)·Type·Restart·타임아웃·리소스 제어</td>
-</tr>
-<tr>
-<td>[Install]</td>
-<td>enable 시 심링크 대상(WantedBy·RequiredBy)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="type">Type 종류</h3>
-<p>Type은 systemd가 "기동 완료"를 판정하는 기준을 정함</p>
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>완료 판정 시점</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>simple</td>
-<td>메인 프로세스 fork 직후(기본값), execve 이전</td>
-</tr>
-<tr>
-<td>exec</td>
-<td>메인 바이너리 execve 완료까지 대기</td>
-</tr>
-<tr>
-<td>forking</td>
-<td>부모가 fork 후 종료하면 완료, 전통 UNIX 데몬 방식</td>
-</tr>
-<tr>
-<td>oneshot</td>
-<td>메인 프로세스 종료 후 완료, active 유지엔 RemainAfterExit=yes</td>
-</tr>
-<tr>
-<td>dbus</td>
-<td>BusName에 지정한 D-Bus 이름 획득 시 완료</td>
-</tr>
-<tr>
-<td>notify</td>
-<td>서비스가 sd_notify()로 READY=1 전송 시 완료</td>
-</tr>
-<tr>
-<td>notify-reload</td>
-<td>notify + reload 시 RELOADING=1·READY=1 처리</td>
-</tr>
-<tr>
-<td>idle</td>
-<td>다른 active 작업 완료까지 실행 지연, 콘솔 출력 정돈용</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_3">의존성 지시자</h3>
-<p>요구(requirement)와 순서(ordering)는 별개 축이며 각각 따로 지정해야 함</p>
-<table>
-<thead>
-<tr>
-<th>지시자</th>
-<th>의미</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Requires</td>
-<td>강한 요구, 함께 활성화. 요구 대상 실패 시(After 병행) 기동 중단</td>
-</tr>
-<tr>
-<td>Wants</td>
-<td>약한 요구, 함께 시도하되 실패해도 본 유닛엔 영향 없음</td>
-</tr>
-<tr>
-<td>Requisite</td>
-<td>요구 대상이 이미 떠 있지 않으면 즉시 실패, After와 병행 권장</td>
-</tr>
-<tr>
-<td>BindsTo</td>
-<td>Requires + 대상이 예기치 않게 멈추면 본 유닛도 정지</td>
-</tr>
-<tr>
-<td>PartOf</td>
-<td>단방향 전파, 대상의 정지·재시작만 본 유닛에 반영</td>
-</tr>
-<tr>
-<td>Conflicts</td>
-<td>부정 의존, 한쪽 기동 시 상대 유닛 정지</td>
-</tr>
-<tr>
-<td>After / Before</td>
-<td>순서만 지정, 요구 여부와 무관</td>
-</tr>
-</tbody>
-</table>
+<h2 id="_6">결론</h2>
 <ul>
-<li>요구 지시자는 순서를 만들지 않음 → 순서가 필요하면 After·Before를 따로 지정</li>
-<li>흔한 조합: Wants + After → "있으면 좋고, 있다면 그 뒤에 기동"</li>
-</ul>
-<hr />
-<h2 id="_4">감독과 자동 복구</h2>
-<p>프로세스 종료를 감지해 정책에 따라 재기동하는 감독 기능이 [Service]에 내장됨</p>
-<table>
-<thead>
-<tr>
-<th>Restart 값</th>
-<th>재시작 조건</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>no</td>
-<td>재시작 안 함(기본값)</td>
-</tr>
-<tr>
-<td>on-success</td>
-<td>정상 종료(exit 0·지정 시그널)에만 재시작</td>
-</tr>
-<tr>
-<td>on-failure</td>
-<td>비정상 exit·시그널·타임아웃·워치독 실패 시 재시작</td>
-</tr>
-<tr>
-<td>on-abnormal</td>
-<td>시그널·타임아웃·워치독 등 비정상 종료에만 재시작</td>
-</tr>
-<tr>
-<td>on-watchdog</td>
-<td>워치독 타임아웃 만료 시에만 재시작</td>
-</tr>
-<tr>
-<td>on-abort</td>
-<td>clean 처리되지 않은 시그널로 중단 시 재시작</td>
-</tr>
-<tr>
-<td>always</td>
-<td>종료 원인과 무관하게 항상 재시작</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>RestartSec: 재시작 전 대기 시간, 기본 100ms</li>
-<li>RestartSteps·RestartMaxDelaySec: 재시작 간격을 지수 백오프로 증가(예: 10s→20s→40s→상한)</li>
-<li>WatchdogSec: 서비스가 주기적으로 WATCHDOG=1을 보내야 하는 데드라인. 놓치면 failed 처리 후 SIGABRT</li>
-<li>StartLimitIntervalSec·StartLimitBurst: 지정 구간 안의 재시작 횟수 상한. 초과 시 재시작을 멈춰 크래시 루프 차단</li>
-</ul>
-<hr />
-<h2 id="_5">리소스 제어</h2>
-<p>서비스마다 cgroup v2 노드가 매핑되어 메모리·CPU·I/O를 유닛 단위로 제한함</p>
-<table>
-<thead>
-<tr>
-<th>지시자</th>
-<th>대응 cgroup 속성</th>
-<th>효과</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MemoryMax</td>
-<td>memory.max</td>
-<td>절대 상한, 초과 시 cgroup 내부 OOM killer 발동</td>
-</tr>
-<tr>
-<td>MemoryHigh</td>
-<td>memory.high</td>
-<td>스로틀 지점, 넘으면 프로세스가 강하게 감속</td>
-</tr>
-<tr>
-<td>MemoryMin</td>
-<td>memory.min</td>
-<td>reclaim 보호, 이 값까지는 회수 대상에서 후순위</td>
-</tr>
-<tr>
-<td>CPUQuota</td>
-<td>cpu.max</td>
-<td>% 값으로 CPU 시간 쿼터 지정</td>
-</tr>
-<tr>
-<td>CPUWeight</td>
-<td>cpu.weight</td>
-<td>같은 slice 내 CPU 시간 비례 분배</td>
-</tr>
-<tr>
-<td>IOWeight</td>
-<td>io.weight</td>
-<td>같은 slice 내 블록 I/O 대역 비례 분배</td>
-</tr>
-<tr>
-<td>TasksMax</td>
-<td>pids.max</td>
-<td>생성 가능한 태스크(프로세스·스레드) 수 상한</td>
-</tr>
-<tr>
-<td>AllowedCPUs</td>
-<td>cpuset.cpus</td>
-<td>실행 가능한 CPU 코어 집합 고정</td>
-</tr>
-</tbody>
-</table>
-<h3 id="slice">slice 계층</h3>
-<p>slice는 cgroup 트리의 중간 노드이며 리소스 제어가 계층으로 상속됨</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="m">-.</span><span class="n">slice</span><span class="w">                 </span><span class="c1">#루트 slice</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├─<span class="w"> </span><span class="n">system.slice</span><span class="w">         </span><span class="c1">#시스템 데몬(sshd 등)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─<span class="w"> </span><span class="n">user.slice</span><span class="w">           </span><span class="c1">#로그인 사용자</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│<span class="w">  </span>└─<span class="w"> </span><span class="n">user</span><span class="o">@</span><span class="m">1000</span><span class="n">.service</span><span class="w"> </span><span class="c1">#uid 1000 사용자 매니저</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>└─<span class="w"> </span><span class="n">machine.slice</span><span class="w">        </span><span class="c1">#가상머신·컨테이너</span>
-</code></pre></div>
-<ul>
-<li>Max·High는 절대 한도, Weight는 형제 유닛 사이의 상대 비율</li>
-<li>상위 slice에 건 제한이 하위 유닛 합계에 함께 적용됨</li>
-</ul>
-<hr />
-<h2 id="target">부팅과 target</h2>
-<p>target은 유닛 묶음이자 동기화 지점이며, SysV의 runlevel 숫자를 명명된 상태로 대체함</p>
-<table>
-<thead>
-<tr>
-<th>target</th>
-<th>역할</th>
-<th>runlevel 별칭</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>sysinit.target</td>
-<td>초기 마운트·스왑 등 기본 초기화</td>
-<td>없음</td>
-</tr>
-<tr>
-<td>basic.target</td>
-<td>소켓·타이머·경로까지 준비된 기본 동기화 지점</td>
-<td>없음</td>
-</tr>
-<tr>
-<td>multi-user.target</td>
-<td>비그래픽 다중 사용자 환경</td>
-<td>runlevel3.target</td>
-</tr>
-<tr>
-<td>graphical.target</td>
-<td>GUI 로그인, multi-user.target을 포함</td>
-<td>runlevel5.target</td>
-</tr>
-<tr>
-<td>rescue.target</td>
-<td>기본 서비스 + 마운트만 올린 복구 모드</td>
-<td>runlevel1.target</td>
-</tr>
-<tr>
-<td>emergency.target</td>
-<td>PID 1과 셸만 뜨는 최소 모드</td>
-<td>없음</td>
-</tr>
-<tr>
-<td>poweroff.target / reboot.target</td>
-<td>종료·재부팅 상태</td>
-<td>runlevel0 / runlevel6</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>default.target: 부팅 시 진입하는 목표, 보통 multi-user.target이나 graphical.target으로 심링크</li>
-<li>graphical.target은 multi-user.target을 pull in → 그래픽 상태는 다중 사용자 상태의 상위 집합</li>
-<li>부팅은 target 도달에 필요한 유닛을 의존성 그래프로 계산해 독립분을 병렬 기동</li>
-</ul>
-<hr />
-<h2 id="vs-cron">타이머 vs cron</h2>
-<p>systemd timer는 유닛 활성화 방식의 스케줄러이며 cron 대비 의존성·로깅·복구가 강함</p>
-<table>
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>cron</th>
-<th>systemd timer</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>정밀도</td>
-<td>분 단위</td>
-<td>초 단위 + AccuracySec로 조정</td>
-</tr>
-<tr>
-<td>트리거 종류</td>
-<td>벽시계(realtime)만</td>
-<td>OnCalendar(realtime) + OnBootSec·OnUnitActiveSec 등 monotonic</td>
-</tr>
-<tr>
-<td>유닛 의존성</td>
-<td>없음</td>
-<td>After·Requires 등 유닛 의존성 지정</td>
-</tr>
-<tr>
-<td>로깅</td>
-<td>mail·syslog 별도</td>
-<td>journald에 서비스 로그로 통합</td>
-</tr>
-<tr>
-<td>놓친 작업 보정</td>
-<td>없음(anacron 별도)</td>
-<td>Persistent=true로 비활성 중 놓친 실행 catch up</td>
-</tr>
-<tr>
-<td>랜덤 분산</td>
-<td>없음</td>
-<td>RandomizedDelaySec로 동시 실행 분산</td>
-</tr>
-<tr>
-<td>리소스 제어</td>
-<td>없음</td>
-<td>대상 서비스에 cgroup·slice 그대로 적용</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>타이머 유닛은 실행을 직접 하지 않고, 동명 <code>.service</code>(또는 Unit= 지정 유닛)를 활성화</li>
-<li>monotonic 타이머는 이벤트 경과 기준(OnBootSec 등), realtime 타이머는 달력 표현(OnCalendar)</li>
-<li>AccuracySec 기본 1분 → wake-up을 묶어 전력 절약, 정밀 실행엔 값을 낮춤</li>
-</ul>
-<hr />
-<h2 id="journald">journald 정리</h2>
-<p>journald는 로그를 구조화된 인덱스 바이너리 저널로 수집·저장하는 systemd 로깅 데몬</p>
-<ul>
-<li>수집원: 커널 메시지·syslog 호출·네이티브 API·서비스 stdout/stderr·audit</li>
-<li>구조화: 레코드마다 필드가 붙어 필드 단위 필터링 가능(journalctl 검색이 빠른 이유)</li>
-<li>신뢰 필드: <code>_PID</code>·<code>_UID</code>·<code>_SYSTEMD_UNIT</code>처럼 밑줄 접두 필드는 journald가 검증해 부여</li>
-<li>사용자 필드: <code>MESSAGE</code>·<code>PRIORITY</code>처럼 접두 없는 필드는 애플리케이션이 제공</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>설정·값</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>저장 위치</td>
-<td>휘발 <code>/run/log/journal</code>, 영속 <code>/var/log/journal</code></td>
-</tr>
-<tr>
-<td>Storage 옵션</td>
-<td>volatile · persistent · auto · none</td>
-</tr>
-<tr>
-<td>rate limit</td>
-<td>기본 30초당 10000건 초과 시 드롭(RateLimitIntervalSec·RateLimitBurst)</td>
-</tr>
-<tr>
-<td>용량 관리</td>
-<td>SystemMaxUse 기본 파일시스템 10%(상한 4GB), SystemKeepFree 15%</td>
-</tr>
-<tr>
-<td>압축</td>
-<td>512바이트 초과 객체 압축(Compress)</td>
-</tr>
-<tr>
-<td>syslog 연동</td>
-<td>ForwardToSyslog로 rsyslog 등에 동시 전달</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>rsyslog와의 저장 방식·원격 전송·메타데이터 차이는 별도 글(<a href="../../../../2025/03/13/rsyslog-journald-%EB%B9%84%EA%B5%90/">rsyslog, journald 비교</a>)로 위임</li>
-<li>journald는 systemd의 한 유닛(systemd-journald.service)이라 부팅·감독·cgroup 모델을 그대로 공유</li>
-</ul>
-<hr />
-<h2 id="_6">주요 명령 정리</h2>
-<p>상태·제어는 systemctl, 로그 조회는 journalctl로 나뉨</p>
-<table>
-<thead>
-<tr>
-<th>명령</th>
-<th>용도</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>systemctl status &lt;unit&gt;</code></td>
-<td>상태·최근 로그·cgroup 트리 확인</td>
-</tr>
-<tr>
-<td><code>systemctl start/stop/restart &lt;unit&gt;</code></td>
-<td>유닛 기동·정지·재기동</td>
-</tr>
-<tr>
-<td><code>systemctl enable/disable &lt;unit&gt;</code></td>
-<td>부팅 시 자동 기동 등록·해제</td>
-</tr>
-<tr>
-<td><code>systemctl list-units --type=service</code></td>
-<td>로드된 서비스 유닛 목록</td>
-</tr>
-<tr>
-<td><code>systemctl list-dependencies &lt;unit&gt;</code></td>
-<td>의존성 트리 출력</td>
-</tr>
-<tr>
-<td><code>systemctl cat/edit &lt;unit&gt;</code></td>
-<td>유닛 파일 열람·드롭인 오버라이드</td>
-</tr>
-<tr>
-<td><code>systemctl get-default / set-default</code></td>
-<td>default.target 조회·변경</td>
-</tr>
-<tr>
-<td><code>journalctl -u &lt;unit&gt;</code></td>
-<td>특정 유닛 로그만 조회</td>
-</tr>
-<tr>
-<td><code>journalctl -f</code></td>
-<td>실시간 로그 추적(tail)</td>
-</tr>
-<tr>
-<td><code>journalctl -b</code></td>
-<td>이번 부팅 이후 로그만</td>
-</tr>
-<tr>
-<td><code>journalctl -p err</code></td>
-<td>우선순위(err 이상)로 필터</td>
-</tr>
-<tr>
-<td><code>systemd-analyze blame</code></td>
-<td>유닛별 기동 소요 시간 정렬</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_7">결론</h2>
-<ul>
-<li>systemd는 init·서비스 감독·타이머·마운트·로깅을 유닛이라는 한 모델로 묶은 관리자</li>
-<li>서비스는 Type으로 기동 완료를, Restart·Watchdog으로 자동 복구를, cgroup·slice로 리소스를 통제</li>
-<li>부팅은 target 도달을 위한 의존성 그래프 병렬 실행, 스케줄은 timer가 cron을 대체</li>
-<li>cron은 "시각이 되면 명령을 실행", systemd timer는 "시각이 되면 유닛을 활성화"로 이해하면 됌</li>
+<li>셋은 대체재가 아니라 층위가 다른 도구 → 작게 시작하고 회전·감사 요구가 생기는 시점에 위 층위로 이행</li>
+<li>어느 방식이든 결과물이 k8s Secret이면 etcd 암호화·RBAC 최소화는 공통 숙제</li>
+<li>Sealed Secrets는 "Git에 안전하게 넣는 법", ESO는 "밖에 두고 가져오는 법", Vault는 "쓸 때마다 발급받는 법"</li>
 </ul>
 
 
@@ -2236,7 +1877,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AI Gateway 정리">
+          <a href="../systemd-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: systemd 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2246,20 +1887,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                AI Gateway 정리
+                systemd 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 시크릿 관리 정리">
+          <a href="../s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: S3 성능·비용 최적화 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                시크릿 관리 정리
+                S3 성능·비용 최적화 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">

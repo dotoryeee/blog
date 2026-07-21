@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../systemd-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/">
       
       
       
@@ -1782,11 +1782,11 @@
     FR["Glacier Flexible Retrieval&lt;br&gt;저장 $0.0045/GB·월, 최소 보관 90일&lt;br&gt;복원 Standard $0.011/GB, Expedited $0.033/GB, Bulk 무료"]
     GDA["Glacier Deep Archive&lt;br&gt;저장 $0.002/GB·월, 최소 보관 180일&lt;br&gt;복원 Standard $0.022/GB, Bulk $0.005/GB"]
     DEL["만료·삭제&lt;br&gt;최소 보관 충족 후면 추가 과금 없음&lt;br&gt;미충족 이탈은 잔여 기간 과금"]
-    S --&gt;|"생성 즉시 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| IA
-    S --&gt;|"생성 즉시 가능&lt;br&gt;전환 $0.01/1,000건"| ZIA
-    S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.02/1,000건"| GIR
-    S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.03258/1,000건"| FR
-    S -.-&gt;|"직행 즉시 가능&lt;br&gt;전환 $0.06/1,000건"| GDA
+    S --&gt;|"즉시 전환 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| IA
+    S --&gt;|"즉시 전환 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| ZIA
+    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.02/1,000건"| GIR
+    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.03258/1,000건"| FR
+    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.06/1,000건"| GDA
     IA --&gt;|"최소 보관 30일 충족 후&lt;br&gt;전환 $0.02/1,000건"| GIR
     GIR --&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.03258/1,000건"| FR
     GIR -.-&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
@@ -1795,9 +1795,9 @@
 <ul>
 <li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier Instant Retrieval)</li>
 <li>만료(Expiration): 지정 기간 후 객체 삭제, 미완료 멀티파트 업로드·이전 버전 정리도 라이프사이클로 처리</li>
-<li>Standard → Standard-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
+<li>Standard → Standard-IA·One Zone-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
+<li>Glacier 3종 직행은 원래부터 생성 즉시 가능 → 30일 경과 제한은 애초에 IA 계열에만 있던 규칙</li>
 <li>사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → Standard-IA를 거친다면 30일 뒤부터 Glacier Instant Retrieval 지정 가능</li>
-<li>Standard에서는 중간 단계 없이 Glacier 3종으로 직행 가능 → 모두 생성 즉시 지정 가능</li>
 <li>전환 자체가 요청 → 객체 1,000건당 전환 요청 비용 발생</li>
 <li>과금 단가는 라이프사이클 규칙 충족 시점부터 대상 클래스 기준 → 물리 이동이 늦어도 충족일부터 새 단가·최소 보관 기간 시작(Intelligent-Tiering만 물리 전환 후 변경)</li>
 </ul>
@@ -2021,7 +2021,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../systemd-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: systemd 정리">
+          <a href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: 시크릿 관리 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2031,7 +2031,7 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                systemd 정리
+                시크릿 관리 정리
               </div>
             </div>
           </a>
