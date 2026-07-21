@@ -5,8 +5,10 @@ authors:
   - dotoryeee
 categories:
   - SRE
+tags:
   - Prometheus
   - Thanos
+  - HA
 description: "docker-compose로 Prometheus 2대와 Thanos store·query·compact·receive를 올려 HA를 구성한 기록"
 ---
 # Prometheus with Thanos

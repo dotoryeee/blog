@@ -4,8 +4,10 @@ date: 2025-03-11
 authors:
   - dotoryeee
 categories:
-  - cloud
-  - server
+  - Database
+tags:
+  - Sharding
+  - MySQL
 description: "데이터베이스 샤딩의 범위·해시·지역·동적 전략과 핫스팟·크로스 샤드 조인 문제, 일관된 해싱 해결책을 표로 정리"
 ---
 # 샤딩이란

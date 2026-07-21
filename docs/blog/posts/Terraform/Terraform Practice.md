@@ -5,6 +5,11 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+tags:
+  - Terraform
+  - VPC
+  - RDS
+  - EC2
 description: "키페어 생성부터 VPC·EC2·IGW, RDS·Bastion 구성까지 테라폼으로 실습하며 자주 만난 에러와 해결책을 정리한 기록"
 ---
 # Terraform Practice

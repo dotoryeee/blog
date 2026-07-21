@@ -5,7 +5,10 @@ authors:
   - dotoryeee
 categories:
   - Network
-  - Server
+tags:
+  - WireGuard
+  - IPIP
+  - Tunnel
 description: "IPIP와 WireGuard의 캡슐화·암호화 원리와 Noise_IK 핸드셰이크·cryptokey routing 차이를 비교표로 정리"
 ---
 # WireGuard vs IPIP 차이점 정리
@@ -170,6 +173,7 @@ Endpoint = 203.0.113.5:51820
 ---
 
 ### 참고
+- 두 터널을 컨테이너에 직접 올려 평문·암호문과 처리량·MTU를 실측한 실습: [IPIP와 WireGuard 터널 직접 구성하고 비교하기](wireguard_ipip_lab.md)
 - WireGuard: Next Generation Kernel Network Tunnel (백서): https://www.wireguard.com/papers/wireguard.pdf
 - WireGuard Protocol & Cryptography: https://www.wireguard.com/protocol/
 - RFC 2003 IP Encapsulation within IP: https://www.rfc-editor.org/rfc/rfc2003

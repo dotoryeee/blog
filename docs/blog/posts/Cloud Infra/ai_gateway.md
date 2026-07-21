@@ -4,8 +4,11 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Cloud
   - AI
+tags:
+  - AI Gateway
+  - LiteLLM
+  - LLM
   - Security
 description: "AI Gateway가 토큰 단위로 LLM 트래픽을 통제하는 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 5종 비교, 가드레일 설계까지 정리"
 hide:
@@ -248,6 +251,7 @@ guardrails:
 ---
 
 ### 참고
+- LiteLLM으로 게이트웨이를 세워 라우팅·폴백·캐시·예산을 실측한 실습: [LiteLLM으로 AI Gateway 구축과 운영](ai_gateway_litellm.md)
 - Kong AI Gateway 공식 문서: https://developer.konghq.com/ai-gateway/
 - Cloudflare AI Gateway Features: https://developers.cloudflare.com/ai-gateway/features/
 - Envoy AI Gateway 공식 문서: https://aigateway.envoyproxy.io/docs/

@@ -4,7 +4,10 @@ date: 2025-03-19
 authors:
   - dotoryeee
 categories:
-  - Cloud
+  - AWS
+tags:
+  - ALB
+  - ELB
 description: "2025년 종료되는 ALB Pre-Warming을 대체하는 LCU-R 예약 방식과 값 추산법, 두 방식의 비용·설정 차이를 표로 비교"
 ---
 # AWS ALB Pre-Warming 지원 종료

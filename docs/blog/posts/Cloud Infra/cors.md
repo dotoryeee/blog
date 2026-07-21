@@ -4,8 +4,10 @@ date: 2025-03-12
 authors:
   - dotoryeee
 categories:
-  - Cloud
-  - Server
+  - Network
+tags:
+  - CORS
+  - HTTP
 description: "CORS 에러가 나는 5가지 시나리오를 원인·해결로 나누고 Access-Control 계열 응답 헤더 역할을 표로 정리"
 ---
 # CORS 정리

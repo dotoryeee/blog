@@ -4,7 +4,11 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Server
+  - Linux
+tags:
+  - eBPF
+  - Cilium
+  - Falco
   - Kubernetes
 description: "eBPF의 verifier·JIT·maps·CO-RE 구조와 커널 모듈과의 차이, 훅 위치·개발 스택·Cilium·Falco 같은 대표 제품까지 정리"
 hide:
@@ -193,6 +197,7 @@ maps는 eBPF 프로그램이 상태를 저장하고 유저스페이스와 데이
 ---
 
 ### 참고
+- bpftrace·Cilium으로 오버헤드와 서비스 네트워킹을 직접 잰 실습: [bpftrace와 Cilium으로 eBPF 실습](ebpf_lab.md)
 - What is eBPF? (ebpf.io): https://ebpf.io/what-is-ebpf/
 - BPF CO-RE (eBPF Docs): https://docs.ebpf.io/concepts/core/
 - BPF Documentation (kernel.org): https://docs.kernel.org/bpf/

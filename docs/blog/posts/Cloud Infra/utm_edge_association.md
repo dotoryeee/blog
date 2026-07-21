@@ -5,8 +5,10 @@ authors:
   - dotoryeee
 categories:
   - AWS
-  - Network
+tags:
+  - GWLB
   - Security
+  - Network
 description: "AWS Edge Association으로 인바운드 트래픽을 UTM에 우회시키는 구성과 ENI 직접 지정·GWLB(GENEVE) 방식 비교 정리"
 ---
 

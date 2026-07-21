@@ -5,6 +5,10 @@ authors:
   - dotoryeee
 categories:
   - Python
+tags:
+  - Python
+  - poetry
+  - conda
 description: "파이썬 환경 관리 도구 alternatives·poetry·conda의 가상환경 지원과 버전·패키지 관리 장단점 비교"
 ---
 # Python 환경 관리: alternatives, poetry, conda

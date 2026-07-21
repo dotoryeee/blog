@@ -5,6 +5,11 @@ authors:
   - dotoryeee
 categories:
   - Kubernetes
+tags:
+  - CNI
+  - Cilium
+  - Calico
+  - Flannel
 description: "Amazon VPC CNI·Calico·Cilium·Flannel·Antrea·Weave의 오버레이·암호화·데이터플레인·kube-proxy 대체 여부를 표로 비교"
 ---
 # Kubernetes CNI 비교

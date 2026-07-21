@@ -4,7 +4,10 @@ date: 2025-03-16
 authors:
   - dotoryeee
 categories:
-  - Server
+  - Linux
+tags:
+  - Boot
+  - systemd
 description: "UEFI·GRUB2부터 initramfs·switch_root를 거쳐 systemd가 fstab을 재마운트하기까지 현대 리눅스 부팅 순서를 한 줄로 정리"
 ---
 # 현대 리눅스 시스템 부팅 순서(메모)

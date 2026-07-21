@@ -4,9 +4,12 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Cloud
   - AI
-  - SRE
+tags:
+  - AI Gateway
+  - LiteLLM
+  - Ollama
+  - LLM
 description: "LiteLLM Proxy와 Ollama 로컬 모델로 게이트웨이를 세워 라우팅·폴백·캐시 히트·예산 차단·프로메테우스 관측까지 응답 헤더로 실측한 기록"
 hide:
   - toc
@@ -822,6 +825,8 @@ Trace ID: c69af1f904d85841782a2f8bb8d585c2
 ## 결론
 
 ---
+
+토큰 단위 통제 원리와 LiteLLM·Kong·Portkey·Cloudflare·Envoy 비교, 가드레일 설계는 [AI Gateway 정리](ai_gateway.md)에서 다뤘다.
 
 - 게이트웨이 하나로 통합 API, 키 관리, rate limit, 로드밸런싱, 폴백, 캐시, 비용 추적, 관측이 전부 한 스택에서 동작함을 확인했다
 - 백엔드를 Ollama에서 OpenAI/Bedrock으로 바꿔도 model_list에 항목만 추가하면 되고 당연히 앱 코드는 그대로다

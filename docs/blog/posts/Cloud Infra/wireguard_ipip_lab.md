@@ -5,7 +5,11 @@ authors:
   - dotoryeee
 categories:
   - Network
-  - Server
+tags:
+  - WireGuard
+  - IPIP
+  - MTU
+  - Tunnel
 description: "Docker 컨테이너 두 대에 IPIP·WireGuard 터널을 직접 올려 tcpdump로 평문·암호문을 대조하고 iperf3 처리량과 MTU까지 실측한 기록"
 ---
 
@@ -315,6 +319,8 @@ docker network rm dotoryeee-tunnel-net
 ## 요약
 
 ---
+
+캡슐화·암호화 원리와 Noise_IK 핸드셰이크, MTU 계산 같은 배경은 [WireGuard vs IPIP 차이점 정리](wireguard_ipip.md)에서 다뤘다.
 
 - IPIP는 키도 핸드셰이크도 없이 local과 remote만 맞추면 바로 붙고, 바깥 IP 헤더 20바이트만 덧대 MTU가 1480으로만 줄어든다
 - WireGuard는 키 쌍을 만들고 피어를 걸면 첫 패킷에 핸드셰이크가 서고, IPv6까지 감안한 기본 MTU 예약으로 MTU가 1420이 된다(IPv4 실제 오버헤드는 60바이트)

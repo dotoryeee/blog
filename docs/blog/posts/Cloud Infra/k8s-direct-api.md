@@ -5,6 +5,9 @@ authors:
   - dotoryeee
 categories:
   - Kubernetes
+tags:
+  - Kubernetes
+  - API Server
 description: "kubectl 없이 부트스트랩 토큰을 base64로 디코딩해 curl로 쿠버네티스 API 서버를 직접 호출하는 법"
 ---
 # Kubectl 없이 Kubernetes API Server 직접 호출하는 방법

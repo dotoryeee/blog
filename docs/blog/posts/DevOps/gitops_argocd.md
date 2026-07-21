@@ -5,7 +5,10 @@ authors:
   - dotoryeee
 categories:
   - DevOps
-  - Kubernetes
+tags:
+  - GitOps
+  - ArgoCD
+  - Flux
 description: "GitOps 네 원칙과 ArgoCD 아키텍처, push·pull 모델 차이, 동기화 정책, Flux와의 비교까지 표로 정리"
 hide:
   - toc
@@ -190,6 +193,7 @@ spec:
 ---
 
 ### 참고
+- kind에 Argo CD를 올려 sync·drift·롤백을 직접 확인한 실습: [kind에 ArgoCD 올려 GitOps 동작 확인하기](gitops_argocd_lab.md)
 - OpenGitOps Principles v1.0.0: https://opengitops.dev/
 - Argo CD Architectural Overview: https://argo-cd.readthedocs.io/en/stable/operator-manual/architecture/
 - Automated Sync Policy: https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/

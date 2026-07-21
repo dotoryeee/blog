@@ -5,6 +5,9 @@ authors:
   - dotoryeee
 categories:
   - Network
+tags:
+  - WebSocket
+  - HTTP
 description: "WebSocket 핸드셰이크 수립과 Close Frame 정상 종료, Ping/Pong Timeout 종료 과정을 시퀀스 다이어그램으로 정리"
 ---
 # Websocket 정리

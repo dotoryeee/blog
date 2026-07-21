@@ -5,6 +5,11 @@ authors:
   - dotoryeee
 categories:
   - AWS
+tags:
+  - VPC
+  - RDS
+  - ELB
+  - Bastion
 description: "VPC·서브넷·Bastion·ELB 오토스케일링·RDS MySQL까지 AWS 3-Tier 인프라를 콘솔에서 직접 구축한 실습 기록"
 ---
 # 3-Tier 기본 인프라 구성

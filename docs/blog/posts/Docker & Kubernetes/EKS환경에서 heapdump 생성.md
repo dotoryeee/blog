@@ -5,6 +5,10 @@ authors:
   - dotoryeee
 categories:
   - Kubernetes
+tags:
+  - EKS
+  - JVM
+  - Heap Dump
 description: "kubectl exec로 파드 안 JVM에 jmap을 걸어 live 힙덤프를 뜨고 kubectl cp로 로컬에 꺼내는 명령과 옵션 정리"
 ---
 # K8S에 배포된 JVM Heap Dump 생성

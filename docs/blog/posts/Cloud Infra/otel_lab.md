@@ -4,8 +4,11 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Cloud
   - SRE
+tags:
+  - OpenTelemetry
+  - Jaeger
+  - Tracing
 description: "OpenTelemetry Collector와 Jaeger를 docker compose로 세워 Flask 두 서비스의 요청이 traceparent로 한 trace에 묶이는지 zero-code 계측으로 실측한 기록"
 hide:
   - toc
@@ -384,6 +387,8 @@ processors:
 ```s
 docker compose down -v
 ```
+
+신호 3종과 API·SDK·Collector·OTLP 구성, 샘플링 개념은 [OpenTelemetry 정리](otel.md)에서 다뤘다.
 
 - 코드 한 줄 안 고치고 Flask 두 서비스에 계측을 주입해 분산 trace를 만들었다 → zero-code 계측의 실체는 opentelemetry-instrument 래퍼와 bootstrap이 깐 자동 계측 패키지
 - Collector는 받은 span을 debug로 눈에 보여주고, attributes processor로 가공한 뒤 Jaeger로 넘겼다 → 수집·가공·전달이 앱과 분리된 한 곳에 모인다

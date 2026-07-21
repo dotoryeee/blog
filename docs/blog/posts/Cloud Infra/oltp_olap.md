@@ -4,8 +4,11 @@ date: 2025-03-10
 authors:
   - dotoryeee
 categories:
-  - Cloud
-  - Server
+  - Database
+tags:
+  - OLTP
+  - OLAP
+  - Redshift
 description: "OLTP와 OLAP의 데이터 모델·쿼리·응답 속도 차이와 ETL 연계, RDS·Redshift 등 AWS 서비스 대응까지 정리"
 ---
 # OLTP vs OLAP 차이점 정리

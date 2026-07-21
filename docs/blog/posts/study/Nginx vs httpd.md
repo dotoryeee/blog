@@ -4,9 +4,11 @@ date: 1993-09-17
 authors:
   - dotoryeee
 categories:
-  - study
-  - nginx
-  - httpd
+  - Linux
+tags:
+  - Nginx
+  - Apache
+  - Web Server
 description: "Nginx와 Apache httpd의 prefork·event MPM을 이벤트 루프와 스레드풀 관점에서 구조·성능 비교"
 ---
 # Nginx vs Apache httpd

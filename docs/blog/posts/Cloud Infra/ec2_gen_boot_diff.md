@@ -4,8 +4,12 @@ date: 2025-03-10
 authors:
   - dotoryeee
 categories:
-  - Cloud
-  - Server
+  - Linux
+tags:
+  - Boot
+  - UEFI
+  - GRUB
+  - EC2
 description: "MBR·GPT·UEFI·GRUB·ESP 개념과 AWS EC2 Xen·Nitro 세대에서 /boot/efi 없이 부팅되는 이유를 세대·OS별로 정리"
 ---
 # 서버 부팅 방식 정리

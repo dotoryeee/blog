@@ -4,7 +4,11 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Server
+  - Linux
+tags:
+  - xattr
+  - ACL
+  - Filesystem
 description: "macOS xattr와 Linux getfattr·setfacl·setcap·chattr가 다루는 대상과 저장 위치 차이를 실측으로 비교 정리"
 ---
 

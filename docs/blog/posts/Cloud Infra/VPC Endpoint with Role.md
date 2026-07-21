@@ -5,6 +5,11 @@ authors:
   - dotoryeee
 categories:
   - AWS
+tags:
+  - VPC Endpoint
+  - IAM
+  - S3
+  - Bastion
 description: "Bastion Host로 프라이빗 웹 서버에 접속하고 Gateway Endpoint와 IAM Role로 S3·DynamoDB에 게이트웨이 없이 접근하는 실습"
 ---
 # VPC Endpoint with Role

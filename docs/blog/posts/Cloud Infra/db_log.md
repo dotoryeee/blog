@@ -4,8 +4,12 @@ date: 2025-03-10
 authors:
   - dotoryeee
 categories:
-  - Cloud
-  - Server
+  - Database
+tags:
+  - MySQL
+  - PostgreSQL
+  - Aurora
+  - WAL
 description: "WAL·Redo·Undo·Binlog 등 DB 로그 종류와 MySQL·PostgreSQL 차이, Aurora가 로그를 공유 스토리지에서 다루는 방식까지 비교"
 ---
 # DB 로그와 Aurora 정리

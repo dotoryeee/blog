@@ -5,9 +5,11 @@ authors:
   - dotoryeee
 categories:
   - SRE
-  - Promtail
+tags:
   - Loki
+  - Promtail
   - Grafana
+  - Logging
 description: "Promtail로 로그를 수집해 Loki에 넣고 S3 저장·컴팩터 retention까지 구성한 로그 파이프라인 기록"
 ---
 # Promtail-Loki-Grafana

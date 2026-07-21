@@ -5,7 +5,12 @@ authors:
   - dotoryeee
 categories:
   - Docker
-  - Kubernetes
+tags:
+  - Container
+  - containerd
+  - runc
+  - Namespace
+  - cgroup
 description: "namespace·cgroup부터 dockerd·containerd·runc 계층과 dockershim 제거, overlayfs, gVisor·Kata 런타임 선택지까지 표로 정리"
 hide:
   - toc
@@ -193,6 +198,7 @@ OCI 이미지는 매니페스트(manifest)가 config와 레이어 blob을 다이
 ---
 
 ### 참고
+- docker 없이 커널 기능만으로 컨테이너를 손수 조립한 실습: [docker 없이 컨테이너 만들어보기](container_lab.md)
 - Linux namespaces (man7): https://man7.org/linux/man-pages/man7/namespaces.7.html
 - Dockershim Removal FAQ (Kubernetes): https://kubernetes.io/blog/2022/02/17/dockershim-faq/
 - About the OCI (opencontainers.org): https://opencontainers.org/about/overview/

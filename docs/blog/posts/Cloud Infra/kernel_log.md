@@ -4,8 +4,11 @@ date: 2025-03-13
 authors:
   - dotoryeee
 categories:
-  - Cloud
-  - Server
+  - Linux
+tags:
+  - Kernel
+  - Logging
+  - EC2
 description: "AWS 콘솔 인스턴스 로그가 dmesg와 같은지, 커널 링 버퍼와 /dev/ttyS0 콘솔 출력 캡처 차이를 흐름도로 정리"
 ---
 # AWS 콘솔 system log = dmesg 인가

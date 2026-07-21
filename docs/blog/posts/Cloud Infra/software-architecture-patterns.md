@@ -4,9 +4,12 @@ date: 2023-11-25
 authors:
   - dotoryeee
 categories:
-  - AA
-  - udemy
-  - study
+  - Architecture
+tags:
+  - Architecture
+  - CQRS
+  - Saga
+  - Microservices
 description: "Pipes and Filters·Saga·CQRS·Sidecar·Circuit Breaker 등 클라우드 아키텍처 패턴 20여 개를 mermaid 다이어그램으로 복습한 기록"
 ---
 # Software Architecture Patterns 정리

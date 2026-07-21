@@ -4,8 +4,10 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Cloud
   - SRE
+tags:
+  - OpenTelemetry
+  - Tracing
 description: "OpenTelemetry의 신호 3종, API·SDK·Collector·OTLP 구성, 수동·자동 계측과 head·tail 샘플링, Collector 배포 패턴까지 정리"
 hide:
   - toc
@@ -186,6 +188,7 @@ Collector는 앱 가까이 붙는 에이전트형과, 독립 서비스로 모으
 ---
 
 ### 참고
+- Collector와 Jaeger로 두 서비스의 요청을 한 trace로 묶어 본 실습: [OpenTelemetry Collector로 분산 트레이싱 실습](otel_lab.md)
 - What is OpenTelemetry? (opentelemetry.io): https://opentelemetry.io/docs/what-is-opentelemetry/
 - Signals (opentelemetry.io): https://opentelemetry.io/docs/concepts/signals/
 - Collector Architecture (opentelemetry.io): https://opentelemetry.io/docs/collector/architecture/

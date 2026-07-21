@@ -4,8 +4,12 @@ date: 1993-09-17
 authors:
   - dotoryeee
 categories:
-  - docker
-  - study
+  - Database
+tags:
+  - ProxySQL
+  - MySQL
+  - Docker
+  - Failover
 description: "ProxySQL로 읽기·쓰기 호스트그룹을 나눠 쿼리를 라우팅하고, Master 장애 후 14초 만에 승격되는 페일오버까지 실측한 기록"
 ---
 # Docker Proxy Layer for MySQL

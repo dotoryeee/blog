@@ -4,7 +4,11 @@ date: 2025-03-12
 authors:
   - dotoryeee
 categories:
-  - Server 
+  - SRE
+tags:
+  - SLI
+  - SLO
+  - SLA
 description: "SLI·SLO·SLA의 정의와 설정 주체, 법적 구속력 차이를 비교하고 가용성·응답시간·오류율 기준 설정 예시까지 정리"
 
 ---

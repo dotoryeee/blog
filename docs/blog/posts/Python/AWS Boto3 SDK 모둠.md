@@ -5,6 +5,10 @@ authors:
   - dotoryeee
 categories:
   - Python
+tags:
+  - Python
+  - boto3
+  - EC2
 description: "boto3로 EC2 인스턴스 타입 변경, 타겟그룹 해제 후 정지, AMI 해제와 스냅샷 삭제까지 파이썬 스니펫 모음"
 ---
 # Boto3 사용 예시

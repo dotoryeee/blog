@@ -4,8 +4,12 @@ date: 2025-03-11
 authors:
   - dotoryeee
 categories:
-  - Cloud
   - Kubernetes
+tags:
+  - EKS
+  - CoreDNS
+  - TLS
+  - Troubleshooting
 description: "Private EKS 클러스터에서 마주친 CoreDNS hosts 수정·OCSP·PKIX·self-signed 인증서 오류 대응을 모은 트러블슈팅 기록"
 ---
 # Private EKS Cluster 트러블슈팅 내역[Draft]

@@ -43,6 +43,21 @@ plugins:
       pagination_format: "$link_first $link_previous ~2~ $link_next $link_last"
       draft_on_serve: false
       draft: false
+      categories_allowed:
+        - AWS
+        - Linux
+        - Network
+        - Database
+        - Security
+        - Kubernetes
+        - Docker
+        - SRE
+        - DevOps
+        - Terraform
+        - Python
+        - AI
+        - Architecture
+  - tags
   - social:
       cards: true
       cards_layout_options:

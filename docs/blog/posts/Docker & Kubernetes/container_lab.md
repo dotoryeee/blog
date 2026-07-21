@@ -5,7 +5,12 @@ authors:
   - dotoryeee
 categories:
   - Docker
-  - Server
+tags:
+  - Container
+  - Namespace
+  - cgroup
+  - overlayfs
+  - veth
 description: "docker 없이 unshare·cgroup·chroot·overlayfs·veth만으로 컨테이너를 손수 조립하고 20M 메모리 제한 OOM까지 실측한 기록"
 hide:
   - toc
@@ -340,6 +345,6 @@ ip route | grep -c 10.10.0
 
 - runc 는 OCI runtime-spec 의 config.json 을 읽어 namespace 조합, cgroup 한도, rootfs 경로, 마운트, 네트워크를 세팅한 뒤 컨테이너 프로세스를 exec 한다
 - 실무에서는 pivot_root 로 루트를 더 안전하게 갈고, user namespace 로 컨테이너 root 를 호스트 비특권 UID 에 매핑해 격리를 강화한다
-- 이 조각들이 어떤 계층(docker CLI, dockerd, containerd, shim, runc)을 거쳐 조립되는지는 컨테이너 내부 구조 정리 글에서 다뤘다
+- 이 조각들이 어떤 계층(docker CLI, dockerd, containerd, shim, runc)을 거쳐 조립되는지는 [컨테이너 내부 구조 정리](container_internals.md) 글에서 다뤘다
 
 컨테이너는 마법이 아니라 커널 기능 몇 개의 조합이다. namespace 로 격리하고 cgroup 으로 제한한 프로세스, 그 한 문장을 손으로 만들어 확인했다.

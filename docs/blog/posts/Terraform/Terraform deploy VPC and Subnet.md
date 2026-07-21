@@ -5,6 +5,9 @@ authors:
   - dotoryeee
 categories:
   - Terraform
+tags:
+  - Terraform
+  - VPC
 description: "테라폼 첫 IaC로 VPC 10.0.0.0/16과 퍼블릭·프라이빗 서브넷을 만들고 init·plan·apply 흐름을 익힌 기록"
 ---
 # Terraform deploy VPC and Subnet

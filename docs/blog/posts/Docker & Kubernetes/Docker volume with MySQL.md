@@ -4,8 +4,11 @@ date: 1993-09-17
 authors:
   - dotoryeee
 categories:
-  - docker
-  - study
+  - Docker
+tags:
+  - Docker
+  - Volume
+  - MySQL
 description: "CentOS에 percona MySQL 컨테이너를 올리고 볼륨 매핑으로 컨테이너를 지워도 데이터가 남는 stateful 상태를 구현한 기록"
 ---
 # Docker volume with MySQL

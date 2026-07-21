@@ -4,7 +4,11 @@ date: 2026-07-20
 authors:
   - dotoryeee
 categories:
-  - Server
+  - Linux
+tags:
+  - eBPF
+  - Cilium
+  - bpftrace
   - Kubernetes
 description: "bpftrace와 Cilium으로 커널 추적과 서비스 네트워킹을 실측하고 strace 대비 이벤트당 약 2600배 낮은 오버헤드를 수치로 비교한 기록"
 hide:
@@ -358,5 +362,7 @@ kind delete cluster --name dotoryeee-cilium
 docker rm -f ebpf-work 2>/dev/null
 docker rmi ebpf-bpftrace:local
 ```
+
+verifier·JIT·maps 같은 eBPF 내부 구조와 커널 모듈과의 차이는 [eBPF 정리](ebpf.md)에서 다뤘다.
 
 세 실험이 한 방향을 가리킨다. strace는 40만회 시스템 콜을 0.077초에서 28.4초로 늘렸고, bpftrace는 0.088초에 그쳤다. 같은 관측을 하는데 이벤트당 비용이 약 2600배 차이 났다. Cilium은 kube-proxy가 서비스마다 깔던 iptables 체인을 0개로 만들고 eBPF 맵으로 대신했다. Hubble은 그 커널 처리 결과를 사이드카 없이 흐름으로 보여줬다. 커널을 건드리지 않고 커널을 관측하고 바꾸는 것, 그게 eBPF가 하는 일이다.

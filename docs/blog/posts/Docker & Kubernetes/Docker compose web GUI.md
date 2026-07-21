@@ -4,8 +4,10 @@ date: 1993-09-17
 authors:
   - dotoryeee
 categories:
-  - docker
-  - study
+  - Docker
+tags:
+  - Docker Compose
+  - Portainer
 description: "Ubuntu에 Docker 설치하고 Portainer GUI로 관리, DVWA 컨테이너 로드와 compose로 WordPress·MySQL 올리기까지 정리"
 ---
 # Docker compose and web GUI

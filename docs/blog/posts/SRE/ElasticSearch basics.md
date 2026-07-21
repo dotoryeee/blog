@@ -5,7 +5,9 @@ authors:
   - dotoryeee
 categories:
   - SRE
-  - ElasticSearch
+tags:
+  - Elasticsearch
+  - ELK
 description: "엘라스틱서치 도큐먼트 CRUD부터 매핑·애널라이저·인덱스 템플릿·롤오버·노드 role까지 실습 명령어로 정리"
 ---
 # ElasticSearch 정리

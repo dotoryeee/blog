@@ -5,7 +5,11 @@ authors:
   - dotoryeee
 categories:
   - DevOps
+tags:
+  - GitOps
+  - ArgoCD
   - Kubernetes
+  - kind
 description: "kind 클러스터에 ArgoCD를 올려 guestbook을 sync하고, kubectl로 낸 drift가 selfHeal로 2초 만에 되돌아가는 과정과 롤백까지 실측한 기록"
 hide:
   - toc
@@ -327,6 +331,8 @@ No kind clusters found.
 ```
 
 ## 결론
+
+GitOps 네 원칙과 Argo CD 아키텍처, push·pull 차이 같은 개념은 [GitOps와 ArgoCD 정리](gitops_argocd.md)에서 다뤘다.
 
 - kind와 install.yaml, argocd CLI 세 가지면 로컬에서 GitOps 루프를 통째로 돌려볼 수 있다
 - OutOfSync는 desired와 live가 다르다는 신호일 뿐, 되돌릴지 말지는 selfHeal 정책이 정한다

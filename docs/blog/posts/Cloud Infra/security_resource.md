@@ -4,7 +4,11 @@ date: 2025-03-16
 authors:
   - dotoryeee
 categories:
-  - Cloud
+  - Security
+tags:
+  - WAF
+  - Shield
+  - Security Group
 description: "AWS Security Group·NACL·Network Firewall·WAF·Shield·Firewall Manager를 검사 수준·상태 유지·비용 기준으로 비교한 표"
 hide:
   - toc

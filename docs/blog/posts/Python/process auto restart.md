@@ -5,6 +5,9 @@ authors:
   - dotoryeee
 categories:
   - Python
+tags:
+  - Python
+  - Automation
 description: "메모리 누수 대응으로 /proc/meminfo 사용량이 임계치를 넘으면 프로세스를 재시작하고 로그로 검증하는 파이썬 자동화"
 ---
 # Process restart automation

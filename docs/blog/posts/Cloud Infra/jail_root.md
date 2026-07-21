@@ -4,7 +4,11 @@ date: 2025-03-16
 authors:
   - dotoryeee
 categories:
-  - Server
+  - Linux
+tags:
+  - chroot
+  - Namespace
+  - Container
 description: "chroot·pivot_root·switch_root의 보안 수준, 마운트 네임스페이스, 컨테이너 런타임·initramfs 사용처를 표로 비교"
 ---
 # chroot, pivot_root, switch_root 비교

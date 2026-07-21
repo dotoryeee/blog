@@ -4,8 +4,11 @@ date: 1993-09-17
 authors:
   - dotoryeee
 categories:
-  - NHNcloud
-  - LoadBalancer
+  - Network
+tags:
+  - HAProxy
+  - Load Balancer
+  - Nginx
 description: "Layer7 로드밸런서 뒤 Nginx 로그에 LB IP 대신 실제 클라이언트 IP를 X-Forwarded-For로 남기는 설정 기록"
 ---
 # Layer7 LB 사용시 real IP 가져오기
