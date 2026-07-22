@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="S3 스토리지 클래스별 최소 보관·검색 비용, 라이프사이클 전환 함정, 프리픽스 요청 한도와 멀티파트·Express One Zone까지 성능·비용 최적화 정리">
+        <meta name="description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../../22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/">
+        <link rel="next" href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>S3 성능·비용 최적화 정리 - dotoryeee's blog</title>
+        <title>쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="S3 성능·비용 최적화 정리 - dotoryeee's blog" />
-<meta property="og:description" content="S3 스토리지 클래스별 최소 보관·검색 비용, 라이프사이클 전환 함정, 프리픽스 요청 한도와 멀티파트·Express One Zone까지 성능·비용 최적화 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog" />
+<meta property="og:description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="S3 성능·비용 최적화 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="S3 스토리지 클래스별 최소 보관·검색 비용, 라이프사이클 전환 함정, 프리픽스 요청 한도와 멀티파트·Express One Zone까지 성능·비용 최적화 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#s3" class="md-skip">
+        <a href="#gpu" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              S3 성능·비용 최적화 정리
+              쿠버네티스 GPU 스케줄링 정리
             
           </span>
         </div>
@@ -1314,10 +1314,104 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#s3_1" class="md-nav__link">
+  <a href="#gpu_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        S3 최적화란
+        쿠버네티스 GPU 스케줄링이란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        device plugin 동작
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU Operator 구성요소
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU 분할과 공유
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPU 분할과 공유">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-slicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        time-slicing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIG
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dra-dynamic-resource-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRA (Dynamic Resource Allocation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gang-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        gang scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dcgm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCGM 기반 모니터링
       
     </span>
   </a>
@@ -1326,128 +1420,6 @@
       
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        스토리지 클래스 비교
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="스토리지 클래스 비교">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#glacier" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Glacier 복원 모드
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#intelligent-tiering" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Intelligent-Tiering 계층
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        라이프사이클과 전환
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="라이프사이클과 전환">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        전환 함정
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        요청 성능
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        전송 최적화
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        비용 함정 정리
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        최근 변경
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        최적화 체크리스트
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1513,7 +1485,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-21 00:00:00+00:00" class="md-ellipsis">2026. 7. 21.</time>
+                        <time datetime="2026-07-22 00:00:00+00:00" class="md-ellipsis">2026. 7. 22.</time>
                       </div>
                     </li>
                     
@@ -1524,7 +1496,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/aws/">AWS</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1535,7 +1507,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 13분
+                              읽는시간 9분
                             
                           </span>
                         </div>
@@ -1563,422 +1535,414 @@
       
       
       
-        <a href="../../../../../tags/#tag:cost" class="md-tag">Cost</a>
+        <a href="../../../../../tags/#tag:gpu" class="md-tag">GPU</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:glacier" class="md-tag">Glacier</a>
+        <a href="../../../../../tags/#tag:gpu-operator" class="md-tag">GPU Operator</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:s3" class="md-tag">S3</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:storage" class="md-tag">Storage</a>
+        <a href="../../../../../tags/#tag:kubernetes" class="md-tag">Kubernetes</a>
       
     
   </nav>
 
 
 
-<h1 id="s3">S3 성능·비용 최적화 정리</h1>
+<h1 id="gpu">쿠버네티스 GPU 스케줄링 정리</h1>
 <!-- more -->
 
-<h2 id="s3_1">S3 최적화란</h2>
-<p>S3 최적화란 데이터의 접근 패턴에 맞춰 스토리지 클래스·전송·요청 방식을 조정해 성능과 비용을 함께 맞추는 작업</p>
+<h2 id="gpu_1">쿠버네티스 GPU 스케줄링이란</h2>
+<p>쿠버네티스 GPU 스케줄링이란 device plugin이 확장 리소스로 광고한 GPU를 kube-scheduler가 파드에 배치하고, 필요하면 분할·격리·큐잉까지 얹는 배치 체계</p>
+<p>GPU가 CPU·메모리와 달리 파드 간 공유·오버커밋이 기본 불가능한 정수 리소스여서, 값비싼 카드를 놀리지 않게 배치·분할·모니터링하는 별도 계층이 필요해짐.</p>
 <ul>
-<li>성능 축: 프리픽스당 요청률, 객체 지연(latency), 대용량 전송 처리량</li>
-<li>비용 축: 저장 비용(클래스별 단가), 요청 비용(PUT/GET 건수), 전송 비용(리전 밖·인터넷 아웃), 검색·전환 비용</li>
-<li>두 축은 자주 충돌 → 저렴한 아카이브 클래스는 검색 비용·복원 지연을 대가로 가짐</li>
-<li>최적화 판단 기준은 단가가 아니라 "얼마나 자주, 얼마나 빨리 꺼내는가"</li>
+<li>kube-scheduler는 CPU·메모리·확장 리소스의 "개수"만 봄 → GPU 모델·VRAM 용량·카드 간 토폴로지는 스케줄링 입력이 아님</li>
+<li>GPU는 device plugin이 확장 리소스로 광고해야 비로소 스케줄러에 보임 → 플러그인이 없으면 노드에 GPU가 꽂혀 있어도 nvidia.com/gpu는 0</li>
+<li>확장 리소스는 정수·비오버커밋 → CPU식 공유·초과 배치가 원천 차단됨</li>
 </ul>
 <hr />
-<h2 id="_1">스토리지 클래스 비교</h2>
-<p>접근 빈도와 검색 속도 요구에 따라 클래스가 갈리며, 저렴할수록 최소 보관 기간·검색 비용이 붙음</p>
+<h2 id="device-plugin">device plugin 동작</h2>
+<p>device plugin이란 kubelet에 특정 하드웨어를 확장 리소스로 등록하고 컨테이너에 할당하는 gRPC 서비스</p>
+<ul>
+<li>플러그인이 /var/lib/kubelet/device-plugins/<name>.sock 에 gRPC 서버를 띄운 뒤 kubelet.sock 으로 Register 호출</li>
+<li>등록 시 ResourceName을 nvidia.com/gpu 로 광고 → kubelet이 노드 status에 확장 리소스로 반영</li>
+<li>파드는 resources.limits.nvidia.com/gpu 로 요청 → 스케줄러는 이 값을 정수 리소스로만 취급해 개수만 보고 배치</li>
+<li>실제 디바이스 마운트·환경변수 주입은 컨테이너 생성 시점의 Allocate 응답으로 처리</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th>클래스</th>
-<th>접근 패턴</th>
-<th>최소 보관</th>
-<th>검색 비용</th>
+<th>메서드</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register</td>
+<td>소켓 경로·API 버전·ResourceName(nvidia.com/gpu)을 kubelet에 등록</td>
+</tr>
+<tr>
+<td>ListAndWatch</td>
+<td>관리 중인 디바이스 목록과 헬스를 스트림으로 보고, 상태 변화 시 갱신</td>
+</tr>
+<tr>
+<td>Allocate</td>
+<td>컨테이너 생성 시 호출, 디바이스 마운트·env·라이브러리 경로 주입</td>
+</tr>
+<tr>
+<td>GetPreferredAllocation</td>
+<td>가용 디바이스 중 우선 할당 후보 반환(GPU 토폴로지 고려)</td>
+</tr>
+<tr>
+<td>GetDevicePluginOptions</td>
+<td>kubelet과의 통신 옵션 반환</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>nvidia.com/gpu는 확장 리소스여서 requests와 limits를 다르게 지정할 수 없음. limits만 적으면 requests가 같은 값으로 채워지지만, limits 없이 requests만 적는 것은 불가. 정수만 허용하며 오버커밋 불가. CPU처럼 requests를 낮게 잡아 버스트를 노리는 배치 전략은 GPU엔 통하지 않음.</p>
+</div>
+<hr />
+<h2 id="gpu-operator">GPU Operator 구성요소</h2>
+<p>GPU Operator란 드라이버부터 모니터링까지 GPU 노드에 필요한 소프트웨어 스택 전체를 오퍼레이터 패턴으로 자동 설치·관리하는 배포체</p>
+<p>노드마다 드라이버·런타임·플러그인을 손으로 맞추면 버전 어긋남과 오류가 잦아, 한 벌로 묶어 선언적으로 굴리려는 목적.</p>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node Feature Discovery(NFD)</td>
+<td>노드 하드웨어·PCI 정보를 라벨링, GPU 노드 식별의 전제</td>
+</tr>
+<tr>
+<td>NVIDIA Driver</td>
+<td>커널 모듈·CUDA 런타임을 컨테이너로 설치해 OS와 GPU를 연결</td>
+</tr>
+<tr>
+<td>Container Toolkit</td>
+<td>컨테이너 런타임이 GPU 디바이스를 컨테이너에 노출하도록 설정</td>
+</tr>
+<tr>
+<td>GPU Feature Discovery(GFD)</td>
+<td>GPU 모델·메모리·MIG 프로파일을 노드 라벨로 노출</td>
+</tr>
+<tr>
+<td>Device Plugin</td>
+<td>nvidia.com/gpu 리소스를 kubelet에 등록·할당</td>
+</tr>
+<tr>
+<td>DCGM / DCGM Exporter</td>
+<td>GPU 텔레메트리 수집, Prometheus 포맷으로 /metrics 노출</td>
+</tr>
+<tr>
+<td>MIG Manager</td>
+<td>노드의 MIG 파티션을 선언적으로 생성·변경</td>
+</tr>
+<tr>
+<td>Driver Manager</td>
+<td>드라이버 업그레이드 시 파드 축출·롤아웃 관리</td>
+</tr>
+<tr>
+<td>Operator Validator</td>
+<td>각 구성요소 정상 여부를 검증하는 init 게이트</td>
+</tr>
+</tbody>
+</table>
+<p>구성요소는 앞 단계가 준비돼야 다음이 뜨는 의존 사슬로 묶임.</p>
+<pre class="mermaid"><code>graph LR
+    NFD["Node Feature&lt;br&gt;Discovery"] --&gt; DRV["NVIDIA&lt;br&gt;Driver"]
+    DRV --&gt; TK["Container&lt;br&gt;Toolkit"]
+    TK --&gt; DP["Device&lt;br&gt;Plugin"]
+    DP --&gt; GFD["GPU Feature&lt;br&gt;Discovery"]
+    DRV --&gt; DCGM["DCGM&lt;br&gt;Exporter"]
+    DRV --&gt; MIG["MIG&lt;br&gt;Manager"]
+    DP --&gt; VAL["Validator"]</code></pre>
+<ul>
+<li>드라이버 파드가 죽으면 하위 구성요소가 전부 Init에서 멈춤 → 드라이버 문제 하나가 "전부 고장"처럼 보이는 이유</li>
+<li>각 단계는 앞 단계 헬스를 기다리는 init 컨테이너를 둠 → 장애 지점 추적은 사슬의 위에서 아래로</li>
+</ul>
+<hr />
+<h2 id="gpu_2">GPU 분할과 공유</h2>
+<p>nvidia.com/gpu는 정수 단위라, GPU 하나를 여러 파드가 나눠 쓰려면 device plugin 위에 별도 분할·공유 기술을 얹어야 함</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>격리 수준</th>
+<th>메모리 분리</th>
+<th>노출 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time-slicing</td>
+<td>없음(시간 분할)</td>
+<td>없음</td>
+<td>replicas 수만큼 nvidia.com/gpu 증식</td>
+</tr>
+<tr>
+<td>MPS</td>
+<td>약함(장애 격리 없음)</td>
+<td>클라이언트당 균등 한도</td>
+<td>replicas 수만큼 증식, 커널 동시 실행(MIG 병용 불가)</td>
+</tr>
+<tr>
+<td>MIG</td>
+<td>하드웨어 격리</td>
+<td>있음</td>
+<td>전략별로 nvidia.com/gpu 또는 프로파일 리소스로 노출</td>
+</tr>
+</tbody>
+</table>
+<h3 id="time-slicing">time-slicing</h3>
+<p>time-slicing이란 한 GPU에 replicas를 정의해 여러 파드가 시간을 번갈아 점유하도록 오버서브스크립션하는 방식</p>
+<ul>
+<li>스케줄러엔 replicas 수만큼 nvidia.com/gpu가 있는 것처럼 보임 → 물리 GPU는 1장, 파드는 시분할로 교차 실행</li>
+<li>메모리·장애 격리가 없음 → 한 파드의 OOM이나 오류가 같은 GPU의 다른 파드로 파급</li>
+<li>지원 리소스는 nvidia.com/gpu와 mixed MIG 전략에서 나오는 리소스 유형뿐</li>
+<li>격리가 필요 없는 추론·개발 워크로드의 밀도를 올리는 용도, 학습 격리에는 부적합</li>
+</ul>
+<h3 id="mig">MIG</h3>
+<p>MIG(Multi-Instance GPU)란 GPU를 하드웨어 수준에서 여러 인스턴스로 물리 분할해 메모리·연산·캐시를 격리하는 기술</p>
+<p>MIG 전략은 device plugin이 파티션을 리소스로 어떻게 노출하는지를 정함.</p>
+<table>
+<thead>
+<tr>
+<th>전략</th>
+<th>노출 리소스</th>
 <th>특징</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>S3 Standard</td>
-<td>자주 접근(월 1회 이상)</td>
-<td>없음</td>
-<td>없음</td>
-<td>기본 클래스, 밀리초 접근, AZ 3개 이상</td>
+<td>single</td>
+<td>nvidia.com/gpu</td>
+<td>노드 내 모든 인스턴스가 동일 프로파일, 스케줄러 관점은 일반 GPU와 동일</td>
 </tr>
 <tr>
-<td>S3 Express One Zone</td>
-<td>지연 민감 핫데이터</td>
-<td>없음</td>
-<td>없음</td>
-<td>단일 AZ 디렉터리 버킷, 한 자릿수 ms, Standard 대비 최대 10배 빠름</td>
-</tr>
-<tr>
-<td>S3 Standard-IA</td>
-<td>가끔 접근(월 1회)</td>
-<td>30일</td>
-<td>있음</td>
-<td>AZ 3개 이상, 최소 과금 128KB</td>
-</tr>
-<tr>
-<td>S3 One Zone-IA</td>
-<td>재생성 가능·가끔 접근</td>
-<td>30일</td>
-<td>있음</td>
-<td>단일 AZ, Standard-IA보다 저렴, AZ 손실에 취약</td>
-</tr>
-<tr>
-<td>S3 Intelligent-Tiering</td>
-<td>불규칙·예측 불가</td>
-<td>없음</td>
-<td>없음</td>
-<td>접근 패턴 따라 자동 계층 이동, 객체당 모니터링 요금</td>
-</tr>
-<tr>
-<td>S3 Glacier Instant Retrieval</td>
-<td>분기 1회·즉시 필요</td>
-<td>90일</td>
-<td>있음</td>
-<td>밀리초 검색, Standard-IA급 지연·처리량</td>
-</tr>
-<tr>
-<td>S3 Glacier Flexible Retrieval</td>
-<td>연 1~2회·지연 허용</td>
-<td>90일</td>
-<td>있음(복원 필요)</td>
-<td>분~시간 복원, Bulk 무료, 실시간 접근 불가</td>
-</tr>
-<tr>
-<td>S3 Glacier Deep Archive</td>
-<td>연 1회 미만</td>
-<td>180일</td>
-<td>있음(복원 필요)</td>
-<td>최저가, 수시간 복원, 실시간 접근 불가</td>
+<td>mixed</td>
+<td>nvidia.com/mig-1g.5gb 등</td>
+<td>프로파일별 리소스명으로 분리 노출, 한 노드에 이종 프로파일 공존 가능</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>내구성은 모든 클래스가 99.999999999%(11 nines) 동일 → 차이는 가용성·AZ 수·검색 속도·단가</li>
-<li>단일 AZ 클래스(One Zone-IA, Express One Zone)는 AZ 물리 손실에 견디지 못함 → 재생성 가능하거나 사본인 데이터에만 권장</li>
-<li>Standard-IA·One Zone-IA·Glacier Instant Retrieval은 128KB 미만 객체도 128KB로 과금</li>
-<li>Glacier Flexible Retrieval·Deep Archive는 객체당 40KB 메타데이터 추가 과금(32KB는 Glacier 요율, 8KB는 Standard 요율)</li>
-</ul>
-<h3 id="glacier">Glacier 복원 모드</h3>
+<p>A100 40GB 기준 프로파일. 한 GPU를 최대 7개 인스턴스까지 나눌 수 있음.</p>
 <table>
 <thead>
 <tr>
-<th>클래스</th>
-<th>모드</th>
-<th>복원 시간</th>
-<th>비고</th>
+<th>프로파일</th>
+<th>메모리</th>
+<th>컴퓨트 슬라이스</th>
+<th>최대 인스턴스</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Glacier Flexible Retrieval</td>
-<td>Expedited</td>
-<td>1~5분</td>
-<td>건당 요금 가장 높음</td>
+<td>1g.5gb</td>
+<td>5GB</td>
+<td>1</td>
+<td>7</td>
 </tr>
 <tr>
-<td>Glacier Flexible Retrieval</td>
-<td>Standard</td>
-<td>3~5시간</td>
-<td>기본값</td>
+<td>2g.10gb</td>
+<td>10GB</td>
+<td>2</td>
+<td>3</td>
 </tr>
 <tr>
-<td>Glacier Flexible Retrieval</td>
-<td>Bulk</td>
-<td>5~12시간</td>
-<td>무료</td>
+<td>3g.20gb</td>
+<td>20GB</td>
+<td>3</td>
+<td>2</td>
 </tr>
 <tr>
-<td>Glacier Deep Archive</td>
-<td>Standard</td>
-<td>12시간 이내</td>
-<td></td>
+<td>4g.20gb</td>
+<td>20GB</td>
+<td>4</td>
+<td>1</td>
 </tr>
 <tr>
-<td>Glacier Deep Archive</td>
-<td>Bulk</td>
-<td>48시간 이내</td>
-<td></td>
+<td>7g.40gb</td>
+<td>40GB</td>
+<td>7</td>
+<td>1</td>
 </tr>
 </tbody>
 </table>
-<h3 id="intelligent-tiering">Intelligent-Tiering 계층</h3>
-<p>객체별 접근 이력을 보고 자동으로 계층을 옮기며, 저지연 3계층은 항상 켜져 있고 아카이브 2계층은 선택 활성</p>
+<ul>
+<li>프로파일은 메모리·컴퓨트가 함께 묶임 → 1g.5gb 7개, 2g.10gb 3개처럼 조합 개수가 정해져 있음</li>
+<li>time-slicing과 달리 인스턴스 간 메모리·장애가 분리됨 → 멀티테넌트·SLA 워크로드에 적합</li>
+<li>mixed 전략은 time-slicing과도 조합 가능 → 특정 프로파일(예: nvidia.com/mig-1g.5gb)에 다시 replicas를 걸 수 있음</li>
+</ul>
+<hr />
+<h2 id="dra-dynamic-resource-allocation">DRA (Dynamic Resource Allocation)</h2>
+<p>DRA란 파드가 정수 개수 대신 ResourceClaim으로 "어떤 속성의 GPU를" 요청하게 해, 스케줄러가 디바이스 속성까지 보고 매칭하게 하는 프레임워크</p>
+<p>개수만 아는 확장 리소스로는 모델·메모리·MIG 프로파일을 지정할 수 없어, 속성 기반 요청을 표준 API로 끌어올린 것.</p>
 <table>
 <thead>
 <tr>
-<th>계층</th>
-<th>이동 조건</th>
-<th>접근</th>
-<th>활성화</th>
+<th>버전</th>
+<th>성숙도</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Frequent Access</td>
-<td>업로드·전환 직후</td>
-<td>밀리초</td>
-<td>기본</td>
+<td>v1.32</td>
+<td>구조화 파라미터(structured parameters) 기반 DRA가 beta 진입</td>
 </tr>
 <tr>
-<td>Infrequent Access</td>
-<td>30일 연속 미접근</td>
-<td>밀리초</td>
-<td>기본</td>
+<td>v1.33</td>
+<td>beta 유지, 드라이버 소유 ResourceClaim 상태 등 확장</td>
 </tr>
 <tr>
-<td>Archive Instant Access</td>
-<td>90일 연속 미접근</td>
-<td>밀리초</td>
-<td>기본</td>
-</tr>
-<tr>
-<td>Archive Access</td>
-<td>최소 90일 미접근</td>
-<td>분~시간(복원 필요)</td>
-<td>선택</td>
-</tr>
-<tr>
-<td>Deep Archive Access</td>
-<td>최소 180일 미접근</td>
-<td>수시간(복원 필요)</td>
-<td>선택</td>
+<td>v1.34</td>
+<td>핵심 DRA가 GA, resource.k8s.io/v1 안정화, 기본 활성화</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>검색 비용 없음, 객체당 월 모니터링·자동화 요금만 부과</li>
-<li>128KB 미만 객체는 모니터링 대상이 아니며 항상 Frequent Access에 고정 → 소형 객체엔 자동 절감 효과 없음</li>
-<li>Archive Access·Deep Archive Access는 비동기 접근 가능한 데이터에만 켬 → 켜면 RestoreObject 복원 절차 필요</li>
+<li>드라이버가 ResourceSlice로 노드의 가용 디바이스·속성을 광고 → 스케줄러가 ResourceClaim과 매칭</li>
+<li>DeviceClass가 클레임의 템플릿, ResourceClaim이 실제 요청 단위 → 파드는 클레임을 참조해 디바이스를 받음</li>
+<li>v1.34부터 API 기본값이 안정 v1 → beta 시절의 명시적 opt-in 없이 켜져 있음</li>
+<li>device plugin을 대체하는 것이 아니라 한 클러스터에서 병행 가능 → 기존 nvidia.com/gpu 워크로드는 그대로 동작</li>
 </ul>
 <hr />
-<h2 id="_2">라이프사이클과 전환</h2>
-<p>라이프사이클(Lifecycle) 규칙은 객체 나이·태그·프리픽스 기준으로 클래스 자동 전환과 만료를 처리하는 버킷 정책</p>
-<p>요금은 ap-northeast-2 기준 USD(2026-07 확인), 실선은 폭포수 사슬, 점선은 직행·건너뛰기 경로</p>
-<pre class="mermaid"><code>graph TD
-    S["Standard&lt;br&gt;저장 $0.025/GB·월(50TB까지)&lt;br&gt;최소 보관 없음"]
-    IA["Standard-IA&lt;br&gt;저장 $0.0138/GB·월&lt;br&gt;최소 보관 30일, 검색 $0.01/GB"]
-    ZIA["One Zone-IA&lt;br&gt;저장 $0.011/GB·월&lt;br&gt;최소 보관 30일, 검색 $0.01/GB, 단일 AZ"]
-    GIR["Glacier Instant Retrieval&lt;br&gt;저장 $0.005/GB·월&lt;br&gt;최소 보관 90일, 검색 $0.03/GB"]
-    FR["Glacier Flexible Retrieval&lt;br&gt;저장 $0.0045/GB·월, 최소 보관 90일&lt;br&gt;복원 Standard $0.011/GB, Expedited $0.033/GB, Bulk 무료"]
-    GDA["Glacier Deep Archive&lt;br&gt;저장 $0.002/GB·월, 최소 보관 180일&lt;br&gt;복원 Standard $0.022/GB, Bulk $0.005/GB"]
-    DEL["만료·삭제&lt;br&gt;최소 보관 충족 후면 추가 과금 없음&lt;br&gt;미충족 이탈은 잔여 기간 과금"]
-    S --&gt;|"즉시 전환 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| IA
-    S --&gt;|"즉시 전환 가능(2026-07부터)&lt;br&gt;전환 $0.01/1,000건"| ZIA
-    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.02/1,000건"| GIR
-    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.03258/1,000건"| FR
-    S -.-&gt;|"즉시 전환 가능(원래부터)&lt;br&gt;전환 $0.06/1,000건"| GDA
-    IA --&gt;|"최소 보관 30일 충족 후&lt;br&gt;전환 $0.02/1,000건"| GIR
-    GIR --&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.03258/1,000건"| FR
-    GIR -.-&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
-    FR --&gt;|"최소 보관 90일 충족 후&lt;br&gt;전환 $0.06/1,000건"| GDA
-    GDA --&gt; DEL</code></pre>
+<h2 id="gang-scheduling">gang scheduling</h2>
+<p>gang scheduling이란 잡을 구성하는 여러 파드를 원자적으로(all-or-nothing) 배치해, 일부만 뜨는 상태를 막는 스케줄링 방식</p>
 <ul>
-<li>전환(Transition): 일정 기간 지난 객체를 저렴한 클래스로 이동(예: 생성 30일 후 Standard-IA, 90일 후 Glacier Instant Retrieval)</li>
-<li>만료(Expiration): 지정 기간 후 객체 삭제, 미완료 멀티파트 업로드·이전 버전 정리도 라이프사이클로 처리</li>
-<li>Standard → Standard-IA·One Zone-IA 전환은 생성 즉시 가능(2026-07부터 30일 경과 제한 폐지) → 단 최소 보관 30일 과금은 그대로 적용</li>
-<li>출처: <a href="https://aws.amazon.com/ko/about-aws/whats-new/2026/07/s3-removes-30-day-transitions-standard-ia-one-zone-ia/">https://aws.amazon.com/ko/about-aws/whats-new/2026/07/s3-removes-30-day-transitions-standard-ia-one-zone-ia/</a></li>
-<li>Glacier 3종 직행은 원래부터 생성 즉시 가능 → 30일 경과 제한은 애초에 IA 계열에만 있던 규칙</li>
-<li>사슬 전환은 직전 클래스의 최소 보관 기간을 채워야 다음 단계 지정 가능(단일 규칙 기준) → Standard-IA를 거친다면 30일 뒤부터 Glacier Instant Retrieval 지정 가능</li>
-<li>전환 자체가 요청 → 객체 1,000건당 전환 요청 비용 발생</li>
-<li>과금 단가는 라이프사이클 규칙 충족 시점부터 대상 클래스 기준 → 물리 이동이 늦어도 충족일부터 새 단가·최소 보관 기간 시작(Intelligent-Tiering만 물리 전환 후 변경)</li>
+<li>분산 학습은 N개 파드가 동시에 떠야 통신 링을 형성 → 일부만 배치되면 나머지 GPU를 점유한 채 무한 대기(부분 배치 데드락)</li>
+<li>기본 kube-scheduler는 파드 단위 배치 → 잡 전체를 한 덩어리로 다루는 개념이 없음</li>
+<li>점유된 GPU가 다른 잡까지 막아 클러스터 전체 처리량이 떨어짐 → 부분 배치는 비용·신뢰성 양쪽의 위험</li>
 </ul>
-<h3 id="_3">전환 함정</h3>
-<ul>
-<li>작은 객체 다수를 IA 계열·Glacier 계열로 내리면 손해 → 128KB 미만도 128KB로 과금되고 전환 요청비까지 붙음</li>
-<li>최소 보관 기간 전 삭제·재전환 시 조기 삭제 요금 → Standard-IA에서 30일 전에 지우면 남은 기간만큼 과금</li>
-<li>조기 삭제는 결국 최소 보관 기간 전체를 낸 셈이 됨 → Glacier Deep Archive 전환 20일 뒤 지워도 잔여 160일분이 과금되어 총 180일치 부담</li>
-<li>최소 보관을 못 채우는 중간 기착은 단일 규칙에선 지정 자체가 불가 → Glacier Instant Retrieval 진입 90일 이전 시점의 Glacier Deep Archive 전환은 규칙 생성이 거부됨</li>
-<li>규칙을 둘로 쪼개면 조기 전환은 가능하나 잔여 기간 과금 → Glacier Instant Retrieval에 30일만 머물다 넘겨도 90일치 부담, 짧게 머물 바엔 Glacier Deep Archive 직행이 저렴</li>
-<li>Glacier로 전환하면 객체당 40KB 메타데이터가 얹힘 → 수백만 개의 초소형 객체 아카이브는 오히려 비쌈</li>
-<li>접근 패턴이 불규칙하면 수동 라이프사이클보다 Intelligent-Tiering이 나음 → 전환 타이밍을 사람이 못 맞춤</li>
-</ul>
-<hr />
-<h2 id="_4">요청 성능</h2>
-<p>S3는 요청률을 자동으로 확장하며, 병렬화 단위는 버킷이 아니라 파티셔닝된 프리픽스(prefix)</p>
-<ul>
-<li>프리픽스당 한도: 초당 최소 3,500 PUT/COPY/POST/DELETE, 5,500 GET/HEAD</li>
-<li>버킷 내 프리픽스 수에 상한 없음 → 프리픽스 10개로 읽기를 분산하면 초당 55,000 GET까지 확장</li>
-<li>자동 확장은 점진적 → 급증 시 일시적으로 503(Slow Down) 응답, 확장 완료되면 해소</li>
-<li>병렬화는 여러 프리픽스에 걸쳐 읽기·쓰기를 분산하는 방식</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>과거엔 성능을 위해 키 앞에 해시·랜덤 프리픽스를 붙이라는 조언이 있었음. 지금은 S3가 프리픽스를 자동 파티셔닝하므로 불필요. 오히려 날짜·경로 기반의 읽기 좋은 키 구조를 권장.</p>
-</div>
-<ul>
-<li>멀티파트 업로드: 대용량 객체를 여러 파트로 쪼개 병렬 업로드 → 100MB 이상 권장, 5GB 초과는 필수</li>
-<li>멀티파트는 파트 단위 재전송 가능 → 네트워크 실패 시 전체 재업로드 회피</li>
-<li>SSE-KMS 워크로드는 KMS 요청 한도가 별도 병목 → 대량 요청 시 S3 Bucket Keys로 KMS 호출 축소</li>
-<li>Express One Zone은 단일 AZ에 데이터를 두어 왕복 지연을 줄인 최상위 성능 위치 → 디렉터리 버킷 하나가 초당 200만 읽기·20만 쓰기 처리</li>
-<li>지연 민감·고빈도 소용량 접근(체크포인트·중간 산출물)은 Express One Zone, 범용 저장은 Standard로 역할 분담</li>
-</ul>
-<hr />
-<h2 id="_5">전송 최적화</h2>
-<p>전송은 병렬 분할과 엣지 경유 두 방향으로 최적화하며, 요청 수·거리·처리량이 변수</p>
-<ul>
-<li>멀티파트 업로드: 업로드를 파트로 나눠 동시 전송 → 처리량↑, 재시도 범위↓</li>
-<li>바이트레인지(Byte-range) 페치: Range 헤더로 객체를 구간별 병렬 다운로드 → 대용량 읽기 가속</li>
-<li>Transfer Acceleration: CloudFront 엣지 로케이션을 경유해 원거리 전송을 가속 → 별도 요금, 이득 있을 때만 활성</li>
-<li>단일 EC2 인스턴스도 데이터 레이크 스캔에서 최대 100Gb/s 처리 가능 → 여러 인스턴스로 집계하면 테라비트급</li>
-<li>정적 콘텐츠 배포·캐싱은 CloudFront가 담당 → 오리진에서 CloudFront로의 전송비 절감(상세는 <a href="../../../../2025/03/19/cdn%EA%B3%BC-%EB%8F%99%EC%A0%81%EC%BD%98%ED%85%90%EC%B8%A0-%ED%86%B5%ED%95%A9-%EC%8B%9C-%EC%B0%A8%EC%9D%B4%EC%A0%90/">CDN과 동적콘텐츠 통합 시 차이점</a>)</li>
-<li>리전 간·인터넷 아웃 전송비는 별도 → 같은 리전 내 서비스와 붙이고 VPC 엔드포인트로 경유하면 아웃 전송 회피</li>
-</ul>
-<hr />
-<h2 id="_6">비용 함정 정리</h2>
-<p>저장 단가만 보고 클래스를 고르면 검색·요청·전송 비용에서 역전됨</p>
 <table>
 <thead>
 <tr>
-<th>함정</th>
-<th>설명</th>
-<th>대응</th>
+<th>항목</th>
+<th>Kueue</th>
+<th>Volcano</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>최소 보관 기간</td>
-<td>30/90/180일 전 삭제·재전환 시 잔여 기간 과금</td>
-<td>보관 기간이 최소치를 넘는 데이터만 저가 클래스로</td>
+<td>스케줄링 방식</td>
+<td>기본 kube-scheduler 유지, 잡을 suspend·queue·admit</td>
+<td>자체 스케줄러가 PodGroup 단위로 배치(schedulerName 지정)</td>
 </tr>
 <tr>
-<td>검색 비용</td>
-<td>IA 계열·Glacier 계열은 GET·복원 시 GB당 요금, 자주 꺼내면 Standard보다 비쌈</td>
-<td>접근 빈도 실측 후 클래스 결정</td>
+<td>gang scheduling</td>
+<td>waitForPodsReady로 all-or-nothing 근사(타임아웃 시 축출·재큐잉)</td>
+<td>PodGroup all-or-nothing 지원</td>
 </tr>
 <tr>
-<td>작은 객체 오버헤드</td>
-<td>128KB 미만도 128KB 과금 + Glacier는 40KB 메타데이터 추가</td>
-<td>소형 객체는 묶어서 저장하거나 Standard 유지</td>
+<td>주 역할</td>
+<td>팀·네임스페이스별 쿼터와 큐 거버넌스</td>
+<td>분산 잡의 원자적 배치·플레이스먼트</td>
 </tr>
 <tr>
-<td>요청 비용</td>
-<td>PUT·GET 건수 단위 과금, LIST·전환도 요청</td>
-<td>잦은 소량 요청을 배치·멀티파트로 축소</td>
-</tr>
-<tr>
-<td>리전 간 전송비</td>
-<td>다른 리전·인터넷으로 나가는 트래픽에 GB당 요금</td>
-<td>동일 리전 배치, VPC 엔드포인트·CloudFront 경유</td>
-</tr>
-<tr>
-<td>모니터링 요금</td>
-<td>Intelligent-Tiering은 객체당 월 모니터링·자동화 요금</td>
-<td>객체 수가 많고 개별 용량이 작으면 오히려 손해</td>
-</tr>
-<tr>
-<td>미완료 멀티파트</td>
-<td>실패한 업로드 파트가 남아 조용히 과금</td>
-<td>라이프사이클로 미완료 업로드 자동 정리</td>
+<td>배치 방식</td>
+<td>승인된 잡을 기본 스케줄러가 배치</td>
+<td>자체 스케줄러가 직접 배치</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>Intelligent-Tiering은 128KB 미만 객체를 모니터링하지 않고 Frequent Access에 고정 → 소형 객체엔 자동 절감 효과 없음</li>
-<li>검색 비용이 없는 클래스는 Standard, Express One Zone, Intelligent-Tiering 세 가지</li>
-<li>Storage Class Analysis로 객체 접근 빈도를 실측 → 감으로 IA 전환하지 말고 데이터로 판단</li>
-<li>S3 Storage Lens로 요청·전송·클래스 분포를 가시화 → 어느 프리픽스에서 비용이 새는지 식별</li>
+<li>둘을 겹쳐 쓸 수 있음 → Kueue가 상위에서 쿼터·승인, Volcano가 하위에서 gang 배치</li>
+<li>소규모 단일 잡이면 Volcano 하나로 충분, 팀별 쿼터 경쟁이 생기면 Kueue를 얹음</li>
 </ul>
 <hr />
-<h2 id="_7">최근 변경</h2>
-<p>2024~2026 사이 확인된 신기능과 요금 변화</p>
-<ul>
-<li>조건부 쓰기(2024-08): PutObject·CompleteMultipartUpload에 If-None-Match 헤더 지원 → 같은 키의 덮어쓰기 방지, 별도 존재 확인 요청 불필요. 범용·디렉터리 버킷 모두 지원, 추가 비용 없음</li>
-<li>조건부 덮어쓰기(2024-11): If-Match 헤더로 ETag가 일치할 때만 덮어쓰기 → 동시 갱신 충돌을 요청 단에서 차단</li>
-<li>ETag는 객체의 버전 식별자 → 단일 PUT 객체는 데이터의 MD5와 같지만 멀티파트·KMS 암호화 객체는 MD5와 다름, 무결성 검증은 체크섬 기능(SHA-256 등)으로</li>
-<li>S3 Tables(2024 re:Invent): 완전관리형 Apache Iceberg 테이블 → 범용 버킷에 둔 Iceberg 대비 최대 10배 높은 초당 트랜잭션, Spark·Trino·Athena·Redshift 연동</li>
-<li>S3 Metadata: 객체 메타데이터를 질의 가능한 테이블로 자동 생성 → 대규모 버킷의 객체 검색·분석 용도</li>
-<li>Express One Zone 요금 인하(2025): 스토리지·요청 요금을 대폭 낮춤(출처: AWS News Blog, 2025). 정확한 인하율·과금 방식은 변동이 크니 현행 요금표에서 확인</li>
-<li>IA 전환 30일 제한 폐지(2026-07): Standard-IA·One Zone-IA로 생성 즉시 라이프사이클 전환 가능 → 30일 대기를 전제로 한 기존 설계 관행이 무의미해짐</li>
-<li>최소 과금 단위·모니터링 요금 등 구조는 유지 → 소형 객체·불규칙 접근에 대한 판단 기준은 그대로</li>
-</ul>
-<hr />
-<h2 id="_8">최적화 체크리스트</h2>
-<p>접근 빈도와 지연 요구를 먼저 정하고 클래스·전략을 매핑</p>
+<h2 id="dcgm">DCGM 기반 모니터링</h2>
+<p>DCGM Exporter가 GPU 텔레메트리를 Prometheus 포맷으로 노출하며, /metrics 엔드포인트에서 필드별 게이지로 수집됨</p>
 <table>
 <thead>
 <tr>
-<th>상황</th>
-<th>추천</th>
-<th>사유</th>
+<th>필드</th>
+<th>의미</th>
+<th>단위</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>자주 읽고 지연에 민감</td>
-<td>S3 Standard</td>
-<td>최소 기간·검색 비용 없음</td>
+<td>DCGM_FI_DEV_GPU_UTIL</td>
+<td>GPU 사용률</td>
+<td>%</td>
 </tr>
 <tr>
-<td>한 자릿수 ms가 필요한 핫데이터</td>
-<td>Express One Zone</td>
-<td>단일 AZ 근접 저장으로 최저 지연</td>
+<td>DCGM_FI_DEV_MEM_COPY_UTIL</td>
+<td>메모리 사용률</td>
+<td>%</td>
 </tr>
 <tr>
-<td>접근 패턴을 모름·불규칙</td>
-<td>Intelligent-Tiering</td>
-<td>자동 계층 이동, 검색 비용 없음</td>
+<td>DCGM_FI_DEV_FB_USED</td>
+<td>프레임버퍼(VRAM) 사용량</td>
+<td>MiB</td>
 </tr>
 <tr>
-<td>월 1회 접근·즉시 필요</td>
-<td>Standard-IA</td>
-<td>IA 단가 + 밀리초 접근</td>
+<td>DCGM_FI_DEV_FB_FREE</td>
+<td>프레임버퍼 여유</td>
+<td>MiB</td>
 </tr>
 <tr>
-<td>재생성 가능한 사본</td>
-<td>One Zone-IA</td>
-<td>단일 AZ로 IA보다 저렴</td>
+<td>DCGM_FI_DEV_POWER_USAGE</td>
+<td>전력 소모</td>
+<td>W</td>
 </tr>
 <tr>
-<td>분기 1회·즉시 필요</td>
-<td>Glacier Instant Retrieval</td>
-<td>저가 + 밀리초 검색</td>
+<td>DCGM_FI_DEV_GPU_TEMP</td>
+<td>GPU 온도</td>
+<td>C</td>
 </tr>
 <tr>
-<td>연 1~2회·지연 허용</td>
-<td>Glacier Flexible Retrieval</td>
-<td>더 낮은 단가, 분~시간 복원</td>
+<td>DCGM_FI_DEV_SM_CLOCK</td>
+<td>SM 클럭 주파수</td>
+<td>MHz</td>
 </tr>
 <tr>
-<td>연 1회 미만·장기 보관</td>
-<td>Glacier Deep Archive</td>
-<td>최저가, 수시간 복원</td>
+<td>DCGM_FI_PROF_GR_ENGINE_ACTIVE</td>
+<td>그래픽스 엔진이 활성인 시간 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_PROF_PIPE_TENSOR_ACTIVE</td>
+<td>텐서(HMMA) 파이프가 활성인 사이클 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_PROF_DRAM_ACTIVE</td>
+<td>디바이스 메모리 인터페이스가 활성인 사이클 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_XID_ERRORS</td>
+<td>마지막으로 발생한 XID 에러 값</td>
+<td>-</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>요청률이 병목이면 프리픽스를 나눠 병렬화 → 해시 프리픽스는 불필요</li>
-<li>대용량은 멀티파트 업로드·바이트레인지로 분할 전송</li>
-<li>미완료 멀티파트·이전 버전은 라이프사이클로 자동 정리</li>
-<li>저가 클래스 전환 전 최소 보관 기간·검색 빈도·객체 크기를 확인</li>
+<li>DCGM_FI_DEV_GPU_UTIL은 커널 실행 여부 기반이라 실제 연산 점유율과 다를 수 있음 → 학습 효율은 PROF 계열(GR_ENGINE_ACTIVE·PIPE_TENSOR_ACTIVE)로 교차 확인</li>
+<li>VRAM은 DCGM_FI_DEV_FB_USED로 봄 → GPU_UTIL이 높아도 FB가 남으면 배치 밀도를 더 올릴 여지</li>
+<li>XID_ERRORS는 하드웨어·드라이버 이상 신호 → 값이 뜨면 노드 격리·교체 판단의 근거</li>
+<li>텐서 파이프 활성 비율이 낮으면 데이터 로더·전처리 병목 의심 → GPU가 아니라 입력 파이프라인 점검</li>
 </ul>
 <hr />
-<h2 id="_9">결론</h2>
+<h2 id="_1">결론</h2>
 <ul>
-<li>저장 단가만 낮은 클래스는 검색·요청·전송·전환 비용에서 역전될 수 있음 → 접근 빈도 실측이 먼저</li>
-<li>요청 성능은 프리픽스 분산으로 확장, 전송은 멀티파트·바이트레인지·엣지 경유로 가속</li>
-<li>성능은 "요청을 프리픽스로 분산", 비용은 "접근 빈도에 맞춘 클래스 선택"으로 나눠 접근할 것</li>
+<li>GPU는 확장 리소스라 개수만 스케줄링에 들어옴 → 모델·메모리·토폴로지를 쓰려면 DRA 같은 속성 기반 표현이 필요</li>
+<li>한 GPU를 쪼개려면 time-slicing(격리 없음)과 MIG(하드웨어 격리)를 워크로드 격리 요구에 맞춰 나눠 씀</li>
+<li>분산 학습은 부분 배치 데드락이 실질 위험 → gang 배치는 Volcano, 팀 쿼터는 Kueue로 층을 나눔</li>
+<li>사용률은 "GPU_UTIL 한 지표"가 아니라 "PROF 계열과 VRAM을 함께" 볼 것</li>
 </ul>
 
 
@@ -2026,7 +1990,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: 시크릿 관리 정리">
+          <a href="../llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: LLM 추론 서빙 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2036,20 +2000,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                시크릿 관리 정리
+                LLM 추론 서빙 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-footer__link md-footer__link--next" aria-label="다음: MLX로 LoRA 파인튜닝 실습">
+          <a href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 분산 학습 병렬화와 집합 통신 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                MLX로 LoRA 파인튜닝 실습
+                분산 학습 병렬화와 집합 통신 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
