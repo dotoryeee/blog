@@ -1501,7 +1501,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 13분
+                              읽는시간 14분
                             
                           </span>
                         </div>
@@ -1576,6 +1576,10 @@
 <li>otel-jaeger: Collector가 보낸 trace를 저장하고 16686 UI로 조회</li>
 </ul>
 <p>이미지는 otel/opentelemetry-collector-contrib:0.109.0, jaegertracing/all-in-one:1.62.0, 앱은 python:3.12-slim에 Flask 3.0.3과 opentelemetry-distro 0.48b0로 고정한다.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>💡 Jaeger v1(all-in-one)은 2025년 말 EOL 되었으니 신규 구성시 v2 단일 바이너리 이미지 cr.jaegertracing.io/jaegertracing/jaeger를 사용한다</p>
+</div>
 <h2 id="collector">Collector 설정</h2>
 <hr />
 <p>먼저 Collector 설정 파일을 작성한다. otlp receiver를 4317과 4318에 열고, processor로 attributes와 batch를 순서대로 태운 뒤, exporter 두 개(Jaeger용 otlp와 콘솔 확인용 debug)로 내보낸다.</p>
@@ -1617,7 +1621,7 @@
 <li>receiver를 0.0.0.0으로 바인딩해야 다른 컨테이너에서 접근할 수 있고, endpoint를 otel-jaeger로 적으면 compose 네트워크가 컨테이너 이름을 DNS로 풀어준다</li>
 <li>debug exporter는 백엔드로 보내는 것과 별개로 콘솔에 span을 찍어, 수신 여부를 로그만 보고 판단할 수 있게 해준다</li>
 </ul>
-<p>Jaeger 1.35 이후 all-in-one은 COLLECTOR_OTLP_ENABLED로 4317·4318 OTLP 수신을 켤 수 있다. 이 실습은 Collector가 Jaeger로 다시 OTLP를 보내므로 이 값을 활성화한다.</p>
+<p>Jaeger 1.35 이후 all-in-one은 4317·4318로 OTLP를 받을 수 있고, 1.46.0부터는 이 수신이 기본으로 켜져 있다. compose에 적은 COLLECTOR_OTLP_ENABLED=true는 없어도 동작하며, Collector가 Jaeger로 다시 OTLP를 보낸다는 것을 드러내는 명시용이다.</p>
 <h2 id="_3">계측 대상 앱</h2>
 <hr />
 <p>두 서비스는 평범한 Flask 앱이다. 계측 코드는 한 줄도 넣지 않는다. frontend는 backend를 requests로 호출하기만 한다.</p>

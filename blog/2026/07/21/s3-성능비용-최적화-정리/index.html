@@ -1677,6 +1677,7 @@
 <ul>
 <li>내구성은 모든 클래스가 99.999999999%(11 nines) 동일 → 차이는 가용성·AZ 수·검색 속도·단가</li>
 <li>단일 AZ 클래스(One Zone-IA, Express One Zone)는 AZ 물리 손실에 견디지 못함 → 재생성 가능하거나 사본인 데이터에만 권장</li>
+<li>Express One Zone은 제공 리전이 제한됨 → ap-northeast-2(서울) 미제공(2026-07 기준), 버지니아·도쿄·프랑크푸르트 등 8개 리전에서만 생성 가능</li>
 <li>Standard-IA·One Zone-IA·Glacier Instant Retrieval은 128KB 미만 객체도 128KB로 과금</li>
 <li>Glacier Flexible Retrieval·Deep Archive는 객체당 40KB 메타데이터 추가 과금(32KB는 Glacier 요율, 8KB는 Standard 요율)</li>
 </ul>
@@ -1831,7 +1832,7 @@
 <li>멀티파트 업로드: 대용량 객체를 여러 파트로 쪼개 병렬 업로드 → 100MB 이상 권장, 5GB 초과는 필수</li>
 <li>멀티파트는 파트 단위 재전송 가능 → 네트워크 실패 시 전체 재업로드 회피</li>
 <li>SSE-KMS 워크로드는 KMS 요청 한도가 별도 병목 → 대량 요청 시 S3 Bucket Keys로 KMS 호출 축소</li>
-<li>Express One Zone은 단일 AZ에 데이터를 두어 왕복 지연을 줄인 최상위 성능 위치 → 디렉터리 버킷 하나가 초당 200만 읽기·20만 쓰기 처리</li>
+<li>Express One Zone은 단일 AZ에 데이터를 두어 왕복 지연을 줄인 최상위 성능 위치 → 디렉터리 버킷 기본 한도는 초당 20만 읽기·10만 쓰기, 지원 요청 증설로 초당 200만 읽기·20만 쓰기까지 확장 가능</li>
 <li>지연 민감·고빈도 소용량 접근(체크포인트·중간 산출물)은 Express One Zone, 범용 저장은 Standard로 역할 분담</li>
 </ul>
 <hr />
@@ -1933,7 +1934,7 @@
 <tr>
 <td>한 자릿수 ms가 필요한 핫데이터</td>
 <td>Express One Zone</td>
-<td>단일 AZ 근접 저장으로 최저 지연</td>
+<td>단일 AZ 근접 저장으로 최저 지연(서울 리전 미제공)</td>
 </tr>
 <tr>
 <td>접근 패턴을 모름·불규칙</td>

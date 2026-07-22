@@ -1646,7 +1646,8 @@
 <ul>
 <li>PCIe·NVLink 그래프와 NIC를 탐지해 어느 GPU가 직결이고 어디서 스위치·네트워크를 넘는지 모델링</li>
 <li>rank 쌍마다 가장 빠른 경로를 고름 → 노드 안은 NVLink P2P, 노드 간은 InfiniBand + GPUDirect RDMA</li>
-<li>메시지 크기로 Ring/Tree를 자동 선택 → 큰 텐서는 Ring, 작은 메시지는 Tree</li>
+<li>토폴로지·메시지 크기로 알고리즘을 자동 선택 → 큰 텐서는 Ring, 작은 메시지는 Tree가 기본 구도</li>
+<li>NVSwitch가 있는 Hopper 이상 노드에서는 NVLS(NVLink SHARP)가 기본 후보 → 스위치가 reduce 연산을 대신 수행해 Ring처럼 GPU끼리 조각을 주고받지 않음</li>
 <li>PyTorch DDP·FSDP, DeepSpeed, Megatron 등이 내부에서 NCCL을 호출 → 사용자는 알고리즘을 직접 짜지 않음</li>
 <li><code>NCCL_ALGO</code>로 알고리즘 강제, <code>NCCL_DEBUG</code>로 선택 결과 확인 가능</li>
 </ul>

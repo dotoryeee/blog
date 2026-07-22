@@ -1867,7 +1867,7 @@
 </ul>
 <hr />
 <h2 id="_4">서빙 엔진 비교</h2>
-<p>엔진마다 KV 관리·컴파일 방식·하드웨어 지원이 달라 워크로드에 맞춰 고름</p>
+<p>엔진마다 KV 관리·런타임 구조·하드웨어 지원이 달라 워크로드에 맞춰 고름</p>
 <table>
 <thead>
 <tr>
@@ -1887,7 +1887,7 @@
 <tr>
 <td>TensorRT-LLM</td>
 <td>NVIDIA</td>
-<td>모델을 TensorRT 엔진으로 컴파일, NVIDIA에서 최고 처리량</td>
+<td>PyTorch 네이티브 런타임 기반, NVIDIA에서 최고 처리량</td>
 <td>NVIDIA 전용 극한 최적화</td>
 </tr>
 <tr>
@@ -1906,7 +1906,7 @@
 </table>
 <ul>
 <li>vLLM은 하드웨어 지원이 넓고 PagedAttention·continuous batching이 기본 → 고민 없이 시작하기 좋은 기본값</li>
-<li>TensorRT-LLM은 모델별 엔진 빌드·튜닝이 필요 → NVIDIA 하드웨어에 고정해 최고 성능을 뽑을 때</li>
+<li>TensorRT-LLM은 지금은 PyTorch 네이티브 런타임이 기본(구 TensorRT 엔진 컴파일 방식은 레거시) → NVIDIA 하드웨어에 고정해 최고 성능을 뽑을 때</li>
 <li>SGLang은 프리픽스가 겹치는 워크로드(공용 시스템 프롬프트·멀티턴 대화)에서 KV 재사용 이득이 큼</li>
 <li>llama.cpp는 GPU 없이 CPU·통합 메모리로 로컬 실행 → 온디바이스·맥 환경 로컬 추론에 적합</li>
 </ul>

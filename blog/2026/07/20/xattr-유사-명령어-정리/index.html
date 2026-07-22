@@ -1655,7 +1655,7 @@
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">com.apple.provenance</span>
 </code></pre></div>
 <ul>
-<li>xattr -c로 지워도 com.apple.provenance는 시스템이 다시 붙임 → 사용자 속성만 정리됨</li>
+<li>xattr -c로 지워도 com.apple.provenance는 커널이 제거 요청을 에러 없이 무시해 그대로 남음 → 사용자 속성만 정리됨</li>
 <li>인터넷에서 받은 파일에는 com.apple.quarantine가 붙어 Gatekeeper 실행 경고의 근거가 됨</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">$</span><span class="w"> </span><span class="n">xattr</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">com.apple.quarantine</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dl.txt</span>
@@ -1719,7 +1719,7 @@
 </ul>
 <hr />
 <h2 id="chattr-lsattr-inode">chattr / lsattr (inode 플래그)</h2>
-<p>이름이 비슷해 xattr로 오해하기 쉽지만 xattr가 아님. ext 계열의 inode 플래그를 켜고 끔.</p>
+<p>이름이 비슷해 xattr로 오해하기 쉽지만 xattr가 아님. 커널의 inode 플래그를 켜고 끔. ext 계열 전용이 아니라 XFS·Btrfs·F2FS도 +i/+a 같은 주요 플래그를 지원 (지원 범위는 파일시스템별 상이).</p>
 <table>
 <thead>
 <tr>

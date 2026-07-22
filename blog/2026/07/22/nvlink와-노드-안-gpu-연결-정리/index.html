@@ -1812,7 +1812,7 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>NVSwitch가 있는 서버(HGX·DGX·NVL72)에서 GPU는 보이는데 CUDA만 실패하면 Fabric Manager 상태부터 확인. 드라이버는 정상이라도 FM이 죽어 있으면 패브릭이 서지 않아 멀티 GPU 잡이 시작되지 않음.</p>
+<p>NVSwitch가 있는 단일 노드 서버(HGX·DGX)에서 GPU는 보이는데 CUDA만 실패하면 Fabric Manager 상태부터 확인. 드라이버는 정상이라도 FM이 죽어 있으면 패브릭이 서지 않아 멀티 GPU 잡이 시작되지 않음. NVL72 같은 멀티 노드 랙은 패브릭 관리가 NVLink 스위치 트레이 쪽에서 돌고 노드 간 P2P에는 IMEX 서비스가 따로 필요 → 노드의 FM 상태 확인만으로는 부족.</p>
 </div>
 <hr />
 <h2 id="nvlink-c2c-nvlink">NVLink-C2C와 랙스케일 NVLink</h2>

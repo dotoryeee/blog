@@ -1558,7 +1558,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 8분
+                              읽는시간 9분
                             
                           </span>
                         </div>
@@ -1652,6 +1652,7 @@
 <li>span: trace를 이루는 최소 작업 단위, 시작·종료 시각과 속성·이벤트를 담음</li>
 <li>span kind: server·client·producer·consumer·internal로 호출 관계의 방향을 구분</li>
 <li>상관 키: 각 신호가 같은 trace_id·span_id를 공유해야 교차 조회가 성립</li>
+<li>참고: 프로파일(Profile)을 네 번째 신호로 추가하는 표준화가 진행 중, 현재 Alpha 단계</li>
 </ul>
 <p>metric은 계측기(instrument) 종류에 따라 집계 방식이 갈림</p>
 <table>
@@ -1691,7 +1692,7 @@
 <li>전파(Propagation): 프로세스 경계를 넘겨 컨텍스트를 넘기는 동작, W3C Trace Context의 traceparent 헤더가 표준</li>
 <li>Baggage: 컨텍스트에 얹어 서비스 간 전달하는 key-value 저장소</li>
 <li>활용: Baggage 값을 하위 서비스의 trace·metric·log 속성으로 재사용 가능</li>
-<li>주의: Baggage는 신호 데이터가 아니라 신호에 덧붙는 전파용 컨텍스트</li>
+<li>주의: 공식 문서는 Baggage도 신호로 분류하나, 실체는 저장되는 텔레메트리가 아니라 신호에 덧붙는 전파용 컨텍스트</li>
 </ul>
 <hr />
 <h2 id="_2">구성요소</h2>
@@ -1733,7 +1734,7 @@
 </ul>
 <h3 id="_3">시맨틱 컨벤션</h3>
 <ul>
-<li>목적: http.request.method·db.system 같은 속성 키를 표준화해 백엔드 간 해석을 통일</li>
+<li>목적: http.request.method·db.system.name 같은 속성 키를 표준화해 백엔드 간 해석을 통일</li>
 <li>효과: 계측·수집·질의가 같은 이름을 공유 → 벤더를 바꿔도 대시보드·알림 재사용</li>
 <li>범위: HTTP·DB·메시징·클라우드 리소스 등 도메인별 규약을 사양으로 정의</li>
 <li>위치: 자동 계측이 채워 넣는 기본 속성 다수가 이 규약을 따름</li>
@@ -1898,7 +1899,8 @@
 <li>신호별 분업: trace는 Jaeger·Tempo, metric은 Prometheus, log는 Loki가 대표</li>
 <li>시각화: Grafana가 여러 백엔드를 데이터소스로 묶어 대시보드를 구성</li>
 <li>교체 자유: 계측이 OTLP로 통일돼 있어 백엔드를 바꿔도 계측 코드는 그대로 재사용</li>
-<li>수신 방식: Prometheus는 scrape(pull), OTLP 백엔드는 push로 데이터를 받음</li>
+<li>수신 방식: Prometheus는 scrape(pull)가 기본, OTLP 백엔드는 push로 데이터를 받음</li>
+<li>참고: Prometheus도 --web.enable-otlp-receiver 활성화 시 OTLP push 수신 가능</li>
 <li>자체 구축: 오픈소스만으로 trace·metric·log·시각화를 조합해 무료 스택 구성 가능</li>
 <li>상용 경계: 상용 벤더는 저장·질의·알림·상관을 SaaS로 묶어 제공, 다수가 OTLP 수신을 지원</li>
 </ul>
@@ -1948,7 +1950,7 @@
 <h2 id="_8">결론</h2>
 <ul>
 <li>OpenTelemetry는 계측을 한 번만 해두면 백엔드를 갈아 끼워도 재작성이 없는 벤더 중립 관측성 규격</li>
-<li>신호는 trace·metric·log 3종이며, 컨텍스트 전파와 Baggage가 세 신호를 하나의 요청으로 묶음</li>
+<li>핵심 신호는 trace·metric·log 3종이며, 컨텍스트 전파와 Baggage가 세 신호를 하나의 요청으로 묶음</li>
 <li>구성은 API(인터페이스)·SDK(구현)·Collector(수집 프록시)·OTLP(전송)로 나뉨</li>
 <li>계측은 코드 직접 호출(수동)과 에이전트 주입(자동)으로, 백엔드는 오픈소스와 상용 SaaS로 갈림</li>
 <li>Head 샘플링은 "시작할 때 버림", Tail 샘플링은 "끝나고 고름"으로 이해하면 됌</li>
