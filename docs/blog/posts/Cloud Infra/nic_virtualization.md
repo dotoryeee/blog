@@ -97,7 +97,7 @@ graph LR
 | Intel X710/XL710 (i40e) | 장치당 128개 | 디바이스 전역 기준 |
 | NVIDIA ConnectX (mlx5) | 포트당 최대 127개 | 펌웨어 NUM_OF_VFS로 개수 설정, InfiniBand·RoCE 겸용 RDMA 계열 |
 
-- AWS Enhanced Networking도 SR-IOV 기반 → 구형 C3·C4·D2·I2·M4·R3 계열이 Intel 82599 VF 인터페이스를 그대로 사용
+- AWS Enhanced Networking도 SR-IOV 기반 → 구형 C3·C4·D2·I2·M4(m4.16xlarge 제외)·R3 계열이 Intel 82599 VF 인터페이스를 그대로 사용
 - 규격상 6만 5천 개를 실제 NIC 상한으로 착각하면 안 됨 → 도입 전 해당 NIC 데이터시트로 확인 필요
 - ENA·EFA로 이어지는 현행 AWS 스택은 [AWS 고성능 네트워킹 정리](ena_efa.md)에서 다룸
 

@@ -74,7 +74,7 @@ hide:
 | 컨트롤러 | 서브시스템별 분리 마운트 | cpu·io·memory·pids 통합 |
 | 인터페이스 | 컨트롤러마다 상이 | min·low·high·max 일관 명명 |
 | freezer | 별도 서브시스템 | cgroup.freeze로 통합 |
-| 기본값 | 초기 배포판 기본 | 현재 최신 배포판·systemd 기본, unified_cgroup_hierarchy=0으로 v1 회귀 |
+| 기본값 | 초기 배포판 기본 | 현재 최신 배포판·systemd 기본, systemd 258부터 v1 지원 제거 |
 
 - 최신 배포판과 systemd는 v2를 기본으로 이동, RHEL 10은 v2 전용
 - 쿠버네티스도 v2 기준으로 정렬 → 노드 커널·배포판 버전 확인 필요

@@ -131,6 +131,7 @@ graph TD
 
 - 드라이버는 호스트에, CUDA 런타임은 컨테이너 이미지에 위치 → 둘의 버전 호환을 맞춰야 함
 - 쿠버네티스는 GPU를 기본 인식하지 못함 → device plugin이 리소스로 등록해야 스케줄러가 배정
+- 후속 표준으로 DRA(Dynamic Resource Allocation)가 v1.34에서 GA → NVIDIA도 GPU Operator에 DRA 드라이버를 제공하나 아직은 device plugin이 기본
 - GPU Operator는 드라이버·Container Toolkit·device plugin·모니터링을 묶어 설치하는 운영 도구
 
 ---

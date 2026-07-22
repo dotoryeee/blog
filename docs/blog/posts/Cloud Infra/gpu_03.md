@@ -137,7 +137,7 @@ Fabric Manager(FM)란 NVSwitch 메모리 패브릭을 구성하고 상주하며 
 - FM과 드라이버 버전이 어긋나면 호환성 검사에서 중단 → 패브릭이 형성되지 않아 신규 CUDA 잡이 같은 오류로 실패
 
 !!! warning
-    NVSwitch가 있는 서버(HGX·DGX·NVL72)에서 GPU는 보이는데 CUDA만 실패하면 Fabric Manager 상태부터 확인. 드라이버는 정상이라도 FM이 죽어 있으면 패브릭이 서지 않아 멀티 GPU 잡이 시작되지 않음.
+    NVSwitch가 있는 단일 노드 서버(HGX·DGX)에서 GPU는 보이는데 CUDA만 실패하면 Fabric Manager 상태부터 확인. 드라이버는 정상이라도 FM이 죽어 있으면 패브릭이 서지 않아 멀티 GPU 잡이 시작되지 않음. NVL72 같은 멀티 노드 랙은 패브릭 관리가 NVLink 스위치 트레이 쪽에서 돌고 노드 간 P2P에는 IMEX 서비스가 따로 필요 → 노드의 FM 상태 확인만으로는 부족.
 
 ---
 

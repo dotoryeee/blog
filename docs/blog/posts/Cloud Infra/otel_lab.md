@@ -49,6 +49,9 @@ graph LR
 
 이미지는 otel/opentelemetry-collector-contrib:0.109.0, jaegertracing/all-in-one:1.62.0, 앱은 python:3.12-slim에 Flask 3.0.3과 opentelemetry-distro 0.48b0로 고정한다.
 
+!!! warning
+    💡 Jaeger v1(all-in-one)은 2025년 말 EOL 되었으니 신규 구성시 v2 단일 바이너리 이미지 cr.jaegertracing.io/jaegertracing/jaeger를 사용한다
+
 ## Collector 설정
 
 ---
@@ -96,7 +99,7 @@ service:
 - receiver를 0.0.0.0으로 바인딩해야 다른 컨테이너에서 접근할 수 있고, endpoint를 otel-jaeger로 적으면 compose 네트워크가 컨테이너 이름을 DNS로 풀어준다
 - debug exporter는 백엔드로 보내는 것과 별개로 콘솔에 span을 찍어, 수신 여부를 로그만 보고 판단할 수 있게 해준다
 
-Jaeger 1.35 이후 all-in-one은 COLLECTOR_OTLP_ENABLED로 4317·4318 OTLP 수신을 켤 수 있다. 이 실습은 Collector가 Jaeger로 다시 OTLP를 보내므로 이 값을 활성화한다.
+Jaeger 1.35 이후 all-in-one은 4317·4318로 OTLP를 받을 수 있고, 1.46.0부터는 이 수신이 기본으로 켜져 있다. compose에 적은 COLLECTOR_OTLP_ENABLED=true는 없어도 동작하며, Collector가 Jaeger로 다시 OTLP를 보낸다는 것을 드러내는 명시용이다.
 
 ## 계측 대상 앱
 

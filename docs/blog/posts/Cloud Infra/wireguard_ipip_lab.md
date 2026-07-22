@@ -166,8 +166,6 @@ docker exec dotoryeee-node1 sh -c 'ip link set wg0 down; ip link set wg0 up'   #
 docker exec dotoryeee-node1 ping -c 1 10.200.0.2                       # 첫 패킷으로 핸드셰이크 개시
 172.21.0.2.51820 > 172.21.0.3.51820: UDP, length 148   # Handshake Initiation
 172.21.0.3.51820 > 172.21.0.2.51820: UDP, length 92    # Handshake Response
-172.21.0.2.51820 > 172.21.0.3.51820: UDP, length 148   # Handshake Initiation
-172.21.0.3.51820 > 172.21.0.2.51820: UDP, length 92    # Handshake Response
 ```
 
 ## 암호화 대조 실측

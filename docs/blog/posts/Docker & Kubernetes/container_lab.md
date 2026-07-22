@@ -27,7 +27,7 @@ hide:
 - docker 명령 없이 리눅스 커널 기능만으로 컨테이너를 손으로 조립한다
 - namespace 로 프로세스가 보는 세계를 격리하고, cgroup 으로 메모리를 제한하고, chroot 와 overlayfs 로 루트 파일시스템을 직접 만든다
 - 메모리 제한을 넘긴 프로세스가 커널 OOM 킬러에 죽는 것까지 실측한다
-- 마지막에 여기서 손으로 한 일이 runc 가 컨테이너를 띄울 때 하는 일과 같음을 확인한다
+- 마지막에 여기서 손으로 한 일이 runc 가 컨테이너를 띄울 때 하는 일과 어디까지 겹치는지 확인한다
 
 ## 실습 환경
 
@@ -338,9 +338,10 @@ ip route | grep -c 10.10.0
 
 ---
 
-여기까지 손으로 한 일을 한 줄로 요약하면, unshare 로 namespace 를 만들고, chroot 로 루트를 갈고, cgroup 에 memory.max 를 쓰고, overlayfs 로 레이어를 겹치고, veth 로 netns 를 이었다. 이 순서가 그대로 저수준 런타임 runc 가 컨테이너를 띄울 때 하는 일이다.
+여기까지 손으로 한 일을 한 줄로 요약하면, unshare 로 namespace 를 만들고, chroot 로 루트를 갈고, cgroup 에 memory.max 를 쓰고, overlayfs 로 레이어를 겹치고, veth 로 netns 를 이었다. 이 중 네트워크를 뺀 나머지가 그대로 저수준 런타임 runc 가 컨테이너를 띄울 때 하는 일이다.
 
-- runc 는 OCI runtime-spec 의 config.json 을 읽어 namespace 조합, cgroup 한도, rootfs 경로, 마운트, 네트워크를 세팅한 뒤 컨테이너 프로세스를 exec 한다
+- runc 는 OCI runtime-spec 의 config.json 을 읽어 namespace 조합, cgroup 한도, rootfs 경로, 마운트를 세팅한 뒤 컨테이너 프로세스를 exec 한다
+- 네트워크는 runc 몫이 아니라서 빈 netns 를 만들거나 config.json 에 적힌 기존 netns 에 붙는 것까지만 하고, veth 생성과 IP 할당은 docker 의 libnetwork 나 k8s 의 CNI 플러그인이 runc 바깥에서 처리한다
 - 실무에서는 pivot_root 로 루트를 더 안전하게 갈고, user namespace 로 컨테이너 root 를 호스트 비특권 UID 에 매핑해 격리를 강화한다
 - 이 조각들이 어떤 계층(docker CLI, dockerd, containerd, shim, runc)을 거쳐 조립되는지는 [컨테이너 내부 구조 정리](container_internals.md) 글에서 다뤘다
 
