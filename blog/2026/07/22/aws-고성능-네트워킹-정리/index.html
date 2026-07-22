@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="CPU 대비 GPU 구조 차이부터 HBM 세대, PCIe·SXM 폼팩터, HGX·DGX 서버 형태, CUDA 스택과 nvidia-smi 사용률 지표까지 정리">
+        <meta name="description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +28,7 @@
     
     
       
-        <title>GPU 서버 기초 정리 - dotoryeee's blog</title>
+        <title>AWS 고성능 네트워킹 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +84,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="GPU 서버 기초 정리 - dotoryeee's blog" />
-<meta property="og:description" content="CPU 대비 GPU 구조 차이부터 HBM 세대, PCIe·SXM 폼팩터, HGX·DGX 서버 형태, CUDA 스택과 nvidia-smi 사용률 지표까지 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="AWS 고성능 네트워킹 정리 - dotoryeee's blog" />
+<meta property="og:description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="GPU 서버 기초 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="CPU 대비 GPU 구조 차이부터 HBM 세대, PCIe·SXM 폼팩터, HGX·DGX 서버 형태, CUDA 스택과 nvidia-smi 사용률 지표까지 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="AWS 고성능 네트워킹 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +112,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gpu" class="md-skip">
+        <a href="#aws" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GPU 서버 기초 정리
+              AWS 고성능 네트워킹 정리
             
           </span>
         </div>
@@ -1314,10 +1312,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gpu_1" class="md-nav__link">
+  <a href="#aws_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        GPU 서버란
+        AWS 고성능 네트워킹이란
       
     </span>
   </a>
@@ -1325,22 +1323,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cpu-vs-gpu" class="md-nav__link">
+  <a href="#ec2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CPU vs GPU 구조
+        EC2 네트워크 스택의 진화
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CPU vs GPU 구조">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ena" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ENA란
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ENA란">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sm-simt" class="md-nav__link">
+  <a href="#rss" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SM과 SIMT
+        멀티큐와 RSS
       
     </span>
   </a>
@@ -1353,32 +1362,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vram-hbm" class="md-nav__link">
+  <a href="#ena-express" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VRAM과 HBM
+        ENA Express란
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pcie-vs-sxm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PCIe 카드 vs SXM 모듈
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="ENA Express란">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        서버 형태
+        적용 조건
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EFA란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ena-efa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ENA와 EFA의 관계
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#srd-rdma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SRD가 기존 RDMA 전송과 다른 점
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#placement-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        placement group과 네트워크 지연
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        온프레 RDMA와의 대비
       
     </span>
   </a>
@@ -1389,40 +1448,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        소프트웨어 스택
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gpu_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        데이터센터 GPU 세대
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#nvidia-smi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        nvidia-smi 주요 필드
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#utilizationgpu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        utilization.gpu의 함정
+        선택 기준
       
     </span>
   </a>
@@ -1431,6 +1457,17 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        함정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1507,7 +1544,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/ai/">AI</a></span>
+                              <a href="../../../../category/aws/">AWS</a></span>
                         </div>
                       </li>
                     
@@ -1546,407 +1583,424 @@
       
       
       
-        <a href="../../../../../tags/#tag:cuda" class="md-tag">CUDA</a>
+        <a href="../../../../../tags/#tag:efa" class="md-tag">EFA</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:gpu" class="md-tag">GPU</a>
+        <a href="../../../../../tags/#tag:ena" class="md-tag">ENA</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:nvidia" class="md-tag">NVIDIA</a>
+        <a href="../../../../../tags/#tag:sr-iov" class="md-tag">SR-IOV</a>
       
     
   </nav>
 
 
 
-<h1 id="gpu">GPU 서버 기초 정리</h1>
+<h1 id="aws">AWS 고성능 네트워킹 정리</h1>
 <!-- more -->
 
-<h2 id="gpu_1">GPU 서버란</h2>
-<p>GPU 서버란 대규모 병렬 산술을 처리하는 데이터센터 GPU를 한 대에 여러 장 얹어 학습·추론 같은 가속 워크로드를 돌리는 서버</p>
-<p>모델 크기가 단일 GPU 메모리를 넘어서면서 여러 GPU를 고속으로 묶는 서버 단위 설계가 필요해짐</p>
+<h2 id="aws_1">AWS 고성능 네트워킹이란</h2>
+<p>AWS 고성능 네트워킹이란 EC2 인스턴스 간 통신에서 대역폭↑·PPS↑·지연↓을 얻기 위해 Nitro 기반 향상된 네트워킹(Enhanced Networking)과 그 위의 ENA·ENA Express·EFA를 묶은 스택</p>
+<p>가상화 계층이 패킷마다 개입하던 초기 EC2 네트워킹으로는 분산 학습·HPC·고PPS 워크로드를 감당하지 못해 하드웨어 오프로드로 옮겨감.</p>
 <ul>
-<li>CPU만으로는 행렬 연산 처리량이 부족 → 병렬 코어가 수천 개인 GPU로 오프로드</li>
-<li>모델·배치가 커지면 한 장의 VRAM으로 부족 → 여러 GPU에 나눠 싣고 GPU 간 통신으로 합침</li>
-<li>GPU 간 통신이 병목 → PCIe보다 빠른 전용 인터커넥트(NVLink)로 연결</li>
-<li>전력·발열이 일반 서버보다 훨씬 큼 → 냉각·전원 설계가 서버 형태를 가름</li>
+<li>향상된 네트워킹은 SR-IOV(Single Root I/O Virtualization)로 장치를 인스턴스에 직접 노출 → 하이퍼바이저 개입 없이 NIC 접근</li>
+<li>공식 표현으로 대역폭↑·PPS↑·지연↓을 제공하고 추가 요금 없음</li>
+<li>계층은 셋: 범용 ENA, TCP/UDP 꼬리 지연을 잡는 ENA Express, OS bypass의 EFA</li>
 </ul>
 <hr />
-<h2 id="cpu-vs-gpu">CPU vs GPU 구조</h2>
-<p>CPU는 소수의 큰 코어로 순차 로직을 빠르게 처리하고, GPU는 작은 코어를 수천 개 두어 같은 연산을 대량으로 병렬 처리하는 구조</p>
+<h2 id="ec2">EC2 네트워크 스택의 진화</h2>
+<p>초기 Xen 에뮬레이션에서 SR-IOV를 거쳐 Nitro 전용 카드가 네트워크를 전담하는 구조로 넘어옴</p>
 <table>
 <thead>
 <tr>
-<th>비교 항목</th>
-<th>CPU</th>
-<th>GPU</th>
+<th>구분</th>
+<th>방식</th>
+<th>드라이버</th>
+<th>대역폭</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>코어 성격</td>
-<td>소수의 대형 코어, 고클럭·복잡한 제어부</td>
-<td>다수의 소형 연산 코어</td>
+<td>초기 EC2</td>
+<td>Xen 하이퍼바이저의 소프트웨어 에뮬레이션 NIC</td>
+<td>가상 드라이버</td>
+<td>낮음, 패킷마다 CPU 개입</td>
 </tr>
 <tr>
-<td>코어 수 규모</td>
-<td>수개~수십개</td>
-<td>수천개(A100은 CUDA 코어 6,912개)</td>
+<td>향상된 네트워킹 1세대</td>
+<td>SR-IOV로 Intel 82599 VF를 인스턴스에 노출</td>
+<td>ixgbevf</td>
+<td>최대 10Gbps</td>
 </tr>
 <tr>
-<td>실행 모델</td>
-<td>코어별 독립 스레드</td>
-<td>SIMT, warp 단위 동일 명령 실행</td>
-</tr>
-<tr>
-<td>최적 작업</td>
-<td>분기 많은 순차 로직, 낮은 지연</td>
-<td>대규모 병렬 산술(행렬 연산)</td>
-</tr>
-<tr>
-<td>면적 배분</td>
-<td>캐시·제어부에 크게 투자</td>
-<td>연산 유닛에 집중, 캐시·제어부 작음</td>
-</tr>
-<tr>
-<td>주 메모리</td>
-<td>DDR, 대용량·상대적 저대역폭</td>
-<td>HBM, 고대역폭</td>
+<td>Nitro 기반</td>
+<td>전용 Nitro 카드가 네트워크 전담, SR-IOV로 ENA 노출</td>
+<td>ena</td>
+<td>최대 100Gbps</td>
 </tr>
 </tbody>
 </table>
-<h3 id="sm-simt">SM과 SIMT</h3>
 <ul>
-<li>GPU의 연산 코어는 SM(Streaming Multiprocessor)이라는 묶음으로 구성됨 → A100은 108개 SM, SM당 FP32 CUDA 코어 64개</li>
-<li>H100 SXM은 132개 SM, SM당 128개 → 풀 다이 144개 SM 중 수율을 위해 일부만 활성화하는 방식</li>
-<li>SIMT(Single Instruction, Multiple Threads)는 32개 스레드를 묶은 warp가 하나의 명령을 함께 실행하는 모델</li>
-<li>warp 안에서 스레드 분기(if/else)가 갈리면 각 경로를 순차 실행 → 분기 발산(divergence)이 병렬 효율을 떨어뜨림</li>
-<li>그래서 GPU는 조건 분기 많은 로직보다 같은 연산을 대량 반복하는 작업에 유리</li>
+<li>Intel 82599 VF는 C3·C4·D2·I2·M4·R3 등 구형 인스턴스 계열에 한정</li>
+<li>모든 Nitro 기반 인스턴스는 ENA로 향상된 네트워킹 사용 → 일부 구형 Xen 계열(H1·I3·G3·P3·R4 등)도 ENA 지원</li>
+<li>SR-IOV·VF의 동작 원리와 다른 NIC 가상화 방식은 <a href="../nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/">NIC 가상화와 커널 바이패스 정리</a>에서 다룸</li>
 </ul>
 <hr />
-<h2 id="vram-hbm">VRAM과 HBM</h2>
-<p>VRAM은 GPU 패키지에 붙은 전용 메모리를 가리키고, 데이터센터 GPU는 그 구현으로 HBM(High Bandwidth Memory)을 씀</p>
-<ul>
-<li>HBM은 메모리 다이를 수직 적층해 실리콘 인터포저로 GPU 옆에 근접 배치 → 배선이 짧고 넓어 대역폭이 큼</li>
-<li>대역폭이 학습 속도를 좌우 → 행렬 연산은 연산량보다 메모리에서 데이터를 얼마나 빨리 공급하느냐에 자주 묶임</li>
-<li>세대가 오를수록 스택 용량·속도가 오르며, 같은 GPU도 폼팩터에 따라 HBM 세대가 갈림</li>
-</ul>
+<h2 id="ena">ENA란</h2>
+<p>ENA(Elastic Network Adapter)란 Nitro 카드가 NIC 기능을 전담하고 SR-IOV로 인스턴스에 노출하는 향상된 네트워킹 어댑터</p>
 <table>
 <thead>
 <tr>
-<th>세대</th>
-<th>대표 적용 GPU</th>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>노출 방식</td>
+<td>Nitro 카드가 NIC 기능 전담, SR-IOV VF로 ENA 장치를 인스턴스에 직접 노출</td>
+</tr>
+<tr>
+<td>대역폭</td>
+<td>지원 인스턴스 타입에서 최대 100Gbps</td>
+</tr>
+<tr>
+<td>큐</td>
+<td>멀티큐 구조, 큐 수는 2의 거듭제곱(1·2·4·8·16·32 등), ENI당 큐 수는 vCPU 수를 넘지 못함</td>
+</tr>
+<tr>
+<td>적용 범위</td>
+<td>모든 Nitro 기반 인스턴스가 ENA 사용</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>추가 요금 없음</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rss">멀티큐와 RSS</h3>
+<p>고PPS 워크로드는 큐를 여러 개 두어 여러 vCPU로 처리를 분산하며, 플로 분배는 RSS가 담당</p>
+<ul>
+<li>RSS(Receive Side Scaling)는 수신 패킷의 플로 튜플을 해시해 여러 수신 큐로 분배 → 큐마다 다른 vCPU가 처리</li>
+<li>네트워크 집약 워크로드는 큐 수를 늘려 PPS를 끌어올림 → CPU 집약 워크로드는 적은 큐로 충분</li>
+<li>큐 배치는 인스턴스 타입·크기별 정적 한도가 기본이고, 지원 타입은 ENI 간 동적 재배치 가능</li>
+</ul>
+<hr />
+<h2 id="ena-express">ENA Express란</h2>
+<p>ENA Express란 SRD(Scalable Reliable Datagram) 프로토콜을 TCP/UDP 아래에 깔아 단일 플로 대역폭과 꼬리 지연을 개선하는 기능</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기반 프로토콜</td>
+<td>SRD, 동적 라우팅으로 처리량↑·꼬리 지연↓</td>
+</tr>
+<tr>
+<td>단일 플로 대역폭</td>
+<td>5Gbps → 최대 25Gbps (인스턴스 총 한도 내)</td>
+</tr>
+<tr>
+<td>꼬리 지연</td>
+<td>TCP 대비 p99 최대 50%↓, p99.9 최대 85%↓</td>
+</tr>
+<tr>
+<td>동작</td>
+<td>플로 패킷을 여러 AWS 경로로 스프레이, 혼잡 감지 시 분배 재조정, 수신단 재정렬</td>
+</tr>
+<tr>
+<td>투명성</td>
+<td>TCP·UDP에 무수정 적용</td>
+</tr>
+<tr>
+<td>통신 범위</td>
+<td>같은 AZ, 또는 같은 리전 내 AZ 간</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>재정렬과 대부분의 재전송을 네트워크 계층이 처리 → 애플리케이션 계층 부담↓</li>
+<li>12.5Gbps 상한 인스턴스라면 단일 플로도 12.5Gbps까지 → 25Gbps는 총 한도가 받쳐줄 때</li>
+<li>인스턴스 상한이 뒤에서 곱해지는 구조라 SRD가 대역폭 자체를 새로 만들어주는 것은 아님</li>
+</ul>
+<h3 id="_1">적용 조건</h3>
+<ul>
+<li>송수신 양쪽 모두 지원 인스턴스 타입이어야 함</li>
+<li>양쪽 모두 ENA Express를 활성화해야 함 → 한쪽이라도 미설정이면 표준 ENA로 폴백</li>
+<li>같은 리전이어야 하고 경로에 미들웨어 박스가 없어야 함</li>
+<li>SRD 헤더가 붙어 MTU를 낮춰야 함 → TCP는 MSS 자동 클램프, UDP는 별도 하향 필요</li>
+<li>Local Zone에서는 ENA Express 트래픽 사용 불가</li>
+</ul>
+<hr />
+<h2 id="efa">EFA란</h2>
+<p>EFA(Elastic Fabric Adapter)란 OS 커널을 우회(OS bypass)해 libfabric으로 인스턴스 간 통신을 가속하는 네트워크 장치로, AI·ML·HPC 노드 간 통신용</p>
+<pre class="mermaid"><code>graph LR
+    App["애플리케이션"]
+    App --&gt; N["NCCL / MPI"]
+    App --&gt; K["커널 TCP/IP"]
+    K --&gt; ENA["ENA 장치&lt;br&gt;(SR-IOV)"]
+    N --&gt; LF["libfabric&lt;br&gt;OS bypass"]
+    LF --&gt; EFA["EFA 장치&lt;br&gt;(SRD)"]
+    ENA --&gt; Net["AWS 네트워크 패브릭"]
+    EFA --&gt; Net</code></pre>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>우회 방식</td>
+<td>libfabric API가 커널을 건너뛰고 EFA 장치에 직접 패킷 적재</td>
+</tr>
+<tr>
+<td>전송</td>
+<td>SRD 기반, 혼잡 제어와 대부분의 재전송을 장치에서 처리</td>
+</tr>
+<tr>
+<td>인터페이스</td>
+<td>NCCL·NIXL(AI/ML), Open MPI 4.1+·Intel MPI 2019 Update 5+(HPC)</td>
+</tr>
+<tr>
+<td>RDMA</td>
+<td>Nitro v4 이상에서 RDMA read 전 지원, RDMA write 대부분 지원</td>
+</tr>
+<tr>
+<td>GPUDirect RDMA</td>
+<td>지원, NIC가 GPU 메모리에 직접 DMA (P4d부터)</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>추가 요금 없음</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>일반 경로는 애플리케이션이 커널 TCP/IP와 ENA 드라이버를 거침 → EFA는 libfabric으로 커널을 건너뜀</li>
+<li>MPI·NCCL이 libfabric API에 직접 붙음 → 오버헤드↓로 분산 학습·HPC가 더 효율적으로 동작</li>
+<li>GPUDirect RDMA와 결합하면 GPU 메모리를 시스템 메모리 복사 없이 NIC가 직접 전송</li>
+</ul>
+<hr />
+<h2 id="ena-efa">ENA와 EFA의 관계</h2>
+<p>EFA 기본형(EFA with ENA)은 ENA 장치 위에 OS bypass용 EFA 장치를 더한 형태로 붙음</p>
+<table>
+<thead>
+<tr>
+<th>인터페이스</th>
+<th>IP 네트워킹</th>
+<th>OS bypass(EFA 장치)</th>
 <th>비고</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>HBM2</td>
-<td>A100 40GB</td>
-<td>1,555GB/s</td>
+<td>ENA</td>
+<td>지원</td>
+<td>미지원</td>
+<td>모든 Nitro 인스턴스 기본, 일반 VPC 통신</td>
 </tr>
 <tr>
-<td>HBM2e</td>
-<td>A100 80GB, H100 PCIe</td>
-<td>HBM2 개량, 스택 용량·속도↑</td>
+<td>EFA with ENA</td>
+<td>지원</td>
+<td>지원</td>
+<td>ENA 장치와 EFA 장치를 동시 생성</td>
 </tr>
 <tr>
-<td>HBM3</td>
-<td>H100 SXM</td>
-<td>3.35TB/s로 대역폭 대폭 상승</td>
-</tr>
-<tr>
-<td>HBM3e</td>
-<td>B200, H200</td>
-<td>스택당 용량·속도 추가 상승</td>
+<td>EFA-only</td>
+<td>미지원</td>
+<td>지원</td>
+<td>EFA 장치만, 기본 인터페이스로 사용 불가</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>EFA with ENA는 ENA의 IP 네트워킹을 그대로 쓰면서 EFA 장치가 저지연 전송을 얹음 → EFA에 ENA 기능이 포함된 셈</li>
+<li>EFA-only는 IP 주소를 받지 못하고 기본 네트워크 인터페이스로 못 씀 → 다중 카드 인스턴스의 보조 인터페이스 용도</li>
+<li>두 방식 모두 ENI 부착 한도를 소모</li>
+</ul>
 <hr />
-<h2 id="pcie-vs-sxm">PCIe 카드 vs SXM 모듈</h2>
-<p>같은 세대 GPU라도 표준 슬롯에 꽂는 PCIe 카드와 전용 소켓에 직결하는 SXM 모듈은 전력·대역폭·냉각·GPU 간 연결이 크게 다름</p>
+<h2 id="srd-rdma">SRD가 기존 RDMA 전송과 다른 점</h2>
+<p>SRD란 AWS가 자사 데이터센터에 맞춰 설계한 신뢰성 전송 프로토콜로, 순서 보장을 포기하고 다중 경로 스프레이로 처리량과 꼬리 지연을 잡는 방식</p>
+<p>RDMA·InfiniBand·RoCEv2 원리는 <a href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">InfiniBand vs RoCEv2 차이점 정리</a>에서 다뤘고, 여기서는 SRD와의 차이만 짚음.</p>
+<ul>
+<li>RDMA는 원격 메모리를 상대 CPU·커널 개입 없이 NIC가 직접 읽고 쓰는 전송 → 커널 바이패스·zero-copy로 마이크로초대 지연</li>
+<li>온프레는 InfiniBand(전용 패브릭)나 RoCEv2(무손실 이더넷)로 이를 구현 → 순서 보장과 무손실이 전제</li>
+<li>SRD는 이 전제를 뒤집어 손실·순서를 프로토콜과 상위 계층에서 흡수하는 설계</li>
+</ul>
 <table>
 <thead>
 <tr>
 <th>항목</th>
-<th>PCIe 카드</th>
-<th>SXM 모듈</th>
+<th>전통 RDMA(IB RC·RoCEv2)</th>
+<th>SRD</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>장착</td>
-<td>표준 PCIe 슬롯</td>
-<td>전용 소켓(베이스보드 직결)</td>
+<td>패킷 순서</td>
+<td>순서 보장</td>
+<td>순서 비보장, 상위 계층이 재정렬</td>
 </tr>
 <tr>
-<td>최대 전력(H100 기준)</td>
-<td>300~350W</td>
-<td>700W</td>
+<td>경로</td>
+<td>단일 경로 위주</td>
+<td>다중 경로 스프레이(ECMP)</td>
 </tr>
 <tr>
-<td>GPU 간 연결</td>
-<td>PCIe 경유, 선택적 NVLink 브리지(쌍 단위)</td>
-<td>NVLink + NVSwitch 전이중 메시</td>
+<td>손실 대응</td>
+<td>무손실 패브릭 전제(credit·PFC)</td>
+<td>프로토콜이 재전송 처리, 무손실 불필요</td>
 </tr>
 <tr>
-<td>NVLink 대역폭(H100)</td>
-<td>브리지 600GB/s, 2장 연결에 한정</td>
-<td>900GB/s 풀 연결</td>
+<td>혼잡 제어</td>
+<td>DCQCN 등 별도 튜닝</td>
+<td>프로토콜 내장, 경로 재분배로 회피</td>
 </tr>
 <tr>
-<td>메모리·대역폭(H100)</td>
-<td>80GB HBM2e, 약 2TB/s</td>
-<td>80GB HBM3, 3.35TB/s</td>
-</tr>
-<tr>
-<td>냉각</td>
-<td>카드 단위 공랭</td>
-<td>베이스보드 통합 냉각(고밀도 공랭·수랭)</td>
-</tr>
-<tr>
-<td>확장 방식</td>
-<td>서버당 소수, 혼합·교체 유연</td>
-<td>8장 단위 베이스보드 고정 구성</td>
+<td>운영 주체</td>
+<td>사용자가 패브릭 무손실 구성</td>
+<td>AWS가 패브릭 운영</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>PCIe 카드는 일반 서버에 몇 장 얹는 유연한 구성 → 도입이 쉽고 GPU 종류를 섞기 좋음</li>
-<li>SXM은 높은 전력 한도와 NVSwitch 전이중 연결이 필요한 대규모 학습용 → 8장이 한 몸처럼 통신</li>
-<li>PCIe에서 NVLink 브리지는 인접 2장만 이어줌 → 8장 전체를 all-to-all로 묶는 건 SXM+NVSwitch 구성에서만 가능</li>
+<li>순서를 보장하면 head-of-line blocking이 생김 → SRD는 재정렬을 메시지 의미를 아는 상위 계층에 맡겨 회피</li>
+<li>재전송이 패브릭의 무손실 보장이 아니라 프로토콜 책임 → 표준 이더넷 위에서 동작 가능</li>
 </ul>
 <hr />
-<h2 id="_1">서버 형태</h2>
-<p>GPU 서버는 표준 서버에 PCIe 카드를 얹는 형태부터 SXM 베이스보드를 통합한 완제품까지 나뉘며, GPU 간 연결 방식과 커스터마이즈 자유도가 다름</p>
+<h2 id="placement-group">placement group과 네트워크 지연</h2>
+<p>placement group이란 상호 의존 인스턴스의 물리 배치를 제어해 지연·처리량·장애 상관을 조정하는 배치 전략</p>
 <table>
 <thead>
 <tr>
-<th>형태</th>
-<th>구성</th>
-<th>GPU 연결</th>
-<th>특징</th>
+<th>전략</th>
+<th>배치</th>
+<th>용도</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>일반 PCIe 서버</td>
-<td>표준 서버에 PCIe GPU 장착</td>
-<td>PCIe, 선택적 NVLink 브리지</td>
-<td>소수 GPU, 구성 유연, 도입 쉬움</td>
+<td>Cluster</td>
+<td>단일 AZ 안에 인스턴스를 근접 배치</td>
+<td>저지연 노드 간 통신(HPC)</td>
 </tr>
 <tr>
-<td>HGX 베이스보드</td>
-<td>8-GPU SXM 베이스보드를 OEM 서버에 탑재</td>
-<td>NVLink + NVSwitch 전이중</td>
-<td>OEM이 CPU·스토리지·네트워크 커스터마이즈</td>
+<td>Partition</td>
+<td>논리 파티션으로 나눠 하드웨어 비공유</td>
+<td>Hadoop·Cassandra·Kafka 등 대규모 분산</td>
 </tr>
 <tr>
-<td>DGX 완제품</td>
-<td>NVIDIA가 설계·통합한 완제품</td>
-<td>HGX 베이스보드 + NVSwitch</td>
-<td>검증된 단일 구성, 소프트웨어·지원 번들</td>
+<td>Spread</td>
+<td>서로 다른 하드웨어에 소수 분산</td>
+<td>상관 장애 최소화</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>HGX는 NVIDIA가 제공하는 8-GPU SXM 베이스보드 → OEM이 이 위에 서버를 설계해 판매</li>
-<li>DGX는 그 베이스보드를 NVIDIA가 직접 완제품 서버로 통합한 것 → 구성 선택폭 대신 검증·지원을 취함</li>
-<li>HGX H100 8-GPU 베이스보드는 총 640GB(80GB×8) GPU 메모리, DGX H100도 동일</li>
-<li>DGX B200은 8장 합쳐 1,440GB(180GB×8) → 세대가 오르며 장당·서버당 메모리가 늘어남</li>
+<li>EFA·ENA Express는 같은 AZ 안에서 지연이 가장 낮음 → cluster placement group으로 근접 배치하면 물리 거리↓</li>
+<li>EFA 인스턴스는 cluster placement group 배치가 권장(필수는 아님) → 단일 AZ 저지연 그룹으로 묶임</li>
 </ul>
 <hr />
-<h2 id="_2">소프트웨어 스택</h2>
-<p>GPU 워크로드는 커널 드라이버부터 프레임워크까지 계층으로 쌓이며, 컨테이너에서는 드라이버 주입과 스케줄러 연동이 별도 경로로 붙음</p>
-<pre class="mermaid"><code>graph TD
-    APP["프레임워크&lt;br&gt;PyTorch·TensorFlow"] --&gt; LIB["가속 라이브러리&lt;br&gt;cuDNN·cuBLAS·NCCL"]
-    LIB --&gt; CUDA["CUDA Toolkit&lt;br&gt;Runtime·Driver API"]
-    CUDA --&gt; DRV["커널 드라이버&lt;br&gt;nvidia.ko"]
-    DRV --&gt; HW["GPU 하드웨어&lt;br&gt;SM·HBM"]
-    CT["NVIDIA Container Toolkit&lt;br&gt;드라이버·장치 주입"] -.-&gt; DRV
-    DP["device plugin&lt;br&gt;nvidia.com/gpu 광고"] -.-&gt; CT</code></pre>
+<h2 id="rdma">온프레 RDMA와의 대비</h2>
+<p>온프레는 전용 패브릭과 무손실 설정을 사용자가 직접 운영하고, AWS는 표준 패브릭 위에서 SRD로 대체</p>
 <table>
 <thead>
 <tr>
-<th>계층</th>
-<th>구성 요소</th>
-<th>역할</th>
+<th>비교 항목</th>
+<th>온프레 InfiniBand·RoCEv2</th>
+<th>AWS EFA(SRD)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>커널 드라이버</td>
-<td>NVIDIA 드라이버(nvidia.ko)</td>
-<td>GPU 장치 노출(/dev/nvidia*), 커널·유저 통신</td>
+<td>패브릭</td>
+<td>전용 IB 패브릭 또는 무손실 이더넷</td>
+<td>표준 AWS 이더넷 패브릭</td>
 </tr>
 <tr>
-<td>CUDA Toolkit</td>
-<td>nvcc, CUDA Runtime·Driver API</td>
-<td>커널 컴파일·실행, GPU 프로그래밍 인터페이스</td>
+<td>무손실 요구</td>
+<td>필요(credit 또는 PFC·ECN)</td>
+<td>불필요, 프로토콜이 손실 흡수</td>
 </tr>
 <tr>
-<td>가속 라이브러리</td>
-<td>cuDNN, cuBLAS, NCCL, TensorRT</td>
-<td>딥러닝 연산·선형대수, 다중 GPU 통신, 추론 최적화</td>
+<td>순서 보장</td>
+<td>보장(RC)</td>
+<td>비보장, 스프레이 후 재정렬</td>
 </tr>
 <tr>
-<td>프레임워크</td>
-<td>PyTorch, TensorFlow</td>
-<td>모델 정의·학습, 하위 라이브러리 호출</td>
+<td>운영 주체</td>
+<td>사용자가 스위치·NIC 무손실 설정</td>
+<td>AWS가 패브릭 운영, 사용자는 EFA만 활성화</td>
+</tr>
+<tr>
+<td>확장</td>
+<td>fat-tree를 직접 설계</td>
+<td>cluster placement group으로 위임</td>
 </tr>
 </tbody>
 </table>
-<p>컨테이너에서 GPU를 쓰려면 별도 두 조각이 붙음</p>
+<hr />
+<h2 id="_2">선택 기준</h2>
 <table>
 <thead>
 <tr>
-<th>구성 요소</th>
-<th>역할</th>
+<th>상황</th>
+<th>추천</th>
+<th>추천 사유</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>NVIDIA Container Toolkit</td>
-<td>컨테이너에 호스트 드라이버·장치를 주입, 이미지엔 CUDA 런타임만 담음</td>
+<td>일반 웹·API·범용 워크로드</td>
+<td>ENA</td>
+<td>Nitro 기본, 최대 100Gbps에 추가 비용 없음</td>
 </tr>
 <tr>
-<td>NVIDIA device plugin</td>
-<td>노드의 GPU를 nvidia.com/gpu 리소스로 광고해 파드에 할당</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>드라이버는 호스트에, CUDA 런타임은 컨테이너 이미지에 위치 → 둘의 버전 호환을 맞춰야 함</li>
-<li>쿠버네티스는 GPU를 기본 인식하지 못함 → device plugin이 리소스로 등록해야 스케줄러가 배정</li>
-<li>GPU Operator는 드라이버·Container Toolkit·device plugin·모니터링을 묶어 설치하는 운영 도구</li>
-</ul>
-<hr />
-<h2 id="gpu_2">데이터센터 GPU 세대</h2>
-<p>세대가 오를수록 SM 수·메모리 용량·대역폭·NVLink 대역폭·전력이 함께 오름</p>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>A100</th>
-<th>H100</th>
-<th>B200</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>아키텍처</td>
-<td>Ampere</td>
-<td>Hopper</td>
-<td>Blackwell</td>
+<td>지연 민감한 TCP/UDP, 같은 리전</td>
+<td>ENA Express</td>
+<td>SRD 멀티패스로 꼬리 지연↓, 앱 무수정</td>
 </tr>
 <tr>
-<td>SM 수</td>
-<td>108</td>
-<td>132(SXM)</td>
-<td>듀얼 다이 구성</td>
+<td>분산 학습·HPC 노드 간 통신</td>
+<td>EFA</td>
+<td>OS bypass·SRD·GPUDirect RDMA로 노드 간 병목 완화</td>
 </tr>
 <tr>
-<td>메모리(SXM)</td>
-<td>80GB HBM2e</td>
-<td>80GB HBM3</td>
-<td>180GB HBM3e</td>
-</tr>
-<tr>
-<td>메모리 대역폭</td>
-<td>약 2TB/s(2,039GB/s)</td>
-<td>3.35TB/s</td>
-<td>약 8TB/s</td>
-</tr>
-<tr>
-<td>NVLink 세대·대역폭</td>
-<td>3세대, 600GB/s</td>
-<td>4세대, 900GB/s</td>
-<td>5세대, 1.8TB/s</td>
-</tr>
-<tr>
-<td>최대 TDP(SXM)</td>
-<td>400W</td>
-<td>700W</td>
-<td>1000W</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>A100 40GB SXM은 HBM2에 1,555GB/s → 같은 A100이라도 80GB(HBM2e)는 2,039GB/s로 다름</li>
-<li>H100 PCIe는 80GB HBM2e에 약 2TB/s → 같은 H100이라도 SXM(HBM3, 3.35TB/s)과 대역폭 차이가 큼</li>
-<li>B200은 두 다이를 NV-HBI로 묶어 단일 GPU로 동작하는 듀얼 다이 → 장당 메모리·대역폭·전력이 이전 세대를 크게 넘어섬</li>
-<li>세대 비교의 핵심은 연산 수치보다 메모리 용량·대역폭·GPU 간 대역폭 → 큰 모델일수록 이쪽이 병목</li>
-</ul>
-<hr />
-<h2 id="nvidia-smi">nvidia-smi 주요 필드</h2>
-<p>nvidia-smi는 드라이버가 노출하는 GPU 상태를 요약해 보여주는 CLI로, 필드마다 측정 대상이 달라 해석에 주의가 필요함</p>
-<table>
-<thead>
-<tr>
-<th>필드</th>
-<th>의미</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GPU-Util(utilization.gpu)</td>
-<td>최근 샘플 구간에서 커널이 하나 이상 실행된 시간 비율</td>
-</tr>
-<tr>
-<td>Memory-Usage(memory.used/total)</td>
-<td>할당된 VRAM 용량과 총량(MiB)</td>
-</tr>
-<tr>
-<td>utilization.memory</td>
-<td>메모리 컨트롤러가 읽기·쓰기로 바빴던 시간 비율(대역폭 수치 아님)</td>
-</tr>
-<tr>
-<td>Pwr:Usage/Cap</td>
-<td>현재 소비 전력 / 전력 한도(W)</td>
-</tr>
-<tr>
-<td>Temp</td>
-<td>GPU 코어 온도</td>
-</tr>
-<tr>
-<td>Compute M.</td>
-<td>컴퓨트 모드(Default·Exclusive Process·Prohibited)</td>
-</tr>
-<tr>
-<td>MIG M.</td>
-<td>MIG(Multi-Instance GPU) 분할 활성 여부</td>
-</tr>
-<tr>
-<td>Processes</td>
-<td>GPU를 점유한 프로세스와 컨텍스트별 VRAM</td>
+<td>고PPS인데 비혼잡 시 최저 지연 우선</td>
+<td>표준 ENA</td>
+<td>ENA Express는 비혼잡 시 중앙값 지연이 소폭↑</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="utilizationgpu">utilization.gpu의 함정</h2>
-<p>GPU-Util 100%는 "커널이 쉬지 않고 돌았다"는 뜻이지 연산 유닛이 꽉 찼다는 뜻이 아님</p>
+<h2 id="_3">함정</h2>
 <ul>
-<li>NVML 정의 자체가 "샘플 구간 중 커널이 실행된 시간 비율" → 시간축 지표이지 용량축 지표가 아님</li>
-<li>SM 하나만 쓰는 커널도 그 시간 동안 GPU-Util 100%로 표시 → 나머지 SM이 전부 놀아도 수치는 같음</li>
-<li>즉 utilization은 "언제 바빴나", saturation은 "얼마나 채웠나" → nvidia-smi는 앞쪽만 보여줌</li>
-<li>학습이 느린데 GPU-Util만 높으면 데이터 로딩·소형 배치·커널 실행 오버헤드로 SM이 노는 경우가 흔함</li>
-<li>실제 연산 포화도는 DCGM(Data Center GPU Manager)의 SM occupancy·텐서 코어 활성률·메모리 대역폭 사용률로 확인</li>
-<li>세밀한 병목은 Nsight 계열 프로파일러로 커널별 점유를 봐야 함 → nvidia-smi 한 줄로 판단하지 말 것</li>
+<li>EFA OS bypass 트래픽은 AZ·VPC를 넘지 못함 → 같은 AZ 안이어야 하고(2024년부터 같은 AZ 내 서브넷 간은 가능), EFA 트래픽 자체는 라우팅 불가</li>
+<li>EFA는 보안그룹이 자기 자신을 참조해 인바운드·아웃바운드 전체를 허용해야 OS bypass 통신이 됨 → 일반 IP 규칙만으로는 안 됨</li>
+<li>ENA Express는 모든 인스턴스·경로에서 켜지지 않음 → 양쪽 다 지원 타입이고 양쪽 다 활성화해야 SRD 사용</li>
+<li>설정이 한쪽만 어긋나도 그 프로토콜만 폴백 → 한쪽이 UDP를 비활성화하면 UDP만 표준 전송으로 내려감</li>
+<li>ENA Express는 비혼잡 구간에서 중앙값 지연이 수십 마이크로초 늘 수 있음 → 무조건 켜는 게 답은 아님</li>
 </ul>
 <hr />
-<h2 id="_3">결론</h2>
+<h2 id="_4">결론</h2>
 <ul>
-<li>CPU는 소수 대형 코어, GPU는 SM에 묶인 수천 개 소형 코어로 warp 단위 SIMT 병렬 처리 → 작업 성격이 다름</li>
-<li>같은 세대라도 PCIe 카드와 SXM 모듈은 전력·대역폭·NVLink·냉각이 갈리고, 서버는 PCIe 서버·HGX·DGX로 나뉨</li>
-<li>GPU-Util은 "바쁜 시간 비율"일 뿐 연산 포화도가 아님 → 실제 활용도는 DCGM·프로파일러로 확인할 것</li>
+<li>스택은 층위가 다름 → 범용은 ENA, 같은 리전 TCP/UDP 꼬리 지연은 ENA Express, 노드 간 HPC는 EFA</li>
+<li>EFA는 ENA를 대체하지 않고 그 위에 OS bypass를 얹은 형태 → EFA with ENA는 IP 네트워킹과 저지연 전송을 함께 가짐</li>
+<li>SRD는 순서 보장과 무손실을 포기하는 대신 표준 패브릭 위에서 멀티패스로 지연을 잡는 선택 → "무손실을 깔 것이냐, 손실을 흡수할 것이냐"가 온프레 RDMA와 갈리는 지점</li>
 </ul>
 
 
@@ -1994,7 +2048,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: GPU 분할 정리">
+          <a href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: GPU 서버 기초 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2004,27 +2058,11 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                GPU 분할 정리
+                GPU 서버 기초 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: AWS 고성능 네트워킹 정리">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                AWS 고성능 네트워킹 정리
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

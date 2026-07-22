@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="클라우드 인프라·SRE·쿠버네티스·DevOps를 맨땅에 헤딩하며 실습하고 정리한 기록">
+        <meta name="description" content="에뮬레이션 NIC의 가상화 I/O 오버헤드부터 virtio·vhost·SR-IOV·DPDK·DPU까지 진화 순서로 정리하고 방식별 데이터 경로와 트레이드오프 비교">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/category/aws/page/2/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../../ai/">
+        <link rel="prev" href="../../21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../../../architecture/">
+        <link rel="next" href="../mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>AWS - dotoryeee's blog</title>
+        <title>NIC 가상화와 커널 바이패스 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AWS - dotoryeee's blog" />
-<meta property="og:description" content="클라우드 인프라·SRE·쿠버네티스·DevOps를 맨땅에 헤딩하며 실습하고 정리한 기록" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/category/aws/page/2.png" />
+<meta property="og:title" content="NIC 가상화와 커널 바이패스 정리 - dotoryeee's blog" />
+<meta property="og:description" content="에뮬레이션 NIC의 가상화 I/O 오버헤드부터 virtio·vhost·SR-IOV·DPDK·DPU까지 진화 순서로 정리하고 방식별 데이터 경로와 트레이드오프 비교" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/category/aws/page/2/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="AWS - dotoryeee's blog" />
-<meta property="twitter:description" content="클라우드 인프라·SRE·쿠버네티스·DevOps를 맨땅에 헤딩하며 실습하고 정리한 기록" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/category/aws/page/2.png" />
+<meta property="twitter:title" content="NIC 가상화와 커널 바이패스 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="에뮬레이션 NIC의 가상화 I/O 오버헤드부터 virtio·vhost·SR-IOV·DPDK·DPU까지 진화 순서로 정리하고 방식별 데이터 경로와 트레이드오프 비교" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aws" class="md-skip">
+        <a href="#nic" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWS
+              NIC 가상화와 커널 바이패스 정리
             
           </span>
         </div>
@@ -178,7 +178,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -304,11 +306,13 @@
                 
   
   
+    
+  
   
     
   
   
-    <li class="md-nav__item">
+    <li class="md-nav__item md-nav__item--active">
       <a href="../../../../" class="md-nav__link">
         
   
@@ -691,20 +695,20 @@
                 
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -725,7 +729,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -745,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../ai/" class="md-nav__link">
+      <a href="../../../../category/ai/" class="md-nav__link">
         
   
   
@@ -772,19 +776,10 @@
   
   
     
-      
-    
   
   
     <li class="md-nav__item">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="../../" class="md-nav__link md-nav__link--active">
+      <a href="../../../../category/aws/" class="md-nav__link">
         
   
   
@@ -800,7 +795,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -815,7 +809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/" class="md-nav__link">
+      <a href="../../../../category/architecture/" class="md-nav__link">
         
   
   
@@ -845,7 +839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../database/" class="md-nav__link">
+      <a href="../../../../category/database/" class="md-nav__link">
         
   
   
@@ -875,7 +869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../devops/" class="md-nav__link">
+      <a href="../../../../category/devops/" class="md-nav__link">
         
   
   
@@ -905,7 +899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docker/" class="md-nav__link">
+      <a href="../../../../category/docker/" class="md-nav__link">
         
   
   
@@ -935,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../kubernetes/" class="md-nav__link">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
         
   
   
@@ -965,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../linux/" class="md-nav__link">
+      <a href="../../../../category/linux/" class="md-nav__link">
         
   
   
@@ -995,7 +989,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../network/" class="md-nav__link">
+      <a href="../../../../category/network/" class="md-nav__link">
         
   
   
@@ -1025,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../python/" class="md-nav__link">
+      <a href="../../../../category/python/" class="md-nav__link">
         
   
   
@@ -1055,7 +1049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sre/" class="md-nav__link">
+      <a href="../../../../category/sre/" class="md-nav__link">
         
   
   
@@ -1085,7 +1079,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../security/" class="md-nav__link">
+      <a href="../../../../category/security/" class="md-nav__link">
         
   
   
@@ -1115,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../terraform/" class="md-nav__link">
+      <a href="../../../../category/terraform/" class="md-nav__link">
         
   
   
@@ -1299,7 +1293,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1311,6 +1307,169 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nic_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NIC 가상화란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e1000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        완전 에뮬레이션 (e1000류)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        virtio (반가상화)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="virtio (반가상화)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        두 가지 virtqueue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vhost-net-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vhost (-net / -user)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sr-iov" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SR-IOV
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SR-IOV">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vf-vs-nic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VF 개수: 규격상 한계 vs 실제 NIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dpdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DPDK
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smartnic-dpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SmartNIC / DPU
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        방식 비교
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        쿠버네티스 연계
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        함정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1318,152 +1477,391 @@
             
           
           
-  <div class="md-content" data-md-component="content">
-    <div class="md-content__inner">
-      <header class="md-typeset">
-        <h1 id="aws">AWS</h1>
-      </header>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
             
-              <a href="../../" class="md-meta__link">AWS</a></li>
-        
-        
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-22 00:00:00+00:00" class="md-ellipsis">2026. 7. 22.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/network/">Network</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 8분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
           
-          <li class="md-meta__item">
-            
-              읽는시간 2분
-            
-          </li>
-        
-        
-      </ul>
-      
+        </div>
+      </div>
     </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="s3-object-encryption"><a class="toclink" href="../../../../2021/04/17/s3-object-encryption/">S3 object encryption</a></h2>
-<ol>
-<li>2023년 1월 5일 이후 업로드 되는 모든 오브젝트는 자동으로 암호화된다(SSE-S3) <a href="https://aws.amazon.com/ko/about-aws/whats-new/2023/01/amazon-s3-automatically-encrypts-new-objects/">관련정보</a></li>
-<li>S3 암호화 방식은 총 4가지가 존재한다<ul>
-<li>SSE-S3 (Server-Side Encryption with Amazon S3): AWS에서 키를 관리한다. 암호화 키 소유권은 AWS S3에 있다.</li>
-<li>SSE-C (Server-Side Encryption with Customer-Provided Keys): 고객이 제공하는 암호화 키를 사용해 데이터를 암호화 한다. 암호화키는 암호화 및 복호와에 모두 사용된다(대칭키)</li>
-<li>SSE-KMS (Server-Side Encryption with AWS Key Management Service): KMS 마스터키는 AWS KMS 서비스에서 관리된다. 암호화 키의 소유권이 고객에게 있다.</li>
-<li>DSSE-KMS (Dual-layer Server-Side Encryption with AWS KMS): AWS KMS 키를 사용해 두 겹의 AES-256 암호화를 적용한다. 규제 준수 요건이 높은 환경에서 사용된다.</li>
-</ul>
-</li>
-<li>암호화 방식에 따라 오브젝트 업로드 명령 옵션이 상이하다<ul>
-<li>SSE-S3 (default)<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;
-</code></pre></div></li>
-<li>SSE-C<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse-c<span class="w"> </span>AES256<span class="w"> </span>--sse-c-key<span class="w"> </span>&lt;encryption-key&gt;
-</code></pre></div></li>
-<li>SSE-KMS<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse<span class="w"> </span>aws:kms<span class="w"> </span>--sse-kms-key-id
-</code></pre></div></li>
-</ul>
-</li>
-</ol>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
 
+
+  <nav class="md-tags" >
     
-      <nav class="md-post__action">
-        <a href="../../../../2021/04/17/s3-object-encryption/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 5분
-            
-          </li>
-        
-        
-      </ul>
       
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="vpc-endpoint-with-role"><a class="toclink" href="../../../../2021/04/17/vpc-endpoint-with-role/">VPC Endpoint with Role</a></h2>
-<h3 id="_1"><a class="toclink" href="../../../../2021/04/17/vpc-endpoint-with-role/#_1">목표</a></h3>
-<hr />
+      
+      
+        <a href="../../../../../tags/#tag:dpdk" class="md-tag">DPDK</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:sr-iov" class="md-tag">SR-IOV</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:virtio" class="md-tag">virtio</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="nic">NIC 가상화와 커널 바이패스 정리</h1>
+<!-- more -->
+
+<h2 id="nic_1">NIC 가상화란</h2>
+<p>NIC 가상화(NIC Virtualization)란 하나의 물리 NIC를 여러 VM·컨테이너가 각자의 네트워크 장치처럼 나눠 쓰게 만드는 기술</p>
+<p>VM 밀도가 올라가면서 소프트웨어로 NIC를 흉내 내는 비용이 그대로 성능 병목이 되어 문제로 떠오름.</p>
 <ul>
-<li>Bastion Host를 이용한 Private Network의 웹 서버 접속</li>
-<li>Endpoint를 이용해 게이트웨이 없이 VPC에서 S3, DynamoDB 접속</li>
-<li>Credential이 아닌 Role을 이용한 권한적용으로 보안성 확보</li>
+<li>게스트가 장치 레지스터를 건드릴 때마다 VM exit로 하이퍼바이저에 제어가 넘어감 → 문맥 전환 비용 발생</li>
+<li>패킷은 호스트의 소프트웨어 스위치(vSwitch)를 거쳐 전달됨 → 스위칭·복사에 호스트 CPU 소모</li>
+<li>I/O가 많을수록 exit 빈도와 스위칭 부하가 누적 → 게스트 처리량은 낮고 호스트 CPU만 바쁨</li>
+<li>그래서 가상화 방식은 에뮬레이션에서 반가상화, 하드웨어 분할, 커널 바이패스로 진화</li>
 </ul>
-<h3 id="_2"><a class="toclink" href="../../../../2021/04/17/vpc-endpoint-with-role/#_2">구성도</a></h3>
 <hr />
-<p><img alt="VPC Endpoint with Role/Untitled.png" src="../../../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/Untitled.png" /></p>
+<h2 id="e1000">완전 에뮬레이션 (e1000류)</h2>
+<p>완전 에뮬레이션이란 Intel e1000 같은 실제 NIC의 레지스터와 동작을 하이퍼바이저가 소프트웨어로 그대로 흉내 내는 방식</p>
+<ul>
+<li>게스트는 실제 NIC용 표준 드라이버를 그대로 사용 → 게스트 수정이 전혀 없음</li>
+<li>게스트 드라이버가 e1000 레지스터를 MMIO로 접근 → KVM이 트랩해 VM exit → QEMU가 콜백으로 에뮬레이션</li>
+<li>QEMU가 게스트 메모리의 TX 링에서 패킷을 DMA 에뮬레이션으로 복사해 백엔드로 전송</li>
+<li>레지스터 접근마다 trap-and-emulate가 반복 → 접근 빈도가 높으면 성능이 급격히 낮아짐</li>
+<li>호환성은 최고지만 성능은 최하 → 레거시 게스트나 부팅 초기 장치로만 실효</li>
+</ul>
+<hr />
+<h2 id="virtio">virtio (반가상화)</h2>
+<p>virtio란 게스트가 가상화 환경임을 전제로 설계된 반가상화(Paravirtualization) 표준 I/O 인터페이스로, 실제 하드웨어를 흉내 내지 않음</p>
+<ul>
+<li>게스트에 virtio 프런트엔드 드라이버, 호스트에 백엔드 드라이버를 두고 둘이 공유 메모리로 통신</li>
+<li>통신 통로는 virtqueue → 그 실체는 링 버퍼인 vring</li>
+<li>프런트엔드가 요청을 vring에 넣고 백엔드에 알림(notify) → 실제 하드웨어 레지스터 접근을 대체해 exit 횟수를 줄임</li>
+<li>실제 NIC 동작을 흉내 낼 필요가 없음 → 에뮬레이션 대비 경로가 짧고 CPU 비용이 낮음</li>
+</ul>
+<h3 id="virtqueue">두 가지 virtqueue</h3>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>구성</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>split virtqueue</td>
+<td>디스크립터 테이블 + available ring + used ring</td>
+<td>링이 방향별로 분리, 초기부터 쓰인 기본형</td>
+</tr>
+<tr>
+<td>packed virtqueue</td>
+<td>디스크립터 링 + driver/device event suppression</td>
+<td>링 하나로 통합, 캐시 지역성·경합 개선 목적의 후속형</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="vhost-net-user">vhost (-net / -user)</h2>
+<p>vhost란 virtio 백엔드(데이터플레인)를 QEMU 프로세스 밖으로 빼내 별도 실행 주체가 처리하게 하는 가속 방식</p>
+<ul>
+<li>순수 virtio는 백엔드가 QEMU 안에 있음 → 패킷마다 QEMU 유저 프로세스를 거쳐 느림</li>
+<li>vhost-net은 백엔드를 호스트 커널로 이동 → 커널의 vhost 워커 스레드가 vring을 처리해 호스트 네트워크 스택으로 전달</li>
+<li>vhost-user는 백엔드를 QEMU 옆 별도 유저 프로세스로 이동 → 제어 메시지는 UNIX 도메인 소켓, vring 접근은 공유 메모리</li>
+<li>vhost-user 백엔드로 DPDK PMD, OVS-DPDK, SPDK 등을 붙임 → 유저 공간 고속 스위칭과 결합</li>
+<li>게스트는 그대로 virtio 프런트엔드만 봄 → 백엔드만 교체해 성능을 끌어올리는 구조</li>
+</ul>
+<hr />
+<h2 id="sr-iov">SR-IOV</h2>
+<p>SR-IOV(Single Root I/O Virtualization)란 PCIe 장치 하나를 여러 독립 함수로 하드웨어 수준에서 분할해 VM·컨테이너에 직접 할당하는 PCI-SIG 표준</p>
+<pre class="mermaid"><code>graph LR
+    VMa["VM (virtio)"] --&gt; SW["호스트 vSwitch"]
+    SW --&gt; PF["PF"]
+    VMb["VM (SR-IOV)"] --&gt;|passthrough| VF["VF"]
+    PF --&gt; Port["NIC 물리 포트"]
+    VF --&gt;|하이퍼바이저 우회| Port</code></pre>
+<ul>
+<li>PF(Physical Function)는 완전한 SR-IOV 설정 능력을 갖춘 관리용 함수 → 하이퍼바이저가 제어</li>
+<li>VF(Virtual Function)는 자기 BDF 주소를 가진 경량 함수 → 게스트에 직접 패스스루(passthrough)</li>
+<li>VF가 게스트에 붙으면 트래픽이 호스트 소프트웨어 스위치를 건너뜀 → near-native 성능, 호스트 CPU 거의 무개입</li>
+<li>IOMMU(Intel VT-d·AMD-Vi)가 VF의 Requester ID로 DMA 주소를 변환·격리 → VM이 남의 메모리를 건드리지 못하게 보호</li>
+</ul>
+<h3 id="vf-vs-nic">VF 개수: 규격상 한계 vs 실제 NIC</h3>
+<ul>
+<li>SR-IOV 확장 능력의 TotalVFs는 16비트 읽기 전용 필드 → 규격상 PF당 최대 65535개까지 표현 가능</li>
+<li>NumVFs는 16비트 읽기/쓰기 필드 → 소프트웨어가 이 값을 써서 VF를 실제로 생성·해제</li>
+<li>규격 한계와 실제 지원 개수는 별개 → 실제 상한은 NIC 하드웨어 구현이 결정</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>NIC</th>
+<th>실제 VF 상한</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intel 82599 (ixgbe)</td>
+<td>포트당 63개</td>
+<td>포트당 큐 128개를 VF들이 나눠 씀</td>
+</tr>
+<tr>
+<td>Intel X710/XL710 (i40e)</td>
+<td>장치당 128개</td>
+<td>디바이스 전역 기준</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>AWS Enhanced Networking도 SR-IOV 기반 → 구형 C3·C4·D2·I2·M4·R3 계열이 Intel 82599 VF 인터페이스를 그대로 사용</li>
+<li>규격상 6만 5천 개를 실제 NIC 상한으로 착각하면 안 됨 → 도입 전 해당 NIC 데이터시트로 확인 필요</li>
+<li>ENA·EFA로 이어지는 현행 AWS 스택은 <a href="../aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">AWS 고성능 네트워킹 정리</a>에서 다룸</li>
+</ul>
+<hr />
+<h2 id="dpdk">DPDK</h2>
+<p>DPDK(Data Plane Development Kit)란 커널 네트워크 스택을 건너뛰고 유저 공간에서 NIC를 폴링으로 직접 다루는 패킷 처리 프레임워크</p>
+<ul>
+<li>PMD(Poll Mode Driver)는 유저 공간 NIC 드라이버 → 인터럽트 대신 RX/TX 디스크립터를 직접 폴링(링크 상태만 예외)</li>
+<li>패킷이 유저 공간에 매핑된 NIC DMA 버퍼에 도착 → PMD가 RX 디스크립터의 완료 표시를 확인해 그 자리에서 처리</li>
+<li>커널 스택·인터럽트·문맥 전환을 통째로 우회 → 지연이 낮고 PPS가 높음</li>
+<li>폴링 스레드가 유휴 상태에도 코어를 100% 점유 → 코어를 통째로 내주는 트레이드오프</li>
+<li>큐를 코어별로 핀 고정 → 코어마다 자기 큐만 처리해 락 경합 제거</li>
+</ul>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>커널 바이패스는 DPDK만의 개념이 아님. RDMA(InfiniBand·RoCEv2)도 유저 공간이 커널을 건너 NIC 큐에 직접 명령을 올리는 커널 바이패스 계열이고, DPDK가 패킷을 유저 공간으로 폴링해 처리한다면 RDMA는 전송 자체를 NIC 하드웨어에 위임하는 점이 다름. InfiniBand·RoCEv2의 무손실·패브릭 원리는 <a href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">InfiniBand vs RoCEv2 차이점 정리</a>에서 다룸.</p>
+</div>
+<hr />
+<h2 id="smartnic-dpu">SmartNIC / DPU</h2>
+<p>SmartNIC/DPU(Data Processing Unit)란 NIC에 프로그래머블 CPU와 가속기를 얹어, 호스트가 하던 인프라 작업을 NIC에서 처리하는 장치</p>
+<ul>
+<li>NVIDIA BlueField 계열은 Arm 코어 + ConnectX + 네트워킹·스토리지·보안 가속기를 한 장치에 통합</li>
+<li>소프트웨어 정의 네트워킹·스토리지·보안(방화벽·DPI 등)을 호스트 CPU에서 DPU로 오프로드</li>
+<li>인프라 스택이 테넌트 애플리케이션과 분리돼 별도 CPU에서 동작 → "서버 안의 서버"로 격리</li>
+<li>오프로드한 만큼 호스트 코어를 테넌트 워크로드에 되돌려줌 → 클라우드 사업자의 코어 회수 동기</li>
+<li>BlueField-3는 400Gb/s 처리에 Arm A78 코어 16개 탑재</li>
+</ul>
+<hr />
+<h2 id="_1">방식 비교</h2>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>데이터 경로</th>
+<th>성능</th>
+<th>라이브 마이그레이션</th>
+<th>CPU 비용</th>
+<th>주 사용처</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>완전 에뮬레이션(e1000)</td>
+<td>게스트 → VM exit → QEMU 에뮬레이션 → 백엔드</td>
+<td>최하</td>
+<td>가능</td>
+<td>높음(접근마다 exit)</td>
+<td>레거시 게스트·호환성</td>
+</tr>
+<tr>
+<td>virtio</td>
+<td>프런트/백엔드가 vring 공유 메모리로 통신</td>
+<td>중간</td>
+<td>가능</td>
+<td>에뮬레이션보다 낮음</td>
+<td>범용 VM 기본값</td>
+</tr>
+<tr>
+<td>virtio + vhost</td>
+<td>백엔드가 호스트 커널 또는 별도 유저 프로세스</td>
+<td>높음</td>
+<td>가능</td>
+<td>중간</td>
+<td>처리량 필요한 VM, OVS-DPDK</td>
+</tr>
+<tr>
+<td>SR-IOV</td>
+<td>VF를 게스트에 직접 패스스루, vSwitch 우회</td>
+<td>매우 높음</td>
+<td>제약 큼</td>
+<td>호스트 소모 거의 없음</td>
+<td>저지연·고PPS</td>
+</tr>
+<tr>
+<td>DPDK</td>
+<td>유저 공간 PMD가 NIC 큐를 폴링</td>
+<td>매우 높음</td>
+<td>앱 재작성 필요</td>
+<td>폴링 코어 100%</td>
+<td>NFV·데이터플레인</td>
+</tr>
+<tr>
+<td>SmartNIC/DPU</td>
+<td>인프라 데이터플레인을 NIC의 Arm SoC로 오프로드</td>
+<td>매우 높음</td>
+<td>구성에 따름</td>
+<td>호스트 오프로드</td>
+<td>클라우드 인프라 오프로드</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">쿠버네티스 연계</h2>
+<p>파드에 VF를 직접 붙여 저지연 네트워킹을 주는 구성은 세 컴포넌트의 협업으로 동작</p>
+<table>
+<thead>
+<tr>
+<th>컴포넌트</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SR-IOV Network Device Plugin</td>
+<td>노드의 VF를 발견해 스케줄러에 할당 가능한 리소스로 광고</td>
+</tr>
+<tr>
+<td>Multus CNI</td>
+<td>파드에 기본 인터페이스 외 추가 인터페이스를 붙이는 메타 플러그인</td>
+</tr>
+<tr>
+<td>SR-IOV CNI</td>
+<td>할당된 VF를 파드 네트워크 네임스페이스에 실제로 연결</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>파드가 VF 리소스를 요청 → 디바이스 플러그인이 광고한 VF가 있는 노드로 스케줄</li>
+<li>Multus가 할당된 VF의 deviceID(PCI 주소)를 읽어 SR-IOV CNI를 호출 → CNI가 그 VF를 파드 네임스페이스로 이동</li>
+<li>추가 네트워크는 NetworkAttachmentDefinition CRD로 선언(NPWG 표준) → 파드는 고속 VF 인터페이스를 기본 파드 네트워크와 별도로 획득</li>
+</ul>
+<hr />
+<h2 id="_3">함정</h2>
+<ul>
+<li>SR-IOV VF는 하이퍼바이저 스위치를 건너뜀 → vSwitch에 걸던 보안그룹·ACL·미러링 같은 소프트웨어 정책이 VF 트래픽엔 적용되지 않음</li>
+<li>같은 이유로 라이브 마이그레이션과 상충 → VF가 특정 물리 NIC에 종속돼 이주 대상 호스트로 장치·상태를 그대로 옮길 수 없음</li>
+<li>완화책은 이주 직전 VF를 분리하고 virtio로 폴백하는 bond 구성 → 속도와 이동성 중 하나를 포기하는 절충</li>
+<li>"virtio는 느리다"는 오해 → 백엔드가 QEMU에 있던 초기 얘기이고, vhost-net·vhost-user와 오프로드 조합으로 상당히 빨라짐</li>
+<li>DPDK의 성능은 공짜가 아님 → 폴링 코어가 유휴에도 100%를 먹으므로 처리량과 코어 점유를 저울질해야 함</li>
+</ul>
+<hr />
+<h2 id="_4">결론</h2>
+<ul>
+<li>가상화 NIC은 에뮬레이션 → virtio → vhost → SR-IOV → DPDK/DPU로, exit·복사·스위칭 비용을 줄이는 방향으로 진화</li>
+<li>축은 두 갈래 → 소프트웨어 경로를 빠르게(virtio+vhost)냐, 소프트웨어 경로를 아예 건너뛰냐(SR-IOV·DPDK·DPU)</li>
+<li>빠를수록 유연성을 내줌 → virtio 계열은 "이동성", SR-IOV·DPDK 계열은 "성능"
+</content>
+</invoke></li>
+</ul>
 
-    
-      <nav class="md-post__action">
-        <a href="../../../../2021/04/17/vpc-endpoint-with-role/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
       
-      
-        
-          
-
-
-
-<nav class="md-pagination">
-  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12zm-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12z"/></svg></a> <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__current">2</span>  
-</nav>
-        
-      
-    </div>
+    </article>
   </div>
 
           
@@ -1484,10 +1882,12 @@
   
     
       
+        
+      
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../../ai/" class="md-footer__link md-footer__link--prev" aria-label="이전: AI">
+          <a href="../../21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: S3 성능·비용 최적화 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1497,20 +1897,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                AI
+                S3 성능·비용 최적화 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../../architecture/" class="md-footer__link md-footer__link--next" aria-label="다음: Architecture">
+          <a href="../mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-footer__link md-footer__link--next" aria-label="다음: MLX로 LoRA 파인튜닝 실습">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                Architecture
+                MLX로 LoRA 파인튜닝 실습
               </div>
             </div>
             <div class="md-footer__button md-icon">
