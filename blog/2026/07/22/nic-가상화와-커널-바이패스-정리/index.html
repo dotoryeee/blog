@@ -1698,6 +1698,11 @@
 <td>장치당 128개</td>
 <td>디바이스 전역 기준</td>
 </tr>
+<tr>
+<td>NVIDIA ConnectX (mlx5)</td>
+<td>포트당 최대 127개</td>
+<td>펌웨어 NUM_OF_VFS로 개수 설정, InfiniBand·RoCE 겸용 RDMA 계열</td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -1714,6 +1719,7 @@
 <li>커널 스택·인터럽트·문맥 전환을 통째로 우회 → 지연이 낮고 PPS가 높음</li>
 <li>폴링 스레드가 유휴 상태에도 코어를 100% 점유 → 코어를 통째로 내주는 트레이드오프</li>
 <li>큐를 코어별로 핀 고정 → 코어마다 자기 큐만 처리해 락 경합 제거</li>
+<li>보통은 NIC를 커널에서 떼어 VFIO 같은 유저 공간 드라이버에 바인딩 → NVIDIA ConnectX의 mlx5 PMD는 예외로, 커널 드라이버를 유지한 채 일부 플로만 유저 공간으로 보내는 bifurcated 모델</li>
 </ul>
 <div class="admonition notice">
 <p class="admonition-title">Notice</p>
