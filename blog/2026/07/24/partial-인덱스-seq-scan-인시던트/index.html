@@ -1323,10 +1323,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#db-cpu-usage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        첫 진단은 틀렸다
+        DB CPU Usage가 높을 줄 알았다
       
     </span>
   </a>
@@ -1334,21 +1334,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cpu" class="md-nav__link">
+  <a href="#performance-insights-wait-event" class="md-nav__link">
     <span class="md-ellipsis">
       
-        방향 전환: "CPU가 낮다"는 모순
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-insights" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance Insights가 원인을 지목하다
+        Performance Insights와 wait event
       
     </span>
   </a>
@@ -1368,7 +1357,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         왜 이게 서비스 전체를 흔들었나
@@ -1384,7 +1373,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         조치
@@ -1395,7 +1384,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         검증
@@ -1406,7 +1395,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         배운 것
@@ -1417,7 +1406,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1505,7 +1494,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 8분
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -1579,12 +1568,8 @@
 <li>약 3일간 아무 알람 없이 방치됨 (탐지 공백)</li>
 </ul>
 <hr />
-<h2 id="_2">첫 진단은 틀렸다</h2>
-<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 의심했다. 실제로 세션을 필요 이상으로 오래 점유하는 코드 결함 몇 개를 찾아 고치고 1차 배포까지 했다.</p>
-<p>그런데 배포 후에도 태스크 순환이 그대로였다. 이번 장애의 원인은 아니었다. 증상이 안 사라지면 가설이 틀린 것이다.</p>
-<hr />
-<h2 id="cpu">방향 전환: "CPU가 낮다"는 모순</h2>
-<p>커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다. 자원이 포화 상태가 아닌데도 커넥션이 계속 점유된다면, 전체 부하보다는 특정 쿼리 하나가 오래 잡고 있을 가능성이 크다.</p>
+<h2 id="db-cpu-usage">DB CPU Usage가 높을 줄 알았다</h2>
+<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다. 자원이 포화 상태가 아닌데도 커넥션이 계속 점유된다면, 전체 부하보다는 특정 쿼리 하나가 오래 잡고 있을 가능성이 크다.</p>
 <p>여기서 Slow Query 로그로 갔다.</p>
 <table>
 <thead>
@@ -1619,7 +1604,7 @@
 </table>
 <p>DB CPU가 낮다는 사실 하나가, 오진(커넥션 풀)을 버리고 Slow Query로 직행하는 이정표였다.</p>
 <hr />
-<h2 id="performance-insights">Performance Insights가 원인을 지목하다</h2>
+<h2 id="performance-insights-wait-event">Performance Insights와 wait event</h2>
 <p>Slow Query 로그가 후보를 좁혀 줬다면, 원인을 확정한 건 RDS Performance Insights였다.</p>
 <p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
 <p><em>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다. 인스턴스·테이블·컬럼명은 익명화했다.</em></p>
@@ -1651,7 +1636,7 @@
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
 </code></pre></div>
 <p>테이블이 작을 땐 문제없이 돌던 쿼리가, 데이터가 쌓이면서 조용히 46초짜리 풀스캔이 되어 있었다.</p>
-<h3 id="_3">왜 이게 서비스 전체를 흔들었나</h3>
+<h3 id="_2">왜 이게 서비스 전체를 흔들었나</h3>
 <p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
 <pre class="mermaid"><code>flowchart TD
     A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
@@ -1662,7 +1647,7 @@
     F --&gt; A</code></pre>
 <p>"느림", "배치 무한 실패", "15분 주기 재시작"은 별개가 아니라 하나의 캐스케이드였다. seq scan → 워커 점유 → 헬스체크 실패 → 태스크 재시작 → 다시 seq scan.</p>
 <hr />
-<h2 id="_4">조치</h2>
+<h2 id="_3">조치</h2>
 <p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- 술어에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
@@ -1670,7 +1655,7 @@
 </code></pre></div>
 <p><code>IF NOT EXISTS</code>로 만들고 마이그레이션으로 스키마에 영속화했다(장애 대응 중 먼저 인덱스를 적용했기 때문에, 마이그레이션은 no-op으로 안전하게 수렴).</p>
 <hr />
-<h2 id="_5">검증</h2>
+<h2 id="_4">검증</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
@@ -1684,7 +1669,7 @@
 <li>잡이 완료 기록(<code>last_run_date</code>)을 남겨 같은 주기 재실행을 스스로 건너뜀</li>
 </ul>
 <hr />
-<h2 id="_6">배운 것</h2>
+<h2 id="_5">배운 것</h2>
 <ol>
 <li><strong>partial 인덱스는 "그 부분 조건을 항상 포함하는 쿼리"에만 안전하다.</strong> 같은 테이블을 다른 술어로 조회하는 경로가 하나라도 생기면 조용히 seq scan으로 떨어진다. 새 조회 경로를 추가할 때 반드시 <code>EXPLAIN</code>으로 실제 인덱스를 타는지 확인할 것.</li>
 <li><strong>ORM 모델과 실제 인덱스의 드리프트를 조심할 것.</strong> 문제의 partial 인덱스들이 모델 정의에 없어서 초기에 "인덱스가 없다"고 오판했다. 실제 <code>pg_indexes</code>와 모델을 주기적으로 대조해야 한다.</li>
@@ -1694,7 +1679,7 @@
 <li><strong>wait event를 읽을 것.</strong> DB 부하(AAS)가 <code>IO:DataFileRead</code>로 차오르면 인덱스를 못 타 디스크를 훑고 있다는 뜻이다. CPU 사용률 그래프만 보면 "자원은 한가한데 느리다"에서 진단이 멈춘다. Performance Insights의 Top SQL·wait event는 느린 한 쿼리를 곧바로 지목해 준다.</li>
 </ol>
 <hr />
-<h2 id="_7">결론</h2>
+<h2 id="_6">결론</h2>
 <ul>
 <li>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. <strong>DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터</strong> 본다.</li>
 <li>partial 인덱스는 강력하지만, 쿼리 술어가 인덱스의 부분 조건을 벗어나는 순간 seq scan이다. 편리함의 대가를 EXPLAIN으로 확인하고 쓸 것.</li>
