@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리">
+        <meta name="description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
       
       
-        <link rel="prev" href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../../24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
       
       
         
@@ -30,7 +28,7 @@
     
     
       
-        <title>AWS 고성능 네트워킹 정리 - dotoryeee's blog</title>
+        <title>DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +84,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AWS 고성능 네트워킹 정리 - dotoryeee's blog" />
-<meta property="og:description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
+<meta property="og:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="AWS 고성능 네트워킹 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass·GPUDirect RDMA를 공식 스펙 기준으로 비교 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
+<meta property="twitter:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
 </head>
   
   
@@ -114,7 +112,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aws" class="md-skip">
+        <a href="#db-15-partial-seq-scan" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AWS 고성능 네트워킹 정리
+              DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트
             
           </span>
         </div>
@@ -1295,7 +1293,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1314,132 +1312,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#aws_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS 고성능 네트워킹이란
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ec2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        EC2 네트워크 스택의 진화
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ena" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ENA란
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ENA란">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rss" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        멀티큐와 RSS
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ena-express" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ENA Express란
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ENA Express란">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        적용 조건
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#efa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        EFA란
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ena-efa" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ENA와 EFA의 관계
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#srd-rdma" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SRD가 기존 RDMA 전송과 다른 점
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#placement-group" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        placement group과 네트워크 지연
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rdma" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        온프레 RDMA와의 대비
+        증상
       
     </span>
   </a>
@@ -1450,7 +1326,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        선택 기준
+        첫 진단은 틀렸다
       
     </span>
   </a>
@@ -1458,18 +1334,90 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#cpu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        함정
+        방향 전환: "CPU가 낮다"는 모순
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Insights가 범인을 지목하다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#partial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        진짜 원인: partial 인덱스를 못 타는 쿼리
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="진짜 원인: partial 인덱스를 못 타는 쿼리">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        왜 이게 서비스 전체를 흔들었나
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        조치
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        검증
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        배운 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1535,7 +1483,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-22 00:00:00+00:00" class="md-ellipsis">2026. 7. 22.</time>
+                        <time datetime="2026-07-24 00:00:00+00:00" class="md-ellipsis">2026. 7. 24.</time>
                       </div>
                     </li>
                     
@@ -1546,7 +1494,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/aws/">AWS</a></span>
+                              <a href="../../../../category/sre/">SRE</a></span>
                         </div>
                       </li>
                     
@@ -1557,7 +1505,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 9분
+                              읽는시간 8분
                             
                           </span>
                         </div>
@@ -1585,424 +1533,174 @@
       
       
       
-        <a href="../../../../../tags/#tag:efa" class="md-tag">EFA</a>
+        <a href="../../../../../tags/#tag:partial-index" class="md-tag">Partial Index</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:ena" class="md-tag">ENA</a>
+        <a href="../../../../../tags/#tag:performance-insights" class="md-tag">Performance Insights</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:sr-iov" class="md-tag">SR-IOV</a>
+        <a href="../../../../../tags/#tag:postgresql" class="md-tag">PostgreSQL</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:rds" class="md-tag">RDS</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:troubleshooting" class="md-tag">Troubleshooting</a>
       
     
   </nav>
 
 
 
-<h1 id="aws">AWS 고성능 네트워킹 정리</h1>
+<h1 id="db-15-partial-seq-scan">DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트</h1>
 <!-- more -->
 
-<h2 id="aws_1">AWS 고성능 네트워킹이란</h2>
-<p>AWS 고성능 네트워킹이란 EC2 인스턴스 간 통신에서 대역폭↑·PPS↑·지연↓을 얻기 위해 Nitro 기반 향상된 네트워킹(Enhanced Networking)과 그 위의 ENA·ENA Express·EFA를 묶은 스택</p>
-<p>가상화 계층이 패킷마다 개입하던 초기 EC2 네트워킹으로는 분산 학습·HPC·고PPS 워크로드를 감당하지 못해 하드웨어 오프로드로 옮겨감.</p>
+<p>운영 서비스가 "느리다"는 제보와 "배치가 계속 실패한다"는 제보가 동시에 들어왔다. 며칠간 아무도 몰랐고, 두 증상은 서로 다른 문제처럼 보였지만 뿌리는 하나였다. 커넥션 풀부터 의심했다가 완전히 헛짚었고, 결국 정답으로 데려간 건 "DB CPU가 낮다"는 한 줄의 모순이었다.</p>
+<h2 id="_1">증상</h2>
 <ul>
-<li>향상된 네트워킹은 SR-IOV(Single Root I/O Virtualization)로 장치를 인스턴스에 직접 노출 → 하이퍼바이저 개입 없이 NIC 접근</li>
-<li>공식 표현으로 대역폭↑·PPS↑·지연↓을 제공하고 추가 요금 없음</li>
-<li>계층은 셋: 범용 ENA, TCP/UDP 꼬리 지연을 잡는 ENA Express, OS bypass의 EFA</li>
+<li>운영 중인 클라우드 비용 리포팅 서비스가 전반적으로 느려짐</li>
+<li>주기적으로 도는 배치(이상탐지) 처리가 계속 실패</li>
+<li>웹 컨테이너(태스크)가 대략 15분 주기로 반복 재시작</li>
+<li>약 3일간 아무 알람 없이 방치됨 (탐지 공백)</li>
 </ul>
+<p>"느림"과 "배치 무한 실패", "태스크 순환 재시작"을 처음엔 별개의 문제로 봤다. 이게 첫 번째 실수였다.</p>
 <hr />
-<h2 id="ec2">EC2 네트워크 스택의 진화</h2>
-<p>초기 Xen 에뮬레이션에서 SR-IOV를 거쳐 Nitro 전용 카드가 네트워크를 전담하는 구조로 넘어옴</p>
+<h2 id="_2">첫 진단은 틀렸다</h2>
+<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 의심했다. 실제로 세션을 필요 이상으로 오래 점유하는 코드 결함 몇 개를 찾아 고치고 1차 배포까지 했다.</p>
+<p>그런데 배포 후에도 태스크 순환이 그대로였다. 고친 것들은 진짜 결함이 맞았지만, 이번 장애의 원인은 아니었다. 증상이 안 사라지면 가설이 틀린 것이다.</p>
+<hr />
+<h2 id="cpu">방향 전환: "CPU가 낮다"는 모순</h2>
+<p>커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다. 자원이 포화가 아닌데 커넥션이 붙잡혀 있다면, 원인은 "부하"가 아니라 "특정 쿼리 하나가 오래 붙잡고 있는 것"이다.</p>
+<p>여기서 슬로우 쿼리 로그로 갔다.</p>
 <table>
 <thead>
 <tr>
-<th>구분</th>
-<th>방식</th>
-<th>드라이버</th>
-<th>대역폭</th>
+<th>확인 지점</th>
+<th>관찰</th>
+<th>해석</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>초기 EC2</td>
-<td>Xen 하이퍼바이저의 소프트웨어 에뮬레이션 NIC</td>
-<td>가상 드라이버</td>
-<td>낮음, 패킷마다 CPU 개입</td>
+<td>DB CPU</td>
+<td>약 12%</td>
+<td>자원 포화 아님 → 부하 문제 아님</td>
 </tr>
 <tr>
-<td>향상된 네트워킹 1세대</td>
-<td>SR-IOV로 Intel 82599 VF를 인스턴스에 노출</td>
-<td>ixgbevf</td>
-<td>최대 10Gbps</td>
+<td>커넥션</td>
+<td>막힘</td>
+<td>특정 쿼리가 장시간 점유 의심</td>
 </tr>
 <tr>
-<td>Nitro 기반</td>
-<td>전용 Nitro 카드가 네트워크 전담, SR-IOV로 ENA 노출</td>
-<td>ena</td>
-<td>타입별 최대 600Gbps</td>
+<td>슬로우 쿼리 로그</td>
+<td>한 쿼리가 46초+ (큰 대상은 150초+)</td>
+<td>범인 후보 확정</td>
+</tr>
+<tr>
+<td>EXPLAIN</td>
+<td><code>Seq Scan</code></td>
+<td>인덱스를 못 타고 테이블 풀스캔</td>
 </tr>
 </tbody>
 </table>
+<p>DB CPU가 낮다는 사실 하나가, 오진(커넥션 풀)을 버리고 "느린 쿼리"로 직행하는 이정표였다.</p>
+<hr />
+<h2 id="performance-insights">Performance Insights가 범인을 지목하다</h2>
+<p>슬로우 쿼리 로그가 후보를 좁혀 줬다면, 범인을 확정한 건 RDS Performance Insights였다.</p>
+<p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
+<p><em>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다. 인스턴스·테이블·컬럼명은 익명화했다.</em></p>
+<p>Database load(평균 활성 세션, AAS) 를 wait event로 쪼개 보면 그림이 선명해진다. 평소 0에 가깝다가 15분 간격으로 규칙적인 스파이크가 솟고, 큰 스파이크는 Max vCPUs 선(약 1.75)을 넘겨 3.5까지 치솟았다. AAS가 vCPU 수를 넘었다는 건 세션이 CPU를 다 쓴 게 아니라 무언가를 기다리며 쌓였다는 뜻이다.</p>
+<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 이게 결정적 단서다.</p>
+<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이렇게 지배적일 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan의 지문이다.</p>
+<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). 슬로우 쿼리 로그의 "최대 46초"는 데이터가 많은 큰 그룹의 worst case였고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 흥미롭게도 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다. 원인과 처방이 한 화면에 나란히 놓인 셈이다.</p>
+<p>CPU 그래프(12%)만 봤다면 "한가한데 왜 느리지"에서 멈췄을 것이다. wait event와 Top SQL이 그 벽을 넘어 범인 앞으로 데려갔다.</p>
+<hr />
+<h2 id="partial">진짜 원인: partial 인덱스를 못 타는 쿼리</h2>
+<p>문제의 쿼리는 15분마다 도는 이상탐지 잡이 실행하는 것으로, 그룹의 대표 통화(dominant currency)를 찾는 쿼리였다. 통화별로 합계를 내야 하니 <code>currency</code>를 필터하지 않는다.</p>
+<p>그런데 이 집계 테이블에 걸린 인덱스는 전부 <code>WHERE currency = 'USD'</code> partial(부분) 인덱스였다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- 집계 테이블에 있던 인덱스는 전부 partial (USD 전용)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_daily_cost_usd</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">currency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;USD&#39;</span><span class="p">;</span><span class="w">          </span><span class="c1">-- ← 부분 조건</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">-- 대표 통화를 찾는 쿼리는 currency를 필터하지 않는다</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">currency</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">daily_cost_agg</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">group_id</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">currency</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- ← WHERE에 currency 없음</span>
+</code></pre></div>
+<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 술어(predicate)가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EXPLAIN 결과 (before)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Seq Scan on daily_cost_agg  (rows=수백만)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Filter: (group_id = :group_id)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
+</code></pre></div>
+<p>테이블이 작을 땐 문제없이 돌던 쿼리가, 데이터가 쌓이면서 조용히 46초짜리 풀스캔이 되어 있었다.</p>
+<h3 id="_3">왜 이게 서비스 전체를 흔들었나</h3>
+<p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
+<pre class="mermaid"><code>flowchart TD
+    A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
+    B --&gt; C[집계 테이블 전체 seq scan&lt;br/&gt;46초 이상]
+    C --&gt; D[웹 이벤트 루프의 워커를 장시간 점유]
+    D --&gt; E["/health/ready 3초 내&lt;br/&gt;SELECT 1 실패 → 503"]
+    E --&gt; F[로드밸런서 비정상 판정&lt;br/&gt;태스크 종료 후 재기동]
+    F --&gt; A</code></pre>
+<p>"느림", "배치 무한 실패", "15분 주기 재시작"은 별개가 아니라 하나의 캐스케이드였다. seq scan → 워커 점유 → 헬스체크 굶김 → 태스크 재시작 → 다시 seq scan.</p>
+<hr />
+<h2 id="_4">조치</h2>
+<p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- 술어에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">);</span>
+</code></pre></div>
+<p><code>IF NOT EXISTS</code>로 만들고 마이그레이션으로 스키마에 영속화했다(장애 대응 중 먼저 인덱스를 적용했기 때문에, 마이그레이션은 no-op으로 안전하게 수렴).</p>
+<hr />
+<h2 id="_5">검증</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Index Cond: (group_id = :group_id)
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>→ 46초 → 1ms
+</code></pre></div>
 <ul>
-<li>Intel 82599 VF는 C3·C4·D2·I2·M4·R3 등 구형 인스턴스 계열에 한정</li>
-<li>모든 Nitro 기반 인스턴스는 ENA로 향상된 네트워킹 사용 → 일부 구형 Xen 계열(H1·I3·G3·P3·R4 등)도 ENA 지원</li>
-<li>SR-IOV·VF의 동작 원리와 다른 NIC 가상화 방식은 <a href="../nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/">NIC 가상화와 커널 바이패스 정리</a>에서 다룸</li>
+<li>문제 쿼리: 46초 → 1ms</li>
+<li>라이브에서 이상탐지 잡이 전체 대상을 432ms에 완료</li>
+<li>태스크가 잡 주기를 넘겨 살아남음 → 헬스체크 실패 0회</li>
+<li>잡이 완료 기록(<code>last_run_date</code>)을 남기며 재실행도 self-gate</li>
 </ul>
 <hr />
-<h2 id="ena">ENA란</h2>
-<p>ENA(Elastic Network Adapter)란 Nitro 카드가 NIC 기능을 전담하고 SR-IOV로 인스턴스에 노출하는 향상된 네트워킹 어댑터</p>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>노출 방식</td>
-<td>Nitro 카드가 NIC 기능 전담, SR-IOV VF로 ENA 장치를 인스턴스에 직접 노출</td>
-</tr>
-<tr>
-<td>대역폭</td>
-<td>인스턴스 타입별 상이, 최대 600Gbps(c8gn, 네트워크 카드 2장 합산)</td>
-</tr>
-<tr>
-<td>큐</td>
-<td>멀티큐 구조, 큐 수는 2의 거듭제곱(1·2·4·8·16·32 등), ENI당 큐 수는 vCPU 수를 넘지 못함</td>
-</tr>
-<tr>
-<td>적용 범위</td>
-<td>모든 Nitro 기반 인스턴스가 ENA 사용</td>
-</tr>
-<tr>
-<td>비용</td>
-<td>추가 요금 없음</td>
-</tr>
-</tbody>
-</table>
-<h3 id="rss">멀티큐와 RSS</h3>
-<p>고PPS 워크로드는 큐를 여러 개 두어 여러 vCPU로 처리를 분산하며, 플로 분배는 RSS가 담당</p>
-<ul>
-<li>RSS(Receive Side Scaling)는 수신 패킷의 플로 튜플을 해시해 여러 수신 큐로 분배 → 큐마다 다른 vCPU가 처리</li>
-<li>네트워크 집약 워크로드는 큐 수를 늘려 PPS를 끌어올림 → CPU 집약 워크로드는 적은 큐로 충분</li>
-<li>큐 배치는 인스턴스 타입·크기별 정적 한도가 기본이고, 지원 타입은 ENI 간 동적 재배치 가능</li>
-</ul>
+<h2 id="_6">배운 것</h2>
+<ol>
+<li><strong>partial 인덱스는 "그 부분 조건을 항상 포함하는 쿼리"에만 안전하다.</strong> 같은 테이블을 다른 술어로 조회하는 경로가 하나라도 생기면 조용히 seq scan으로 떨어진다. 새 조회 경로를 추가할 때 반드시 <code>EXPLAIN</code>으로 실제 인덱스를 타는지 확인할 것.</li>
+<li><strong>ORM 모델과 실제 인덱스의 드리프트를 조심할 것.</strong> 문제의 partial 인덱스들이 모델 정의에 없어서 초기에 "인덱스가 없다"고 오판했다. 실제 <code>pg_indexes</code>와 모델을 주기적으로 대조해야 한다.</li>
+<li><strong>무거운 주기 잡을 웹 프로세스 이벤트 루프에서 돌리지 말 것.</strong> 잡 하나가 헬스체크를 굶기면 성능 문제가 가용성 장애로 번진다. 분석성 배치는 별도 워커 프로세스로 격리하는 게 맞다.</li>
+<li><strong>스케줄 잡에 <code>statement_timeout</code> 예산을 걸 것.</strong> 병리적 쿼리가 워커를 무한정 붙잡기 전에 빠르게 실패시켜야 한다.</li>
+<li><strong>3일간 아무도 몰랐다 = 탐지 공백.</strong> 태스크 재시작률, 슬로우 쿼리 카운트, 스케줄 잡 반복 실패에 알람을 걸어 분 단위로 잡을 수 있어야 한다.</li>
+<li><strong>wait event를 읽을 것.</strong> DB 부하(AAS)가 <code>IO:DataFileRead</code>로 차오르면 인덱스를 못 타 디스크를 훑고 있다는 뜻이다. CPU 사용률 그래프만 보면 "자원은 한가한데 느리다"에서 진단이 멈춘다. Performance Insights의 Top SQL·wait event는 느린 한 쿼리를 곧바로 지목해 준다.</li>
+</ol>
 <hr />
-<h2 id="ena-express">ENA Express란</h2>
-<p>ENA Express란 SRD(Scalable Reliable Datagram) 프로토콜을 TCP/UDP 아래에 깔아 단일 플로 대역폭과 꼬리 지연을 개선하는 기능</p>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>내용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>기반 프로토콜</td>
-<td>SRD, 동적 라우팅으로 처리량↑·꼬리 지연↓</td>
-</tr>
-<tr>
-<td>단일 플로 대역폭</td>
-<td>5Gbps → 최대 25Gbps (인스턴스 총 한도 내)</td>
-</tr>
-<tr>
-<td>꼬리 지연</td>
-<td>TCP 대비 p99 최대 50%↓, p99.9 최대 85%↓</td>
-</tr>
-<tr>
-<td>동작</td>
-<td>플로 패킷을 여러 AWS 경로로 스프레이, 혼잡 감지 시 분배 재조정, 수신단 재정렬</td>
-</tr>
-<tr>
-<td>투명성</td>
-<td>TCP·UDP에 무수정 적용</td>
-</tr>
-<tr>
-<td>통신 범위</td>
-<td>같은 AZ, 또는 같은 리전 내 AZ 간</td>
-</tr>
-</tbody>
-</table>
+<h2 id="_7">결론</h2>
 <ul>
-<li>재정렬과 대부분의 재전송을 네트워크 계층이 처리 → 애플리케이션 계층 부담↓</li>
-<li>12.5Gbps 상한 인스턴스라면 단일 플로도 12.5Gbps까지 → 25Gbps는 총 한도가 받쳐줄 때</li>
-<li>인스턴스 상한이 뒤에서 곱해지는 구조라 SRD가 대역폭 자체를 새로 만들어주는 것은 아님</li>
-</ul>
-<h3 id="_1">적용 조건</h3>
-<ul>
-<li>송수신 양쪽 모두 지원 인스턴스 타입이어야 함</li>
-<li>양쪽 모두 ENA Express를 활성화해야 함 → 한쪽이라도 미설정이면 표준 ENA로 폴백</li>
-<li>같은 리전이어야 하고 경로에 미들웨어 박스가 없어야 함</li>
-<li>SRD 헤더가 붙어 MTU를 낮춰야 함 → TCP는 MSS 자동 클램프, UDP는 별도 하향 필요</li>
-<li>Local Zone에서는 ENA Express 트래픽 사용 불가</li>
-</ul>
-<hr />
-<h2 id="efa">EFA란</h2>
-<p>EFA(Elastic Fabric Adapter)란 OS 커널을 우회(OS bypass)해 libfabric으로 인스턴스 간 통신을 가속하는 네트워크 장치로, AI·ML·HPC 노드 간 통신용</p>
-<pre class="mermaid"><code>graph LR
-    App["애플리케이션"]
-    App --&gt; N["NCCL / MPI"]
-    App --&gt; K["커널 TCP/IP"]
-    K --&gt; ENA["ENA 장치&lt;br&gt;(SR-IOV)"]
-    N --&gt; LF["libfabric&lt;br&gt;OS bypass"]
-    LF --&gt; EFA["EFA 장치&lt;br&gt;(SRD)"]
-    ENA --&gt; Net["AWS 네트워크 패브릭"]
-    EFA --&gt; Net</code></pre>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>우회 방식</td>
-<td>libfabric API가 커널을 건너뛰고 EFA 장치에 직접 패킷 적재</td>
-</tr>
-<tr>
-<td>전송</td>
-<td>SRD 기반, 혼잡 제어와 대부분의 재전송을 장치에서 처리</td>
-</tr>
-<tr>
-<td>인터페이스</td>
-<td>NCCL·NIXL(AI/ML), Open MPI 4.1+·Intel MPI 2019 Update 5+(HPC)</td>
-</tr>
-<tr>
-<td>RDMA</td>
-<td>Nitro v4 이상에서 RDMA read 전 지원, RDMA write 대부분 지원</td>
-</tr>
-<tr>
-<td>GPUDirect RDMA</td>
-<td>지원, NIC가 GPU 메모리에 직접 DMA (P4d부터)</td>
-</tr>
-<tr>
-<td>비용</td>
-<td>추가 요금 없음</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>일반 경로는 애플리케이션이 커널 TCP/IP와 ENA 드라이버를 거침 → EFA는 libfabric으로 커널을 건너뜀</li>
-<li>MPI·NCCL이 libfabric API에 직접 붙음 → 오버헤드↓로 분산 학습·HPC가 더 효율적으로 동작</li>
-<li>GPUDirect RDMA와 결합하면 GPU 메모리를 시스템 메모리 복사 없이 NIC가 직접 전송</li>
-</ul>
-<hr />
-<h2 id="ena-efa">ENA와 EFA의 관계</h2>
-<p>EFA 기본형(EFA with ENA)은 ENA 장치 위에 OS bypass용 EFA 장치를 더한 형태로 붙음</p>
-<table>
-<thead>
-<tr>
-<th>인터페이스</th>
-<th>IP 네트워킹</th>
-<th>OS bypass(EFA 장치)</th>
-<th>비고</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ENA</td>
-<td>지원</td>
-<td>미지원</td>
-<td>모든 Nitro 인스턴스 기본, 일반 VPC 통신</td>
-</tr>
-<tr>
-<td>EFA with ENA</td>
-<td>지원</td>
-<td>지원</td>
-<td>ENA 장치와 EFA 장치를 동시 생성</td>
-</tr>
-<tr>
-<td>EFA-only</td>
-<td>미지원</td>
-<td>지원</td>
-<td>EFA 장치만, 기본 인터페이스로 사용 불가</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>EFA with ENA는 ENA의 IP 네트워킹을 그대로 쓰면서 EFA 장치가 저지연 전송을 얹음 → EFA에 ENA 기능이 포함된 셈</li>
-<li>EFA-only는 IP 주소를 받지 못하고 기본 네트워크 인터페이스로 못 씀 → 다중 카드 인스턴스의 보조 인터페이스 용도</li>
-<li>두 방식 모두 ENI 부착 한도를 소모</li>
-</ul>
-<hr />
-<h2 id="srd-rdma">SRD가 기존 RDMA 전송과 다른 점</h2>
-<p>SRD란 AWS가 자사 데이터센터에 맞춰 설계한 신뢰성 전송 프로토콜로, 순서 보장을 포기하고 다중 경로 스프레이로 처리량과 꼬리 지연을 잡는 방식</p>
-<p>RDMA·InfiniBand·RoCEv2 원리는 <a href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">InfiniBand vs RoCEv2 차이점 정리</a>에서 다뤘고, 여기서는 SRD와의 차이만 짚음.</p>
-<ul>
-<li>RDMA는 원격 메모리를 상대 CPU·커널 개입 없이 NIC가 직접 읽고 쓰는 전송 → 커널 바이패스·zero-copy로 마이크로초대 지연</li>
-<li>온프레는 InfiniBand(전용 패브릭)나 RoCEv2(무손실 이더넷)로 이를 구현 → 순서 보장과 무손실이 전제</li>
-<li>SRD는 이 전제를 뒤집어 손실·순서를 프로토콜과 상위 계층에서 흡수하는 설계</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>항목</th>
-<th>전통 RDMA(IB RC·RoCEv2)</th>
-<th>SRD</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>패킷 순서</td>
-<td>순서 보장</td>
-<td>순서 비보장, 상위 계층이 재정렬</td>
-</tr>
-<tr>
-<td>경로</td>
-<td>단일 경로 위주</td>
-<td>다중 경로 스프레이(ECMP)</td>
-</tr>
-<tr>
-<td>손실 대응</td>
-<td>무손실 패브릭 전제(credit·PFC)</td>
-<td>프로토콜이 재전송 처리, 무손실 불필요</td>
-</tr>
-<tr>
-<td>혼잡 제어</td>
-<td>DCQCN 등 별도 튜닝</td>
-<td>프로토콜 내장, 경로 재분배로 회피</td>
-</tr>
-<tr>
-<td>운영 주체</td>
-<td>사용자가 패브릭 무손실 구성</td>
-<td>AWS가 패브릭 운영</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>순서를 보장하면 head-of-line blocking이 생김 → SRD는 재정렬을 메시지 의미를 아는 상위 계층에 맡겨 회피</li>
-<li>재전송이 패브릭의 무손실 보장이 아니라 프로토콜 책임 → 표준 이더넷 위에서 동작 가능</li>
-</ul>
-<hr />
-<h2 id="placement-group">placement group과 네트워크 지연</h2>
-<p>placement group이란 상호 의존 인스턴스의 물리 배치를 제어해 지연·처리량·장애 상관을 조정하는 배치 전략</p>
-<table>
-<thead>
-<tr>
-<th>전략</th>
-<th>배치</th>
-<th>용도</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cluster</td>
-<td>단일 AZ 안에 인스턴스를 근접 배치</td>
-<td>저지연 노드 간 통신(HPC)</td>
-</tr>
-<tr>
-<td>Partition</td>
-<td>논리 파티션으로 나눠 하드웨어 비공유</td>
-<td>Hadoop·Cassandra·Kafka 등 대규모 분산</td>
-</tr>
-<tr>
-<td>Spread</td>
-<td>서로 다른 하드웨어에 소수 분산</td>
-<td>상관 장애 최소화</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>EFA·ENA Express는 같은 AZ 안에서 지연이 가장 낮음 → cluster placement group으로 근접 배치하면 물리 거리↓</li>
-<li>EFA 인스턴스는 cluster placement group 배치가 권장(필수는 아님) → 단일 AZ 저지연 그룹으로 묶임</li>
-</ul>
-<hr />
-<h2 id="rdma">온프레 RDMA와의 대비</h2>
-<p>온프레는 전용 패브릭과 무손실 설정을 사용자가 직접 운영하고, AWS는 표준 패브릭 위에서 SRD로 대체</p>
-<table>
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>온프레 InfiniBand·RoCEv2</th>
-<th>AWS EFA(SRD)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>패브릭</td>
-<td>전용 IB 패브릭 또는 무손실 이더넷</td>
-<td>표준 AWS 이더넷 패브릭</td>
-</tr>
-<tr>
-<td>무손실 요구</td>
-<td>필요(credit 또는 PFC·ECN)</td>
-<td>불필요, 프로토콜이 손실 흡수</td>
-</tr>
-<tr>
-<td>순서 보장</td>
-<td>보장(RC)</td>
-<td>비보장, 스프레이 후 재정렬</td>
-</tr>
-<tr>
-<td>운영 주체</td>
-<td>사용자가 스위치·NIC 무손실 설정</td>
-<td>AWS가 패브릭 운영, 사용자는 EFA만 활성화</td>
-</tr>
-<tr>
-<td>확장</td>
-<td>fat-tree를 직접 설계</td>
-<td>cluster placement group으로 위임</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_2">선택 기준</h2>
-<table>
-<thead>
-<tr>
-<th>상황</th>
-<th>추천</th>
-<th>추천 사유</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>일반 웹·API·범용 워크로드</td>
-<td>ENA</td>
-<td>Nitro 기본, 타입별 최대 600Gbps에 추가 비용 없음</td>
-</tr>
-<tr>
-<td>지연 민감한 TCP/UDP, 같은 리전</td>
-<td>ENA Express</td>
-<td>SRD 멀티패스로 꼬리 지연↓, 앱 무수정</td>
-</tr>
-<tr>
-<td>분산 학습·HPC 노드 간 통신</td>
-<td>EFA</td>
-<td>OS bypass·SRD·GPUDirect RDMA로 노드 간 병목 완화</td>
-</tr>
-<tr>
-<td>고PPS인데 비혼잡 시 최저 지연 우선</td>
-<td>표준 ENA</td>
-<td>ENA Express는 비혼잡 시 중앙값 지연이 소폭↑</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_3">함정</h2>
-<ul>
-<li>EFA OS bypass 트래픽은 AZ·VPC를 넘지 못함 → 같은 AZ 안이어야 하고(2024년부터 같은 AZ 내 서브넷 간은 가능), EFA 트래픽 자체는 라우팅 불가</li>
-<li>EFA는 보안그룹이 자기 자신을 참조해 인바운드·아웃바운드 전체를 허용해야 OS bypass 통신이 됨 → 일반 IP 규칙만으로는 안 됨</li>
-<li>ENA Express는 모든 인스턴스·경로에서 켜지지 않음 → 양쪽 다 지원 타입이고 양쪽 다 활성화해야 SRD 사용</li>
-<li>설정이 한쪽만 어긋나도 그 프로토콜만 폴백 → 한쪽이 UDP를 비활성화하면 UDP만 표준 전송으로 내려감</li>
-<li>ENA Express는 비혼잡 구간에서 중앙값 지연이 수십 마이크로초 늘 수 있음 → 무조건 켜는 게 답은 아님</li>
-</ul>
-<hr />
-<h2 id="_4">결론</h2>
-<ul>
-<li>스택은 층위가 다름 → 범용은 ENA, 같은 리전 TCP/UDP 꼬리 지연은 ENA Express, 노드 간 HPC는 EFA</li>
-<li>EFA는 ENA를 대체하지 않고 그 위에 OS bypass를 얹은 형태 → EFA with ENA는 IP 네트워킹과 저지연 전송을 함께 가짐</li>
-<li>SRD는 순서 보장과 무손실을 포기하는 대신 표준 패브릭 위에서 멀티패스로 지연을 잡는 선택 → "무손실을 깔 것이냐, 손실을 흡수할 것이냐"가 온프레 RDMA와 갈리는 지점</li>
+<li>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. <strong>DB CPU가 낮은데 커넥션이 막힌다면 슬로우 쿼리 로그부터</strong> 본다.</li>
+<li>partial 인덱스는 강력하지만, 쿼리 술어가 인덱스의 부분 조건을 벗어나는 순간 seq scan이다. 편리함의 대가를 EXPLAIN으로 확인하고 쓸 것.</li>
+<li>증거와 모순되는 가설(커넥션 풀 고갈 vs CPU 12%)은 미련 없이 버려야 한다. 오진을 붙잡고 있으면 진짜 원인까지 가는 시간만 길어진다.</li>
 </ul>
 
 
@@ -2050,7 +1748,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: GPU 서버 기초 정리">
+          <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS 고성능 네트워킹 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2060,27 +1758,11 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                GPU 서버 기초 정리
+                AWS 고성능 네트워킹 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../24/db%EB%8A%94-%ED%95%9C%EA%B0%80%ED%95%9C%EB%8D%B0-%ED%83%9C%EC%8A%A4%ED%81%AC%EA%B0%80-15%EB%B6%84%EB%A7%88%EB%8B%A4-%EC%9E%AC%EC%8B%9C%EC%9E%91%EB%90%9C%EB%8B%A4-partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-footer__link md-footer__link--next" aria-label="다음: DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                DB는 한가한데 태스크가 15분마다 재시작된다: partial 인덱스 seq scan 인시던트
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
