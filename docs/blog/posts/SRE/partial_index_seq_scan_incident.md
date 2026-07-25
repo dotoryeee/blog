@@ -132,6 +132,4 @@ Index Scan using idx_daily_cost_group_date on daily_cost_agg
 
 ---
 
-- "느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. **DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터** 본다.
-- partial 인덱스는 강력하지만, 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan이다. 편리함의 대가를 EXPLAIN으로 확인하고 쓸 것.
-- 증거와 모순되는 가설(커넥션 풀 고갈 vs CPU 12%)은 미련 없이 버려야 한다. 오진을 붙잡고 있으면 진짜 원인까지 가는 시간만 길어진다.
+"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터 본다. partial 인덱스는 강력하지만 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan으로 떨어지므로, 새 조회 경로는 EXPLAIN으로 실제 인덱스를 타는지 확인하고 쓴다.
