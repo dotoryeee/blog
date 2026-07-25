@@ -9,18 +9,18 @@ tags:
   - GPU
   - NVLink
   - NVSwitch
-description: "노드 안 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리"
+description: "노드 내 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리"
 hide:
   - toc
 ---
-# NVLink와 노드 안 GPU 연결 정리
+# NVLink와 노드 내 GPU 연결 정리
 
 <!-- more -->
 
-## 노드 안 GPU 연결이란
-노드 안 GPU 연결이란 한 서버 안의 여러 GPU를 고속 경로로 이어 서로의 메모리를 직접 주고받게 만드는 인터커넥트 구조
+## 노드 내 GPU 연결이란
+노드 내 GPU 연결이란 한 서버 안의 여러 GPU를 고속 경로로 이어 서로의 메모리를 직접 주고받게 만드는 인터커넥트 구조
 
-모델·배치 크기가 GPU 한 장 메모리를 넘어서면서, 여러 GPU가 한 노드 안에서 파라미터·활성값을 초당 수백GB로 교환해야 하는 상황이 상시가 됨.
+모델·배치 크기가 GPU 한 장 메모리를 넘어서면서, 여러 GPU가 한 노드 내에서 파라미터·활성값을 초당 수백GB로 교환해야 하는 상황이 상시가 됨.
 
 - 경로는 두 갈래로 나뉨: 호스트·I/O 연결용 PCIe, GPU간 고속 연결용 NVLink
 - GPU간 통신량은 GPU 수와 모델 크기에 비례 → PCIe 한 갈래로 감당하기 어려워짐
@@ -162,7 +162,7 @@ Fabric Manager(FM)란 NVSwitch 메모리 패브릭을 구성하고 상주하며 
 | `PIX` | 단일 PCIe 브리지 경유 | 빠름 |
 | `PXB` | 다중 PCIe 브리지 경유(호스트 브리지 미경유) | 중간 |
 | `PHB` | PCIe 호스트 브리지(CPU) 경유 | 중간 |
-| `NODE` | 같은 NUMA 노드 안 호스트 브리지 간 연결 경유 | 느림 |
+| `NODE` | 같은 NUMA 노드 내 호스트 브리지 간 연결 경유 | 느림 |
 | `SYS` | NUMA 노드 간 SMP 연결(QPI·UPI) 경유, 소켓 교차 | 가장 느림 |
 
 - 두 GPU 셀에 `NV#`가 찍히면 NVLink 직결 → P2P가 최고 속도 경로로 붙음
@@ -184,7 +184,7 @@ NVLink라는 이름은 GPU간 통신 프로토콜과 그 위에 얹히는 제품
 ---
 
 ## 결론
-- 노드 안 GPU 연결은 PCIe(호스트·I/O)와 NVLink(GPU간 고속)로 이원화됨 → 집합 통신은 NVLink로 내려야 병목이 풀림
+- 노드 내 GPU 연결은 PCIe(호스트·I/O)와 NVLink(GPU간 고속)로 이원화됨 → 집합 통신은 NVLink로 내려야 병목이 풀림
 - 2GPU는 NVLink 브리지, 다GPU는 NVSwitch all-to-all, 랙은 NVL72 랙스케일 도메인으로 규모마다 제품이 다름
 - NVSwitch 시스템은 Fabric Manager가 패브릭을 세워야 CUDA가 뜸 → GPU가 보여도 FM이 죽으면 멀티 GPU 잡은 실패
 - NVLink는 "케이블"이 아니라 "프로토콜 + 브리지 + 스위치 제품군"으로 읽을 것
