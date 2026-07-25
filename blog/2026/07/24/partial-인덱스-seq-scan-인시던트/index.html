@@ -1353,27 +1353,10 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="진짜 원인: partial 인덱스를 못 타는 쿼리">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        왜 이게 서비스 전체를 흔들었나
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         조치
@@ -1384,32 +1367,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         검증
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        배운 것
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        결론
       
     </span>
   </a>
@@ -1494,7 +1455,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 7분
+                              읽는시간 6분
                             
                           </span>
                         </div>
@@ -1569,8 +1530,7 @@
 </ul>
 <hr />
 <h2 id="db-cpu-usage">DB CPU Usage가 높을 줄 알았다</h2>
-<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다. 자원이 포화 상태가 아닌데도 커넥션이 계속 점유된다면, 전체 부하보다는 특정 쿼리 하나가 오래 잡고 있을 가능성이 크다.</p>
-<p>여기서 Slow Query 로그로 갔다.</p>
+<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다.</p>
 <table>
 <thead>
 <tr>
@@ -1602,17 +1562,15 @@
 </tr>
 </tbody>
 </table>
-<p>DB CPU가 낮다는 사실 하나가, 오진(커넥션 풀)을 버리고 Slow Query로 직행하는 이정표였다.</p>
 <hr />
 <h2 id="performance-insights-wait-event">Performance Insights와 wait event</h2>
 <p>Slow Query 로그가 후보를 좁혀 줬다면, 원인을 확정한 건 RDS Performance Insights였다.</p>
 <p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
-<p><em>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다. 인스턴스·테이블·컬럼명은 익명화했다.</em></p>
+<p>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다.</p>
 <p>Database load(평균 활성 세션, AAS) 를 wait event로 쪼개 보면 그림이 선명해진다. 평소 0에 가깝다가 15분 간격으로 규칙적인 스파이크가 솟고, 큰 스파이크는 Max vCPUs 선(약 1.75)을 넘겨 3.5까지 치솟았다. AAS가 vCPU 수를 넘었다는 건 세션이 CPU를 다 쓴 게 아니라 무언가를 기다리며 쌓였다는 뜻이다.</p>
-<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 이게 결정적 단서다.</p>
-<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이렇게 지배적일 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan이 남기는 전형적 신호다.</p>
-<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). Slow Query 로그의 "최대 46초"는 데이터가 많은 큰 그룹에서 나온 최댓값이었고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 흥미롭게도 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다. 원인과 처방이 한 화면에 나란히 놓인 셈이다.</p>
-<p>CPU 그래프(12%)만 봤다면 "한가한데 왜 느리지"에서 멈췄을 것이다. wait event와 Top SQL이 그 한계를 넘어 원인 쿼리를 곧장 드러냈다.</p>
+<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 여기서 원인이 좁혀졌다.</p>
+<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이만큼 크게 나올 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan이 남기는 전형적 신호다.</p>
+<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). Slow Query 로그의 "최대 46초"는 데이터가 많은 큰 그룹에서 나온 최댓값이었고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다.</p>
 <hr />
 <h2 id="partial">진짜 원인: partial 인덱스를 못 타는 쿼리</h2>
 <p>문제의 쿼리는 15분마다 도는 이상탐지 잡이 실행하는 것으로, 그룹의 대표 통화(dominant currency)를 찾는 쿼리였다. 통화별로 합계를 내야 하니 <code>currency</code>를 필터하지 않는다.</p>
@@ -1628,15 +1586,13 @@
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">group_id</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">currency</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- ← WHERE에 currency 없음</span>
 </code></pre></div>
-<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 술어(predicate)가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
+<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 predicate가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EXPLAIN 결과 (before)
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Seq Scan on daily_cost_agg  (rows=수백만)
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Filter: (group_id = :group_id)
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
 </code></pre></div>
-<p>테이블이 작을 땐 문제없이 돌던 쿼리가, 데이터가 쌓이면서 조용히 46초짜리 풀스캔이 되어 있었다.</p>
-<h3 id="_2">왜 이게 서비스 전체를 흔들었나</h3>
 <p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
 <pre class="mermaid"><code>flowchart TD
     A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
@@ -1645,17 +1601,16 @@
     D --&gt; E["/health/ready 3초 내&lt;br/&gt;SELECT 1 실패 → 503"]
     E --&gt; F[로드밸런서 비정상 판정&lt;br/&gt;태스크 종료 후 재기동]
     F --&gt; A</code></pre>
-<p>"느림", "배치 무한 실패", "15분 주기 재시작"은 별개가 아니라 하나의 캐스케이드였다. seq scan → 워커 점유 → 헬스체크 실패 → 태스크 재시작 → 다시 seq scan.</p>
 <hr />
-<h2 id="_3">조치</h2>
+<h2 id="_2">조치</h2>
 <p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- 술어에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- predicate에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">);</span>
 </code></pre></div>
-<p><code>IF NOT EXISTS</code>로 만들고 마이그레이션으로 스키마에 영속화했다(장애 대응 중 먼저 인덱스를 적용했기 때문에, 마이그레이션은 no-op으로 안전하게 수렴).</p>
+<p>장애 대응 중에는 손으로 먼저 인덱스를 만들어 급한 불을 껐고, 이후 같은 <code>CREATE INDEX IF NOT EXISTS</code> 문을 마이그레이션 파일에도 넣어 스키마에 영구히 남겼다. 이미 인덱스가 있는 상태에서 마이그레이션이 다시 실행돼도 <code>IF NOT EXISTS</code> 덕분에 아무 것도 하지 않고 넘어가므로(중복 생성 오류 없음) 안전하다.</p>
 <hr />
-<h2 id="_4">검증</h2>
+<h2 id="_3">검증</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
@@ -1669,20 +1624,9 @@
 <li>잡이 완료 기록(<code>last_run_date</code>)을 남겨 같은 주기 재실행을 스스로 건너뜀</li>
 </ul>
 <hr />
-<h2 id="_5">배운 것</h2>
-<ol>
-<li><strong>partial 인덱스는 "그 부분 조건을 항상 포함하는 쿼리"에만 안전하다.</strong> 같은 테이블을 다른 술어로 조회하는 경로가 하나라도 생기면 조용히 seq scan으로 떨어진다. 새 조회 경로를 추가할 때 반드시 <code>EXPLAIN</code>으로 실제 인덱스를 타는지 확인할 것.</li>
-<li><strong>ORM 모델과 실제 인덱스의 드리프트를 조심할 것.</strong> 문제의 partial 인덱스들이 모델 정의에 없어서 초기에 "인덱스가 없다"고 오판했다. 실제 <code>pg_indexes</code>와 모델을 주기적으로 대조해야 한다.</li>
-<li><strong>무거운 주기 잡을 웹 프로세스 이벤트 루프에서 돌리지 말 것.</strong> 잡 하나가 헬스체크 응답을 막으면 성능 문제가 가용성 장애로 번진다. 분석성 배치는 별도 워커 프로세스로 격리하는 게 맞다.</li>
-<li><strong>스케줄 잡에 <code>statement_timeout</code> 예산을 걸 것.</strong> 병리적 쿼리가 워커를 무한정 붙잡기 전에 빠르게 실패시켜야 한다.</li>
-<li><strong>3일간 아무도 몰랐다 = 탐지 공백.</strong> 태스크 재시작률, Slow Query 카운트, 스케줄 잡 반복 실패에 알람을 걸어 분 단위로 잡을 수 있어야 한다.</li>
-<li><strong>wait event를 읽을 것.</strong> DB 부하(AAS)가 <code>IO:DataFileRead</code>로 차오르면 인덱스를 못 타 디스크를 훑고 있다는 뜻이다. CPU 사용률 그래프만 보면 "자원은 한가한데 느리다"에서 진단이 멈춘다. Performance Insights의 Top SQL·wait event는 느린 한 쿼리를 곧바로 지목해 준다.</li>
-</ol>
-<hr />
-<h2 id="_6">결론</h2>
 <ul>
 <li>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. <strong>DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터</strong> 본다.</li>
-<li>partial 인덱스는 강력하지만, 쿼리 술어가 인덱스의 부분 조건을 벗어나는 순간 seq scan이다. 편리함의 대가를 EXPLAIN으로 확인하고 쓸 것.</li>
+<li>partial 인덱스는 강력하지만, 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan이다. 편리함의 대가를 EXPLAIN으로 확인하고 쓸 것.</li>
 <li>증거와 모순되는 가설(커넥션 풀 고갈 vs CPU 12%)은 미련 없이 버려야 한다. 오진을 붙잡고 있으면 진짜 원인까지 가는 시간만 길어진다.</li>
 </ul>
 

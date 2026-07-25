@@ -6,11 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="노드 안 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리">
+        <meta name="description" content="노드 내 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EC%95%88-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/">
       
       
         <link rel="prev" href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
@@ -30,7 +30,7 @@
     
     
       
-        <title>NVLink와 노드 안 GPU 연결 정리 - dotoryeee's blog</title>
+        <title>NVLink와 노드 내 GPU 연결 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="NVLink와 노드 안 GPU 연결 정리 - dotoryeee's blog" />
-<meta property="og:description" content="노드 안 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EC%95%88-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="NVLink와 노드 내 GPU 연결 정리 - dotoryeee's blog" />
+<meta property="og:description" content="노드 내 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EC%95%88-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="NVLink와 노드 안 GPU 연결 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="노드 안 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EC%95%88-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="NVLink와 노드 내 GPU 연결 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="노드 내 GPU를 잇는 NVLink 세대별 대역폭과 NVSwitch·GPUDirect P2P·Fabric Manager 역할, PCIe와의 차이를 표로 비교 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              NVLink와 노드 안 GPU 연결 정리
+              NVLink와 노드 내 GPU 연결 정리
             
           </span>
         </div>
@@ -1317,7 +1317,7 @@
   <a href="#gpu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        노드 안 GPU 연결이란
+        노드 내 GPU 연결이란
       
     </span>
   </a>
@@ -1561,12 +1561,12 @@
 
 
 
-<h1 id="nvlink-gpu">NVLink와 노드 안 GPU 연결 정리</h1>
+<h1 id="nvlink-gpu">NVLink와 노드 내 GPU 연결 정리</h1>
 <!-- more -->
 
-<h2 id="gpu">노드 안 GPU 연결이란</h2>
-<p>노드 안 GPU 연결이란 한 서버 안의 여러 GPU를 고속 경로로 이어 서로의 메모리를 직접 주고받게 만드는 인터커넥트 구조</p>
-<p>모델·배치 크기가 GPU 한 장 메모리를 넘어서면서, 여러 GPU가 한 노드 안에서 파라미터·활성값을 초당 수백GB로 교환해야 하는 상황이 상시가 됨.</p>
+<h2 id="gpu">노드 내 GPU 연결이란</h2>
+<p>노드 내 GPU 연결이란 한 서버 안의 여러 GPU를 고속 경로로 이어 서로의 메모리를 직접 주고받게 만드는 인터커넥트 구조</p>
+<p>모델·배치 크기가 GPU 한 장 메모리를 넘어서면서, 여러 GPU가 한 노드 내에서 파라미터·활성값을 초당 수백GB로 교환해야 하는 상황이 상시가 됨.</p>
 <ul>
 <li>경로는 두 갈래로 나뉨: 호스트·I/O 연결용 PCIe, GPU간 고속 연결용 NVLink</li>
 <li>GPU간 통신량은 GPU 수와 모델 크기에 비례 → PCIe 한 갈래로 감당하기 어려워짐</li>
@@ -1863,7 +1863,7 @@
 </tr>
 <tr>
 <td><code>NODE</code></td>
-<td>같은 NUMA 노드 안 호스트 브리지 간 연결 경유</td>
+<td>같은 NUMA 노드 내 호스트 브리지 간 연결 경유</td>
 <td>느림</td>
 </tr>
 <tr>
@@ -1892,7 +1892,7 @@
 <hr />
 <h2 id="_1">결론</h2>
 <ul>
-<li>노드 안 GPU 연결은 PCIe(호스트·I/O)와 NVLink(GPU간 고속)로 이원화됨 → 집합 통신은 NVLink로 내려야 병목이 풀림</li>
+<li>노드 내 GPU 연결은 PCIe(호스트·I/O)와 NVLink(GPU간 고속)로 이원화됨 → 집합 통신은 NVLink로 내려야 병목이 풀림</li>
 <li>2GPU는 NVLink 브리지, 다GPU는 NVSwitch all-to-all, 랙은 NVL72 랙스케일 도메인으로 규모마다 제품이 다름</li>
 <li>NVSwitch 시스템은 Fabric Manager가 패브릭을 세워야 CUDA가 뜸 → GPU가 보여도 FM이 죽으면 멀티 GPU 잡은 실패</li>
 <li>NVLink는 "케이블"이 아니라 "프로토콜 + 브리지 + 스위치 제품군"으로 읽을 것</li>
