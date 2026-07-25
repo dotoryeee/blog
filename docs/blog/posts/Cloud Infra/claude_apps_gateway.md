@@ -25,7 +25,7 @@ Claude Apps Gateway란 Claude Code의 로그인과 추론 요청을 사내에서
 - 인증: Cognito를 OIDC 공급자로 삼아 사내 계정으로 로그인
 - 추론: 게이트웨이가 ECS 태스크 역할로 Amazon Bedrock 호출
 - 배치: 사설 네트워크에서만 도달 가능한 위치에 둠
-- 형태: 별도 소프트웨어가 아니라 claude 바이너리에 들어 있는 서브커맨드
+- 형태: 게이트웨이 전용 설치본이 따로 없음 → 노트북에서 Claude Code를 띄우는 claude 명령을 서버 모드로 실행하는 방식
 
 AWS가 공개한 [claude-apps-gateway-on-aws](https://github.com/aws-samples/sample-apj-sup-sa/tree/main/ai-coding-assistants/claude-apps-gateway-on-aws) 샘플이 이 게이트웨이를 CDK 한 스택으로 올리는 구성. 이하 정리는 그 스택 기준.
 
@@ -39,9 +39,9 @@ AWS가 공개한 [claude-apps-gateway-on-aws](https://github.com/aws-samples/sam
 ---
 
 ## 사설 네트워크 제약
-이 구성의 모양은 대부분 제약 하나에서 나옴. Claude Code는 게이트웨이 호스트명이 사설 주소로만 해석되는지 검사하고, 공인 주소가 하나라도 섞이면 로그인을 거부함.
+로그인할 때 Claude Code가 게이트웨이 주소를 DNS로 조회하고 돌아온 IP를 살펴봄. 전부 사설 대역이면 통과, 공인 IP가 하나라도 섞여 있으면 그 주소를 게이트웨이로 인정하지 않고 로그인을 중단함. 아래 AWS 구성이 이런 모양인 이유도 대부분 이 검사 하나를 통과시키기 위한 것.
 
-허용되는 대역은 다음과 같음.
+사설로 인정되는 IP 대역은 다음과 같음.
 
 - RFC 1918 사설 대역
 - link-local
@@ -143,7 +143,8 @@ graph LR
 | `claudeVersion` | 이미지에 넣을 Claude Code 버전 고정값 |
 | `desiredCount` / `natGateways` | Fargate 태스크 수와 NAT Gateway 수 |
 
-- `hostedZoneName`은 인증서 검증 용도라 퍼블릭 영역이 실제로 있어야 함
+- ACM은 인증서를 내주기 전에 도메인 소유자가 맞는지 확인하려고 검증용 DNS 레코드를 인터넷에서 조회함 → `hostedZoneName`에 해당하는 퍼블릭 영역이 없으면 발급이 막힘
+- 퍼블릭에 올라가는 것은 그 검증용 레코드뿐이고, 게이트웨이 이름 자체는 퍼블릭에 노출되지 않음
 - 사설 DNS는 `gatewayHost` 이름으로만 영역을 만들어 나머지 사내 도메인은 퍼블릭 해석을 유지
 
 ---
@@ -166,6 +167,42 @@ npm run cdk -- deploy
 - 전제 조건은 Node.js와 npm, ARM64 이미지 빌드용 Docker, AWS CLI 자격 증명, 바이너리 검증용 curl과 gpg
 - 게이트웨이 서버와 개발자 머신 양쪽 모두 Claude Code 2.1.195 이상이어야 함
 - Bedrock에서 쓰려는 Claude 모델의 접근 권한을 미리 활성화해 둘 것
+
+---
+
+## 개발자 연결
+개발자가 직접 붙일 방법은 없고, 관리자가 배포한 managed settings가 로그인 대상을 지정함
+
+- 로그인 화면에 게이트웨이 선택지 자체가 없음 → 개발자 개인 설정 파일에 URL을 적어도 무시됨
+- 관리자가 MDM이나 디스크 배포로 각 머신에 설정 파일을 내려보내야 함
+
+| OS | 경로 |
+|----|------|
+| macOS | `/Library/Application Support/ClaudeCode/managed-settings.json` |
+| Linux / WSL | `/etc/claude-code/managed-settings.json` |
+| Windows | `C:\Program Files\ClaudeCode\managed-settings.json` |
+
+```json title="managed-settings.json"
+{
+  "forceLoginMethod": "gateway",
+  "forceLoginGatewayUrl": "https://claude-gateway.corp.example.com"
+}
+```
+
+- 두 키가 다 있어야 로그인 화면이 게이트웨이 항목으로 바로 열리고 URL이 채워짐
+- `forceLoginMethod`만 두고 URL을 빼면 관리자에게 문의하라는 안내에서 멈춤
+- Claude Desktop이 띄우는 세션에도 정책을 물려주려면 `parentSettingsBehavior`를 merge로 추가
+
+설정 파일이 깔린 뒤 개발자가 하는 일은 다음과 같음.
+
+1. VPN 등 사설 경로에 접속해 게이트웨이 이름이 사설 IP로 풀리는 상태를 만듦
+2. Claude Code에서 로그인 실행. 채워진 URL을 확인하고 진행
+3. 첫 연결에서 게이트웨이 TLS 인증서 지문을 관리자가 공지한 값과 대조
+4. 브라우저로 사내 계정 로그인. claude.ai 계정·API 키·구독 모두 불필요
+
+- 인증서 지문은 SHA-256 앞 16자리를 소문자 16진수로 표시 → 인증서를 교체하면 전원에게 다시 뜨므로 계획된 작업으로 다룰 것
+- 적용 여부는 `/status`의 관리 설정 항목이나 `claude doctor`로 확인
+- 로그인 후 모델 목록은 그 개발자에게 허용된 범위만 표시됨
 
 ---
 
