@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록">
+        <meta name="description" content="VPC 엔드포인트를 지나는 API 호출을 남기는 CloudTrail 네트워크 활동 이벤트 정리. 이벤트 유형마다 갈리는 userIdentity.arn 지원 범위와 조건 평가 규칙 비교">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>partial 인덱스 seq scan 인시던트 - dotoryeee's blog</title>
+        <title>CloudTrail 네트워크 활동 이벤트 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="og:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="og:title" content="CloudTrail 네트워크 활동 이벤트 정리 - dotoryeee's blog" />
+<meta property="og:description" content="VPC 엔드포인트를 지나는 API 호출을 남기는 CloudTrail 네트워크 활동 이벤트 정리. 이벤트 유형마다 갈리는 userIdentity.arn 지원 범위와 조건 평가 규칙 비교" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="twitter:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="twitter:title" content="CloudTrail 네트워크 활동 이벤트 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="VPC 엔드포인트를 지나는 API 호출을 남기는 CloudTrail 네트워크 활동 이벤트 정리. 이벤트 유형마다 갈리는 userIdentity.arn 지원 범위와 조건 평가 규칙 비교" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#partial-seq-scan" class="md-skip">
+        <a href="#cloudtrail" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              partial 인덱스 seq scan 인시던트
+              CloudTrail 네트워크 활동 이벤트 정리
             
           </span>
         </div>
@@ -1295,7 +1295,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1317,40 +1317,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        증상
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#db-cpu-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DB CPU Usage가 높을 줄 알았다
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-insights-wait-event" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance Insights와 wait event
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#partial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        진짜 원인: partial 인덱스를 못 타는 쿼리
+        네트워크 활동 이벤트란
       
     </span>
   </a>
@@ -1361,7 +1328,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        조치
+        엔드포인트 정책과의 역할 구분
       
     </span>
   </a>
@@ -1372,7 +1339,101 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        검증
+        이벤트 유형 비교
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        고급 이벤트 선택기 필드
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useridentityarn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        userIdentity.arn 필터
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="userIdentity.arn 필터">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이벤트 유형별 지원 범위
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        조건 평가 규칙
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기록된 이벤트 확인
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        운영 주의
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
       
     </span>
   </a>
@@ -1435,7 +1496,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-24 00:00:00+00:00" class="md-ellipsis">2026. 7. 24.</time>
+                        <time datetime="2026-07-25 00:00:00+00:00" class="md-ellipsis">2026. 7. 25.</time>
                       </div>
                     </li>
                     
@@ -1446,7 +1507,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/sre/">SRE</a></span>
+                              <a href="../../../../category/security/">Security</a></span>
                         </div>
                       </li>
                     
@@ -1457,7 +1518,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 5분
+                              읽는시간 6분
                             
                           </span>
                         </div>
@@ -1485,148 +1546,306 @@
       
       
       
-        <a href="../../../../../tags/#tag:partial-index" class="md-tag">Partial Index</a>
+        <a href="../../../../../tags/#tag:cloudtrail" class="md-tag">CloudTrail</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:performance-insights" class="md-tag">Performance Insights</a>
+        <a href="../../../../../tags/#tag:iam" class="md-tag">IAM</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:postgresql" class="md-tag">PostgreSQL</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:rds" class="md-tag">RDS</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:troubleshooting" class="md-tag">Troubleshooting</a>
+        <a href="../../../../../tags/#tag:vpc-endpoint" class="md-tag">VPC Endpoint</a>
       
     
   </nav>
 
 
 
-<h1 id="partial-seq-scan">partial 인덱스 seq scan 인시던트</h1>
+<h1 id="cloudtrail">CloudTrail 네트워크 활동 이벤트 정리</h1>
 <!-- more -->
 
-<h2 id="_1">증상</h2>
+<h2 id="_1">네트워크 활동 이벤트란</h2>
+<p>네트워크 활동 이벤트(Network Activity Events)란 VPC 엔드포인트를 통과한 AWS API 호출을 엔드포인트 소유자 계정에 기록하는 CloudTrail 이벤트 유형</p>
 <ul>
-<li>운영 중인 클라우드 비용 리포팅 서비스가 전반적으로 느려짐</li>
-<li>주기적으로 도는 배치(이상탐지) 처리가 계속 실패</li>
-<li>웹 컨테이너(태스크)가 대략 15분 주기로 반복 재시작</li>
-<li>약 3일간 아무 알람 없이 방치됨 (탐지 공백)</li>
+<li>기록 주체: 호출한 계정이 아니라 VPC 엔드포인트를 소유한 계정</li>
+<li>포착 범위: 사설 VPC에서 엔드포인트를 거쳐 AWS 서비스로 나간 호출</li>
+<li>목적: 조직 밖 자격 증명이 내 엔드포인트를 경유하려는 시도 탐지</li>
+<li>기본값: 미기록. <code>eventSource</code>별로 명시 설정해야 함</li>
+<li>과금: 기록한 만큼 별도 청구, 관리 이벤트에 있는 첫 사본 무료 없음</li>
+</ul>
+<pre class="mermaid"><code>graph LR
+    In["조직 내부 자격 증명"] --&gt; VPCE["VPC Endpoint&lt;br/&gt;(내 계정 소유)"]
+    Out["조직 밖 자격 증명"] --&gt; VPCE
+    VPCE --&gt; SVC["AWS 서비스"]
+    VPCE -. 기록 .-&gt; CT["CloudTrail&lt;br/&gt;(엔드포인트 소유자 계정)"]</code></pre>
+<ul>
+<li>호출자가 다른 계정 소속이어도 내 엔드포인트를 지나갔으면 내 트레일에 남음</li>
+<li>데이터 경계(Data Perimeter) 설계에서 조직 밖 자격 증명의 접근 시도를 확인할 수 있는 경로는 이것뿐</li>
 </ul>
 <hr />
-<h2 id="db-cpu-usage">DB CPU Usage가 높을 줄 알았다</h2>
-<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다.</p>
+<h2 id="_2">엔드포인트 정책과의 역할 구분</h2>
+<p>VPC 엔드포인트 정책과 네트워크 활동 이벤트는 대체재가 아니라 차단과 기록으로 나뉨</p>
 <table>
 <thead>
 <tr>
-<th>확인 지점</th>
-<th>관찰</th>
-<th>해석</th>
+<th>구분</th>
+<th>VPC 엔드포인트 정책</th>
+<th>네트워크 활동 이벤트</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>DB CPU</td>
-<td>약 12%</td>
-<td>자원 포화 아님 → 부하 문제 아님</td>
+<td>역할</td>
+<td>조건에 안 맞는 호출을 거부</td>
+<td>엔드포인트를 지난 호출을 기록</td>
 </tr>
 <tr>
-<td>커넥션</td>
-<td>막힘</td>
-<td>특정 쿼리가 장시간 점유 의심</td>
+<td>개입 시점</td>
+<td>요청을 처리하기 전 차단</td>
+<td>허용·거부 결과와 함께 기록</td>
 </tr>
 <tr>
-<td>Slow Query 로그</td>
-<td>한 쿼리가 46초+ (큰 대상은 150초+)</td>
-<td>원인 후보 확정</td>
+<td>남는 것</td>
+<td>거부 결과만, 시도 내역은 미보존</td>
+<td>호출자·이벤트명·엔드포인트 ID</td>
 </tr>
 <tr>
-<td>EXPLAIN</td>
-<td><code>Seq Scan</code></td>
-<td>인덱스를 못 타고 테이블 풀스캔</td>
+<td>조직 밖 자격 증명</td>
+<td><code>aws:PrincipalOrgID</code> 조건으로 차단 가능</td>
+<td>누가 몇 번 시도했는지 식별 가능</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>없음</td>
+<td>기록 건수 기준 과금</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="performance-insights-wait-event">Performance Insights와 wait event</h2>
-<p>Slow Query 로그가 후보를 좁혀 줬다면, 원인을 확정한 건 RDS Performance Insights였다.</p>
-<p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
-<p>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다.</p>
-<p>Database load(평균 활성 세션, AAS) 를 wait event로 쪼개 보면 그림이 선명해진다. 평소 0에 가깝다가 15분 간격으로 규칙적인 스파이크가 솟고, 큰 스파이크는 Max vCPUs 선(약 1.75)을 넘겨 3.5까지 치솟았다. AAS가 vCPU 수를 넘었다는 건 세션이 CPU를 다 쓴 게 아니라 무언가를 기다리며 쌓였다는 뜻이다.</p>
-<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 여기서 원인이 좁혀졌다.</p>
-<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이만큼 크게 나올 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan이 남기는 전형적 신호다.</p>
-<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). Slow Query 로그의 "최대 46초"는 데이터가 많은 큰 그룹에서 나온 최댓값이었고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다.</p>
-<hr />
-<h2 id="partial">진짜 원인: partial 인덱스를 못 타는 쿼리</h2>
-<p>문제의 쿼리는 15분마다 도는 이상탐지 잡이 실행하는 것으로, 그룹의 대표 통화(dominant currency)를 찾는 쿼리였다. 통화별로 합계를 내야 하니 <code>currency</code>를 필터하지 않는다.</p>
-<p>그런데 이 집계 테이블에 걸린 인덱스는 전부 <code>WHERE currency = 'USD'</code> partial(부분) 인덱스였다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- 집계 테이블에 있던 인덱스는 전부 partial (USD 전용)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_daily_cost_usd</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">currency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;USD&#39;</span><span class="p">;</span><span class="w">          </span><span class="c1">-- ← 부분 조건</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">-- 대표 통화를 찾는 쿼리는 currency를 필터하지 않는다</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">currency</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">daily_cost_agg</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">group_id</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">currency</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- ← WHERE에 currency 없음</span>
-</code></pre></div>
-<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 predicate가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EXPLAIN 결과 (before)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Seq Scan on daily_cost_agg  (rows=수백만)
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Filter: (group_id = :group_id)
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
-</code></pre></div>
-<p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
-<pre class="mermaid"><code>flowchart TD
-    A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
-    B --&gt; C[집계 테이블 전체 seq scan&lt;br/&gt;46초 이상]
-    C --&gt; D[웹 이벤트 루프의 워커를 장시간 점유]
-    D --&gt; E["/health/ready 3초 내&lt;br/&gt;SELECT 1 실패 → 503"]
-    E --&gt; F[로드밸런서 비정상 판정&lt;br/&gt;태스크 종료 후 재기동]
-    F --&gt; A</code></pre>
-<hr />
-<h2 id="_2">조치</h2>
-<p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- predicate에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">);</span>
-</code></pre></div>
-<p>장애 대응 중에는 손으로 먼저 인덱스를 만들어 급한 불을 껐고, 이후 같은 <code>CREATE INDEX IF NOT EXISTS</code> 문을 마이그레이션 파일에도 넣어 스키마에 영구히 남겼다. 이미 인덱스가 있는 상태에서 마이그레이션이 다시 실행돼도 <code>IF NOT EXISTS</code> 덕분에 아무 것도 하지 않고 넘어가므로(중복 생성 오류 없음) 안전하다.</p>
-<hr />
-<h2 id="_3">검증</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Index Cond: (group_id = :group_id)
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>→ 46초 → 1ms
-</code></pre></div>
 <ul>
-<li>문제 쿼리: 46초 → 1ms</li>
-<li>라이브에서 이상탐지 잡이 전체 대상을 432ms에 완료</li>
-<li>태스크가 잡 주기를 넘겨 살아남음 → 헬스체크 실패 0회</li>
-<li>잡이 완료 기록(<code>last_run_date</code>)을 남겨 같은 주기 재실행을 스스로 건너뜀</li>
+<li>정책만 걸면 막히기는 하나 누가 두드렸는지 남지 않음 → 침해 조사 시 근거 부재</li>
+<li>두 가지를 같이 써서 정책으로 막고 이벤트로 시도를 남기는 구성이 일반적</li>
 </ul>
 <hr />
-<p>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터 본다. partial 인덱스는 강력하지만 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan으로 떨어지므로, 새 조회 경로는 EXPLAIN으로 실제 인덱스를 타는지 확인하고 쓴다.</p>
+<h2 id="_3">이벤트 유형 비교</h2>
+<p>CloudTrail 이벤트는 세 유형으로 나뉘고, 네트워크 활동 이벤트만 엔드포인트 경유 트래픽을 다룸</p>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>관리 이벤트</th>
+<th>데이터 이벤트</th>
+<th>네트워크 활동 이벤트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eventCategory</code></td>
+<td><code>Management</code></td>
+<td><code>Data</code></td>
+<td><code>NetworkActivity</code></td>
+</tr>
+<tr>
+<td>기록 대상</td>
+<td>리소스 제어 평면 작업</td>
+<td>리소스 내부 데이터 작업</td>
+<td>VPC 엔드포인트 경유 호출</td>
+</tr>
+<tr>
+<td>기본 기록</td>
+<td>기록됨</td>
+<td>미기록</td>
+<td>미기록</td>
+</tr>
+<tr>
+<td>트레일 전달 요금</td>
+<td>첫 사본 무료, 추가 사본 100,000건당 $2.00</td>
+<td>100,000건당 $0.10</td>
+<td>100,000건당 $0.10</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>요금은 트레일이 S3로 전달하는 이벤트 기준, 이벤트 데이터 스토어(CloudTrail Lake)는 수집 용량(GB) 기준의 별도 체계</li>
+<li>네트워크 활동 이벤트를 이벤트 데이터 스토어에 담으려면 CloudTrail events 타입이어야 함</li>
+</ul>
+<hr />
+<h2 id="_4">고급 이벤트 선택기 필드</h2>
+<p>네트워크 활동 이벤트는 고급 이벤트 선택기(Advanced Event Selector)로만 설정 가능</p>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>필수</th>
+<th>사용 가능 연산자</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eventCategory</code></td>
+<td>필수</td>
+<td><code>Equals</code>만</td>
+<td>값은 <code>NetworkActivity</code> 고정</td>
+</tr>
+<tr>
+<td><code>eventSource</code></td>
+<td>필수</td>
+<td><code>Equals</code>만</td>
+<td><code>s3.amazonaws.com</code>, <code>kms.amazonaws.com</code> 등. 현재 70여 개</td>
+</tr>
+<tr>
+<td><code>eventName</code></td>
+<td>선택</td>
+<td>전체</td>
+<td>예: <code>CreateKey</code>, <code>ListKeys</code></td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td>선택</td>
+<td><code>Equals</code>만</td>
+<td>유효값은 <code>VpceAccessDenied</code> 하나뿐</td>
+</tr>
+<tr>
+<td><code>vpcEndpointId</code></td>
+<td>선택</td>
+<td>전체</td>
+<td>호출이 통과한 엔드포인트 식별</td>
+</tr>
+<tr>
+<td><code>userIdentity.arn</code></td>
+<td>선택</td>
+<td>전체</td>
+<td>호출한 IAM 자격 증명. 트레일 전용</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>eventSource</code>가 <code>Equals</code>만 받으므로 여러 서비스를 담으려면 선택기를 서비스별로 따로 만들어야 함</li>
+<li>S3는 지원하되 Multi-Region Access Points 경유 호출은 미지원</li>
+</ul>
+<hr />
+<h2 id="useridentityarn">userIdentity.arn 필터</h2>
+<p>2026년 7월 추가된 필드로, 호출한 IAM 자격 증명에 따라 기록 여부가 갈림</p>
+<ul>
+<li>활용: 신뢰하는 IAM 역할 집합에 없는 자격 증명의 <code>VpceAccessDenied</code>만 남기는 구성</li>
+<li>효과: 승인된 주체의 성공 호출까지 전부 기록하는 비용 없이 유출 시도만 포착</li>
+<li>조합: <code>eventName</code>·<code>vpcEndpointId</code>와 함께 걸어 기록 범위를 좁힐 수 있음</li>
+</ul>
+<h3 id="_5">이벤트 유형별 지원 범위</h3>
+<p>같은 <code>userIdentity.arn</code>인데 이벤트 유형마다 쓸 수 있는 곳이 다름</p>
+<table>
+<thead>
+<tr>
+<th>이벤트 유형</th>
+<th>트레일</th>
+<th>이벤트 데이터 스토어</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>관리 이벤트</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>데이터 이벤트</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>네트워크 활동 이벤트</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>관리 이벤트의 트레일 선택기가 받는 필드는 <code>eventCategory</code>·<code>eventSource</code>·<code>readOnly</code> 세 개뿐 → <code>eventName</code>·<code>eventType</code>·<code>sessionCredentialFromConsole</code>도 이벤트 데이터 스토어에서만 사용 가능</li>
+<li>네트워크 활동 이벤트는 방향이 반대라 이벤트 데이터 스토어에서 자격 증명 필터를 못 씀</li>
+<li>CloudTrail Lake로 감사를 통합하려던 설계라면 이 지점에서 트레일을 따로 남겨야 함</li>
+</ul>
+<h3 id="_6">설정 예시</h3>
+<p>신뢰 역할을 뺀 나머지 자격 증명의 S3 접근 거부만 기록하는 선택기</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">cloudtrail</span><span class="w"> </span><span class="n">put</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">selectors</span><span class="w"> </span>\
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="o">--</span><span class="n">trail</span><span class="o">-</span><span class="n">name</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">audit</span><span class="o">-</span><span class="n">trail</span><span class="w"> </span>\
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">ap</span><span class="o">-</span><span class="n">northeast</span><span class="m">-2</span><span class="w"> </span>\
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="o">--</span><span class="n">advanced</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">selectors</span><span class="w"> </span><span class="s">&#39;[</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="s">    {</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s">      &quot;Name&quot;: &quot;Log untrusted VpceAccessDenied for S3&quot;,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s">      &quot;FieldSelectors&quot;: [</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s">        { &quot;Field&quot;: &quot;eventCategory&quot;, &quot;Equals&quot;: [&quot;NetworkActivity&quot;] },</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s">        { &quot;Field&quot;: &quot;eventSource&quot;, &quot;Equals&quot;: [&quot;s3.amazonaws.com&quot;] },</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s">        { &quot;Field&quot;: &quot;errorCode&quot;, &quot;Equals&quot;: [&quot;VpceAccessDenied&quot;] },</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s">        { &quot;Field&quot;: &quot;userIdentity.arn&quot;, &quot;NotStartsWith&quot;: [&quot;arn:aws:sts::111122223333:assumed-role/dotoryeee-app-role&quot;] }</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">      ]</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">    }</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">  ]&#39;</span>
+</code></pre></div>
+<ul>
+<li>설정 확인은 <code>aws cloudtrail get-event-selectors --trail-name dotoryeee-audit-trail</code></li>
+<li>이벤트 데이터 스토어는 <code>create-event-data-store</code> 또는 <code>update-event-data-store</code>를 쓰되 <code>userIdentity.arn</code>은 제외해야 함</li>
+</ul>
+<hr />
+<h2 id="_7">조건 평가 규칙</h2>
+<p>한 필드에 조건을 여러 개 걸면 연산자 성격에 따라 결합 방식이 갈림</p>
+<table>
+<thead>
+<tr>
+<th>연산자 그룹</th>
+<th>연산자</th>
+<th>결합</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SELECT</td>
+<td><code>Equals</code>, <code>StartsWith</code>, <code>EndsWith</code></td>
+<td>서로 OR. 하나만 맞아도 통과</td>
+</tr>
+<tr>
+<td>DESELECT</td>
+<td><code>NotEquals</code>, <code>NotStartsWith</code>, <code>NotEndsWith</code></td>
+<td>서로 AND. 하나만 걸려도 제외</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>두 그룹은 AND로 묶임 → DESELECT에 걸리면 SELECT를 만족해도 전달되지 않음</li>
+<li>와일드카드 <code>*</code>는 미지원 → 여러 값을 한 조건으로 잡으려면 접두·접미 연산자를 씀</li>
+<li>한 트레일 또는 이벤트 데이터 스토어의 모든 조건에 쓴 값의 합계는 500개까지</li>
+</ul>
+<hr />
+<h2 id="_8">기록된 이벤트 확인</h2>
+<p>기록만 켜두면 쌓이기만 하므로 소비 경로를 같이 설계해야 함</p>
+<ul>
+<li>트레일 대상은 S3 버킷 → Athena로 <code>VpceAccessDenied</code> 발생 건수를 집계</li>
+<li>이벤트 데이터 스토어에 담았다면 CloudTrail Lake의 SQL로 조회</li>
+<li>조회 시 유용한 필드는 <code>userIdentity.arn</code>, <code>vpcEndpointId</code>, <code>eventName</code>, <code>sourceIPAddress</code></li>
+<li>네트워크 활동 이벤트는 CloudWatch Logs 전달 대상이 아님 → 지표 필터·알람으로 바로 잇는 경로는 없음</li>
+</ul>
+<hr />
+<h2 id="_9">운영 주의</h2>
+<ul>
+<li>트레일에 고급 이벤트 선택기를 적용하면 기존 기본 이벤트 선택기가 덮어써짐 → 데이터 이벤트 설정을 먼저 옮겨 적어야 함</li>
+<li>트레일은 기본 선택기와 고급 선택기를 같이 쓸 수 없음</li>
+<li>서비스마다 선택기를 따로 만들어야 하니 대상이 늘면 선택기 목록 관리가 필요</li>
+<li>기록 범위를 좁히지 않고 켜면 정상 트래픽까지 전부 과금 대상</li>
+<li><code>errorCode</code> 유효값과 <code>eventSource</code> 목록은 계속 늘어나는 값이라 설정 전 현행 문서 확인 권장</li>
+</ul>
+<hr />
+<h2 id="_10">결론</h2>
+<ul>
+<li>네트워크 활동 이벤트는 VPC 엔드포인트를 지난 호출을 소유자 계정에 남기는 유형으로, 조직 밖 자격 증명의 접근 시도를 보는 경로</li>
+<li>엔드포인트 정책이 차단을 맡고 이 이벤트가 시도 기록을 맡는 구성이 실용적</li>
+<li><code>userIdentity.arn</code> 필터로 신뢰 역할을 제외하면 거부 이벤트만 남겨 비용과 노이즈를 함께 줄일 수 있음</li>
+<li>같은 필드인데 관리 이벤트는 이벤트 데이터 스토어에서만, 네트워크 활동 이벤트는 트레일에서만 동작하므로 감사 저장소를 고르기 전에 확인할 것</li>
+</ul>
 
 
 
@@ -1673,7 +1892,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS 고성능 네트워킹 정리">
+          <a href="../mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: MCP vs API 차이점 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1683,20 +1902,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                AWS 고성능 네트워킹 정리
+                MCP vs API 차이점 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: MCP vs API 차이점 정리">
+          <a href="../%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                MCP vs API 차이점 정리
+                사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">

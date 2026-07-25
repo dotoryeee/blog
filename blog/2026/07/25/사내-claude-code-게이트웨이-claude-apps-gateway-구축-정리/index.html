@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록">
+        <meta name="description" content="개발자에게 API 키를 주지 않고 Claude Code를 사내에 배포하는 자체 호스팅 게이트웨이 정리. 사설 네트워크 강제 제약에서 파생되는 AWS 구성과 배포 절차">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +28,7 @@
     
     
       
-        <title>partial 인덱스 seq scan 인시던트 - dotoryeee's blog</title>
+        <title>사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +84,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="og:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="og:title" content="사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리 - dotoryeee's blog" />
+<meta property="og:description" content="개발자에게 API 키를 주지 않고 Claude Code를 사내에 배포하는 자체 호스팅 게이트웨이 정리. 사설 네트워크 강제 제약에서 파생되는 AWS 구성과 배포 절차" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="twitter:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="twitter:title" content="사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="개발자에게 API 키를 주지 않고 Claude Code를 사내에 배포하는 자체 호스팅 게이트웨이 정리. 사설 네트워크 강제 제약에서 파생되는 AWS 구성과 배포 절차" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +112,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#partial-seq-scan" class="md-skip">
+        <a href="#claude-code-claude-apps-gateway" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              partial 인덱스 seq scan 인시던트
+              사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
             
           </span>
         </div>
@@ -1295,7 +1293,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1314,43 +1312,38 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#claude-apps-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claude Apps Gateway란
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Claude Apps Gateway란">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ai-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Gateway와의 위치 구분
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        증상
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#db-cpu-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DB CPU Usage가 높을 줄 알았다
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-insights-wait-event" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance Insights와 wait event
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#partial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        진짜 원인: partial 인덱스를 못 타는 쿼리
+        사설 네트워크 제약
       
     </span>
   </a>
@@ -1361,7 +1354,35 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        조치
+        아키텍처
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="아키텍처">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        배포 리소스
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        요청 경로
       
     </span>
   </a>
@@ -1369,10 +1390,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        검증
+        네트워크 격리
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설정 값
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        배포 절차
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        운영 주의
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
       
     </span>
   </a>
@@ -1435,7 +1500,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-24 00:00:00+00:00" class="md-ellipsis">2026. 7. 24.</time>
+                        <time datetime="2026-07-25 00:00:00+00:00" class="md-ellipsis">2026. 7. 25.</time>
                       </div>
                     </li>
                     
@@ -1446,7 +1511,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/sre/">SRE</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1457,7 +1522,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 5분
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -1485,148 +1550,305 @@
       
       
       
-        <a href="../../../../../tags/#tag:partial-index" class="md-tag">Partial Index</a>
+        <a href="../../../../../tags/#tag:bedrock" class="md-tag">Bedrock</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:performance-insights" class="md-tag">Performance Insights</a>
+        <a href="../../../../../tags/#tag:cdk" class="md-tag">CDK</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:postgresql" class="md-tag">PostgreSQL</a>
+        <a href="../../../../../tags/#tag:claude-code" class="md-tag">Claude Code</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:rds" class="md-tag">RDS</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:troubleshooting" class="md-tag">Troubleshooting</a>
+        <a href="../../../../../tags/#tag:cognito" class="md-tag">Cognito</a>
       
     
   </nav>
 
 
 
-<h1 id="partial-seq-scan">partial 인덱스 seq scan 인시던트</h1>
+<h1 id="claude-code-claude-apps-gateway">사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리</h1>
 <!-- more -->
 
-<h2 id="_1">증상</h2>
+<h2 id="claude-apps-gateway">Claude Apps Gateway란</h2>
+<p>Claude Apps Gateway란 Claude Code의 로그인과 추론 요청을 사내에서 중계해 개발자에게 자격 증명을 넘기지 않고 모델을 쓰게 하는 자체 호스팅 서버</p>
 <ul>
-<li>운영 중인 클라우드 비용 리포팅 서비스가 전반적으로 느려짐</li>
-<li>주기적으로 도는 배치(이상탐지) 처리가 계속 실패</li>
-<li>웹 컨테이너(태스크)가 대략 15분 주기로 반복 재시작</li>
-<li>약 3일간 아무 알람 없이 방치됨 (탐지 공백)</li>
+<li>목적: AWS 키도 Anthropic 키도 개발자 노트북에 두지 않음</li>
+<li>인증: Cognito를 OIDC 공급자로 삼아 사내 계정으로 로그인</li>
+<li>추론: 게이트웨이가 ECS 태스크 역할로 Amazon Bedrock 호출</li>
+<li>배치: 사설 네트워크에서만 도달 가능한 위치에 둠</li>
+<li>형태: 별도 소프트웨어가 아니라 claude 바이너리에 들어 있는 서브커맨드</li>
+</ul>
+<p>AWS가 공개한 <a href="https://github.com/aws-samples/sample-apj-sup-sa/tree/main/ai-coding-assistants/claude-apps-gateway-on-aws">claude-apps-gateway-on-aws</a> 샘플이 이 게이트웨이를 CDK 한 스택으로 올리는 구성. 이하 정리는 그 스택 기준.</p>
+<h3 id="ai-gateway">AI Gateway와의 위치 구분</h3>
+<p>이름이 비슷하지만 <a href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/">AI Gateway 정리</a>에서 다룬 계층과는 맡는 일이 다름</p>
+<ul>
+<li>AI Gateway: 여러 프로바이더의 LLM 트래픽을 토큰 단위로 통제하는 범용 계층</li>
+<li>Claude Apps Gateway: Claude Code 한 제품의 신원·정책·자격 증명을 다루는 제어 계층</li>
+<li>겹치는 부분은 모델 호출 중계뿐이고, 라우팅·시맨틱 캐싱·멀티 프로바이더 폴백은 범위 밖</li>
 </ul>
 <hr />
-<h2 id="db-cpu-usage">DB CPU Usage가 높을 줄 알았다</h2>
-<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다.</p>
+<h2 id="_1">사설 네트워크 제약</h2>
+<p>이 구성의 모양은 대부분 제약 하나에서 나옴. Claude Code는 게이트웨이 호스트명이 사설 주소로만 해석되는지 검사하고, 공인 주소가 하나라도 섞이면 로그인을 거부함.</p>
+<p>허용되는 대역은 다음과 같음.</p>
+<ul>
+<li>RFC 1918 사설 대역</li>
+<li>link-local</li>
+<li>CGNAT <code>100.64.0.0/10</code></li>
+<li>IPv6 ULA <code>fc00::/7</code></li>
+<li>loopback</li>
+</ul>
+<p>검사하는 이유는 게이트웨이의 권한 때문. 신뢰된 게이트웨이는 개발자 머신에서 명령을 실행하는 managed settings를 내려보낼 수 있어서, 아무 호스트나 게이트웨이로 지정하지 못하게 사설 주소로 묶어 둔 것.</p>
 <table>
 <thead>
 <tr>
-<th>확인 지점</th>
-<th>관찰</th>
-<th>해석</th>
+<th>제약</th>
+<th>귀결</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>DB CPU</td>
-<td>약 12%</td>
-<td>자원 포화 아님 → 부하 문제 아님</td>
+<td>호스트명이 사설 IP로만 해석돼야 함</td>
+<td>ALB를 internal로 생성</td>
 </tr>
 <tr>
-<td>커넥션</td>
-<td>막힘</td>
-<td>특정 쿼리가 장시간 점유 의심</td>
+<td>퍼블릭 DNS에 게이트웨이 이름이 있으면 안 됨</td>
+<td>Route 53 Private Hosted Zone에 레코드 배치</td>
 </tr>
 <tr>
-<td>Slow Query 로그</td>
-<td>한 쿼리가 46초+ (큰 대상은 150초+)</td>
-<td>원인 후보 확정</td>
+<td>공인 IP 노출 금지</td>
+<td>CloudFront를 로그인 경로에서 배제</td>
 </tr>
 <tr>
-<td>EXPLAIN</td>
-<td><code>Seq Scan</code></td>
-<td>인덱스를 못 타고 테이블 풀스캔</td>
+<td>개발자가 VPC 안쪽에 닿아야 함</td>
+<td>Client VPN·Direct Connect·ZTNA·사내 개발용 VM 중 하나 필요</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="performance-insights-wait-event">Performance Insights와 wait event</h2>
-<p>Slow Query 로그가 후보를 좁혀 줬다면, 원인을 확정한 건 RDS Performance Insights였다.</p>
-<p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
-<p>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다.</p>
-<p>Database load(평균 활성 세션, AAS) 를 wait event로 쪼개 보면 그림이 선명해진다. 평소 0에 가깝다가 15분 간격으로 규칙적인 스파이크가 솟고, 큰 스파이크는 Max vCPUs 선(약 1.75)을 넘겨 3.5까지 치솟았다. AAS가 vCPU 수를 넘었다는 건 세션이 CPU를 다 쓴 게 아니라 무언가를 기다리며 쌓였다는 뜻이다.</p>
-<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 여기서 원인이 좁혀졌다.</p>
-<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이만큼 크게 나올 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan이 남기는 전형적 신호다.</p>
-<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). Slow Query 로그의 "최대 46초"는 데이터가 많은 큰 그룹에서 나온 최댓값이었고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다.</p>
-<hr />
-<h2 id="partial">진짜 원인: partial 인덱스를 못 타는 쿼리</h2>
-<p>문제의 쿼리는 15분마다 도는 이상탐지 잡이 실행하는 것으로, 그룹의 대표 통화(dominant currency)를 찾는 쿼리였다. 통화별로 합계를 내야 하니 <code>currency</code>를 필터하지 않는다.</p>
-<p>그런데 이 집계 테이블에 걸린 인덱스는 전부 <code>WHERE currency = 'USD'</code> partial(부분) 인덱스였다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- 집계 테이블에 있던 인덱스는 전부 partial (USD 전용)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_daily_cost_usd</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">currency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;USD&#39;</span><span class="p">;</span><span class="w">          </span><span class="c1">-- ← 부분 조건</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">-- 대표 통화를 찾는 쿼리는 currency를 필터하지 않는다</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">currency</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">daily_cost_agg</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">group_id</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">currency</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- ← WHERE에 currency 없음</span>
-</code></pre></div>
-<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 predicate가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EXPLAIN 결과 (before)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Seq Scan on daily_cost_agg  (rows=수백만)
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Filter: (group_id = :group_id)
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
-</code></pre></div>
-<p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
-<pre class="mermaid"><code>flowchart TD
-    A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
-    B --&gt; C[집계 테이블 전체 seq scan&lt;br/&gt;46초 이상]
-    C --&gt; D[웹 이벤트 루프의 워커를 장시간 점유]
-    D --&gt; E["/health/ready 3초 내&lt;br/&gt;SELECT 1 실패 → 503"]
-    E --&gt; F[로드밸런서 비정상 판정&lt;br/&gt;태스크 종료 후 재기동]
-    F --&gt; A</code></pre>
-<hr />
-<h2 id="_2">조치</h2>
-<p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- predicate에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">);</span>
-</code></pre></div>
-<p>장애 대응 중에는 손으로 먼저 인덱스를 만들어 급한 불을 껐고, 이후 같은 <code>CREATE INDEX IF NOT EXISTS</code> 문을 마이그레이션 파일에도 넣어 스키마에 영구히 남겼다. 이미 인덱스가 있는 상태에서 마이그레이션이 다시 실행돼도 <code>IF NOT EXISTS</code> 덕분에 아무 것도 하지 않고 넘어가므로(중복 생성 오류 없음) 안전하다.</p>
-<hr />
-<h2 id="_3">검증</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Index Cond: (group_id = :group_id)
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>→ 46초 → 1ms
-</code></pre></div>
 <ul>
-<li>문제 쿼리: 46초 → 1ms</li>
-<li>라이브에서 이상탐지 잡이 전체 대상을 432ms에 완료</li>
-<li>태스크가 잡 주기를 넘겨 살아남음 → 헬스체크 실패 0회</li>
-<li>잡이 완료 기록(<code>last_run_date</code>)을 남겨 같은 주기 재실행을 스스로 건너뜀</li>
+<li>이 검사는 직접 호스팅하는 게이트웨이에 적용됨</li>
+<li>사설 경로 확보는 스택 밖의 일이라 별도로 준비해야 함</li>
 </ul>
 <hr />
-<p>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터 본다. partial 인덱스는 강력하지만 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan으로 떨어지므로, 새 조회 경로는 EXPLAIN으로 실제 인덱스를 타는지 확인하고 쓴다.</p>
+<h2 id="_2">아키텍처</h2>
+<pre class="mermaid"><code>graph LR
+    Dev["개발자 노트북&lt;br/&gt;Claude Code"]
+    R53["Route 53&lt;br/&gt;Private Hosted Zone"]
+    ALB["내부 ALB&lt;br/&gt;HTTPS 443"]
+    ECS["ECS Fargate&lt;br/&gt;claude gateway"]
+    DB["Aurora PostgreSQL&lt;br/&gt;Serverless v2"]
+    Cognito["Cognito&lt;br/&gt;OIDC 공급자"]
+    Bedrock["Amazon Bedrock"]
+
+    Dev -. 호스트명 해석 .-&gt; R53
+    Dev --&gt;|"사설 경로"| ALB
+    ALB --&gt; ECS
+    ECS --&gt; DB
+    ECS --&gt;|"OIDC"| Cognito
+    ECS --&gt;|"InvokeModel"| Bedrock</code></pre>
+<h3 id="_3">배포 리소스</h3>
+<table>
+<thead>
+<tr>
+<th>리소스</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VPC (2 AZ, NAT 1개)</td>
+<td>퍼블릭·애플리케이션·격리 DB 3계층 서브넷</td>
+</tr>
+<tr>
+<td>내부 ALB (HTTPS 443)</td>
+<td>ACM 인증서로 TLS 종료. 허용 CIDR에서만 443 수신</td>
+</tr>
+<tr>
+<td>ECS Fargate</td>
+<td>claude gateway 실행. ARM64, 512 CPU / 1024 MiB</td>
+</tr>
+<tr>
+<td>Aurora PostgreSQL Serverless v2</td>
+<td>디바이스 플로우·세션·rate limit 상태 보관. 0.5~2 ACU, 백업 7일</td>
+</tr>
+<tr>
+<td>Cognito User Pool + 앱 클라이언트</td>
+<td>OIDC 공급자. 셀프 가입 비활성, 이메일 로그인</td>
+</tr>
+<tr>
+<td>ACM 인증서</td>
+<td>퍼블릭 호스팅 영역에서 DNS 검증 후 ALB에 연결</td>
+</tr>
+<tr>
+<td>Secrets Manager 3종</td>
+<td>DB 자격 증명, JWT 시크릿 48자, Cognito 클라이언트 시크릿</td>
+</tr>
+<tr>
+<td>Route 53 Private Hosted Zone</td>
+<td>게이트웨이 FQDN 이름으로 영역 생성, 영역 apex에 ALB alias</td>
+</tr>
+<tr>
+<td>CloudWatch Logs + 알람</td>
+<td>로그 1개월 보존, unhealthy host 알람</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>게이트웨이가 PostgreSQL 14 이상을 요구해서 상태 저장소로 Aurora PostgreSQL을 씀</li>
+<li>Client VPN, Route 53 Resolver 엔드포인트, Cognito 사용자 계정은 스택이 만들지 않음</li>
+</ul>
+<hr />
+<h2 id="_4">요청 경로</h2>
+<ol>
+<li>개발자가 Claude Code에서 로그인을 실행하면 Private Hosted Zone이 게이트웨이 이름을 내부 ALB의 사설 IP로 해석</li>
+<li>내부 ALB가 443에서 TLS를 종료하고 게이트웨이 태스크의 8080으로 전달</li>
+<li>게이트웨이가 Cognito 상대로 OIDC authorization code 흐름을 수행하고, 허용 목록에 있는 이메일 도메인만 통과</li>
+<li>발급된 토큰과 세션·rate limit 상태를 Aurora에 기록</li>
+<li>이후 추론 요청은 게이트웨이가 받아 ECS 태스크 역할로 Bedrock에 전달</li>
+<li>
+<p>개발자 쪽에는 세션만 남고 AWS 키나 Anthropic 키는 전달되지 않음</p>
+</li>
+<li>
+<p>자격 증명이 사라지는 지점은 5번 → 모델 호출 권한이 태스크 역할에만 있어 노트북에는 정적 키가 필요 없음</p>
+</li>
+<li>헬스체크는 두 갈래로, 타깃 그룹은 <code>/readyz</code>를 보고 컨테이너는 <code>/healthz</code>를 봄</li>
+</ol>
+<hr />
+<h2 id="_5">네트워크 격리</h2>
+<p>계층마다 보안 그룹을 따로 둬서 각 구간이 한 방향으로만 열림</p>
+<table>
+<thead>
+<tr>
+<th>계층</th>
+<th>서브넷 유형</th>
+<th>배치</th>
+<th>인그레스 허용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>퍼블릭</td>
+<td><code>PUBLIC</code></td>
+<td>NAT Gateway</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>애플리케이션</td>
+<td><code>PRIVATE_WITH_EGRESS</code></td>
+<td>내부 ALB, Fargate 태스크</td>
+<td>443은 허용 CIDR에서, 8080은 ALB 보안 그룹에서만</td>
+</tr>
+<tr>
+<td>데이터베이스</td>
+<td><code>PRIVATE_ISOLATED</code></td>
+<td>Aurora</td>
+<td>5432를 태스크 보안 그룹에서만</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>NAT가 필요한 이유는 이미지 받기, OIDC 디스커버리, Bedrock 호출의 아웃바운드 경로</li>
+<li>Aurora는 격리 서브넷에 있어 게이트웨이 태스크 외에는 경로 자체가 없음</li>
+</ul>
+<hr />
+<h2 id="_6">설정 값</h2>
+<p>배포 전 <code>cdk.context.json</code>에 채우는 값 중 설계 결정이 걸린 것</p>
+<table>
+<thead>
+<tr>
+<th>컨텍스트 키</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gatewayHost</code></td>
+<td>사설 게이트웨이 FQDN. ACM 인증서 주체와 동일</td>
+</tr>
+<tr>
+<td><code>hostedZoneName</code></td>
+<td>ACM DNS 검증에만 쓰는 퍼블릭 영역 이름. 사설 DNS와 별개</td>
+</tr>
+<tr>
+<td><code>allowedClientCidrs</code></td>
+<td>내부 ALB 443에 닿을 수 있는 CIDR</td>
+</tr>
+<tr>
+<td><code>allowedEmailDomains</code></td>
+<td>게이트웨이가 받아들일 Cognito 이메일 도메인</td>
+</tr>
+<tr>
+<td><code>cognitoDomainPrefix</code></td>
+<td>Cognito 호스팅 도메인 접두사. 리전 안에서 전역 고유</td>
+</tr>
+<tr>
+<td><code>bedrockRegion</code></td>
+<td>추론을 보낼 리전</td>
+</tr>
+<tr>
+<td><code>claudeVersion</code></td>
+<td>이미지에 넣을 Claude Code 버전 고정값</td>
+</tr>
+<tr>
+<td><code>desiredCount</code> / <code>natGateways</code></td>
+<td>Fargate 태스크 수와 NAT Gateway 수</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>hostedZoneName</code>은 인증서 검증 용도라 퍼블릭 영역이 실제로 있어야 함</li>
+<li>사설 DNS는 <code>gatewayHost</code> 이름으로만 영역을 만들어 나머지 사내 도메인은 퍼블릭 해석을 유지</li>
+</ul>
+<hr />
+<h2 id="_7">배포 절차</h2>
+<ol>
+<li><code>cdk.context.json.example</code>을 복사해 위 컨텍스트 값을 채움</li>
+<li>바이너리 준비 스크립트로 linux-arm64 네이티브 바이너리를 받아 <code>docker/claude</code>에 배치. GPG 서명과 SHA256를 검증하는 단계라 건너뛰면 안 됨</li>
+<li>빌드와 테스트를 거쳐 부트스트랩 후 배포. 첫 배포는 ACM이 DNS 검증을 마칠 때까지 몇 분 멈춤</li>
+<li>Cognito에 첫 사용자를 만들고 스택 출력의 게이트웨이 URL을 개발자 managed settings에 반영</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">cp</span><span class="w"> </span><span class="n">cdk.context.json.example</span><span class="w"> </span><span class="n">cdk.context.json</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">prepare</span><span class="o">:</span><span class="n">claude</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="m">2.1</span><span class="n">.</span><span class="m">195</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">npm</span><span class="w"> </span><span class="n">install</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">npm</span><span class="w"> </span><span class="n">test</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">cdk</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">aws</span><span class="o">://</span><span class="n">ACCOUNT_ID</span><span class="o">/</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="m">-1</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">npm</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">cdk</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">deploy</span>
+</code></pre></div>
+<ul>
+<li>전제 조건은 Node.js와 npm, ARM64 이미지 빌드용 Docker, AWS CLI 자격 증명, 바이너리 검증용 curl과 gpg</li>
+<li>게이트웨이 서버와 개발자 머신 양쪽 모두 Claude Code 2.1.195 이상이어야 함</li>
+<li>Bedrock에서 쓰려는 Claude 모델의 접근 권한을 미리 활성화해 둘 것</li>
+</ul>
+<hr />
+<h2 id="_8">운영 주의</h2>
+<ul>
+<li>태스크 역할 권한은 <code>bedrock:InvokeModel</code>과 <code>bedrock:InvokeModelWithResponseStream</code>을 <code>anthropic.*</code> 계열 ARN으로 한정 → 게이트웨이가 다른 모델이나 다른 API로 새지 않음</li>
+<li>managed settings는 기동 시 적용되고 이후 1시간 주기로 갱신되므로, 게이트웨이 URL을 바꾸면 개발자 쪽에도 반영됨</li>
+<li>개발자 머신이 사내 프록시로 HTTPS를 보낸다면 프록시 호스트도 사설로 해석돼야 함</li>
+<li>스택을 지워도 Client VPN과 개발자 머신의 managed settings 파일은 남으니 따로 정리</li>
+<li>NAT Gateway·ALB·Aurora는 유휴 상태에서도 과금되는 리소스라 상시 비용을 감안할 것</li>
+<li>샘플은 us-east-1 기준이라 다른 리전은 Bedrock 모델 가용성과 설정 블록을 다시 봐야 함</li>
+</ul>
+<hr />
+<h2 id="_9">결론</h2>
+<ul>
+<li>Claude Apps Gateway는 개발자에게 키를 주지 않고 Claude Code를 쓰게 하는 자체 호스팅 중계 서버</li>
+<li>구성의 모양은 로그인 시 호스트명이 사설 주소로만 해석돼야 한다는 제약에서 파생됨</li>
+<li>그래서 내부 ALB와 Private Hosted Zone이 쓰이고 CloudFront와 퍼블릭 DNS가 배제됨</li>
+<li>자격 증명은 ECS 태스크 역할 한 곳에만 남고 노트북에는 세션만 남음</li>
+<li>상시 과금 리소스가 적지 않으므로 대상 인원과 사설 경로를 먼저 정한 뒤 올릴 것</li>
+</ul>
 
 
 
@@ -1673,7 +1895,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS 고성능 네트워킹 정리">
+          <a href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: CloudTrail 네트워크 활동 이벤트 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1683,27 +1905,11 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                AWS 고성능 네트워킹 정리
+                CloudTrail 네트워크 활동 이벤트 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: MCP vs API 차이점 정리">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                MCP vs API 차이점 정리
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     

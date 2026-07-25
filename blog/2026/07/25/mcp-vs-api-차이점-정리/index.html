@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록">
+        <meta name="description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
       
       
-        <link rel="next" href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>partial 인덱스 seq scan 인시던트 - dotoryeee's blog</title>
+        <title>MCP vs API 차이점 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="og:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="og:title" content="MCP vs API 차이점 정리 - dotoryeee's blog" />
+<meta property="og:description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="partial 인덱스 seq scan 인시던트 - dotoryeee's blog" />
-<meta property="twitter:description" content="DB CPU가 낮은데도 태스크가 15분마다 재시작된 장애를 wait event(IO:DataFileRead)로 추적해 partial 인덱스 함정을 찾고 인덱스 하나로 해결한 실전 기록" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8.png" />
+<meta property="twitter:title" content="MCP vs API 차이점 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#partial-seq-scan" class="md-skip">
+        <a href="#mcp-vs-api" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              partial 인덱스 seq scan 인시던트
+              MCP vs API 차이점 정리
             
           </span>
         </div>
@@ -1295,7 +1295,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1314,10 +1314,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        기존 API가 에이전트에 맞지 않는 지점
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API와의 차이
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        증상
+        구조
       
     </span>
   </a>
@@ -1325,32 +1358,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#db-cpu-usage" class="md-nav__link">
+  <a href="#primitive" class="md-nav__link">
     <span class="md-ellipsis">
       
-        DB CPU Usage가 높을 줄 알았다
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-insights-wait-event" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance Insights와 wait event
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#partial" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        진짜 원인: partial 인덱스를 못 타는 쿼리
+        서버가 제공하는 primitive
       
     </span>
   </a>
@@ -1361,7 +1372,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        조치
+        메시지 흐름
       
     </span>
   </a>
@@ -1372,7 +1383,29 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        검증
+        언제 무엇을 쓰나
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
       
     </span>
   </a>
@@ -1435,7 +1468,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-24 00:00:00+00:00" class="md-ellipsis">2026. 7. 24.</time>
+                        <time datetime="2026-07-25 00:00:00+00:00" class="md-ellipsis">2026. 7. 25.</time>
                       </div>
                     </li>
                     
@@ -1446,7 +1479,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/sre/">SRE</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1457,7 +1490,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 5분
+                              읽는시간 6분
                             
                           </span>
                         </div>
@@ -1485,148 +1518,256 @@
       
       
       
-        <a href="../../../../../tags/#tag:partial-index" class="md-tag">Partial Index</a>
+        <a href="../../../../../tags/#tag:claude" class="md-tag">Claude</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:performance-insights" class="md-tag">Performance Insights</a>
+        <a href="../../../../../tags/#tag:llm" class="md-tag">LLM</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:postgresql" class="md-tag">PostgreSQL</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:rds" class="md-tag">RDS</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:troubleshooting" class="md-tag">Troubleshooting</a>
+        <a href="../../../../../tags/#tag:mcp" class="md-tag">MCP</a>
       
     
   </nav>
 
 
 
-<h1 id="partial-seq-scan">partial 인덱스 seq scan 인시던트</h1>
+<h1 id="mcp-vs-api">MCP vs API 차이점 정리</h1>
 <!-- more -->
 
-<h2 id="_1">증상</h2>
+<h2 id="mcp">MCP란</h2>
+<p>MCP(Model Context Protocol)란 AI 애플리케이션이 외부 도구·데이터에 붙는 방식을 표준화한 개방형 프로토콜</p>
 <ul>
-<li>운영 중인 클라우드 비용 리포팅 서비스가 전반적으로 느려짐</li>
-<li>주기적으로 도는 배치(이상탐지) 처리가 계속 실패</li>
-<li>웹 컨테이너(태스크)가 대략 15분 주기로 반복 재시작</li>
-<li>약 3일간 아무 알람 없이 방치됨 (탐지 공백)</li>
+<li>기반: JSON-RPC 2.0 메시지 교환. 상태를 가지는 연결</li>
+<li>참여자: 호스트(AI 애플리케이션), 클라이언트(서버당 하나), 서버(도구·데이터 제공)</li>
+<li>계층: 데이터 계층(생명주기·기능·알림)과 전송 계층(연결·프레이밍·인가)으로 나뉨</li>
+<li>범위 밖: 컨텍스트 교환 규격만 정하고 모델을 어떻게 쓸지는 규정하지 않음</li>
 </ul>
 <hr />
-<h2 id="db-cpu-usage">DB CPU Usage가 높을 줄 알았다</h2>
-<p>증상이 "커넥션이 막힌 것"처럼 보여서 커넥션 풀 고갈을 처음 의심했다. 커넥션이 막힌다면 보통 DB가 바쁠 때다. 그런데 지표를 다시 보니 DB CPU가 12% 남짓이었다.</p>
+<h2 id="api">기존 API가 에이전트에 맞지 않는 지점</h2>
+<p>API 자체가 모자란 게 아니라, 사람 개발자가 미리 읽고 코드를 짜는 것을 전제로 설계됐다는 점이 문제</p>
 <table>
 <thead>
 <tr>
-<th>확인 지점</th>
-<th>관찰</th>
-<th>해석</th>
+<th>문제</th>
+<th>설명</th>
+<th>MCP의 대응</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>DB CPU</td>
-<td>약 12%</td>
-<td>자원 포화 아님 → 부하 문제 아님</td>
+<td>선택지 과부하</td>
+<td>엔드포인트가 수백 개라도 어느 것을 언제 쓸지는 문서를 읽은 사람이 정함. 모델에는 그 판단 근거가 없음</td>
+<td><code>tools/list</code>가 이름·설명·입력 스키마를 런타임에 반환 → 사전 하드코딩 없이 후보를 좁힘</td>
 </tr>
 <tr>
-<td>커넥션</td>
-<td>막힘</td>
-<td>특정 쿼리가 장시간 점유 의심</td>
+<td>변환 오버헤드</td>
+<td>서비스마다 인증·경로·응답 형태가 달라 도구마다 래퍼를 새로 씀</td>
+<td>모든 도구를 <code>tools/call</code> 하나로 호출하고 응답은 <code>content</code> 배열로 통일</td>
 </tr>
 <tr>
-<td>Slow Query 로그</td>
-<td>한 쿼리가 46초+ (큰 대상은 150초+)</td>
-<td>원인 후보 확정</td>
+<td>변경 전파 부재</td>
+<td>도구가 늘거나 바뀌면 프롬프트와 래퍼를 고쳐 다시 배포해야 함</td>
+<td><code>notifications/tools/list_changed</code>로 서버가 알리고 클라이언트가 목록을 다시 읽음</td>
+</tr>
+</tbody>
+</table>
+<p>OpenAPI 같은 기계 판독 규격과의 차이는 소비 시점에 있음. OpenAPI는 대개 빌드 시점에 읽어 클라이언트 코드를 만들어 두는 쪽, MCP는 연결할 때마다 목록과 스키마를 주고받아 모든 서버를 같은 호출 규약으로 다루는 쪽.</p>
+<hr />
+<h2 id="api_1">API와의 차이</h2>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>기존 API</th>
+<th>MCP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>주 소비자</td>
+<td>사람 개발자</td>
+<td>AI 애플리케이션</td>
 </tr>
 <tr>
-<td>EXPLAIN</td>
-<td><code>Seq Scan</code></td>
-<td>인덱스를 못 타고 테이블 풀스캔</td>
+<td>통신 규격</td>
+<td>서비스마다 REST·GraphQL·gRPC 등 제각각</td>
+<td>JSON-RPC 2.0으로 통일</td>
+</tr>
+<tr>
+<td>연결 성격</td>
+<td>요청마다 독립적인 무상태 호출</td>
+<td>초기화 후 유지되는 상태 있는 연결</td>
+</tr>
+<tr>
+<td>기능 확인</td>
+<td>문서를 읽고 개발자가 판단</td>
+<td><code>initialize</code>에서 양쪽이 capability를 선언</td>
+</tr>
+<tr>
+<td>인증</td>
+<td>서비스별 방식. 키를 클라이언트가 보관</td>
+<td>전송 계층이 담당. 원격은 OAuth 권장</td>
+</tr>
+<tr>
+<td>버전 관리</td>
+<td>경로나 헤더로 서비스마다 다르게</td>
+<td><code>protocolVersion</code> 문자열로 연결 시 협상</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>기존 API 위에 얹는 계층 → MCP 서버 내부는 대개 기존 API를 그대로 호출</li>
+<li>통일되는 것은 모델과 도구 사이 구간이고, 도구와 백엔드 사이는 여전히 각자의 API</li>
+</ul>
+<hr />
+<h2 id="_1">구조</h2>
+<pre class="mermaid"><code>graph TB
+    subgraph Host["호스트 (AI 애플리케이션)"]
+        C1["Client 1"]
+        C2["Client 2"]
+        C3["Client 3"]
+    end
+    S1["Server A (로컬)&lt;br/&gt;파일시스템"]
+    S2["Server B (로컬)&lt;br/&gt;데이터베이스"]
+    S3["Server C (원격)&lt;br/&gt;이슈 트래커"]
+    C1 --- S1
+    C2 --- S2
+    C3 --- S3</code></pre>
+<ul>
+<li>호스트는 붙는 서버 수만큼 클라이언트를 만들고, 각 클라이언트가 서버 하나와 전용 연결을 유지</li>
+<li>서버가 로컬에 있는지 원격에 있는지는 전송 방식에 따라 갈림</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>전송</th>
+<th>쓰이는 곳</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stdio</td>
+<td>같은 머신의 로컬 프로세스</td>
+<td>표준 입출력으로 주고받음. 네트워크 구간 없음</td>
+</tr>
+<tr>
+<td>Streamable HTTP</td>
+<td>원격 서버</td>
+<td>단일 엔드포인트에 HTTP POST, 스트리밍은 SSE. bearer 토큰·API 키·커스텀 헤더 지원</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="performance-insights-wait-event">Performance Insights와 wait event</h2>
-<p>Slow Query 로그가 후보를 좁혀 줬다면, 원인을 확정한 건 RDS Performance Insights였다.</p>
-<p><img alt="RDS Performance Insights: Database load와 Top SQL 화면" src="../../../../SRE/partial_index_seq_scan_incident/perf-insights-topsql.png" /></p>
-<p>RDS Performance Insights. Database load(AAS)를 wait event로 쪼갠 그래프(위)와 Top SQL(아래). 15분 간격 스파이크가 파란 <code>IO:DataFileRead</code>로 차오르고, 부하 1위 쿼리의 평균 지연이 7,509ms다.</p>
-<p>Database load(평균 활성 세션, AAS) 를 wait event로 쪼개 보면 그림이 선명해진다. 평소 0에 가깝다가 15분 간격으로 규칙적인 스파이크가 솟고, 큰 스파이크는 Max vCPUs 선(약 1.75)을 넘겨 3.5까지 치솟았다. AAS가 vCPU 수를 넘었다는 건 세션이 CPU를 다 쓴 게 아니라 무언가를 기다리며 쌓였다는 뜻이다.</p>
-<p>스파이크 구간의 wait은 초록색 CPU가 아니라 파란색 <code>IO:DataFileRead</code> 로 채워져 있었다. 여기서 원인이 좁혀졌다.</p>
-<p>인덱스로 몇 페이지만 집어오는 쿼리라면 IO:DataFileRead가 이만큼 크게 나올 수 없다. 테이블 데이터 파일을 통째로 디스크에서 읽고 있다는 뜻, 곧 seq scan이 남기는 전형적 신호다.</p>
-<p>Top SQL을 부하순으로 정렬하니 1위가 곧장 드러났다. 한 쿼리가 평균 7,509ms/call로 부하를 독식하고 있었다(나머지는 3ms 안팎). Slow Query 로그의 "최대 46초"는 데이터가 많은 큰 그룹에서 나온 최댓값이었고, 평균만 7.5초여도 15분마다 강제로 도니 랭킹 최상단을 놓지 않았다. 같은 목록엔 조치로 돌린 <code>CREATE INDEX CONCURRENTLY</code>도 함께 잡혀 있었다.</p>
-<hr />
-<h2 id="partial">진짜 원인: partial 인덱스를 못 타는 쿼리</h2>
-<p>문제의 쿼리는 15분마다 도는 이상탐지 잡이 실행하는 것으로, 그룹의 대표 통화(dominant currency)를 찾는 쿼리였다. 통화별로 합계를 내야 하니 <code>currency</code>를 필터하지 않는다.</p>
-<p>그런데 이 집계 테이블에 걸린 인덱스는 전부 <code>WHERE currency = 'USD'</code> partial(부분) 인덱스였다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- 집계 테이블에 있던 인덱스는 전부 partial (USD 전용)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_daily_cost_usd</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">currency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;USD&#39;</span><span class="p">;</span><span class="w">          </span><span class="c1">-- ← 부분 조건</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">-- 대표 통화를 찾는 쿼리는 currency를 필터하지 않는다</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">currency</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">FROM</span><span class="w"> </span><span class="n">daily_cost_agg</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">group_id</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">currency</span><span class="p">;</span><span class="w">                 </span><span class="c1">-- ← WHERE에 currency 없음</span>
-</code></pre></div>
-<p>핵심은 이것이다. <strong>partial 인덱스는 쿼리의 predicate가 인덱스의 부분 조건을 포함한다고 플래너가 증명할 수 있을 때만 쓰인다.</strong> 위 쿼리에는 <code>currency = 'USD'</code> 조건이 없으니(있으면 안 되는 게 맞다) 플래너는 이 인덱스를 후보에서 제외하고, 다른 인덱스도 없으니 테이블 전체 seq scan으로 떨어진다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EXPLAIN 결과 (before)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Seq Scan on daily_cost_agg  (rows=수백만)
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Filter: (group_id = :group_id)
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>→ 실측 46초 이상
-</code></pre></div>
-<p>이 잡은 웹(uvicorn) 프로세스의 이벤트 루프에서 도는 인프로세스 스케줄러(APScheduler) 잡이었다. 즉 46초짜리 쿼리가 도는 동안 그 워커가 붙잡힌다. 그 사이 로드밸런서의 헬스체크(<code>/health/ready</code>, 3초 안에 <code>SELECT 1</code>)가 응답을 못 받아 503이 나고, 로드밸런서는 태스크를 비정상으로 판정해 죽이고 새로 띄운다. 그리고 새 태스크에서 잡이 또 돌면서 같은 일이 반복된다.</p>
-<pre class="mermaid"><code>flowchart TD
-    A[15분 주기 이상탐지 잡 실행] --&gt; B[통화 미필터 쿼리&lt;br/&gt;partial 인덱스 사용 불가]
-    B --&gt; C[집계 테이블 전체 seq scan&lt;br/&gt;46초 이상]
-    C --&gt; D[웹 이벤트 루프의 워커를 장시간 점유]
-    D --&gt; E["/health/ready 3초 내&lt;br/&gt;SELECT 1 실패 → 503"]
-    E --&gt; F[로드밸런서 비정상 판정&lt;br/&gt;태스크 종료 후 재기동]
-    F --&gt; A</code></pre>
-<hr />
-<h2 id="_2">조치</h2>
-<p>부분 조건과 무관하게 <code>(group_id, usage_date)</code>로 대상을 좁히는 full 인덱스를 추가했다. partial이 아니므로 통화 필터가 없는 쿼리도 탈 수 있다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- predicate에 currency가 없어도 group_id로 바로 좁히는 full 인덱스</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">idx_daily_cost_group_date</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">daily_cost_agg</span><span class="w"> </span><span class="p">(</span><span class="n">group_id</span><span class="p">,</span><span class="w"> </span><span class="n">usage_date</span><span class="p">);</span>
-</code></pre></div>
-<p>장애 대응 중에는 손으로 먼저 인덱스를 만들어 급한 불을 껐고, 이후 같은 <code>CREATE INDEX IF NOT EXISTS</code> 문을 마이그레이션 파일에도 넣어 스키마에 영구히 남겼다. 이미 인덱스가 있는 상태에서 마이그레이션이 다시 실행돼도 <code>IF NOT EXISTS</code> 덕분에 아무 것도 하지 않고 넘어가므로(중복 생성 오류 없음) 안전하다.</p>
-<hr />
-<h2 id="_3">검증</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>EXPLAIN 결과 (after)
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Index Scan using idx_daily_cost_group_date on daily_cost_agg
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Index Cond: (group_id = :group_id)
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>→ 46초 → 1ms
-</code></pre></div>
+<h2 id="primitive">서버가 제공하는 primitive</h2>
+<p>서버가 클라이언트에 내놓는 기능은 세 가지로 나뉨</p>
+<table>
+<thead>
+<tr>
+<th>primitive</th>
+<th>역할</th>
+<th>주요 메서드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tools</td>
+<td>모델이 실행하는 함수. 파일 조작·조회·외부 호출 등</td>
+<td><code>tools/list</code>, <code>tools/call</code></td>
+</tr>
+<tr>
+<td>Resources</td>
+<td>모델이나 사용자가 참조할 컨텍스트 데이터</td>
+<td><code>resources/list</code>, <code>resources/read</code></td>
+</tr>
+<tr>
+<td>Prompts</td>
+<td>상호작용을 정형화한 재사용 템플릿</td>
+<td><code>prompts/list</code>, <code>prompts/get</code></td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>문제 쿼리: 46초 → 1ms</li>
-<li>라이브에서 이상탐지 잡이 전체 대상을 432ms에 완료</li>
-<li>태스크가 잡 주기를 넘겨 살아남음 → 헬스체크 실패 0회</li>
-<li>잡이 완료 기록(<code>last_run_date</code>)을 남겨 같은 주기 재실행을 스스로 건너뜀</li>
+<li>반대로 클라이언트가 서버에 내주는 기능도 있음: Sampling(<code>sampling/createMessage</code>)으로 서버가 모델 응답을 요청하고, Roots(<code>roots/list</code>)로 작업 범위를 알리고, Elicitation(<code>elicitation/create</code>)으로 사용자에게 추가 입력을 받음</li>
+<li>어느 쪽이든 <code>initialize</code>에서 선언한 capability 안에서만 동작</li>
 </ul>
 <hr />
-<p>"느리다"의 진짜 원인은 대개 자원 포화가 아니라 특정 쿼리다. DB CPU가 낮은데 커넥션이 막힌다면 Slow Query 로그부터 본다. partial 인덱스는 강력하지만 쿼리 predicate가 인덱스의 부분 조건을 벗어나는 순간 seq scan으로 떨어지므로, 새 조회 경로는 EXPLAIN으로 실제 인덱스를 타는지 확인하고 쓴다.</p>
+<h2 id="_2">메시지 흐름</h2>
+<p>탐색과 호출이 분리되어 있다는 점이 기존 API 호출과 갈리는 지점</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant Server
+    Client-&gt;&gt;Server: initialize (protocolVersion, capabilities)
+    Server--&gt;&gt;Client: 지원 기능 응답 (tools.listChanged 등)
+    Client-&gt;&gt;Server: notifications/initialized
+    Client-&gt;&gt;Server: tools/list
+    Server--&gt;&gt;Client: 도구 배열 (name, description, inputSchema)
+    Client-&gt;&gt;Server: tools/call (name, arguments)
+    Server--&gt;&gt;Client: content 배열
+    Server--&gt;&gt;Client: notifications/tools/list_changed
+    Client-&gt;&gt;Server: tools/list (재조회)</code></pre>
+<ul>
+<li><code>initialize</code>에서 <code>protocolVersion</code>이 맞지 않으면 연결을 끊음(현재 사양 리비전은 2025-11-25)</li>
+<li><code>inputSchema</code>가 JSON Schema라 클라이언트가 인자를 검증한 뒤 호출 가능</li>
+<li>마지막 알림은 서버가 <code>listChanged: true</code>를 선언한 경우에만 옴 → 선언하지 않은 서버는 목록이 고정된 것으로 다뤄짐</li>
+</ul>
+<hr />
+<h2 id="_3">언제 무엇을 쓰나</h2>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>앱 하나가 자기 백엔드 함수 몇 개만 호출</td>
+<td>직접 함수 호출. 프로토콜 계층은 과함</td>
+</tr>
+<tr>
+<td>도구 목록이 자주 바뀌거나 런타임에 늘어남</td>
+<td>MCP</td>
+</tr>
+<tr>
+<td>여러 에이전트·클라이언트가 같은 도구를 나눠 씀</td>
+<td>MCP</td>
+</tr>
+<tr>
+<td>외부에 도구를 공개해 다른 팀이 붙게 함</td>
+<td>MCP 서버로 공개</td>
+</tr>
+<tr>
+<td>사람이 쓰는 공개 웹 API 제공</td>
+<td>기존 API 유지. 필요하면 MCP 서버를 앞에 덧댐</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">주의</h2>
+<ul>
+<li>도구를 노출하는 순간 그 권한이 모델에 열리는 셈이라 접근 제어를 프로토콜 밖에서 따로 설계해야 함</li>
+<li>사양은 도구 설명·주석을 신뢰할 수 없는 입력으로 다루라고 명시. 검증되지 않은 서버를 붙이면 설명 자체가 공격 경로가 됨</li>
+<li>에이전트가 스스로 도구를 고르는 만큼 운영자가 실행 경로를 예측하기 어려워짐</li>
+<li>사양 리비전이 계속 올라가므로 클라이언트와 서버의 지원 버전을 맞춰야 함</li>
+</ul>
+<hr />
+<h2 id="_5">결론</h2>
+<ul>
+<li>MCP는 모델과 도구 사이 구간을 JSON-RPC 2.0으로 통일한 프로토콜이고, 기존 API를 대체하지 않고 위에 얹힘</li>
+<li>기존 API의 한계는 사람이 미리 읽고 코드를 짜는 전제에 있음</li>
+<li>런타임 탐색(<code>tools/list</code>)과 단일 호출 규약(<code>tools/call</code>)이 핵심이고, 목록 갱신은 <code>list_changed</code> 알림이 맡음</li>
+<li>도구가 적고 고정된 앱이라면 함수 호출로 충분하고, 도구가 늘거나 여러 곳에서 소비될 때 MCP의 값어치가 나옴</li>
+<li>API는 "사람이 읽고 짜는 규격", MCP는 "에이전트가 붙어서 물어보는 규격"으로 이해하면 됌</li>
+</ul>
 
 
 
@@ -1673,7 +1814,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS 고성능 네트워킹 정리">
+          <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-footer__link md-footer__link--prev" aria-label="이전: partial 인덱스 seq scan 인시던트">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1683,20 +1824,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                AWS 고성능 네트워킹 정리
+                partial 인덱스 seq scan 인시던트
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: MCP vs API 차이점 정리">
+          <a href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: CloudTrail 네트워크 활동 이벤트 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                MCP vs API 차이점 정리
+                CloudTrail 네트워크 활동 이벤트 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">
