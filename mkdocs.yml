@@ -31,12 +31,16 @@ extra:
 
 copyright: Copyright &copy; 2026 Jeongwon(Aaron) Lee
 
+hooks:
+  - hooks/all_posts.py
+
 plugins:
   - blog:
       blog_dir: blog
       post_date_format: medium
       post_excerpt_separator: <!-- more -->
       # post_excerpt: required
+      archive: false
       archive_date_format: yyyy MMMM
       post_readtime_words_per_minute: 150
       archive_url_date_format: yyyy/MM
