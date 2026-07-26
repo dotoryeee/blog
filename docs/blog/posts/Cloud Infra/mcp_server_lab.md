@@ -188,6 +188,20 @@ Starting MCP inspector...
 
 브라우저에서 열리는 화면의 Transport Type은 기본값 STDIO 그대로 두고, Command에 python, Arguments에 server.py를 넣는다. 가상환경을 활성화한 셸에서 npx를 띄웠고 실행 디렉터리도 server.py가 있는 곳이라, python과 server.py가 각각 venv 파이썬과 그 파일로 풀린다. 다른 셸에서 Inspector를 띄웠다면 이 두 값을 절대경로로 적어야 한다.
 
+Connect를 누르고 이어서 List Tools까지 누르면 아래 순서로 메시지가 오간다. 연결만으로는 initialized까지고, 도구 목록은 버튼을 눌러야 조회된다.
+
+```mermaid
+sequenceDiagram
+    participant Inspector
+    participant Server as dotoryeee-tools
+    Inspector->>Server: initialize (protocolVersion, capabilities)
+    Server-->>Inspector: serverInfo + capabilities<br>(tools.listChanged = false)
+    Inspector->>Server: notifications/initialized
+    Note over Inspector: 여기까지가 Connect
+    Inspector->>Server: tools/list
+    Server-->>Inspector: 도구 배열 (name, description, inputSchema)
+```
+
 Connect를 누르면 연결 상태가 Connected로 바뀌고, Tools 탭에서 List Tools를 누르면 도구 4개가 뜬다. 서버 이름 dotoryeee-tools 옆에 버전 1.28.1도 함께 보이는데, 이 버전은 코드 어디에도 직접 적지 않았다. FastMCP는 버전을 따로 지정하지 않으면 설치된 mcp 패키지 버전을 그대로 갖다 쓴다.
 
 ![Inspector에 dotoryeee-tools가 연결된 Tools 탭](mcp_server_lab/1.PNG)
@@ -199,6 +213,17 @@ Connect를 누르면 연결 상태가 Connected로 바뀌고, Tools 탭에서 Li
 도구 하나를 눌러 보면 원시 스키마 대신 렌더링된 폼이 뜬다. dotoryeee_stock_check를 열면 product_id는 enum 세 개짜리 드롭다운으로, quantity는 숫자 스피너로 바뀌어 있고, 위쪽에는 annotations 배지(Read-only, Destructive, Idempotent, Open-world)가 붙는다. Read-only만 서버 코드에서 명시한 값이고 나머지는 지정하지 않아 기본값으로 채워진 값이다.
 
 ![dotoryeee_stock_check 상세 폼. product_id 드롭다운과 annotations 배지](mcp_server_lab/2.PNG)
+
+코드에 적은 타입 힌트가 스키마를 거쳐 화면까지 오는 경로는 다음과 같다.
+
+```mermaid
+graph LR
+    T["파이썬 타입 힌트<br>Literal, Field(ge/le)"] --> IS["inputSchema"]
+    R["반환 타입<br>BaseModel"] --> OS["outputSchema"]
+    IS --> F["Inspector 폼<br>드롭다운·스피너"]
+    IS --> H["History 패널<br>원문 JSON"]
+    OS --> V["응답 검증<br>Structured Content"]
+```
 
 이 폼은 tools/list가 돌려준 inputSchema를 Inspector가 사람 눈에 맞게 바꾼 결과일 뿐이고, 원문은 따로 봐야 한다. 아래 History 패널에서 tools/list 항목을 펼치고 도구 배열 안의 inputSchema를 열면, dotoryeee_order_lookup의 status가 default와 enum 5개짜리 배열로 그대로 나온다. 필수 인자는 배열 형태의 required 필드에 따로 나열된다.
 
@@ -234,6 +259,20 @@ quantity에 100을 넘는 값을 넣으면 다른 그림이 나온다. product_i
 
 내용은 Field(ge=1, le=100)을 어긴 pydantic 검증 오류 그대로다. Input should be less than or equal to 100이라는 문구와 함께 input_value=200이 찍힌다. 여기서 짚어둘 점은 이게 JSON-RPC 프로토콜 오류가 아니라는 것이다. FastMCP는 인자 검증을 별도의 JSON Schema 단계 대신 도구 함수의 Pydantic 모델로 처리하는데, 여기서 예외가 나면 요청 자체는 정상적으로 끝나고 그 결과 객체 안에 isError: true와 에러 텍스트가 담겨 돌아온다. 메서드를 잘못 부르거나 요청 형식이 깨졌을 때 나오는 진짜 프로토콜 오류와는 다른 층위다.
 
+잘못된 입력이 걸러지는 지점은 세 군데로 갈리고, 각각 돌아오는 모양이 다르다.
+
+```mermaid
+graph TD
+    A["Inspector 폼 입력"] --> B{"폼이 만들 수 있는 값인가"}
+    B -->|아니오| C["타입·enum 위반<br>입력 자체가 불가"]
+    B -->|예| D["JSON-RPC 요청 전송"]
+    D --> E{"pydantic 검증 통과"}
+    E -->|아니오| F["isError = true를 담은<br>정상 응답"]
+    E -->|예| G["도구 함수 실행"]
+    G --> H["정상 결과"]
+    D -.->|"폼을 거치지 않은<br>메서드명·형식 오류"| I["JSON-RPC 프로토콜 오류<br>result 없이 error"]
+```
+
 타입이나 enum 위반은 Inspector에서 애초에 만들 수가 없다. product_id 드롭다운은 세 값 중 하나만 고를 수 있는 선택지라 잘못된 문자열을 넣을 방법이 없다. 폼을 거치지 않고 원시 클라이언트로 직접 보내면 이것도 같은 pydantic 단계에서 걸려 isError로 돌아온다. 폼으로 만들 수 있는 입력 중에서 그대로 통과하는 것은 빈 문자열 쪽이고, order_id를 비워 보내도 검증을 지나 그대로 실행된다.
 
 ## resource와 prompt
@@ -254,7 +293,22 @@ Prompts 탭도 마찬가지다. dotoryeee-order-triage를 고르고 order_id에 
 
 initialize 응답을 펼쳐 보면 capabilities.tools.listChanged가 false로 선언돼 있다. 선언대로라면 이 서버의 도구 목록은 고정된 것으로 다뤄져야 한다. 그런데 이 선언은 클라이언트에게 주는 약속일 뿐이고, SDK가 선언과 발송을 묶어 강제하지는 않는다.
 
-dotoryeee_enable_priority_support를 호출하면 서버 코드 안에서 mcp.add_tool()로 dotoryeee_priority_support를 새로 등록하고, 곧바로 ctx.session.send_tool_list_changed()를 부른다. 실행해 보면 Tool Result: Success와 함께 오른쪽 Server Notifications 패널에 notifications/tools/list_changed가 그대로 뜬다.
+선언과 실제 발송이 어긋나는 과정을 순서대로 놓으면 다음과 같다.
+
+```mermaid
+sequenceDiagram
+    participant Inspector
+    participant Server as dotoryeee-tools
+    Server-->>Inspector: initialize 응답<br>tools.listChanged = false
+    Inspector->>Server: tools/call<br>(dotoryeee_enable_priority_support)
+    Server->>Server: add_tool()로 도구 등록
+    Server-->>Inspector: notifications/tools/list_changed
+    Server-->>Inspector: 실행 결과
+    Inspector->>Server: tools/list (재조회)
+    Server-->>Inspector: 도구 5개
+```
+
+dotoryeee_enable_priority_support를 호출하면 서버 코드 안에서 mcp.add_tool()로 dotoryeee_priority_support를 새로 등록하고, 곧바로 ctx.session.send_tool_list_changed()를 부른다. 실행해 보면 Tool Result: Success와 함께 오른쪽 Server Notifications 패널에 notifications/tools/list_changed가 그대로 뜬다. 도구 함수가 값을 돌려주기 전에 알림을 먼저 await하기 때문에, 실제로 오가는 순서는 알림이 앞이고 실행 결과가 뒤다.
 
 ![dotoryeee_enable_priority_support 실행 직후 Server Notifications](mcp_server_lab/11.PNG)
 
@@ -333,7 +387,21 @@ claude -p "dotoryeee_order_lookup 도구로 order_id=dotoryeee-7788, status=ship
 {"step":"text","text":"order dotoryeee-7788 is shipped"}
 ```
 
-도구 이름은 mcp__dotoryeee-tools__dotoryeee_order_lookup으로, 서버 이름과 도구 이름을 이중 밑줄로 이어 붙인 형태다. 그런데 이 이름을 곧바로 부르지 않고, ToolSearch로 먼저 도구를 찾아 로드한 다음에야 실제 호출이 나간다. 도구가 여러 개 붙은 환경에서 매 턴 모든 스키마를 프롬프트에 욱여넣지 않으려고 넣어둔 단계로 보인다. tools/list_changed 때와 마찬가지로, 화면에 나오는 순서가 사양 문서만 보고 예상한 것과는 달랐다.
+이 출력을 순서대로 놓으면 호출 경로가 드러난다.
+
+```mermaid
+sequenceDiagram
+    participant User as 사용자
+    participant CC as Claude Code
+    participant Server as dotoryeee-tools
+    User->>CC: 도구로 주문을 조회해 달라는 요청
+    CC->>CC: ToolSearch로 도구 스키마 로드
+    CC->>Server: tools/call (dotoryeee_order_lookup)
+    Server-->>CC: order dotoryeee-7788 is shipped
+    CC-->>User: 최종 응답
+```
+
+도구 이름은 mcp__dotoryeee-tools__dotoryeee_order_lookup으로, 서버 이름과 도구 이름을 이중 밑줄로 이어 붙인 형태다. 이건 Claude Code 안에서 쓰는 이름이고, 서버로 나가는 tools/call의 name에는 접두 없이 dotoryeee_order_lookup만 실린다. 그런데 이 이름을 곧바로 부르지 않고, ToolSearch로 먼저 도구를 찾아 로드한 다음에야 실제 호출이 나간다. 도구가 여러 개 붙은 환경에서 매 턴 모든 스키마를 프롬프트에 욱여넣지 않으려고 넣어둔 단계로 보인다. tools/list_changed 때와 마찬가지로, 화면에 나오는 순서가 사양 문서만 보고 예상한 것과는 달랐다.
 
 ## 정리
 
