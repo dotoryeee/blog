@@ -117,7 +117,7 @@ sequenceDiagram
 
 - `initialize`에서 `protocolVersion`이 맞지 않으면 연결을 끊음(현재 사양 리비전은 2025-11-25)
 - `inputSchema`가 JSON Schema라 클라이언트가 인자를 검증한 뒤 호출 가능
-- 마지막 알림은 서버가 `listChanged: true`를 선언한 경우에만 옴 → 선언하지 않은 서버는 목록이 고정된 것으로 다뤄짐
+- `listChanged: true` 선언은 목록이 바뀌면 알리겠다는 서버의 약속 → 선언하지 않은 서버는 목록이 고정된 것으로 다뤄짐
 
 ---
 
