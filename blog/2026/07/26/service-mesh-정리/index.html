@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점">
+        <meta name="description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/">
+        <link rel="prev" href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>MCP vs API 차이점 정리 - dotoryeee's blog</title>
+        <title>Service Mesh 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="MCP vs API 차이점 정리 - dotoryeee's blog" />
-<meta property="og:description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="Service Mesh 정리 - dotoryeee's blog" />
+<meta property="og:description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="MCP vs API 차이점 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그것을 메우는 방식을 JSON-RPC 메시지 단위로 비교 정리. 도구 탐색·호출 규격·변경 전파 관점" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="Service Mesh 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mcp-vs-api" class="md-skip">
+        <a href="#service-mesh" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MCP vs API 차이점 정리
+              Service Mesh 정리
             
           </span>
         </div>
@@ -1314,32 +1314,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mcp" class="md-nav__link">
+  <a href="#service-mesh_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        MCP란
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        기존 API가 에이전트에 맞지 않는 지점
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API와의 차이
+        Service Mesh란
       
     </span>
   </a>
@@ -1350,18 +1328,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        구조
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#primitive" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        서버가 제공하는 primitive
+        필요한 이유
       
     </span>
   </a>
@@ -1372,7 +1339,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메시지 흐름
+        구조
       
     </span>
   </a>
@@ -1383,7 +1350,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        언제 무엇을 쓰나
+        데이터 플레인 배치 방식
       
     </span>
   </a>
@@ -1394,7 +1361,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        주의
+        기능별 처리 위치
       
     </span>
   </a>
@@ -1403,6 +1370,17 @@
       
         <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        도입 판단
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1468,7 +1446,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-25 00:00:00+00:00" class="md-ellipsis">2026. 7. 25.</time>
+                        <time datetime="2026-07-26 00:00:00+00:00" class="md-ellipsis">2026. 7. 26.</time>
                       </div>
                     </li>
                     
@@ -1479,7 +1457,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/ai/">AI</a></span>
+                              <a href="../../../../category/kubernetes/">Kubernetes</a></span>
                         </div>
                       </li>
                     
@@ -1490,7 +1468,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 6분
+                              읽는시간 5분
                             
                           </span>
                         </div>
@@ -1518,255 +1496,275 @@
       
       
       
-        <a href="../../../../../tags/#tag:claude" class="md-tag">Claude</a>
+        <a href="../../../../../tags/#tag:cilium" class="md-tag">Cilium</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:llm" class="md-tag">LLM</a>
+        <a href="../../../../../tags/#tag:envoy" class="md-tag">Envoy</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:mcp" class="md-tag">MCP</a>
+        <a href="../../../../../tags/#tag:istio" class="md-tag">Istio</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:service-mesh" class="md-tag">Service Mesh</a>
       
     
   </nav>
 
 
 
-<h1 id="mcp-vs-api">MCP vs API 차이점 정리</h1>
+<h1 id="service-mesh">Service Mesh 정리</h1>
 <!-- more -->
 
-<h2 id="mcp">MCP란</h2>
-<p>MCP(Model Context Protocol)란 AI 애플리케이션이 외부 도구·데이터에 붙는 방식을 표준화한 개방형 프로토콜</p>
+<h2 id="service-mesh_1">Service Mesh란</h2>
+<p>Service Mesh란 서비스 사이 통신에서 mTLS·재시도·트래픽 분할·관측을 애플리케이션 코드 밖의 프록시 계층으로 옮긴 구조</p>
 <ul>
-<li>기반: JSON-RPC 2.0 메시지 교환. 상태를 가지는 연결</li>
-<li>참여자: 호스트(AI 애플리케이션), 클라이언트(서버당 하나), 서버(도구·데이터 제공)</li>
-<li>계층: 데이터 계층(생명주기·기능·알림)과 전송 계층(연결·프레이밍·인가)으로 나뉨</li>
-<li>범위 밖: 컨텍스트 교환 규격만 정하고 모델을 어떻게 쓸지는 규정하지 않음</li>
+<li>대상: 서비스 사이(East-West) 트래픽 → 외부 유입은 Ingress·Gateway 몫</li>
+<li>구성: 트래픽을 실제로 나르는 데이터 플레인과 정책을 배포하는 컨트롤 플레인으로 나뉨</li>
+<li>전제: 애플리케이션은 평문으로 평소처럼 호출하고, 암호화·재시도는 프록시가 가로채 처리</li>
+<li>위치: CNI가 만든 파드 사이 경로 위에 얹히는 계층</li>
 </ul>
+<p>패킷이 파드 사이를 어떻게 오가는지는 <a href="../../../../2025/09/04/kubernetes-cni-%EB%B9%84%EA%B5%90/">Kubernetes CNI 비교</a>에서 다룬 주제고, 이 글은 그 경로 위에서 누가 TLS를 걸고 재시도를 판단하는지를 보는 쪽.</p>
 <hr />
-<h2 id="api">기존 API가 에이전트에 맞지 않는 지점</h2>
-<p>API 자체가 모자란 게 아니라, 사람 개발자가 미리 읽고 코드를 짜는 것을 전제로 설계됐다는 점이 문제</p>
+<h2 id="_1">필요한 이유</h2>
+<p>같은 기능을 애플리케이션 안에서 해결하려면 언어마다 같은 일을 반복해야 함</p>
 <table>
 <thead>
 <tr>
-<th>문제</th>
-<th>설명</th>
-<th>MCP의 대응</th>
+<th>방식</th>
+<th>적용 지점</th>
+<th>한계</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>선택지 과부하</td>
-<td>엔드포인트가 수백 개라도 어느 것을 언제 쓸지는 문서를 읽은 사람이 정함. 모델에는 그 판단 근거가 없음</td>
-<td><code>tools/list</code>가 이름·설명·입력 스키마를 런타임에 반환 → 사전 하드코딩 없이 후보를 좁힘</td>
+<td>라이브러리</td>
+<td>서비스 코드에 SDK를 넣어 재시도·서킷브레이커 구현</td>
+<td>언어별로 따로 구현. 정책을 바꾸려면 전 서비스 재배포</td>
 </tr>
 <tr>
-<td>변환 오버헤드</td>
-<td>서비스마다 인증·경로·응답 형태가 달라 도구마다 래퍼를 새로 씀</td>
-<td>모든 도구를 <code>tools/call</code> 하나로 호출하고 응답은 <code>content</code> 배열로 통일</td>
+<td>API Gateway</td>
+<td>클러스터 진입 지점 한 곳</td>
+<td>내부 서비스 사이 호출은 지나가지 않아 통제 밖</td>
 </tr>
 <tr>
-<td>변경 전파 부재</td>
-<td>도구가 늘거나 바뀌면 프롬프트와 래퍼를 고쳐 다시 배포해야 함</td>
-<td><code>notifications/tools/list_changed</code>로 서버가 알리고 클라이언트가 목록을 다시 읽음</td>
+<td>Service Mesh</td>
+<td>워크로드 옆 또는 노드의 프록시</td>
+<td>프록시 자체의 리소스와 운영 부담이 새로 생김</td>
 </tr>
 </tbody>
 </table>
-<p>OpenAPI 같은 기계 판독 규격과의 차이는 소비 시점에 있음. OpenAPI는 대개 빌드 시점에 읽어 클라이언트 코드를 만들어 두는 쪽, MCP는 연결할 때마다 목록과 스키마를 주고받아 모든 서버를 같은 호출 규약으로 다루는 쪽.</p>
+<ul>
+<li>정책을 코드에서 떼어내면 언어가 섞인 클러스터에서도 한 벌로 집행 가능</li>
+</ul>
 <hr />
-<h2 id="api_1">API와의 차이</h2>
+<h2 id="_2">구조</h2>
+<pre class="mermaid"><code>graph TD
+    CP["컨트롤 플레인&lt;br/&gt;정책·인증서 배포&lt;br/&gt;서비스 디스커버리"]
+    A["서비스 A"]
+    P1["프록시 A"]
+    P2["프록시 B"]
+    B["서비스 B"]
+    CP -. 설정·인증서 .-&gt; P1
+    CP -. 설정·인증서 .-&gt; P2
+    A --&gt; P1
+    P1 --&gt;|mTLS| P2
+    P2 --&gt; B</code></pre>
+<ul>
+<li>컨트롤 플레인은 트래픽 경로에 없음 → 컨트롤 플레인이 죽어도 이미 배포된 설정으로 통신은 계속됨</li>
+<li>데이터 플레인은 실제 패킷을 처리하므로 여기서의 선택이 자원 소비와 장애 반경을 결정</li>
+</ul>
+<hr />
+<h2 id="_3">데이터 플레인 배치 방식</h2>
+<p>Service Mesh를 고르는 일은 사실상 프록시를 어디에 몇 개 두느냐를 고르는 일</p>
 <table>
 <thead>
 <tr>
 <th>비교 항목</th>
-<th>기존 API</th>
-<th>MCP</th>
+<th>사이드카(Istio)</th>
+<th>앰비언트(Istio)</th>
+<th>eBPF 기반(Cilium)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>주 소비자</td>
-<td>사람 개발자</td>
-<td>AI 애플리케이션</td>
+<td>프록시 개수</td>
+<td>파드마다 Envoy 1개</td>
+<td>노드마다 ztunnel 1개 + 네임스페이스마다 waypoint</td>
+<td>노드마다 Envoy 1개</td>
 </tr>
 <tr>
-<td>통신 규격</td>
-<td>서비스마다 REST·GraphQL·gRPC 등 제각각</td>
-<td>JSON-RPC 2.0으로 통일</td>
+<td>L4 처리</td>
+<td>Envoy</td>
+<td>ztunnel(Rust)</td>
+<td>eBPF 커널 데이터패스</td>
 </tr>
 <tr>
-<td>연결 성격</td>
-<td>요청마다 독립적인 무상태 호출</td>
-<td>초기화 후 유지되는 상태 있는 연결</td>
+<td>L7 처리</td>
+<td>Envoy</td>
+<td>waypoint(Envoy). 배치했을 때만</td>
+<td>Envoy</td>
 </tr>
 <tr>
-<td>기능 확인</td>
-<td>문서를 읽고 개발자가 판단</td>
-<td><code>initialize</code>에서 양쪽이 capability를 선언</td>
+<td>mTLS·암호화</td>
+<td>Envoy가 mTLS</td>
+<td>ztunnel이 mTLS</td>
+<td>mTLS는 Mutual Authentication(Beta), 구간 암호화는 IPsec·WireGuard</td>
 </tr>
 <tr>
-<td>인증</td>
-<td>서비스별 방식. 키를 클라이언트가 보관</td>
-<td>전송 계층이 담당. 원격은 OAuth 권장</td>
+<td>앱 파드 spec 변경</td>
+<td>사이드카 주입으로 변경됨</td>
+<td>불필요</td>
+<td>불필요</td>
 </tr>
 <tr>
-<td>버전 관리</td>
-<td>경로나 헤더로 서비스마다 다르게</td>
-<td><code>protocolVersion</code> 문자열로 연결 시 협상</td>
+<td>프록시 업그레이드</td>
+<td>앱 파드 재시작 동반</td>
+<td>앱과 무관하게 갱신</td>
+<td>앱과 무관하게 갱신</td>
+</tr>
+<tr>
+<td>장애 반경</td>
+<td>파드 하나</td>
+<td>노드 단위 또는 네임스페이스 단위</td>
+<td>노드 단위</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>기존 API 위에 얹는 계층 → MCP 서버 내부는 대개 기존 API를 그대로 호출</li>
-<li>통일되는 것은 모델과 도구 사이 구간이고, 도구와 백엔드 사이는 여전히 각자의 API</li>
+<li>ztunnel은 HTTP를 종료하지도 헤더를 파싱하지도 않음 → L7 인가·텔레메트리·VirtualService 라우팅이 필요하면 waypoint를 따로 배치해야 함</li>
+<li>Cilium은 L7 정책이 걸린 트래픽만 eBPF가 Envoy로 넘기고 나머지는 커널 경로에 그대로 둠</li>
+<li>앰비언트는 Istio 1.24에서 GA로 올라섰고 한 메시 안에서 사이드카 모드와 섞어 쓸 수 있음</li>
+<li>Linkerd도 사이드카 계열이지만 배치 방식이 Istio 사이드카와 같은 축이라 여기서는 뺌</li>
 </ul>
 <hr />
-<h2 id="_1">구조</h2>
-<pre class="mermaid"><code>graph TB
-    subgraph Host["호스트 (AI 애플리케이션)"]
-        C1["Client 1"]
-        C2["Client 2"]
-        C3["Client 3"]
-    end
-    S1["Server A (로컬)&lt;br/&gt;파일시스템"]
-    S2["Server B (로컬)&lt;br/&gt;데이터베이스"]
-    S3["Server C (원격)&lt;br/&gt;이슈 트래커"]
-    C1 --- S1
-    C2 --- S2
-    C3 --- S3</code></pre>
-<ul>
-<li>호스트는 붙는 서버 수만큼 클라이언트를 만들고, 각 클라이언트가 서버 하나와 전용 연결을 유지</li>
-<li>서버가 로컬에 있는지 원격에 있는지는 전송 방식에 따라 갈림</li>
-</ul>
+<h2 id="_4">기능별 처리 위치</h2>
+<p>같은 기능이라도 어느 방식이냐에 따라 처리하는 주체가 달라짐</p>
 <table>
 <thead>
 <tr>
-<th>전송</th>
-<th>쓰이는 곳</th>
-<th>특징</th>
+<th>기능</th>
+<th>사이드카</th>
+<th>앰비언트</th>
+<th>eBPF 기반</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>stdio</td>
-<td>같은 머신의 로컬 프로세스</td>
-<td>표준 입출력으로 주고받음. 네트워크 구간 없음</td>
+<td>워크로드 간 암호화</td>
+<td>Envoy mTLS</td>
+<td>ztunnel mTLS</td>
+<td>IPsec·WireGuard 구간 암호화</td>
 </tr>
 <tr>
-<td>Streamable HTTP</td>
-<td>원격 서버</td>
-<td>단일 엔드포인트에 HTTP POST, 스트리밍은 SSE. bearer 토큰·API 키·커스텀 헤더 지원</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="primitive">서버가 제공하는 primitive</h2>
-<p>서버가 클라이언트에 내놓는 기능은 세 가지로 나뉨</p>
-<table>
-<thead>
-<tr>
-<th>primitive</th>
-<th>역할</th>
-<th>주요 메서드</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Tools</td>
-<td>모델이 실행하는 함수. 파일 조작·조회·외부 호출 등</td>
-<td><code>tools/list</code>, <code>tools/call</code></td>
+<td>L4 인가</td>
+<td>Envoy</td>
+<td>ztunnel</td>
+<td>eBPF 정책</td>
 </tr>
 <tr>
-<td>Resources</td>
-<td>모델이나 사용자가 참조할 컨텍스트 데이터</td>
-<td><code>resources/list</code>, <code>resources/read</code></td>
+<td>L7 인가·경로 라우팅</td>
+<td>Envoy</td>
+<td>waypoint 필요</td>
+<td>Envoy</td>
 </tr>
 <tr>
-<td>Prompts</td>
-<td>상호작용을 정형화한 재사용 템플릿</td>
-<td><code>prompts/list</code>, <code>prompts/get</code></td>
+<td>재시도·타임아웃·서킷브레이커</td>
+<td>Envoy</td>
+<td>waypoint 필요</td>
+<td>Envoy</td>
+</tr>
+<tr>
+<td>트래픽 분할(카나리)</td>
+<td>Envoy</td>
+<td>waypoint 필요</td>
+<td>Envoy</td>
+</tr>
+<tr>
+<td>L4 텔레메트리</td>
+<td>Envoy</td>
+<td>ztunnel</td>
+<td>eBPF</td>
+</tr>
+<tr>
+<td>L7 텔레메트리</td>
+<td>Envoy</td>
+<td>waypoint 필요</td>
+<td>Envoy</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>반대로 클라이언트가 서버에 내주는 기능도 있음: Sampling(<code>sampling/createMessage</code>)으로 서버가 모델 응답을 요청하고, Roots(<code>roots/list</code>)로 작업 범위를 알리고, Elicitation(<code>elicitation/create</code>)으로 사용자에게 추가 입력을 받음</li>
-<li>어느 쪽이든 <code>initialize</code>에서 선언한 capability 안에서만 동작</li>
+<li>세 방식 모두 L7까지 가면 결국 Envoy를 거치고, 갈리는 것은 그 Envoy가 몇 개이고 어디 있느냐</li>
+<li>Cilium의 IPsec·WireGuard는 노드 사이 구간을 암호화하는 방식 → 같은 노드 안 파드끼리는 적용되지 않고 워크로드 신원 증명도 아님</li>
 </ul>
 <hr />
-<h2 id="_2">메시지 흐름</h2>
-<p>탐색과 호출이 분리되어 있다는 점이 기존 API 호출과 갈리는 지점</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant Client
-    participant Server
-    Client-&gt;&gt;Server: initialize (protocolVersion, capabilities)
-    Server--&gt;&gt;Client: 지원 기능 응답 (tools.listChanged 등)
-    Client-&gt;&gt;Server: notifications/initialized
-    Client-&gt;&gt;Server: tools/list
-    Server--&gt;&gt;Client: 도구 배열 (name, description, inputSchema)
-    Client-&gt;&gt;Server: tools/call (name, arguments)
-    Server--&gt;&gt;Client: content 배열
-    Server--&gt;&gt;Client: notifications/tools/list_changed
-    Client-&gt;&gt;Server: tools/list (재조회)</code></pre>
-<ul>
-<li><code>initialize</code>에서 <code>protocolVersion</code>이 맞지 않으면 연결을 끊음(현재 사양 리비전은 2025-11-25)</li>
-<li><code>inputSchema</code>가 JSON Schema라 클라이언트가 인자를 검증한 뒤 호출 가능</li>
-<li><code>listChanged: true</code> 선언은 목록이 바뀌면 알리겠다는 서버의 약속 → 선언하지 않은 서버는 목록이 고정된 것으로 다뤄짐</li>
-</ul>
-<hr />
-<h2 id="_3">언제 무엇을 쓰나</h2>
+<h2 id="_5">도입 판단</h2>
 <table>
 <thead>
 <tr>
 <th>상황</th>
-<th>권장</th>
+<th>추천 방식</th>
+<th>추천 사유</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>앱 하나가 자기 백엔드 함수 몇 개만 호출</td>
-<td>직접 함수 호출. 프로토콜 계층은 과함</td>
+<td>서비스 수가 적고 언어가 하나</td>
+<td>도입 보류</td>
+<td>라이브러리나 Gateway로 충분. 프록시 운영 부담만 남음</td>
 </tr>
 <tr>
-<td>도구 목록이 자주 바뀌거나 런타임에 늘어남</td>
-<td>MCP</td>
+<td>워크로드 신원 증명까지 규정에 걸림</td>
+<td>앰비언트</td>
+<td>ztunnel이 워크로드 인증서로 mTLS를 걺</td>
 </tr>
 <tr>
-<td>여러 에이전트·클라이언트가 같은 도구를 나눠 씀</td>
-<td>MCP</td>
+<td>노드 사이 구간 암호화면 충분</td>
+<td>Cilium</td>
+<td>IPsec·WireGuard로 프록시 없이 처리</td>
 </tr>
 <tr>
-<td>외부에 도구를 공개해 다른 팀이 붙게 함</td>
-<td>MCP 서버로 공개</td>
+<td>서비스별 L7 정책이 세밀함</td>
+<td>사이드카 또는 waypoint를 붙인 앰비언트</td>
+<td>L7 인가·라우팅은 Envoy가 있어야 가능</td>
 </tr>
 <tr>
-<td>사람이 쓰는 공개 웹 API 제공</td>
-<td>기존 API 유지. 필요하면 MCP 서버를 앞에 덧댐</td>
+<td>이미 Cilium을 CNI로 운영 중</td>
+<td>Cilium Service Mesh</td>
+<td>별도 컨트롤 플레인 없이 기존 설정을 확장</td>
+</tr>
+<tr>
+<td>파드 밀도가 높아 자원이 빠듯</td>
+<td>앰비언트 또는 Cilium</td>
+<td>프록시가 파드 수가 아닌 노드 수에 비례</td>
+</tr>
+<tr>
+<td>파드 단위 장애 격리가 중요</td>
+<td>사이드카</td>
+<td>프록시가 죽어도 그 파드만 영향</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_4">주의</h2>
+<h2 id="_6">결론</h2>
 <ul>
-<li>도구를 노출하는 순간 그 권한이 모델에 열리는 셈이라 접근 제어를 프로토콜 밖에서 따로 설계해야 함</li>
-<li>사양은 도구 설명·주석을 신뢰할 수 없는 입력으로 다루라고 명시. 검증되지 않은 서버를 붙이면 설명 자체가 공격 경로가 됨</li>
-<li>에이전트가 스스로 도구를 고르는 만큼 운영자가 실행 경로를 예측하기 어려워짐</li>
-<li>사양 리비전이 계속 올라가므로 클라이언트와 서버의 지원 버전을 맞춰야 함</li>
-</ul>
-<hr />
-<h2 id="_5">결론</h2>
-<ul>
-<li>MCP는 모델과 도구 사이 구간을 JSON-RPC 2.0으로 통일한 프로토콜이고, 기존 API를 대체하지 않고 위에 얹힘</li>
-<li>기존 API의 한계는 사람이 미리 읽고 코드를 짜는 전제에 있음</li>
-<li>런타임 탐색(<code>tools/list</code>)과 단일 호출 규약(<code>tools/call</code>)이 핵심이고, 목록 갱신은 <code>list_changed</code> 알림이 맡음</li>
-<li>도구가 적고 고정된 앱이라면 함수 호출로 충분하고, 도구가 늘거나 여러 곳에서 소비될 때 MCP의 값어치가 나옴</li>
-<li>API는 "사람이 읽고 짜는 규격", MCP는 "에이전트가 붙어서 물어보는 규격"으로 이해하면 됌</li>
+<li>Service Mesh는 mTLS·재시도·트래픽 분할·관측을 코드 밖 프록시로 옮긴 계층이고, CNI가 만든 경로 위에 얹힘</li>
+<li>방식을 고른다는 것은 프록시를 파드마다 둘지 노드마다 둘지를 고르는 것</li>
+<li>사이드카는 파드 단위 격리를 주고 파드 수만큼 자원과 재시작 부담을 가져감</li>
+<li>앰비언트와 eBPF 기반은 노드 단위로 프록시를 줄이는 대신 장애 반경이 노드로 커짐</li>
+<li>L7 기능이 필요 없다면 앰비언트의 ztunnel만으로 mTLS까지 닿으니, 무엇이 필요한지 먼저 정하고 방식을 고를 것</li>
 </ul>
 
 
@@ -1814,7 +1812,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-footer__link md-footer__link--prev" aria-label="이전: partial 인덱스 seq scan 인시던트">
+          <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: 사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1824,20 +1822,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                partial 인덱스 seq scan 인시던트
+                사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: CloudTrail 네트워크 활동 이벤트 정리">
+          <a href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: MCP 서버 만들어 Claude Code에 붙이기">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                CloudTrail 네트워크 활동 이벤트 정리
+                MCP 서버 만들어 Claude Code에 붙이기
               </div>
             </div>
             <div class="md-footer__button md-icon">
