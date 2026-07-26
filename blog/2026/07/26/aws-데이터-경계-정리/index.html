@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교">
+        <meta name="description" content="자격 증명·리소스·네트워크 세 축으로 나눠 SCP와 RCP, 리소스 정책, 엔드포인트 정책이 각각 무엇을 막는지와 조건 키 사용법 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/26/aws-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%BD%EA%B3%84-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
+        <link rel="prev" href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
       
       
-        <link rel="next" href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
+        <link rel="next" href="../%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>Service Mesh 정리 - dotoryeee's blog</title>
+        <title>AWS 데이터 경계 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Service Mesh 정리 - dotoryeee's blog" />
-<meta property="og:description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="AWS 데이터 경계 정리 - dotoryeee's blog" />
+<meta property="og:description" content="자격 증명·리소스·네트워크 세 축으로 나눠 SCP와 RCP, 리소스 정책, 엔드포인트 정책이 각각 무엇을 막는지와 조건 키 사용법 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/aws-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%BD%EA%B3%84-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/26/aws-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%BD%EA%B3%84-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="Service Mesh 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="사이드카·앰비언트·eBPF 세 가지 데이터 플레인 배치가 프록시 개수와 기능 범위를 어떻게 맞바꾸는지 mTLS 처리 주체와 장애 반경 기준으로 비교" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="AWS 데이터 경계 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="자격 증명·리소스·네트워크 세 축으로 나눠 SCP와 RCP, 리소스 정책, 엔드포인트 정책이 각각 무엇을 막는지와 조건 키 사용법 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/aws-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B2%BD%EA%B3%84-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#service-mesh" class="md-skip">
+        <a href="#aws" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Service Mesh 정리
+              AWS 데이터 경계 정리
             
           </span>
         </div>
@@ -1314,21 +1314,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#service-mesh_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Service Mesh란
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        필요한 이유
+        데이터 경계란
       
     </span>
   </a>
@@ -1339,7 +1328,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        구조
+        세 가지 축
       
     </span>
   </a>
@@ -1350,10 +1339,27 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        데이터 플레인 배치 방식
+        정책 유형별 역할
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="정책 유형별 역할">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RCP 지원 범위
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1361,7 +1367,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        기능별 처리 위치
+        조건 키
       
     </span>
   </a>
@@ -1372,7 +1378,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        도입 판단
+        정책 예시
       
     </span>
   </a>
@@ -1381,6 +1387,28 @@
       
         <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        적용 순서
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        주의
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1457,7 +1485,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/kubernetes/">Kubernetes</a></span>
+                              <a href="../../../../category/security/">Security</a></span>
                         </div>
                       </li>
                     
@@ -1468,7 +1496,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 5분
+                              읽는시간 6분
                             
                           </span>
                         </div>
@@ -1496,275 +1524,266 @@
       
       
       
-        <a href="../../../../../tags/#tag:cilium" class="md-tag">Cilium</a>
+        <a href="../../../../../tags/#tag:iam" class="md-tag">IAM</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:envoy" class="md-tag">Envoy</a>
+        <a href="../../../../../tags/#tag:scp" class="md-tag">SCP</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:istio" class="md-tag">Istio</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:service-mesh" class="md-tag">Service Mesh</a>
+        <a href="../../../../../tags/#tag:vpc-endpoint" class="md-tag">VPC Endpoint</a>
       
     
   </nav>
 
 
 
-<h1 id="service-mesh">Service Mesh 정리</h1>
+<h1 id="aws">AWS 데이터 경계 정리</h1>
 <!-- more -->
 
-<h2 id="service-mesh_1">Service Mesh란</h2>
-<p>Service Mesh란 서비스 사이 통신에서 mTLS·재시도·트래픽 분할·관측을 애플리케이션 코드 밖의 프록시 계층으로 옮긴 구조</p>
+<h2 id="_1">데이터 경계란</h2>
+<p>데이터 경계(Data Perimeter)란 내 조직의 자격 증명이 내 조직의 리소스에만, 예상한 네트워크를 거쳐서만 닿도록 조직 단위로 못 박는 통제 설계</p>
 <ul>
-<li>대상: 서비스 사이(East-West) 트래픽 → 외부 유입은 Ingress·Gateway 몫</li>
-<li>구성: 트래픽을 실제로 나르는 데이터 플레인과 정책을 배포하는 컨트롤 플레인으로 나뉨</li>
-<li>전제: 애플리케이션은 평문으로 평소처럼 호출하고, 암호화·재시도는 프록시가 가로채 처리</li>
-<li>위치: CNI가 만든 파드 사이 경로 위에 얹히는 계층</li>
+<li>대상: 개별 권한이 아니라 조직 전체에 깔아 두는 최대 한도</li>
+<li>성격: 권한을 주는 장치가 아니라 이미 준 권한의 상한을 깎는 장치</li>
+<li>전제: 실제 권한은 여전히 자격 증명 기반 정책과 리소스 정책이 부여</li>
+<li>목적: 잘못 설정된 정책 하나가 조직 밖으로 데이터를 흘리는 경로를 구조적으로 차단</li>
 </ul>
-<p>패킷이 파드 사이를 어떻게 오가는지는 <a href="../../../../2025/09/04/kubernetes-cni-%EB%B9%84%EA%B5%90/">Kubernetes CNI 비교</a>에서 다룬 주제고, 이 글은 그 경로 위에서 누가 TLS를 걸고 재시도를 판단하는지를 보는 쪽.</p>
 <hr />
-<h2 id="_1">필요한 이유</h2>
-<p>같은 기능을 애플리케이션 안에서 해결하려면 언어마다 같은 일을 반복해야 함</p>
+<h2 id="_2">세 가지 축</h2>
+<p>막고 싶은 상황이 다르면 쓰는 수단도 갈림</p>
 <table>
 <thead>
 <tr>
-<th>방식</th>
-<th>적용 지점</th>
-<th>한계</th>
+<th>축</th>
+<th>막는 상황</th>
+<th>주 수단</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>라이브러리</td>
-<td>서비스 코드에 SDK를 넣어 재시도·서킷브레이커 구현</td>
-<td>언어별로 따로 구현. 정책을 바꾸려면 전 서비스 재배포</td>
+<td>신뢰할 수 있는 자격 증명</td>
+<td>조직 밖 계정의 자격 증명이 내 리소스에 접근</td>
+<td>RCP, 리소스 정책</td>
 </tr>
 <tr>
-<td>API Gateway</td>
-<td>클러스터 진입 지점 한 곳</td>
-<td>내부 서비스 사이 호출은 지나가지 않아 통제 밖</td>
+<td>신뢰할 수 있는 리소스</td>
+<td>내 자격 증명이 조직 밖 리소스로 데이터를 내보냄</td>
+<td>SCP, VPC 엔드포인트 정책</td>
 </tr>
 <tr>
-<td>Service Mesh</td>
-<td>워크로드 옆 또는 노드의 프록시</td>
-<td>프록시 자체의 리소스와 운영 부담이 새로 생김</td>
+<td>신뢰할 수 있는 네트워크</td>
+<td>예상 밖 네트워크에서 내 자격 증명이 쓰임</td>
+<td>SCP, RCP·리소스 정책</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>정책을 코드에서 떼어내면 언어가 섞인 클러스터에서도 한 벌로 집행 가능</li>
+<li>세 축은 서로 다른 방향을 막으므로 하나만 걸어서는 경계가 닫히지 않음</li>
+<li>자격 증명과 리소스는 서로 반대 방향 → 들어오는 쪽과 나가는 쪽을 각각 봐야 함</li>
 </ul>
 <hr />
-<h2 id="_2">구조</h2>
-<pre class="mermaid"><code>graph TD
-    CP["컨트롤 플레인&lt;br/&gt;정책·인증서 배포&lt;br/&gt;서비스 디스커버리"]
-    A["서비스 A"]
-    P1["프록시 A"]
-    P2["프록시 B"]
-    B["서비스 B"]
-    CP -. 설정·인증서 .-&gt; P1
-    CP -. 설정·인증서 .-&gt; P2
-    A --&gt; P1
-    P1 --&gt;|mTLS| P2
-    P2 --&gt; B</code></pre>
-<ul>
-<li>컨트롤 플레인은 트래픽 경로에 없음 → 컨트롤 플레인이 죽어도 이미 배포된 설정으로 통신은 계속됨</li>
-<li>데이터 플레인은 실제 패킷을 처리하므로 여기서의 선택이 자원 소비와 장애 반경을 결정</li>
-</ul>
-<hr />
-<h2 id="_3">데이터 플레인 배치 방식</h2>
-<p>Service Mesh를 고르는 일은 사실상 프록시를 어디에 몇 개 두느냐를 고르는 일</p>
+<h2 id="_3">정책 유형별 역할</h2>
+<p>같은 Deny라도 어디에 붙느냐에 따라 제한하는 대상이 다름</p>
 <table>
 <thead>
 <tr>
-<th>비교 항목</th>
-<th>사이드카(Istio)</th>
-<th>앰비언트(Istio)</th>
-<th>eBPF 기반(Cilium)</th>
+<th>정책</th>
+<th>제한 대상</th>
+<th>적용 범위</th>
+<th>관리 계정</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>프록시 개수</td>
-<td>파드마다 Envoy 1개</td>
-<td>노드마다 ztunnel 1개 + 네임스페이스마다 waypoint</td>
-<td>노드마다 Envoy 1개</td>
+<td>SCP</td>
+<td>member 계정의 IAM 사용자·역할</td>
+<td>조직·OU·계정에 부착</td>
+<td>적용 안 됨</td>
 </tr>
 <tr>
-<td>L4 처리</td>
-<td>Envoy</td>
-<td>ztunnel(Rust)</td>
-<td>eBPF 커널 데이터패스</td>
+<td>RCP</td>
+<td>member 계정의 리소스</td>
+<td>조직·OU·계정에 부착</td>
+<td>적용 안 됨</td>
 </tr>
 <tr>
-<td>L7 처리</td>
-<td>Envoy</td>
-<td>waypoint(Envoy). 배치했을 때만</td>
-<td>Envoy</td>
+<td>리소스 정책</td>
+<td>해당 리소스 하나</td>
+<td>리소스에 직접 부착</td>
+<td>해당 없음</td>
 </tr>
 <tr>
-<td>mTLS·암호화</td>
-<td>Envoy가 mTLS</td>
-<td>ztunnel이 mTLS</td>
-<td>mTLS는 Mutual Authentication(Beta), 구간 암호화는 IPsec·WireGuard</td>
-</tr>
-<tr>
-<td>앱 파드 spec 변경</td>
-<td>사이드카 주입으로 변경됨</td>
-<td>불필요</td>
-<td>불필요</td>
-</tr>
-<tr>
-<td>프록시 업그레이드</td>
-<td>앱 파드 재시작 동반</td>
-<td>앱과 무관하게 갱신</td>
-<td>앱과 무관하게 갱신</td>
-</tr>
-<tr>
-<td>장애 반경</td>
-<td>파드 하나</td>
-<td>노드 단위 또는 네임스페이스 단위</td>
-<td>노드 단위</td>
+<td>VPC 엔드포인트 정책</td>
+<td>그 엔드포인트를 지나는 요청</td>
+<td>엔드포인트에 부착</td>
+<td>해당 없음</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>ztunnel은 HTTP를 종료하지도 헤더를 파싱하지도 않음 → L7 인가·텔레메트리·VirtualService 라우팅이 필요하면 waypoint를 따로 배치해야 함</li>
-<li>Cilium은 L7 정책이 걸린 트래픽만 eBPF가 Envoy로 넘기고 나머지는 커널 경로에 그대로 둠</li>
-<li>앰비언트는 Istio 1.24에서 GA로 올라섰고 한 메시 안에서 사이드카 모드와 섞어 쓸 수 있음</li>
-<li>Linkerd도 사이드카 계열이지만 배치 방식이 Istio 사이드카와 같은 축이라 여기서는 뺌</li>
+<li>SCP도 RCP도 권한을 부여하지 않음 → 최종 권한은 네 종류가 모두 허용하는 교집합</li>
+<li>RCP는 조직 밖 프린시펄이 내 리소스를 건드리는 경우까지 막는다는 점에서 SCP와 방향이 반대</li>
+<li>둘 다 서비스 연결 역할(Service-linked role)에는 적용되지 않음</li>
+<li>RCP는 AWS 관리형 KMS 키에도 적용되지 않음</li>
+</ul>
+<h3 id="rcp">RCP 지원 범위</h3>
+<p>RCP는 모든 서비스에 걸리지 않고 지원 목록에 있는 서비스에만 적용됨</p>
+<ul>
+<li>포함: S3, KMS, STS, SQS, Secrets Manager, CloudWatch Logs, DynamoDB, ECR 등 40여 개</li>
+<li>미포함 서비스는 리소스 정책으로 개별 처리해야 함</li>
+<li>조직에서 모든 기능(All features)이 켜져 있어야 사용 가능</li>
 </ul>
 <hr />
-<h2 id="_4">기능별 처리 위치</h2>
-<p>같은 기능이라도 어느 방식이냐에 따라 처리하는 주체가 달라짐</p>
+<h2 id="_4">조건 키</h2>
+<p>경계를 만드는 실체는 Deny 문에 붙는 조건 키</p>
 <table>
 <thead>
 <tr>
-<th>기능</th>
-<th>사이드카</th>
-<th>앰비언트</th>
-<th>eBPF 기반</th>
+<th>조건 키</th>
+<th>값</th>
+<th>쓰이는 축</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>워크로드 간 암호화</td>
-<td>Envoy mTLS</td>
-<td>ztunnel mTLS</td>
-<td>IPsec·WireGuard 구간 암호화</td>
+<td><code>aws:PrincipalOrgID</code></td>
+<td>요청 주체가 속한 조직 ID</td>
+<td>자격 증명</td>
 </tr>
 <tr>
-<td>L4 인가</td>
-<td>Envoy</td>
-<td>ztunnel</td>
-<td>eBPF 정책</td>
+<td><code>aws:PrincipalOrgPaths</code></td>
+<td>주체의 조직 경로. 다중값이라 <code>ForAnyValue</code> 필요</td>
+<td>자격 증명</td>
 </tr>
 <tr>
-<td>L7 인가·경로 라우팅</td>
-<td>Envoy</td>
-<td>waypoint 필요</td>
-<td>Envoy</td>
+<td><code>aws:ResourceOrgID</code></td>
+<td>대상 리소스를 소유한 계정의 조직 ID</td>
+<td>리소스</td>
 </tr>
 <tr>
-<td>재시도·타임아웃·서킷브레이커</td>
-<td>Envoy</td>
-<td>waypoint 필요</td>
-<td>Envoy</td>
+<td><code>aws:SourceVpc</code></td>
+<td>요청이 통과한 엔드포인트가 붙은 VPC ID</td>
+<td>네트워크</td>
 </tr>
 <tr>
-<td>트래픽 분할(카나리)</td>
-<td>Envoy</td>
-<td>waypoint 필요</td>
-<td>Envoy</td>
+<td><code>aws:SourceVpce</code></td>
+<td>요청이 사용한 VPC 엔드포인트 ID</td>
+<td>네트워크</td>
 </tr>
 <tr>
-<td>L4 텔레메트리</td>
-<td>Envoy</td>
-<td>ztunnel</td>
-<td>eBPF</td>
+<td><code>aws:VpcSourceIp</code></td>
+<td>엔드포인트를 지난 요청자의 사설 IP</td>
+<td>네트워크</td>
 </tr>
 <tr>
-<td>L7 텔레메트리</td>
-<td>Envoy</td>
-<td>waypoint 필요</td>
-<td>Envoy</td>
+<td><code>aws:PrincipalIsAWSService</code></td>
+<td>AWS 서비스 주체의 직접 호출 여부</td>
+<td>예외 처리</td>
+</tr>
+<tr>
+<td><code>aws:ViaAWSService</code></td>
+<td>다른 서비스를 거쳐 온 요청인지 여부</td>
+<td>예외 처리</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>세 방식 모두 L7까지 가면 결국 Envoy를 거치고, 갈리는 것은 그 Envoy가 몇 개이고 어디 있느냐</li>
-<li>Cilium의 IPsec·WireGuard는 노드 사이 구간을 암호화하는 방식 → 같은 노드 안 파드끼리는 적용되지 않고 워크로드 신원 증명도 아님</li>
+<li><code>aws:SourceVpc</code>와 <code>aws:SourceVpce</code>는 VPC 엔드포인트를 지난 요청에만 값이 생김 → 인터넷 경유 요청에는 키 자체가 없음</li>
+<li><code>StringNotEqualsIfExists</code>는 키가 아예 없는 요청에서도 조건이 참이 되어 Deny가 그대로 걸림 → 키 없이 오는 경로까지 차단 범위에 넣는 선택</li>
+<li>키가 없는 정상 경로를 살리는 것은 <code>IfExists</code>가 아니라 <code>aws:PrincipalIsAWSService</code>·<code>aws:ViaAWSService</code> 예외 조건</li>
+<li><code>aws:PrincipalOrgID</code>·<code>aws:ResourceOrgID</code>·<code>aws:SourceVpc</code>·<code>aws:SourceVpce</code>는 민감한 키로 분류돼 와일드카드를 쓰지 않는 것이 원칙</li>
+<li><code>aws:PrincipalOrgPaths</code>는 예외로 <code>ForAnyValue:StringLike</code>와 와일드카드를 함께 씀</li>
+<li><code>aws:PrincipalVpc</code>라는 키는 없음 → 주체 쪽 VPC는 <code>aws:SourceVpc</code>나 <code>aws:Ec2InstanceSourceVpc</code>로 봄</li>
 </ul>
 <hr />
-<h2 id="_5">도입 판단</h2>
-<table>
-<thead>
-<tr>
-<th>상황</th>
-<th>추천 방식</th>
-<th>추천 사유</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>서비스 수가 적고 언어가 하나</td>
-<td>도입 보류</td>
-<td>라이브러리나 Gateway로 충분. 프록시 운영 부담만 남음</td>
-</tr>
-<tr>
-<td>워크로드 신원 증명까지 규정에 걸림</td>
-<td>앰비언트</td>
-<td>ztunnel이 워크로드 인증서로 mTLS를 걺</td>
-</tr>
-<tr>
-<td>노드 사이 구간 암호화면 충분</td>
-<td>Cilium</td>
-<td>IPsec·WireGuard로 프록시 없이 처리</td>
-</tr>
-<tr>
-<td>서비스별 L7 정책이 세밀함</td>
-<td>사이드카 또는 waypoint를 붙인 앰비언트</td>
-<td>L7 인가·라우팅은 Envoy가 있어야 가능</td>
-</tr>
-<tr>
-<td>이미 Cilium을 CNI로 운영 중</td>
-<td>Cilium Service Mesh</td>
-<td>별도 컨트롤 플레인 없이 기존 설정을 확장</td>
-</tr>
-<tr>
-<td>파드 밀도가 높아 자원이 빠듯</td>
-<td>앰비언트 또는 Cilium</td>
-<td>프록시가 파드 수가 아닌 노드 수에 비례</td>
-</tr>
-<tr>
-<td>파드 단위 장애 격리가 중요</td>
-<td>사이드카</td>
-<td>프록시가 죽어도 그 파드만 영향</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_6">결론</h2>
+<h2 id="_5">정책 예시</h2>
+<p>조직 밖 자격 증명이 내 S3 버킷에 접근하는 것을 조직 차원에서 막는 RCP</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DenyNonOrgPrincipals&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:*&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="nt">&quot;StringNotEqualsIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">          </span><span class="nt">&quot;aws:PrincipalOrgID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;o-example12345&quot;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">&quot;BoolIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">          </span><span class="nt">&quot;aws:PrincipalIsAWSService&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">}</span>
+</code></pre></div>
+<p>내 자격 증명이 조직 밖 리소스로 데이터를 내보내는 것을 막는 SCP</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DenyExternalResources&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nt">&quot;StringNotEqualsIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">          </span><span class="nt">&quot;aws:ResourceOrgID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;o-example12345&quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="p">},</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">&quot;BoolIfExists&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="nt">&quot;aws:ViaAWSService&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="p">}</span>
+</code></pre></div>
 <ul>
-<li>Service Mesh는 mTLS·재시도·트래픽 분할·관측을 코드 밖 프록시로 옮긴 계층이고, CNI가 만든 경로 위에 얹힘</li>
-<li>방식을 고른다는 것은 프록시를 파드마다 둘지 노드마다 둘지를 고르는 것</li>
-<li>사이드카는 파드 단위 격리를 주고 파드 수만큼 자원과 재시작 부담을 가져감</li>
-<li>앰비언트와 eBPF 기반은 노드 단위로 프록시를 줄이는 대신 장애 반경이 노드로 커짐</li>
-<li>L7 기능이 필요 없다면 앰비언트의 ztunnel만으로 mTLS까지 닿으니, 무엇이 필요한지 먼저 정하고 방식을 고를 것</li>
+<li><code>aws:PrincipalIsAWSService</code> 예외를 빼면 AWS 서비스가 대신 호출하는 정상 동작까지 막힘</li>
+<li><code>aws:ViaAWSService</code> 예외도 같은 이유 → 서비스 경유 호출은 조건 키 값이 다르게 잡힘</li>
+</ul>
+<hr />
+<h2 id="_6">적용 순서</h2>
+<p>한 번에 루트에 붙이면 조직 전체가 멈출 수 있어 단계를 나눔</p>
+<ol>
+<li>계정 하나에 붙여 영향 범위를 확인</li>
+<li>하위 OU로 올려 같은 정책을 검증</li>
+<li>문제가 없으면 조직 루트로 승격</li>
+<li>
+<p>각 단계에서 CloudTrail의 Access Denied를 근거로 오탐을 걸러냄</p>
+</li>
+<li>
+<p>먼저 조일 축은 자격 증명 쪽 → 조직 밖 접근 차단은 정상 트래픽에 미치는 영향이 가장 작음</p>
+</li>
+<li>네트워크 축은 마지막 → 온프레미스·서비스 경유 경로까지 다 걸러야 해서 오탐이 가장 많음</li>
+</ol>
+<hr />
+<h2 id="_7">주의</h2>
+<ul>
+<li>SCP와 RCP 모두 관리 계정에는 걸리지 않음 → 관리 계정에 워크로드를 두면 경계 밖에 남음</li>
+<li>서비스 연결 역할은 어느 쪽으로도 못 막으므로 별도 통제가 필요</li>
+<li>조건 키가 없는 정상 요청은 <code>IfExists</code>가 아니라 서비스 예외 조건으로 살릴 것</li>
+<li>조직 밖 주체가 내 엔드포인트를 지나는 시도는 호출자 계정에만 기록됨 → 내 쪽 기록은 <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/">CloudTrail 네트워크 활동 이벤트 정리</a>에서 다룬 네트워크 활동 이벤트로 확보</li>
+<li>RCP 미지원 서비스가 남아 있어 전면 차단으로 오해하면 안 됨</li>
+</ul>
+<hr />
+<h2 id="_8">결론</h2>
+<ul>
+<li>데이터 경계는 자격 증명·리소스·네트워크 세 축을 각각 다른 정책으로 막아 완성되는 설계</li>
+<li>SCP는 내 주체가 밖으로 나가는 것을, RCP는 밖의 주체가 내 리소스로 들어오는 것을 막아 방향이 서로 반대</li>
+<li>조건 키는 서비스 예외를 함께 걸어야 AWS 서비스가 대신 호출하는 정상 동작을 깨뜨리지 않음</li>
+<li>관리 계정과 서비스 연결 역할은 경계 밖에 남으므로 설계 단계에서 따로 다룰 것</li>
+<li>차단은 정책이 맡고 기록은 CloudTrail이 맡는 구성으로 나눠 보는 편이 실용적</li>
 </ul>
 
 
@@ -1812,7 +1831,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: kind에 Istio 앰비언트 올려 mTLS 확인하기">
+          <a href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: MCP 서버 만들어 Claude Code에 붙이기">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1822,20 +1841,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                kind에 Istio 앰비언트 올려 mTLS 확인하기
+                MCP 서버 만들어 Claude Code에 붙이기
               </div>
             </div>
           </a>
         
         
           
-          <a href="../mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: MCP 서버 만들어 Claude Code에 붙이기">
+          <a href="../%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 캐시 전략 정리">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                MCP 서버 만들어 Claude Code에 붙이기
+                캐시 전략 정리
               </div>
             </div>
             <div class="md-footer__button md-icon">

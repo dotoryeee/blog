@@ -1338,6 +1338,258 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2024-02-18 00:00:00+00:00">2024. 2. 18.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 2분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="rsync-ebs"><a class="toclink" href="../../2024/02/18/rsync%EB%A1%9C-ebs-%EB%B3%B5%EC%A0%9C%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95/">rsync로 EBS 복제하는 방법</a></h2>
+<p>rsync로 EBS -&gt; EBS 복제할 때 주요 절차만 요약하였습니다.<br>
+볼륨 용량 줄이기, File System변경 등에 사용할 수 있습니다.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2024/02/18/rsync%EB%A1%9C-ebs-%EB%B3%B5%EC%A0%9C%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-11-25 00:00:00+00:00">2023. 11. 25.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/architecture/" class="md-meta__link">Architecture</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 17분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="software-architecture-patterns"><a class="toclink" href="../../2023/11/25/software-architecture-patterns-%EC%A0%95%EB%A6%AC/">Software Architecture Patterns 정리</a></h2>
+<div class="admonition warning">
+<p><a href="https://www.udemy.com/course/the-complete-cloud-computing-software-architecture-patterns/">Udemy "The Complete Cloud Computing Software Architecture Patterns" 강의</a>를 듣고 복습을 위해 정리하였음</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>Pipes and Filters
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>Scatter Gather
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>Execution Orchestrator
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>Choreography
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a>Map Reduce
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>Saga
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>Transactional Outbox
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>Materialized View
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a>CQRS
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a>CQRS + Materialized View
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a>SideCar &amp; Ambassador
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a>Anti-Corruption Adaptor
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a>BFF(Backend For Frontend)
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a>Throttling and Rate Limiting
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a>Retry
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a>Circuit Braker
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a>DLQ(Dead Letter Queue)
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a>Rolling Deployment
+<a id="__codelineno-2-19" name="__codelineno-2-19"></a>Blue-Green Deployment
+<a id="__codelineno-2-20" name="__codelineno-2-20"></a>Canary Release, A/B test deployment
+<a id="__codelineno-2-21" name="__codelineno-2-21"></a>Chaos Engineering
+</code></pre></div></td></tr></table></div>
+</div>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2023/11/25/software-architecture-patterns-%EC%A0%95%EB%A6%AC/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-10-21 00:00:00+00:00">2023. 10. 21.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/terraform/" class="md-meta__link">Terraform</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 4분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="basis-eks-cluster-w-terraform"><a class="toclink" href="../../2023/10/21/basis-eks-cluster-w-terraform/">basis EKS cluster w/ terraform</a></h2>
+<p>K8S 연습을 위한 최소한의 EKS cluter 구축 terraform 코드입니다.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2023/10/21/basis-eks-cluster-w-terraform/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2023-02-01 00:00:00+00:00">2023. 2. 1.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/python/" class="md-meta__link">Python</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 5분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="process-restart-automation"><a class="toclink" href="../../2023/02/01/process-restart-automation/">Process restart automation</a></h2>
+<h3 id="_1"><a class="toclink" href="../../2023/02/01/process-restart-automation/#_1">목적</a></h3>
+<p>memory leak 이슈에 일단 자동으로 대응하기 서비스를 재시작 하는 파이썬 코드를 작성했습니다.</p>
+<h3 id="_2"><a class="toclink" href="../../2023/02/01/process-restart-automation/#_2">설명</a></h3>
+<ol>
+<li>python3.4 부터 호환 가능하도록 작성했습니다.</li>
+<li>서비스명을 argument 형태로 입력받습니다.</li>
+<li>현재 메모리 사용량을 확인합니다. /proc/meminfo를 활용합니다. free나 top등의 명령을 이용하도 되지만 datadog에서 확인했을때 동일한 usage를 확인할 수 있는 방법은 /proc/meminfo를 열어보는 것 밖에 없었습니다</li>
+<li>1번에서 입력받은 서비스가 현재 동작중인지 확인합니다. argument설정 에러로 현재 동작중이지도 않은 서비스를 실행시킬수도 있기 때문입니다.</li>
+<li>1번에서 입력받은 서비스들을 stop &amp; start 합니다</li>
+<li>process가 잘 올라왔는지 검증합니다. /proc/<pid> 를 이용해 확인합니다</li>
+<li>서비스로그에서 추가 검증이 가능한 경우 로그도 검증합니다</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2023/02/01/process-restart-automation/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2023-01-01 00:00:00+00:00">2023. 1. 1.</time></li>
         
           <li class="md-meta__item">
@@ -1663,238 +1915,6 @@
   </div>
 </article>
       
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 2분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="s3-object-encryption"><a class="toclink" href="../../2021/04/17/s3-object-encryption/">S3 object encryption</a></h2>
-<ol>
-<li>2023년 1월 5일 이후 업로드 되는 모든 오브젝트는 자동으로 암호화된다(SSE-S3) <a href="https://aws.amazon.com/ko/about-aws/whats-new/2023/01/amazon-s3-automatically-encrypts-new-objects/">관련정보</a></li>
-<li>S3 암호화 방식은 총 4가지가 존재한다<ul>
-<li>SSE-S3 (Server-Side Encryption with Amazon S3): AWS에서 키를 관리한다. 암호화 키 소유권은 AWS S3에 있다.</li>
-<li>SSE-C (Server-Side Encryption with Customer-Provided Keys): 고객이 제공하는 암호화 키를 사용해 데이터를 암호화 한다. 암호화키는 암호화 및 복호와에 모두 사용된다(대칭키)</li>
-<li>SSE-KMS (Server-Side Encryption with AWS Key Management Service): KMS 마스터키는 AWS KMS 서비스에서 관리된다. 암호화 키의 소유권이 고객에게 있다.</li>
-<li>DSSE-KMS (Dual-layer Server-Side Encryption with AWS KMS): AWS KMS 키를 사용해 두 겹의 AES-256 암호화를 적용한다. 규제 준수 요건이 높은 환경에서 사용된다.</li>
-</ul>
-</li>
-<li>암호화 방식에 따라 오브젝트 업로드 명령 옵션이 상이하다<ul>
-<li>SSE-S3 (default)<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;
-</code></pre></div></li>
-<li>SSE-C<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse-c<span class="w"> </span>AES256<span class="w"> </span>--sse-c-key<span class="w"> </span>&lt;encryption-key&gt;
-</code></pre></div></li>
-<li>SSE-KMS<br>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>&lt;object&gt;<span class="w"> </span>s3://&lt;bucket&gt;/&lt;key&gt;<span class="w"> </span>--sse<span class="w"> </span>aws:kms<span class="w"> </span>--sse-kms-key-id
-</code></pre></div></li>
-</ul>
-</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/s3-object-encryption/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 5분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="vpc-endpoint-with-role"><a class="toclink" href="../../2021/04/17/vpc-endpoint-with-role/">VPC Endpoint with Role</a></h2>
-<h3 id="_1"><a class="toclink" href="../../2021/04/17/vpc-endpoint-with-role/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>Bastion Host를 이용한 Private Network의 웹 서버 접속</li>
-<li>Endpoint를 이용해 게이트웨이 없이 VPC에서 S3, DynamoDB 접속</li>
-<li>Credential이 아닌 Role을 이용한 권한적용으로 보안성 확보</li>
-</ul>
-<h3 id="_2"><a class="toclink" href="../../2021/04/17/vpc-endpoint-with-role/#_2">구성도</a></h3>
-<hr />
-<p><img alt="VPC Endpoint with Role/Untitled.png" src="../../Cloud%20Infra/VPC%20Endpoint%20with%20Role/Untitled.png" /></p>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/vpc-endpoint-with-role/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/devops/" class="md-meta__link">DevOps</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 8분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="cicd-on-single-container"><a class="toclink" href="../../2021/04/17/cicd-on-single-container/">CICD on Single container</a></h2>
-<p><img alt="CICD on Single container/Untitled.png" src="../../DevOps/CICD%20on%20Single%20container/Untitled.png" /></p>
-<h3 id="_1"><a class="toclink" href="../../2021/04/17/cicd-on-single-container/#_1">목표</a></h3>
-<hr />
-<ol>
-<li>도커, 도커컴포즈를 이용한 테스트베드, 운영환경 실행환경 구성</li>
-<li>Travis CI를 이용해 Github → Travic CI → AWS Beanstalk 파이프라인 구현</li>
-<li>CICD 체험이 목적이기 떄문에 Nginx, 리액트는 작업하지 않습니다</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/cicd-on-single-container/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/devops/" class="md-meta__link">DevOps</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 5분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="circle-ci-basics"><a class="toclink" href="../../2021/04/17/circle-ci-basics/">Circle-CI Basics</a></h2>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/circle-ci-basics/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
       
         
           
@@ -1902,7 +1922,7 @@
 
 
 <nav class="md-pagination">
-  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12zm-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12z"/></svg></a> <a class="md-pagination__link" href="../7/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../6/">6</a> <a class="md-pagination__link" href="../7/">7</a> <span class="md-pagination__current">8</span> <a class="md-pagination__link" href="../9/">9</a> <a class="md-pagination__link" href="../10/">10</a> <a class="md-pagination__link" href="../9/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></a> <a class="md-pagination__link" href="../10/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.59 7.41 7 6l6 6-6 6-1.41-1.41L10.17 12zm6 0L13 6l6 6-6 6-1.41-1.41L16.17 12z"/></svg></a>
+  <a class="md-pagination__link" href="../../"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 7.41 17 6l-6 6 6 6 1.41-1.41L13.83 12zm-6 0L11 6l-6 6 6 6 1.41-1.41L7.83 12z"/></svg></a> <a class="md-pagination__link" href="../7/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.58 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg></a> <a class="md-pagination__link" href="../../">1</a> <span class="md-pagination__dots">..</span> <a class="md-pagination__link" href="../6/">6</a> <a class="md-pagination__link" href="../7/">7</a> <span class="md-pagination__current">8</span> <a class="md-pagination__link" href="../9/">9</a> <a class="md-pagination__link" href="../10/">10</a> <a class="md-pagination__link" href="../11/">11</a> <a class="md-pagination__link" href="../9/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.58 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></a> <a class="md-pagination__link" href="../11/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.59 7.41 7 6l6 6-6 6-1.41-1.41L10.17 12zm6 0L13 6l6 6-6 6-1.41-1.41L16.17 12z"/></svg></a>
 </nav>
         
       
