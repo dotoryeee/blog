@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="RTO와 RPO 개념과 비용 트레이드오프, MTTR·MTBF·DR·HA 용어, Legacy와 AWS 개선안, PITR 동작까지 정리">
+        <meta name="description" content="RAG 파이프라인의 청킹·임베딩·벡터 검색·하이브리드·리랭킹 단계별 선택지와 검색 품질을 떨어뜨리는 함정을 표로 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2025/03/10/rto-vs-rpo/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/27/rag-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../websocket-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
       
       
-        <link rel="next" href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">
+        <link rel="next" href="../llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>RTO vs RPO - dotoryeee's blog</title>
+        <title>RAG 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="RTO vs RPO - dotoryeee's blog" />
-<meta property="og:description" content="RTO와 RPO 개념과 비용 트레이드오프, MTTR·MTBF·DR·HA 용어, Legacy와 AWS 개선안, PITR 동작까지 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2025/03/10/rto-vs-rpo.png" />
+<meta property="og:title" content="RAG 정리 - dotoryeee's blog" />
+<meta property="og:description" content="RAG 파이프라인의 청킹·임베딩·벡터 검색·하이브리드·리랭킹 단계별 선택지와 검색 품질을 떨어뜨리는 함정을 표로 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/27/rag-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2025/03/10/rto-vs-rpo/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/27/rag-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="RTO vs RPO - dotoryeee's blog" />
-<meta property="twitter:description" content="RTO와 RPO 개념과 비용 트레이드오프, MTTR·MTBF·DR·HA 용어, Legacy와 AWS 개선안, PITR 동작까지 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2025/03/10/rto-vs-rpo.png" />
+<meta property="twitter:title" content="RAG 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="RAG 파이프라인의 청킹·임베딩·벡터 검색·하이브리드·리랭킹 단계별 선택지와 검색 품질을 떨어뜨리는 함정을 표로 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/27/rag-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rto-vs-rpo" class="md-skip">
+        <a href="#rag" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              RTO vs RPO
+              RAG 정리
             
           </span>
         </div>
@@ -826,7 +826,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -845,82 +845,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#rtorecovery-time-objective-vs-rporecovery-point-objective" class="md-nav__link">
+  <a href="#rag_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RTO(Recovery Time Objective) vs. RPO(Recovery Point Objective) 개념
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rto-rpo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RTO와 RPO의 차이점
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#rto-rpo_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RTO와 RPO의 이해를 돕는 예제
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="RTO와 RPO의 이해를 돕는 예제">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        예제 1: 은행 시스템
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        예제 2: 블로그 서비스
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        예제 3: 온라인 쇼핑몰
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aws-rto-rpo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS에서 RTO &amp; RPO를 충족하는 방법
+        RAG란
       
     </span>
   </a>
@@ -929,6 +857,116 @@
       
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        파이프라인 구성
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        청킹 전략
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        임베딩 모델 선택
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        유사도 척도
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        벡터 검색 방식
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        하이브리드 검색
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        리랭킹
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        생성 단계
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        검색 품질 평가
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        함정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -994,7 +1032,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2025-03-10 00:00:00+00:00" class="md-ellipsis">2025. 3. 10.</time>
+                        <time datetime="2026-07-27 00:00:00+00:00" class="md-ellipsis">2026. 7. 27.</time>
                       </div>
                     </li>
                     
@@ -1005,7 +1043,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/sre/">SRE</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1016,7 +1054,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 11분
+                              읽는시간 9분
                             
                           </span>
                         </div>
@@ -1044,7 +1082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1071,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="./" class="md-nav__link">
         
   
   
@@ -1098,7 +1136,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1125,7 +1163,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1152,7 +1190,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../26/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1179,7 +1217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1206,7 +1244,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+      <a href="../../26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1233,7 +1271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1260,7 +1298,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1287,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1314,7 +1352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+      <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
         
   
   
@@ -1341,7 +1379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1368,7 +1406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1395,7 +1433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1422,7 +1460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1449,7 +1487,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+      <a href="../../22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
         
   
   
@@ -1476,7 +1514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1503,7 +1541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1530,7 +1568,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1557,7 +1595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1584,7 +1622,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1611,7 +1649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1638,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1665,7 +1703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1692,7 +1730,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/vault-%EB%8F%99%EC%A0%81-%EC%8B%9C%ED%81%AC%EB%A6%BF-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+      <a href="../../21/vault-%EB%8F%99%EC%A0%81-%EC%8B%9C%ED%81%AC%EB%A6%BF-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
         
   
   
@@ -1719,7 +1757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1746,7 +1784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../20/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1773,7 +1811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1800,7 +1838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/kind%EC%97%90-argocd-%EC%98%AC%EB%A0%A4-gitops-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../20/kind%EC%97%90-argocd-%EC%98%AC%EB%A0%A4-gitops-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1827,7 +1865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/ebpf-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../20/ebpf-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1869,546 +1907,418 @@
       
       
       
-        <a href="../../../../../tags/#tag:dr" class="md-tag">DR</a>
+        <a href="../../../../../tags/#tag:embedding" class="md-tag">Embedding</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:ha" class="md-tag">HA</a>
+        <a href="../../../../../tags/#tag:llm" class="md-tag">LLM</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:rpo" class="md-tag">RPO</a>
-      
-    
-      
-      
-      
-      
-        <a href="../../../../../tags/#tag:rto" class="md-tag">RTO</a>
+        <a href="../../../../../tags/#tag:rag" class="md-tag">RAG</a>
       
     
   </nav>
 
 
 
-<h1 id="rto-vs-rpo">RTO vs RPO</h1>
+<h1 id="rag">RAG 정리</h1>
 <!-- more -->
 
-<h2 id="rtorecovery-time-objective-vs-rporecovery-point-objective">RTO(Recovery Time Objective) vs. RPO(Recovery Point Objective) 개념</h2>
-<table>
-<thead>
-<tr>
-<th>용어</th>
-<th>정의</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RTO (Recovery Time Objective, 복구 시간 목표)</td>
-<td>시스템 장애 발생 후, 서비스가 정상적으로 복구되기까지 허용 가능한 최대 시간</td>
-</tr>
-<tr>
-<td>RPO (Recovery Point Objective, 복구 지점 목표)</td>
-<td>장애 발생 시, 복구할 수 있는 가장 최신 데이터의 기준 시점</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="rto-rpo">RTO와 RPO의 차이점</h2>
-<table>
-<thead>
-<tr>
-<th>비교 항목</th>
-<th>RTO (복구 시간 목표)</th>
-<th>RPO (복구 지점 목표)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>목적</td>
-<td>서비스 복구 속도 보장</td>
-<td>데이터 손실 최소화</td>
-</tr>
-<tr>
-<td>의미</td>
-<td>장애 발생 후, 시스템을 복구할 수 있는 최대 시간</td>
-<td>장애 발생 시, 복구 가능한 최신 데이터 시점</td>
-</tr>
-<tr>
-<td>단위</td>
-<td>시간(초, 분, 시간, 일)</td>
-<td>시간(초, 분, 시간)</td>
-</tr>
-<tr>
-<td>핵심 질문</td>
-<td>"시스템을 몇 시간 안에 복구해야 하는가?"</td>
-<td>"최대 몇 시간 전의 데이터까지 복구 가능해야 하는가?"</td>
-</tr>
-<tr>
-<td>비즈니스 영향</td>
-<td>RTO가 길면 서비스 다운타임이 길어져 사용자 및 수익에 직접적인 영향</td>
-<td>RPO가 길면 데이터 손실 가능성이 커짐</td>
-</tr>
-<tr>
-<td>백업 전략</td>
-<td>장애 대응을 위한 재해 복구(DR) 및 고가용성(AWS Multi-AZ, Load Balancer 등) 활용</td>
-<td>백업 빈도 및 데이터 복제(AWS S3, RDS 스냅샷, DynamoDB Streams 등) 활용</td>
-</tr>
-<tr>
-<td>비용 고려</td>
-<td>RTO가 짧을수록(빠른 복구) 비용 증가 (HA, DR 구축 비용)</td>
-<td>RPO가 짧을수록(데이터 손실 최소화) 비용 증가 (고빈도 백업, 지속적 복제)</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="rto-rpo_1">RTO와 RPO의 이해를 돕는 예제</h2>
-<h3 id="1">예제 1: 은행 시스템</h3>
+<h2 id="rag_1">RAG란</h2>
+<p>RAG(Retrieval-Augmented Generation)란 질문에 관련된 문서를 먼저 찾아 프롬프트에 붙여 넣고 그 근거로 답을 생성하는 구조</p>
+<p>학습 시점 이후의 자료나 사내 문서는 가중치 안에 없어서, 답을 만들기 전에 밖에서 찾아 와야 함.</p>
 <ul>
-<li>RTO: 장애 발생 후 5분 안에 서비스가 정상적으로 복구되어야 함.</li>
-<li>RPO: 장애 발생 전 최대 1초 전의 데이터까지 복구 가능해야 함 (거래 데이터 손실 불가).</li>
-</ul>
-<h3 id="2">예제 2: 블로그 서비스</h3>
-<ul>
-<li>RTO: 장애 발생 후 1시간 안에 서비스가 정상적으로 복구되면 됨.</li>
-<li>RPO: 장애 발생 전 1일 전 데이터까지만 복구 가능해도 무방함.</li>
-</ul>
-<h3 id="3">예제 3: 온라인 쇼핑몰</h3>
-<ul>
-<li>RTO: 장애 발생 후 10분 안에 서비스가 복구되지 않으면 매출 손실 발생.</li>
-<li>RPO: 장애 발생 전 10분 전의 데이터까지 복구 가능해야 함 (주문 정보 손실 최소화).</li>
+<li>가중치는 그대로 두고 참조할 문서만 갈아 끼움 → 지식 갱신이 재학습 없이 색인 단계에서 끝남</li>
+<li>답에 쓰인 문장이 어느 청크에서 왔는지 파이프라인에 남음 → 원문과 대조 가능</li>
+<li>품질을 가르는 지점은 생성 모델이 아니라 검색 단계 → 틀린 문서가 올라오면 뒤에서 되돌릴 수단이 없음</li>
+<li>검색된 문서가 프롬프트에 실리는 만큼 컨텍스트와 토큰 비용↑</li>
+<li>말투나 출력 형식을 바꾸는 일은 이 구조로 안 됨 → 파인튜닝과의 선택 기준은 <a href="../../22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/">LLM 파인튜닝 정리</a>에서 다룸</li>
 </ul>
 <hr />
-<h2 id="aws-rto-rpo">AWS에서 RTO &amp; RPO를 충족하는 방법</h2>
+<h2 id="_1">파이프라인 구성</h2>
+<p>색인 단계에서 문서를 잘라 벡터로 바꿔 저장하고, 질의 단계에서 그 저장소를 뒤져 답을 만드는 흐름</p>
+<pre class="mermaid"><code>graph LR
+    D["문서"] --&gt; C["청킹"]
+    C --&gt; E["임베딩"]
+    E --&gt; V["벡터 저장소"]
+    Q["질의"] --&gt; S["검색"]
+    V --&gt; S
+    S --&gt; R["리랭킹"]
+    R --&gt; P["프롬프트 조립"]
+    P --&gt; G["생성"]</code></pre>
 <table>
 <thead>
 <tr>
-<th>AWS 서비스</th>
-<th>RTO 단축 (빠른 복구)</th>
-<th>RPO 최소화 (데이터 보호)</th>
+<th>단계</th>
+<th>하는 일</th>
+<th>주요 선택지</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>AWS Multi-AZ (RDS, DynamoDB 등)</td>
-<td>자동 장애 조치로 빠른 복구</td>
-<td>실시간 데이터 복제</td>
+<td>수집</td>
+<td>원본을 텍스트로 변환</td>
+<td>파서, OCR, 표·코드 처리</td>
 </tr>
 <tr>
-<td>AWS Backup</td>
-<td>신속한 백업 복구 가능</td>
-<td>백업 빈도를 높이면 RPO 최소화 가능</td>
+<td>청킹</td>
+<td>텍스트를 검색 단위로 자름</td>
+<td>크기, 겹침, 경계 기준</td>
 </tr>
 <tr>
-<td>Amazon S3 Cross-Region Replication</td>
-<td>장애 시 빠르게 데이터 복구 가능</td>
-<td>여러 리전에 걸쳐 데이터 복제</td>
+<td>임베딩</td>
+<td>청크를 벡터로 변환</td>
+<td>모델, 차원, 정규화</td>
 </tr>
 <tr>
-<td>AWS Lambda &amp; S3 Event Notification</td>
-<td>장애 감지 후 자동으로 복구 수행</td>
-<td>실시간 데이터 백업 가능</td>
+<td>저장</td>
+<td>벡터와 원문을 색인</td>
+<td>인덱스 방식, 메타데이터</td>
 </tr>
 <tr>
-<td>Amazon Aurora Global Database</td>
-<td>다른 리전에 복제본을 유지하여 복구 가능</td>
-<td>지속적인 데이터 동기화</td>
+<td>검색</td>
+<td>질의와 가까운 청크를 찾음</td>
+<td>top-k, 필터, 하이브리드</td>
+</tr>
+<tr>
+<td>리랭킹</td>
+<td>후보 순서를 다시 매김</td>
+<td>cross-encoder 사용 여부</td>
+</tr>
+<tr>
+<td>생성</td>
+<td>근거를 붙여 답을 만듦</td>
+<td>컨텍스트 배치, 출처 표기</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_1">결론</h2>
 <ul>
-<li>RTO는 "얼마나 빨리 시스템을 복구할 것인가"를 의미함.</li>
-<li>RPO는 "얼마나 최신 데이터를 보장할 것인가"를 의미함.</li>
-<li>RTO와 RPO 목표가 낮을수록(복구 시간이 짧고, 데이터 손실이 적을수록) 비용이 증가함.</li>
-<li>비즈니스 중요도에 따라 비용 vs. 복구 전략을 적절히 설계하는 것이 중요함.</li>
-<li>RTO는 "다운타임 최소화", RPO는 "데이터 손실 최소화"라고 이해하면 됌</li>
+<li>청킹에서 정한 경계가 검색 단위를 고정함 → 검색 시점에 더 잘게 나눌 수 없음</li>
+<li>임베딩 모델과 유사도 척도는 저장 단계에 박힘 → 바꾸면 저장소를 새로 만들어야 함</li>
+<li>메타데이터 필터는 저장할 때 넣어둔 필드로만 걸림 → 나중에 필요해지면 재색인</li>
 </ul>
-<h1 id="rto-rpo_2">RTO, RPO 관련 용어 및 차이점</h1>
-<h2 id="1-rto-rpo">1. RTO &amp; RPO와 관련된 주요 용어</h2>
+<hr />
+<h2 id="_2">청킹 전략</h2>
+<p>청킹(Chunking)이란 원본 문서를 검색과 프롬프트 삽입의 단위로 자르는 작업</p>
 <table>
 <thead>
 <tr>
-<th>용어</th>
-<th>정의</th>
-<th>RTO &amp; RPO와의 관계</th>
-<th>사용처</th>
+<th>방식</th>
+<th>자르는 기준</th>
+<th>장점</th>
+<th>단점</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>MTTR (Mean Time to Recovery, 평균 복구 시간)</td>
-<td>장애 발생 후 시스템이 복구되는 평균 시간</td>
-<td>RTO와 유사하지만, 실제 복구 시간이 포함됨</td>
-<td>IT 운영 및 장애 관리, 서비스 복구 전략</td>
+<td>고정 길이</td>
+<td>토큰·문자 수</td>
+<td>구현 단순, 크기 균일</td>
+<td>문장·문단 중간에서 잘림</td>
 </tr>
 <tr>
-<td>MTBF (Mean Time Between Failures, 평균 고장 간격)</td>
-<td>두 번의 장애 발생 사이의 평균 시간</td>
-<td>장애 발생 빈도가 높을수록 RTO와 RPO 요구사항이 더 중요해짐</td>
-<td>시스템 안정성 평가, 유지보수 계획</td>
+<td>문장·문단 경계</td>
+<td>구분자</td>
+<td>의미 단위 보존</td>
+<td>청크 크기 편차 큼</td>
 </tr>
 <tr>
-<td>DR (Disaster Recovery, 재해 복구)</td>
-<td>장애 또는 재해 발생 시 시스템을 복구하는 전략 및 프로세스</td>
-<td>RTO/RPO 목표에 따라 DR 전략이 결정됨</td>
-<td>고가용성 시스템, 데이터 보호 솔루션</td>
+<td>재귀 분할</td>
+<td>구분자에 우선순위를 두고 단계적으로</td>
+<td>경계 보존과 크기 제어를 절충</td>
+<td>구분자 설계가 필요</td>
 </tr>
 <tr>
-<td>HA (High Availability, 고가용성)</td>
-<td>장애 발생 시에도 서비스가 지속적으로 운영될 수 있도록 하는 시스템 설계</td>
-<td>RTO를 최소화하기 위한 핵심 전략</td>
-<td>금융 서비스, 미션 크리티컬 시스템</td>
+<td>문서 구조 기반</td>
+<td>헤딩·목차 계층</td>
+<td>맥락이 온전함</td>
+<td>구조가 있는 문서에만 가능</td>
 </tr>
 <tr>
-<td>BCP (Business Continuity Planning, 업무 연속성 계획)</td>
-<td>장애 발생 시 비즈니스 운영을 지속할 수 있도록 하는 계획</td>
-<td>RTO/RPO를 기반으로 DR 및 HA 전략을 포함</td>
-<td>기업 IT 운영, 리스크 관리</td>
-</tr>
-<tr>
-<td>Failover (장애 조치)</td>
-<td>장애 발생 시 자동으로 대체 시스템으로 전환하는 프로세스</td>
-<td>RTO를 최소화하는 핵심 메커니즘</td>
-<td>클라우드 서비스, 데이터센터 운영</td>
-</tr>
-<tr>
-<td>Backup (백업)</td>
-<td>데이터를 정기적으로 저장하여 장애 발생 시 복구 가능하도록 하는 방법</td>
-<td>RPO를 충족하는 데 필수적</td>
-<td>데이터 보호, 법적 규제 준수</td>
-</tr>
-<tr>
-<td>Replication (복제)</td>
-<td>데이터를 실시간으로 다른 위치에 동기화하여 저장하는 방법</td>
-<td>RPO를 최소화하고 실시간 복구 가능하게 함</td>
-<td>금융 시스템, AWS Multi-AZ, Redshift 복제</td>
+<td>의미 기반</td>
+<td>인접 문장의 임베딩 유사도</td>
+<td>주제 전환 지점에서 잘림</td>
+<td>색인 비용↑</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_2">결론</h2>
 <ul>
-<li>MTTR은 RTO와 유사하지만 실제 평균 복구 시간을 측정하는 데 사용됨.</li>
-<li>MTBF는 장애 발생 빈도를 나타내며, 장애 발생이 많을수록 RTO/RPO 요구사항이 더 중요해짐.</li>
-<li>DR(재해 복구)은 RTO/RPO 목표를 기반으로 수립되며, HA 및 백업 전략을 포함함.</li>
-<li>Replication은 RPO를 최소화하는 데 필수적이며, 실시간 데이터 보호가 필요한 환경에서 사용됨.</li>
-<li>AWS 환경에서는 Multi-AZ, Auto Scaling, S3 Cross-Region Replication 등의 서비스를 활용하여 RTO/RPO 목표를 달성할 수 있음.</li>
+<li>겹침(overlap)을 두면 경계에 걸친 문장의 손실이 줄어듦 → 대신 저장량과 중복 검색이 늘어남</li>
+<li>표·코드 블록은 중간에서 자르면 의미가 깨짐 → 별도 처리 권장</li>
+<li>적정 크기는 문서 성격이 정함 → 규정 문서와 대화 로그가 같은 값을 쓸 이유가 없음</li>
+<li>청크마다 출처·제목 같은 메타데이터를 함께 저장 → 필터와 출처 표기에 쓰임</li>
 </ul>
-<h1 id="legacy-vs-aws-rto-rpo-mttr-mtbf">Legacy vs AWS 환경에서 RTO, RPO, MTTR, MTBF 개선 방안</h1>
-<h2 id="_3">개념 정리</h2>
+<hr />
+<h2 id="_3">임베딩 모델 선택</h2>
+<p>임베딩(Embedding)이란 텍스트를 의미가 가까울수록 서로 가까운 벡터로 바꾸는 변환</p>
 <table>
 <thead>
 <tr>
-<th>용어</th>
-<th>정의</th>
-<th>개선해야 하는 이유</th>
+<th>기준</th>
+<th>무엇을 보는가</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>RTO (Recovery Time Objective)</td>
-<td>장애 발생 후 서비스 복구까지 허용 가능한 최대 시간</td>
-<td>서비스 다운타임 최소화</td>
+<td>언어</td>
+<td>한국어 문서면 다국어 학습 범위</td>
 </tr>
 <tr>
-<td>RPO (Recovery Point Objective)</td>
-<td>장애 발생 시 데이터 손실 허용 범위 (최신 백업과의 차이)</td>
-<td>데이터 유실 최소화</td>
+<td>컨텍스트 길이</td>
+<td>청크가 모델 입력 한도를 넘지 않는지</td>
 </tr>
 <tr>
-<td>MTTR (Mean Time to Recovery)</td>
-<td>장애 발생 후 복구까지 걸리는 평균 시간</td>
-<td>신속한 장애 대응</td>
+<td>임베딩 차원</td>
+<td>저장 용량·검색 속도와 표현력의 절충</td>
 </tr>
 <tr>
-<td>MTBF (Mean Time Between Failures)</td>
-<td>장애 발생 후 다음 장애까지의 평균 시간</td>
-<td>시스템 안정성 증가</td>
+<td>질의·문서 비대칭</td>
+<td>질의와 문서에 서로 다른 지시문·프리픽스를 요구하는지</td>
+</tr>
+<tr>
+<td>실행 위치</td>
+<td>로컬 실행 가능 여부, API 비용</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="legacy">Legacy 환경 (온프레미스)에서 개선 방안</h2>
-<table>
-<thead>
-<tr>
-<th>요소</th>
-<th>개선 방법</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RTO 최소화</td>
-<td>이중화(HA) 서버 구성</td>
-<td>물리적 서버 및 데이터센터 이중화</td>
-</tr>
-<tr>
-<td></td>
-<td>DR(재해 복구) 센터 운영</td>
-<td>이중 데이터센터를 구성하여 장애 시 신속한 복구</td>
-</tr>
-<tr>
-<td></td>
-<td>자동화된 장애 감지 및 복구 스크립트</td>
-<td>장애 감지 후 자동 페일오버 수행</td>
-</tr>
-<tr>
-<td>RPO 최소화</td>
-<td>고빈도 백업 수행</td>
-<td>RAID, SAN, NAS 백업 주기 단축</td>
-</tr>
-<tr>
-<td></td>
-<td>실시간 데이터 복제</td>
-<td>DB 복제 (Active-Standby, Active-Active)</td>
-</tr>
-<tr>
-<td></td>
-<td>테이프 백업에서 디스크 기반 백업 전환</td>
-<td>신속한 데이터 복구 가능</td>
-</tr>
-<tr>
-<td>MTTR 최소화</td>
-<td>모니터링 시스템 구축</td>
-<td>장애 탐지 시스템 (Nagios, Zabbix)</td>
-</tr>
-<tr>
-<td></td>
-<td>장애 대응 매뉴얼 운영</td>
-<td>장애 복구 절차 표준화</td>
-</tr>
-<tr>
-<td></td>
-<td>예비 부품/서버 유지</td>
-<td>장애 발생 시 신속한 하드웨어 교체</td>
-</tr>
-<tr>
-<td>MTBF 최대화</td>
-<td>정기적인 유지보수 및 점검</td>
-<td>하드웨어 및 네트워크 점검</td>
-</tr>
-<tr>
-<td></td>
-<td>서버/스토리지 이중화</td>
-<td>단일 장애점(SPOF) 제거</td>
-</tr>
-<tr>
-<td></td>
-<td>전원 및 냉각 시스템 보강</td>
-<td>UPS, 발전기 추가 구축</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="aws">AWS 환경에서 개선 방안</h2>
-<table>
-<thead>
-<tr>
-<th>요소</th>
-<th>개선 방법</th>
-<th>AWS 서비스 활용</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RTO 최소화</td>
-<td>Auto Scaling</td>
-<td>EC2 자동 확장으로 장애 시 대체 인스턴스 생성</td>
-</tr>
-<tr>
-<td></td>
-<td>Multi-AZ 구성</td>
-<td>RDS, ElastiCache 등을 멀티 AZ로 구성하여 장애 시 자동 전환</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS Elastic Load Balancer (ELB)</td>
-<td>트래픽을 자동으로 정상 인스턴스로 라우팅</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS Route 53</td>
-<td>장애 감지 후 자동 페일오버 수행</td>
-</tr>
-<tr>
-<td>RPO 최소화</td>
-<td>S3 Cross-Region Replication</td>
-<td>S3 데이터를 다른 리전에 실시간 복제</td>
-</tr>
-<tr>
-<td></td>
-<td>RDS Read Replica</td>
-<td>DB 복제를 통해 최신 데이터 유지</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS Backup &amp; EBS Snapshot</td>
-<td>정기적인 데이터 백업</td>
-</tr>
-<tr>
-<td></td>
-<td>DynamoDB Global Tables</td>
-<td>글로벌 데이터 복제</td>
-</tr>
-<tr>
-<td>MTTR 최소화</td>
-<td>CloudWatch + SNS 알림</td>
-<td>장애 감지 후 즉시 알림 전송</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS Lambda로 자동 복구</td>
-<td>장애 감지 시 복구 스크립트 실행</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS System Manager</td>
-<td>장애 원인 분석 및 원격 명령 실행</td>
-</tr>
-<tr>
-<td></td>
-<td>EC2 Auto Healing</td>
-<td>장애 발생 시 자동으로 대체 인스턴스 배포</td>
-</tr>
-<tr>
-<td>MTBF 최대화</td>
-<td>AWS Well-Architected Framework 적용</td>
-<td>안정적인 아키텍처 설계 가이드 준수</td>
-</tr>
-<tr>
-<td></td>
-<td>Auto Scaling 활용</td>
-<td>트래픽 급증 시 시스템 부하 방지</td>
-</tr>
-<tr>
-<td></td>
-<td>AWS Trusted Advisor</td>
-<td>보안 및 인프라 문제 사전 탐지</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="legacy-vs-aws">Legacy vs AWS 비교 요약</h2>
-<table>
-<thead>
-<tr>
-<th>요소</th>
-<th>Legacy 환경</th>
-<th>AWS 환경</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RTO 최소화</td>
-<td>이중화 서버, DR 센터</td>
-<td>Auto Scaling, Multi-AZ, ELB</td>
-</tr>
-<tr>
-<td>RPO 최소화</td>
-<td>고빈도 백업, 실시간 복제</td>
-<td>S3 Replication, RDS Read Replica, AWS Backup</td>
-</tr>
-<tr>
-<td>MTTR 최소화</td>
-<td>모니터링 시스템, 장애 대응 매뉴얼</td>
-<td>CloudWatch, Lambda 자동 복구, Auto Healing</td>
-</tr>
-<tr>
-<td>MTBF 최대화</td>
-<td>정기 유지보수, 이중화</td>
-<td>Well-Architected Framework, Auto Scaling</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_4">결론</h2>
 <ul>
-<li>Legacy 환경에서는 하드웨어 이중화, DR 센터 운영, 정기 점검이 필요하지만, 비용과 운영 부담이 큼.</li>
-<li>AWS 환경에서는 Auto Scaling, Multi-AZ, AWS Backup, CloudWatch 자동 모니터링 등을 활용하여 RTO/RPO/MTTR/MTBF를 자동화할 수 있음.</li>
-<li>AWS의 자동 복구 기능을 활용하면 Legacy 대비 더 빠르게 장애 복구 가능하며, 운영 비용도 절감할 수 있음.</li>
+<li>차원이 크면 표현력↑, 대신 저장량과 검색 비용↑</li>
+<li>일부 모델은 출력 차원을 잘라 쓸 수 있음 → Qwen3-Embedding-0.6B는 32~1024 범위에서 지정 가능</li>
+<li>같은 모델이 100개 이상 언어와 32k 컨텍스트를 감당해 한국어 문서와 긴 청크를 함께 받음</li>
+<li>질의 측에만 지시문(instruct)을 붙이는 것이 이 모델의 권장 사용법 → 생략하면 1~5% 하락한다고 공식 문서가 밝힘</li>
+<li>로컬 임베딩은 문서량이 많을수록 API 대비 비용 이점이 커짐</li>
 </ul>
-<h1 id="pitr-point-in-time-recovery">PITR (Point-In-Time Recovery) 개념과 동작 방식</h1>
-<h2 id="pitrpoint-in-time-recovery">PITR(Point-In-Time Recovery)란?</h2>
-<p>PITR(시점 복구, Point-In-Time Recovery)는 데이터베이스에서 특정 시점으로 데이터를 복구할 수 있는 기능입니다.<br />
-데이터 손실 또는 장애 발생 시, 사용자가 지정한 특정 시점으로 DB 상태를 복원할 수 있습니다.</p>
 <hr />
-<h2 id="pitr">PITR의 원리 및 동작 방식</h2>
-<p>PITR은 주기적인 백업(snapshot) + 변경 로그(transaction log, WAL/Binlog)를 사용하여 원하는 시점으로 복구하는 방식입니다.</p>
-<h3 id="pitr_1">PITR 동작 방식</h3>
-<ol>
-<li>Full Backup(스냅샷) 생성<br />
-    주기적으로 전체 데이터베이스의 정확한 복사본(스냅샷)을 저장<br />
-    MySQL은 <code>mysqldump</code>, PostgreSQL은 <code>pg_basebackup</code>과 같은 방법 사용</li>
-<li>변경 로그(트랜잭션 로그) 지속적 기록<br />
-    백업 이후 발생하는 모든 변경 사항을 트랜잭션 로그(WAL, Binlog)에 저장<br />
-    MySQL: Binary Log (Binlog) 사용<br />
-    PostgreSQL: WAL(Write-Ahead Logging) 사용</li>
-<li>복구 요청 발생<br />
-    데이터베이스 관리자(DBA)가 특정 시점(예: <code>2025-03-10 14:30:00</code>)으로 복구 요청</li>
-<li>Snapshot(전체 백업) 복원 후 트랜잭션 로그 적용<br />
-    가장 가까운 Full Backup(스냅샷)으로 복원<br />
-    스냅샷 이후의 트랜잭션 로그를 차례로 적용하여 지정된 시점까지 복구<br />
-    이 과정에서 특정 트랜잭션을 제외하고 적용 가능 (Selective Recovery)</li>
-<li>지정된 시점으로 DB 상태 복원 완료<br />
-    해당 시점의 정확한 데이터 상태로 DB가 복구됨  </li>
-</ol>
-<hr />
-<h2 id="pitr_2">PITR과 일반 백업 비교</h2>
+<h2 id="_4">유사도 척도</h2>
+<p>유사도 척도(Similarity Metric)란 두 벡터가 얼마나 가까운지를 하나의 숫자로 재는 기준</p>
 <table>
 <thead>
 <tr>
-<th>비교 항목</th>
-<th>일반 백업</th>
-<th>PITR</th>
+<th>척도</th>
+<th>재는 것</th>
+<th>특징</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>복구 가능 범위</td>
-<td>특정 시점의 백업으로만 복구 가능</td>
-<td>백업 이후 원하는 특정 시점으로 복구 가능</td>
+<td>cosine</td>
+<td>두 벡터가 이루는 각</td>
+<td>크기 영향 없음, 값의 범위가 정해짐</td>
 </tr>
 <tr>
-<td>데이터 손실 가능성</td>
-<td>백업 이후 변경된 데이터는 손실될 가능성이 있음</td>
-<td>트랜잭션 로그를 활용하여 최소한의 데이터 손실</td>
+<td>내적(dot product)</td>
+<td>각과 크기를 함께 반영</td>
+<td>크기가 큰 벡터가 유리, 상한 없음</td>
 </tr>
 <tr>
-<td>복구 속도</td>
-<td>빠름 (백업된 시점으로만 복구)</td>
-<td>비교적 느림 (트랜잭션 로그를 순차적으로 적용해야 함)</td>
+<td>유클리드 거리(L2)</td>
+<td>좌표 공간에서의 직선 거리</td>
+<td>값이 작을수록 가까움</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>벡터를 단위 길이로 정규화하면 cosine과 내적이 같은 순위를 냄 → 정규화 여부가 두 척도의 차이를 만듦</li>
+<li>정규화된 벡터에서는 L2 거리 순위도 cosine과 일치함</li>
+<li>모델 카드가 전제한 척도와 색인 설정이 어긋나면 오류 없이 순위만 나빠짐</li>
+<li>색인을 만들 때 정한 척도를 질의에서도 그대로 씀</li>
+</ul>
+<hr />
+<h2 id="_5">벡터 검색 방식</h2>
+<p>근사 최근접 이웃(ANN, Approximate Nearest Neighbor)이란 정확한 최근접을 포기하는 대신 탐색 범위를 줄여 속도를 얻는 검색 방식</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>동작</th>
+<th>정확도</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flat</td>
+<td>모든 벡터와 거리 계산</td>
+<td>정확</td>
+<td>데이터가 늘면 선형으로 느려짐</td>
 </tr>
 <tr>
-<td>사용 사례</td>
-<td>주기적인 백업만 필요할 때</td>
-<td>데이터 실수 삭제 복구, 장애 발생 시 특정 시점 복구</td>
+<td>IVF</td>
+<td>벡터를 군집으로 나누고 일부 군집만 탐색</td>
+<td>근사</td>
+<td>탐색 군집 수로 속도와 정확도 조절</td>
+</tr>
+<tr>
+<td>HNSW</td>
+<td>계층 그래프를 따라 가까운 이웃을 좁혀 감</td>
+<td>근사</td>
+<td>검색이 빠름, 색인 메모리 사용량이 큼</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Flat은 정확한 답을 주지만 규모가 커지면 감당이 안 됨 → 소규모나 정답 기준 비교용</li>
+<li>IVF는 탐색할 군집 수를 늘리면 정확도↑, 대신 지연↑</li>
+<li>HNSW는 벡터마다 이웃 링크를 들고 있어 링크를 늘릴수록 RAM↑</li>
+<li>양자화를 걸면 메모리를 크게 줄일 수 있음 → Qdrant는 최대 97% 절감을 내세움</li>
+</ul>
+<hr />
+<h2 id="_6">하이브리드 검색</h2>
+<p>하이브리드 검색(Hybrid Search)이란 벡터 검색과 키워드 검색을 함께 돌려 두 결과를 하나의 순위로 합치는 방식</p>
+<ul>
+<li>벡터 검색은 표현이 달라도 의미가 같으면 찾음 → 대신 고유명사·코드·희귀 식별자에 약함</li>
+<li>키워드 검색(BM25 등)은 정확한 토큰 일치에 강함 → 대신 동의어·환언에 약함</li>
+<li>두 점수는 스케일이 달라 그대로 더할 수 없음 → cosine은 범위가 정해져 있고 BM25는 상한 없이 질의마다 분포가 달라짐</li>
+<li>RRF(Reciprocal Rank Fusion)는 점수 대신 순위를 써서 합침 → 스케일 문제를 우회함</li>
+<li>DBSF(Distribution-Based Score Fusion)는 검색기별 점수 분포를 평균±3σ 구간으로 정규화한 뒤 합산</li>
+<li>Qdrant는 dense 벡터와 sparse 벡터를 한 저장소에서 다루고 두 융합 전략을 모두 제공</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>상황</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>제품명·오류 코드·식별자 조회</td>
+<td>키워드 검색</td>
+</tr>
+<tr>
+<td>표현이 다른 같은 개념 조회</td>
+<td>벡터 검색</td>
+</tr>
+<tr>
+<td>사내 문서처럼 둘이 섞임</td>
+<td>하이브리드</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="pitr_3">PITR이 유용한 사례</h2>
-<p>운영자의 실수로 인해 데이터 손실이 발생한 경우<br />
-   - 실수로 <code>DELETE</code> 또는 <code>UPDATE</code> 실행 시 삭제되기 전 상태로 복구 가능</p>
-<p>랜섬웨어 공격 또는 데이터 손상 발생 시<br />
-   - 특정 시점(공격 발생 직전)으로 복구하여 피해 최소화</p>
-<p>애플리케이션 장애 발생 후 롤백할 필요가 있는 경우<br />
-   - 잘못된 배포 후 데이터가 변경된 경우, 배포 전 상태로 복원 가능</p>
-<hr />
-<h2 id="aws-pitr">AWS에서 PITR 적용 방법</h2>
-<p>AWS에서는 RDS, DynamoDB에서 PITR 기능을 제공(RDS 모든 엔진 사용 가능)</p>
-<h3 id="amazon-rds-pitr">Amazon RDS의 PITR</h3>
+<h2 id="_7">리랭킹</h2>
+<p>리랭킹(Reranking)이란 1단계 검색이 올린 후보를 더 정확한 모델로 다시 채점해 순서를 바꾸는 단계</p>
 <ul>
-<li>Binary Log(Binlog) 또는 WAL을 사용하여 특정 시점 복구 가능</li>
-<li>최대 35일까지 트랜잭션 로그 보관 가능</li>
+<li>1단계는 속도를 위해 질의와 문서를 각각 따로 벡터로 만들어 비교함(bi-encoder)</li>
+<li>리랭커는 질의와 문서를 한 입력에 넣어 관련도를 직접 매김(cross-encoder) → 정확하지만 느림</li>
+<li>1단계에서 후보를 넉넉히 뽑고 2단계에서 상위 몇 개만 다시 매기는 구성이 일반적</li>
+<li>후보 수를 늘릴수록 놓치는 문서는 줄고 리랭킹 비용↑</li>
+<li>리랭킹은 순서를 고칠 뿐 1단계가 못 찾은 문서를 만들어 내지는 못함</li>
+<li>문서를 토큰 단위 벡터로 색인에 미리 담아 두고 질의 시점에 토큰끼리 대조하는 late interaction 계열도 있음 → Qdrant의 multivector가 이 용도</li>
+</ul>
+<hr />
+<h2 id="_8">생성 단계</h2>
+<p>검색이 올린 청크를 프롬프트에 배치하고 답의 범위를 그 안으로 묶는 자리</p>
+<ul>
+<li>청크를 넣는 순서와 형식이 답에 영향 → 문서 경계와 출처가 구분되게 표시</li>
+<li>청크마다 문서 식별자를 함께 실으면 답에 인용을 붙이게 할 수 있음</li>
+<li>검색 결과가 비었거나 점수가 낮으면 생성을 막고 못 찾았다고 답하게 두는 편이 안전</li>
+<li>작은 청크로 검색하고 생성에는 앞뒤 청크를 붙여 넘기면 검색 정확도와 근거 분량을 함께 챙김</li>
+<li>프롬프트에 실린 문서가 길수록 지연과 토큰 비용↑ → top-k를 키우기 전에 리랭킹을 먼저 검토</li>
+</ul>
+<hr />
+<h2 id="_9">검색 품질 평가</h2>
+<p>검색이 올린 문서 목록을 정답 문서와 대조해 점수를 매기는 일</p>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>재는 것</th>
+<th>쓰는 자리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>recall@k</td>
+<td>정답 문서가 상위 k개 안에 들어왔는지</td>
+<td>1단계 후보 확보 점검</td>
+</tr>
+<tr>
+<td>precision@k</td>
+<td>상위 k개 중 정답 문서의 비율</td>
+<td>컨텍스트 낭비 점검</td>
+</tr>
+<tr>
+<td>MRR(Mean Reciprocal Rank)</td>
+<td>첫 정답이 나온 순위</td>
+<td>상위 한두 개만 쓰는 구성</td>
+</tr>
+<tr>
+<td>nDCG</td>
+<td>순위 가중치를 둔 관련도 누적</td>
+<td>리랭킹 효과 비교</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>질의와 정답 문서를 짝지어 고정해 둔 골든 질의셋이 평가의 출발점</li>
+<li>질의셋은 실제 사용자 질문에서 뽑는 것이 권장 → 만들어낸 질문은 색인에 유리하게 기울기 쉬움</li>
+<li>1단계는 recall을 먼저 보고, 리랭킹을 붙인 뒤에는 순위 지표로 봄</li>
+<li>생성 결과만 보면 검색이 틀린 건지 프롬프트가 틀린 건지 갈라내지 못함 → 검색 지표를 따로 잼</li>
+</ul>
+<hr />
+<h2 id="_10">함정</h2>
+<p>증상이 생성 쪽에서 나타나도 원인은 대개 색인·검색 설정에 있음</p>
+<table>
+<thead>
+<tr>
+<th>문제</th>
+<th>증상</th>
+<th>해결 방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>색인·질의 임베딩 모델 불일치</td>
+<td>질의와 무관한 문서가 뽑힘</td>
+<td>같은 모델로 통일, 교체 시 전체 재색인</td>
+</tr>
+<tr>
+<td>유사도 척도 어긋남</td>
+<td>정규화 안 된 벡터에서 순위가 뒤집힘</td>
+<td>모델이 전제한 척도로 색인 설정을 맞춤</td>
+</tr>
+<tr>
+<td>청크가 너무 큼</td>
+<td>관련 문단이 잡음에 묻혀 점수가 낮게 나옴</td>
+<td>청크를 줄이고 겹침 조정</td>
+</tr>
+<tr>
+<td>청크가 너무 작음</td>
+<td>검색은 맞는데 답에 쓸 근거가 모자람</td>
+<td>인접 청크를 함께 전달</td>
+</tr>
+<tr>
+<td>top-k가 과함</td>
+<td>답이 산만해지고 토큰 비용↑</td>
+<td>리랭킹으로 상위만 남김</td>
+</tr>
+<tr>
+<td>고유명사 검색 실패</td>
+<td>코드·식별자를 그대로 넣어도 안 잡힘</td>
+<td>하이브리드 검색 도입</td>
+</tr>
+<tr>
+<td>근거 없는 답</td>
+<td>검색 결과가 비어도 답이 생성됨</td>
+<td>검색 실패 시 생성을 막음</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_11">결론</h2>
+<ul>
+<li>청킹·임베딩·척도·색인 설정이 함께 검색 품질을 정함 → 손잡이 하나만 돌려서는 잘 안 움직임</li>
+<li>하이브리드와 리랭킹은 1단계가 후보를 올려준 뒤에야 효과가 남음</li>
+<li>임베딩 모델 교체는 전체 재색인을 부름 → 파이프라인에서 가장 먼저 고정할 선택</li>
+<li>검색 지표를 재는 장치부터 갖추고 청크 크기와 top-k를 건드릴 것</li>
 </ul>
 
 
@@ -2456,7 +2366,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../websocket-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: Websocket 정리">
+          <a href="../../26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: MCP 서버 만들어 Claude Code에 붙이기">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2466,20 +2376,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Websocket 정리
+                MCP 서버 만들어 Claude Code에 붙이기
               </div>
             </div>
           </a>
         
         
           
-          <a href="../oltp-vs-olap-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: OLTP vs OLAP 차이점 정리">
+          <a href="../llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: llama.cpp로 MoE와 Dense 추론 성능 비교하기">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                OLTP vs OLAP 차이점 정리
+                llama.cpp로 MoE와 Dense 추론 성능 비교하기
               </div>
             </div>
             <div class="md-footer__button md-icon">
