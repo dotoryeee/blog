@@ -406,6 +406,8 @@ status:
 
 경고 문구는 사이드카 모드를 설명한 것이다. Envoy는 같은 상황에서 조건을 넓혀 전부 막지만 ztunnel에는 그 처리가 없다. 다만 같은 규칙에 포트가 함께 적혀 있으면 match가 비지 않아 그 포트 전체가 막히므로, 그때는 경고대로 동작한다. 1.30.3에서 확인한 결과이고, istiod가 빈 match를 내려보내지 않도록 바뀌면 달라질 수 있다.
 
+빈 match를 두고 안내 문구와 실제 동작이 어긋나는 문제는 상류에서도 지적된 적이 있다. 2024년 말 [ztunnel authz pol status is confusing](https://github.com/istio/istio/issues/54334) 이슈가 ALLOW 쪽 status 문구를 두고 같은 문제를 제기했고 그때 문구가 정리됐다. DENY 쪽 문구는 1.30.3에서도 사이드카 기준 그대로 남아 있다.
+
 정리 글에서 L7 인가는 waypoint가 있어야 걸린다고 적었던 이유가 여기 있다. waypoint는 쿠버네티스 Gateway API의 Gateway 리소스로 만들어지는데, CRD가 없으면 첫 시도부터 막힌다.
 
 ```s
