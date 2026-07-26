@@ -98,37 +98,33 @@ def on_files(files, config):
     return files
 
 
-_section = None
+_recent = []
 
 
 def on_nav(nav, config, files):
-    """최근 글 섹션을 만들어 두기만 한다. 붙이는 것은 페이지별로 판단한다."""
-    global _section
-    _section = None
-
+    """최근 글 목록을 만들어 둔다. 실제 표시는 템플릿이 맡는다."""
+    global _recent
     posts = getattr(config, "_all_posts", None) or _collect(config.docs_dir)
     picked = posts if NAV_RECENT <= 0 else posts[:NAV_RECENT]
 
     # src_uri 로 File 을 찾아 mkdocs 가 계산한 url 을 그대로 쓴다
     by_src = {f.src_uri: f for f in files}
-    items = [
+    _recent = [
         Link(p["title"], by_src[p["src"]].url)
         for p in picked
         if p["src"] in by_src
     ]
-    if items:
-        _section = Section(NAV_TITLE, items)
     return nav
 
 
 def on_page_context(context, page, config, nav):
-    """포스트를 그릴 때만 최근 글 섹션을 네비에 끼운다."""
-    if _section is None:
-        return context
-    is_post = page.file.src_uri.startswith("blog/posts/")
-    attached = _section in nav.items
-    if is_post and not attached:
-        nav.items.append(_section)
-    elif not is_post and attached:
-        nav.items.remove(_section)
+    """포스트 화면에서만 템플릿에 최근 글 목록을 넘긴다.
+
+    포스트 페이지는 mkdocs-material 이 좌측 사이드바를 blog-post.html 의 글 메타
+    패널로 바꿔 그리고 기본 네비게이션은 숨긴다. 그래서 네비에 섹션을 끼우는 방식은
+    화면에 나오지 않는다. overrides/blog-post.html 이 이 값을 받아 직접 그린다.
+    """
+    if _recent and page.file.src_uri.startswith("blog/posts/"):
+        context["recent_posts"] = _recent
+        context["recent_posts_title"] = NAV_TITLE
     return context
