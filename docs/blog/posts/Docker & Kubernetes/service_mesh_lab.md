@@ -197,6 +197,10 @@ Content-Length: 248
 
 노드 안 어디서 패킷을 뜨든 상관없이, 지금은 요청과 응답이 패킷에 그대로 노출된다.
 
+istio 배포판의 samples/addons에 있는 Prometheus와 Kiali를 추가로 올려 같은 상태를 그래프로도 본다. 라벨 적용 전이라 Kiali 그래프에도 sleep과 httpbin이 연결 없이 따로 떠 있다.
+
+![Kiali 트래픽 그래프에 sleep과 httpbin이 연결 없이 표시된 화면](service_mesh_lab/1.PNG)
+
 ## 앰비언트 라벨 적용
 
 ---
@@ -217,6 +221,10 @@ httpbin-66858df76d-gvjfs   1/1     Running   0          2m16s
 sleep-7598f4665f-9thnf     1/1     Running   0          52s
 ```
 
+Kiali 그래프에도 sleep에서 httpbin으로 가는 엣지가 새로 나타나고 TCP 트래픽 수치가 찍히기 시작한다.
+
+![라벨 적용 후 Kiali 그래프에 sleep에서 httpbin으로 가는 엣지가 나타난 화면](service_mesh_lab/2.PNG)
+
 ztunnel이 이 두 파드를 인지했는지는 istioctl로 바로 확인할 수 있다. WAYPOINT 컬럼은 아직 비어 있고 PROTOCOL이 HBONE으로 잡힌다.
 
 ```s
@@ -234,6 +242,10 @@ CERTIFICATE NAME                                      TYPE   STATUS      VALID C
 spiffe://cluster.local/ns/dotoryeee-demo/sa/httpbin   Leaf   Available   true          e060da9be4ddefbbded6436973c0a8b6   2026-07-27T06:45:03Z   2026-07-26T06:43:03Z
 spiffe://cluster.local/ns/dotoryeee-demo/sa/sleep     Leaf   Available   true          37fd2926a010bfed4f763ec142bef01d   2026-07-27T06:45:03Z   2026-07-26T06:43:03Z
 ```
+
+httpbin 워크로드 상세에도 Mode가 Ambient로 표시되어 사이드카 없는 데이터플레인 편입이 Kiali 쪽에서도 확인된다.
+
+![httpbin 워크로드 개요에 Mode가 Ambient로 표시된 화면](service_mesh_lab/3.PNG)
 
 ## 적용 후 HBONE 확인
 
@@ -287,6 +299,10 @@ kubectl logs -n dotoryeee-demo sleep-7598f4665f-9thnf -c tcpdump-hex
 
 TCP 옵션 뒤 0x0030 오프셋의 1703 0300이 TLS 레코드 헤더다. 0x17은 Application Data, 0x0303은 레코드 계층 버전, 뒤의 007c는 124바이트 길이를 뜻한다. ztunnel이 두 파드의 SPIFFE 인증서로 mTLS를 걸고 그 위에 HBONE(HTTP/2 CONNECT) 터널을 얹어 보낸 결과다.
 
+Kiali에서 Security 표시를 켜면 sleep과 httpbin을 잇는 엣지 모두에 자물쇠 아이콘이 붙는다.
+
+![Kiali 그래프에서 Security 표시를 켜니 엣지에 자물쇠 아이콘이 붙은 화면](service_mesh_lab/4.PNG)
+
 ## L4 인가 정책 확인
 
 ---
@@ -331,6 +347,10 @@ command terminated with exit code 56
 ```
 
 waypoint 없이도 요청이 막혔다. 다만 막히는 방식이 눈에 띈다. HTTP 403이 아니라 TCP 연결 자체가 끊긴다. ztunnel은 HTTP를 종료하지 않으니 403 응답을 만들어 돌려줄 수가 없고, 연결을 끊는 것으로 거부를 표현한다.
+
+이 상태의 Kiali 그래프는 엣지 색과 % Error 값이 그대로고, 대신 네임스페이스 옆에 정책 경고 배지 하나만 붙는다.
+
+![L4 정책 적용 후 Kiali 네임스페이스에 경고 배지가 붙은 화면](service_mesh_lab/5.PNG)
 
 규칙의 네임스페이스를 dotoryeee-demo로 고치면 다시 통과한다.
 
@@ -474,6 +494,10 @@ dotoryeee-demo httpbin-66858df76d-gvjfs 10.244.0.9  dotoryeee-mesh-control-plane
 dotoryeee-demo sleep-7598f4665f-9thnf   10.244.0.10 dotoryeee-mesh-control-plane waypoint HBONE
 ```
 
+Kiali 그래프에도 waypoint가 새 노드로 나타나고, 이때부터 TCP뿐 아니라 HTTP 요청 수치도 함께 잡힌다.
+
+![waypoint 배포 후 Kiali 그래프에 waypoint 노드가 새로 나타난 화면](service_mesh_lab/6.PNG)
+
 그런데도 POST는 여전히 200이다. waypoint의 Envoy 설정을 직접 확인해 보면, 이 정책 자체가 waypoint까지 전달되지 않았다.
 
 ```s
@@ -551,6 +575,14 @@ RBAC: access denied
 ```
 
 L4 차단은 연결이 끊기는 것으로 끝났지만, 이번엔 403 Forbidden과 RBAC: access denied 본문까지 돌아온다. waypoint는 Envoy라서 HTTP 레벨에서 요청을 받고 판단하고 응답까지 만들 수 있다는 차이가 그대로 드러난다.
+
+sleep 워크로드의 Outbound Traffic 목록에서도 Service httpbin 경로만 Percent Success가 0.0%로 떨어진다.
+
+![sleep 워크로드 Outbound Traffic 목록에서 httpbin Service 경로만 Percent Success 0.0%로 표시된 화면](service_mesh_lab/7.PNG)
+
+Istio Config 목록에는 두 AuthorizationPolicy가 모두 검증 정상 상태로 올라온다.
+
+![Istio Config 목록에 httpbin-l4-policy와 httpbin-l7-policy가 검증 정상 상태로 표시된 화면](service_mesh_lab/8.PNG)
 
 ## 파드에 붙는 컨테이너
 
