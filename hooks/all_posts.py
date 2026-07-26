@@ -1,7 +1,13 @@
-"""좌측 네비에 최근 글 목록을 넣고, 전체 글 목록 페이지를 생성한다.
+"""포스트 화면에서만 좌측 네비에 최근 글을 띄우고, 전체 글 목록 페이지를 만든다.
 
-on_files: blog/all.md 를 만들어 전체 목록을 담는다.
-on_nav:   좌측 네비에 최근 글 N개를 링크로 끼워 넣는다.
+on_files:        blog/all.md 를 만들어 전체 목록을 담는다.
+on_nav:          최근 글 섹션을 만들어 두되 네비에 붙이지는 않는다.
+on_page_context: 포스트 페이지를 그릴 때만 그 섹션을 붙인다.
+
+네비는 원래 사이트 전역이라 페이지마다 다르게 만들 수 없다. on_page_context 가
+각 페이지를 그리기 직전에 호출된다는 점을 이용해, 포스트일 때만 섹션을 끼우고
+그 외 화면에서는 빼는 방식으로 처리한다. 템플릿을 덮어쓰지 않으므로
+overrides/main.html 의 검색엔진 인증 태그를 건드릴 일이 없다.
 
 글 객체(Page)를 네비에 그대로 재사용하면 부모 관계가 덮어써져 블로그 플러그인의
 이전·다음 글 링크가 깨질 수 있다. 그래서 Link 객체로 넣는다.
@@ -92,21 +98,37 @@ def on_files(files, config):
     return files
 
 
+_section = None
+
+
 def on_nav(nav, config, files):
+    """최근 글 섹션을 만들어 두기만 한다. 붙이는 것은 페이지별로 판단한다."""
+    global _section
+    _section = None
+
     posts = getattr(config, "_all_posts", None) or _collect(config.docs_dir)
     picked = posts if NAV_RECENT <= 0 else posts[:NAV_RECENT]
 
     # src_uri 로 File 을 찾아 mkdocs 가 계산한 url 을 그대로 쓴다
     by_src = {f.src_uri: f for f in files}
-    items = []
-    for p in picked:
-        f = by_src.get(p["src"])
-        if f is None:
-            continue
-        items.append(Link(p["title"], f.url))
-    if not items:
-        return nav
-
-    section = Section(NAV_TITLE, items)
-    nav.items.append(section)
+    items = [
+        Link(p["title"], by_src[p["src"]].url)
+        for p in picked
+        if p["src"] in by_src
+    ]
+    if items:
+        _section = Section(NAV_TITLE, items)
     return nav
+
+
+def on_page_context(context, page, config, nav):
+    """포스트를 그릴 때만 최근 글 섹션을 네비에 끼운다."""
+    if _section is None:
+        return context
+    is_post = page.file.src_uri.startswith("blog/posts/")
+    attached = _section in nav.items
+    if is_post and not attached:
+        nav.items.append(_section)
+    elif not is_post and attached:
+        nav.items.remove(_section)
+    return context
