@@ -1,5 +1,5 @@
 ---
-draft: false
+draft: true
 date: 2026-07-26
 authors:
   - dotoryeee
