@@ -22,3 +22,4 @@ CLAUDE.md
 .cache/
 
 .claude/
+.playwright-mcp/
