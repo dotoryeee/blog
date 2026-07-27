@@ -217,6 +217,12 @@ dotoryeee-prometheus   Up 31 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/t
 
 ---
 
+앞에서 cd observability로 작업 디렉터리를 옮겼으니 되돌려 놓는다. 이후 명령은 모두 moe_lab 기준 상대경로다.
+
+```s
+cd /Users/aaron/moe_lab
+```
+
 두 모델을 각각 다른 포트에 띄운다. alias는 Grafana 범례에 그대로 찍히므로 미리 정해 둔다. 단일 측정에서는 슬롯이 하나만 잡히도록 --parallel 1로 고정한다.
 
 ```s
@@ -325,7 +331,13 @@ build: 7347430f4 (10090)
 
 ---
 
-서버를 -c 4096, -c 32768, -c 131072로 각각 띄워 기동 로그를 모은다. MoE의 32768 기동 로그는 다음과 같다.
+서버를 -c 4096, -c 32768, -c 131072로 각각 띄워 기동 로그를 모은다. 같은 포트를 다시 쓰므로 띄우기 전에 먼저 돌던 프로세스를 내린다.
+
+```s
+pkill -f llama-server
+```
+
+MoE의 32768 기동 로그는 다음과 같다.
 
 ```s
 load_tensors:   CPU_Mapped model buffer size =   515.31 MiB
@@ -452,7 +464,7 @@ pp512는 126.95, 125.08, 144.82로 파일 크기와 뚜렷한 방향을 만들�
 
 ---
 
-여기부터는 서버를 --parallel 4로 다시 띄운다. 슬롯 4개를 나눠 쓰는 구성에서 동시 요청 1, 2, 4, 8을 걸고 총 처리량과 요청당 지연을 본다. 요청마다 앞에 난수를 붙이고 cache_prompt를 false로 꺼서 프롬프트 캐시가 끼지 않게 했다.
+여기부터는 pkill -f llama-server로 앞의 서버를 내리고 --parallel 4로 다시 띄운다. 슬롯 4개를 나눠 쓰는 구성에서 동시 요청 1, 2, 4, 8을 걸고 총 처리량과 요청당 지연을 본다. 요청마다 앞에 난수를 붙이고 cache_prompt를 false로 꺼서 프롬프트 캐시가 끼지 않게 했다.
 
 ```s
 llama-server -m models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
@@ -517,7 +529,7 @@ dense 동시8: 총토큰=734 벽시계=42.63s 총처리량=17.22t/s 요청당지
 
 ![requests processing / deferred 패널. dotoryeee-dense deferred가 7까지 오르고 dotoryeee-moe deferred는 0을 유지한다](moe_lab/4.PNG)
 
-같은 부하인데 대기 줄이 생긴 쪽은 Dense뿐이다. MoE는 요청을 받는 족족 처리해 deferred가 0에서 움직이지 않았다.
+같은 부하인데 대기 줄이 생긴 쪽은 Dense뿐이다. MoE는 요청을 받는 족족 처리해 deferred가 0에서 움직이지 않았다. 다만 대기 줄의 최고값 7은 슬롯 4개에 동시 8요청이면 4가 남는다는 계산보다 크다. 패널 시간창에 부하 단계가 바뀌는 구간이 함께 들어와 있어 어느 시점 값인지까지는 가려내지 못했다.
 
 ![busy slots per decode 패널. dotoryeee-moe는 2.6 근처, dotoryeee-dense는 3.4 근처로 갈린다](moe_lab/5.PNG)
 

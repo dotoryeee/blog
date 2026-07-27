@@ -70,9 +70,12 @@ graph LR
 
 ```s
 mkdir -p /Users/aaron/rag_lab/scripts /Users/aaron/rag_lab/results /Users/aaron/rag_lab/qdrant_storage
+cd /Users/aaron/rag_lab
 docker run -d --name dotoryeee-qdrant -p 6333:6333 -p 6334:6334 \
   -v /Users/aaron/rag_lab/qdrant_storage:/qdrant/storage qdrant/qdrant:latest
 ```
+
+이후 명령은 모두 rag_lab 기준 상대경로다.
 
 2. 임베딩 모델을 받아 서버로 띄운다. -ub는 최대 청크 토큰보다 넉넉히 잡고, 슬롯 수는 클라이언트 동시 요청 수와 맞춘다.
 
@@ -376,13 +379,33 @@ medium 컬렉션에서 working_set_size verbatim을 돌리면 부분적으로만
 
 ![dense top-20을 리랭커로 재정렬한 대조표. large 컬렉션에서 14위였던 moe_lab.md 청크가 1위로 올라왔다](rag_lab/7.PNG)
 
-세 번째는 살릴 수 없는 경우다. 코퍼스에 없는 주제를 물으면 dense top-20의 최고 스코어가 0.4805로 나온다. 정답이 있는 질의의 1위 스코어는 0.45~0.9대인데, 가장 낮은 0.448이 이 무근거 질의의 0.4805보다도 아래다. 스코어 하나로 경계를 그을 수 없다는 뜻이다. 리랭커는 상위 5개에 -4.81에서 -5.64 사이의 음수 relevance_score를 매겼고 나머지는 그보다 더 낮다. 애초에 후보 안에 정답이 없으니 순서만 바뀔 뿐이다. 리랭킹은 1단계가 데려온 후보를 다시 정렬할 뿐 검색 실패 자체를 고치지 못한다.
+세 번째는 살릴 수 없는 경우다. 코퍼스에 없는 주제를 물으면 dense top-20의 최고 스코어가 0.4805로 나온다. 정답이 있는 질의의 1위 스코어는 0.44~0.9대인데, 가장 낮은 0.448이 이 무근거 질의의 0.4805보다도 아래다. 스코어 하나로 경계를 그을 수 없다는 뜻이다. 리랭커는 상위 5개에 -4.81에서 -5.64 사이의 음수 relevance_score를 매겼고 나머지는 그보다 더 낮다. 애초에 후보 안에 정답이 없으니 순서만 바뀔 뿐이다. 리랭킹은 1단계가 데려온 후보를 다시 정렬할 뿐 검색 실패 자체를 고치지 못한다.
 
 ## 답변 생성 대조
 
 ---
 
-여기서부터 임베딩·리랭커 서버를 내리고 MoE를 8080 포트에 띄운다. Open WebUI는 모델이 제대로 붙었는지 눈으로 확인하는 프런트 데모로만 썼다.
+여기서부터 임베딩·리랭커 서버를 내리고 MoE를 8080 포트에 띄운다. 메모리가 겹치지 않게 단계를 나눠 기동하는 것이다.
+
+```s
+pkill -f llama-server
+
+llama-server -m /Users/aaron/moe_lab/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
+  -ngl 99 -c 8192 --reasoning off \
+  --port 8080 --host 127.0.0.1 --alias dotoryeee-moe \
+  > results/moe_server.log 2>&1 &
+```
+
+Open WebUI는 모델이 제대로 붙었는지 눈으로 확인하는 프런트 데모로만 썼다. OpenAI 호환 엔드포인트로 llama-server를 가리키게 한다.
+
+```s
+docker run -d --name dotoryeee-webui -p 8088:8080 \
+  -e OPENAI_API_BASE_URL=http://host.docker.internal:8080/v1 \
+  -e OPENAI_API_KEY=sk-dotoryeee-1234 \
+  -e ENABLE_OLLAMA_API=false \
+  -e WEBUI_NAME=dotoryeee-lab \
+  ghcr.io/open-webui/open-webui:main
+```
 
 ![Open WebUI 모델 선택 화면. dotoryeee-moe가 목록에 올라와 있다](rag_lab/8.PNG)
 
@@ -404,6 +427,17 @@ dotoryeee-dense RAG미적용: 제공된 dotoryeee 블로그의 내용에는 Mac 
 dotoryeee-dense RAG적용: 문서 2의 표에 따르면, Mac Studio에서 측정한 MoE 모델(Qwen3.6-35B-A3B)의 decode(tg128) 속도는 **초당 47.63 토큰**입니다.
 ```
 
+Dense 차례에는 MoE를 내리고 같은 방식으로 8081 포트에 올린다. 검색 결과와 프롬프트는 MoE 때 쓴 것을 파일로 저장해 두고 그대로 재사용한다.
+
+```s
+pkill -f llama-server
+
+llama-server -m /Users/aaron/moe_lab/models/Qwen3.6-27B-Q4_K_M.gguf \
+  -ngl 99 -c 8192 --reasoning off \
+  --port 8081 --host 127.0.0.1 --alias dotoryeee-dense \
+  > results/dense_server.log 2>&1 &
+```
+
 |모델|RAG|판정|wall-clock|decode 속도|
 |---|---|---|---|---|
 |MoE|미적용|정직한 거부|1.00초|45.2 t/s|
@@ -413,7 +447,12 @@ dotoryeee-dense RAG적용: 문서 2의 표에 따르면, Mac Studio에서 측정
 
 환각은 나오지 않았다. 두 모델 다 모른다고 답했고, 검색 결과를 붙이자 둘 다 47.63을 그대로 재현했다. **검색 결과가 답을 만들었고 모델을 바꿔도 그 답은 유지됐다.**
 
-속도는 이 조건에서도 갈린다. 프롬프트 처리까지 포함한 wall-clock으로 검색 결과를 붙인 조건에서 MoE가 5.4배 빠르고, decode 속도만 보면 MoE 45~49 t/s 대 Dense 12.4 t/s로 3.8배 정도다. 긴 컨텍스트가 붙은 실사용 조건이라 순수 decode 벤치마크에서 잰 4.07배와 방법론은 다르지만 방향과 배율은 비슷하게 재확인됐다.
+속도는 이 조건에서도 갈린다. 프롬프트 처리까지 포함한 wall-clock으로 검색 결과를 붙인 조건에서 MoE가 5.4배 빠르고, decode 속도만 보면 MoE 45~49 t/s 대 Dense 12.4 t/s로 3.8배 정도다.
+
+!!! notice
+    💡 이 표의 decode 속도는 llama-server가 응답에 실어 주는 timings 값이라 llama-bench 수치와 계측 방식이 다르다
+
+llama-bench는 같은 조건을 여러 번 돌려 평균을 내지만 여기 값은 58~64토큰짜리 단발 생성 하나에서 나왔다. MoE가 45.2와 48.9로 흩어진 것이 그 편차 폭이다. 순수 decode 벤치마크에서 잰 4.07배와 방법론은 다르지만 방향과 배율은 비슷하게 재확인됐다.
 
 ## 검색이 실패했을 때
 
