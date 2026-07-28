@@ -1,5 +1,5 @@
 ---
-draft: false
+draft: true
 date: 2026-07-28
 authors:
   - dotoryeee
@@ -10,16 +10,16 @@ tags:
   - llama.cpp
   - opencode
   - Qwen
-description: "M1 Max 64GB에서 Qwen3.6-27B로 자율 코딩 에이전트를 돌린 실측 정리. KV 캐시 타입별 속도와 정확도, 6개 분야 코딩 태스크 채점 결과를 담음"
+description: "M1 Max 64GB에서 Qwen3.6-27B로 바이브 코딩 에이전트를 돌린 실측 정리. KV 캐시 타입별 속도와 정확도, 6개 분야 코딩 태스크 채점 결과를 담음"
 hide:
   - toc
 ---
 
-# 로컬 LLM 자율 코딩 실측 정리
+# 로컬 LLM 바이브 코딩 실측 정리
 
 <!-- more -->
 
-## 로컬 자율 코딩이란
+## 로컬 바이브 코딩이란
 
 로컬에서 구동하는 LLM에 파일 편집과 셸 실행 권한을 주고 사람 개입 없이 코딩 작업을 완주시키는 방식.
 
@@ -38,11 +38,11 @@ hide:
 | 비교 모델 | Qwen3.6-27B Uncensored (abliteration), 23,154,960,032 bytes |
 | provider 연결 | `@ai-sdk/openai-compatible`, `http://127.0.0.1:8080/v1` |
 
-opencode는 75개 이상 프로바이더를 지원하는 모델 무관 도구라 로컬 OpenAI 호환 엔드포인트를 그대로 등록 가능. 설정에서 `tool_call: true`와 permission 항목(read/edit/bash/glob/grep = allow)을 지정하면 승인 대기 없이 자율 실행됨.
+opencode는 75개 이상 프로바이더를 지원하는 모델 무관 도구라 로컬 OpenAI 호환 엔드포인트를 그대로 등록 가능. 설정에서 `tool_call: true`와 permission 항목(read/edit/bash/glob/grep = allow)을 지정하면 승인 대기 없이 자동 실행됨.
 
 ---
 
-## 자율 코딩 한 턴의 구조
+## 바이브 코딩 한 턴의 구조
 
 ```mermaid
 sequenceDiagram
@@ -60,7 +60,7 @@ sequenceDiagram
 
 이 왕복이 태스크 하나에 수십 번 반복됨. 매 요청이 이전 컨텍스트를 다시 전송하므로 prompt cache 적중 여부가 전체 소요 시간을 좌우함.
 
-`--jinja` 없이 기동하면 chat template이 적용되지 않아 `tool_calls`가 나오지 않고, 그 순간 자율 코딩이 성립하지 않음.
+`--jinja` 없이 기동하면 chat template이 적용되지 않아 `tool_calls`가 나오지 않고, 그 순간 바이브 코딩이 성립하지 않음.
 
 ---
 
@@ -178,7 +178,7 @@ graph TD
 
 ---
 
-## 자율 코딩 태스크 6종
+## 바이브 코딩 태스크 6종
 
 의존성 설치와 스캐폴딩을 미리 끝낸 템플릿에 요구사항 체크리스트만 전달. 태스크당 타임아웃 25분.
 
@@ -337,4 +337,4 @@ abliteration 모델의 유일한 차별점인 거부 억제는 이 6개 태스�
 
 12개 태스크 전부 완주하고 빌드와 테스트를 통과했으므로 소규모 작업에서는 실용 가능. 다만 태스크당 1회 실행이라 1% 점수 차와 5분 시간 차는 실행 간 변동 범위 안일 수 있음. 확정하려면 태스크당 3회 이상 반복 필요.
 
-로컬 자율 코딩의 병목은 모델의 지능이 아니라 턴 지연. 12.5 tok/s에서 태스크 하나가 5분에서 18분이 걸리고, 그 시간의 대부분이 토큰 생성에 쓰임.
+로컬 바이브 코딩의 병목은 모델의 지능이 아니라 턴 지연. 12.5 tok/s에서 태스크 하나가 5분에서 18분이 걸리고, 그 시간의 대부분이 토큰 생성에 쓰임.
