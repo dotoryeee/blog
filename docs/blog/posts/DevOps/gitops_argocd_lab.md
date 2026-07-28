@@ -247,7 +247,7 @@ GitOps의 핵심은 클러스터를 직접 건드려도 Git 상태로 되돌아�
     argocd app set dotoryeee-guestbook --sync-policy automated --self-heal
     ```
 
-5. OutOfSync 상태에서 automated를 처음 켜는 순간의 초기 sync라 감지 즉시 replicas가 3에서 1로 돌아가고 상태도 Synced로 복구된다. kubectl로 손댄 변경이 곧바로 지워졌다. 이후 반복되는 self-heal 재조정은 기본 5초 주기로 돈다
+5. OutOfSync 상태에서 automated를 처음 켜는 순간의 초기 sync라 감지 즉시 replicas가 3에서 1로 돌아가고 상태도 Synced로 복구된다. kubectl로 손댄 변경이 곧바로 지워졌다. 이후 반복되는 self-heal 재조정은 고정 주기가 아니라 지수 백오프로 돈다(초기 2초, 배수 3, 상한 300초)
 
     ```s
     t=1s replicas=3 sync=OutOfSync
