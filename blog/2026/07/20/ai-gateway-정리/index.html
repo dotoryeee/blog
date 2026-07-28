@@ -1188,6 +1188,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../28/%EB%A1%9C%EC%BB%AC-llm-%EC%9E%90%EC%9C%A8-%EC%BD%94%EB%94%A9-%EC%8B%A4%EC%B8%A1-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 LLM 자율 코딩 실측 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../27/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
@@ -1964,33 +1991,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../kind%EC%97%90-argocd-%EC%98%AC%EB%A0%A4-gitops-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    kind에 ArgoCD 올려 GitOps 동작 확인하기
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -2281,7 +2281,7 @@
 <td>Portkey</td>
 <td>셀프호스팅·관리형 SaaS. MIT 오픈소스(2026년 거버넌스·관측 기능까지 오픈소스화).</td>
 <td>지원. 가중치 로드밸런싱·조건부 라우팅·폴백·자동 재시도.</td>
-<td>Simple·Semantic 모두 지원.</td>
+<td>Simple은 전 플랜. Semantic은 벡터DB 필요, 일부 Enterprise.</td>
 <td>지원. 50+ 가드레일 플러그인.</td>
 <td>지원. 요청·비용·지연 대시보드.</td>
 <td>1,600+ LLM. 가드레일 통합이 강점. Docker·k8s 셀프호스팅.</td>
@@ -2403,7 +2403,7 @@
 <ul>
 <li>pre-call: LLM 호출 전 입력을 검사해 프로바이더 도달 전에 차단·마스킹으로 개입</li>
 <li>post-call: 응답 수신 후 입력과 출력을 함께 검사해 유출·유해 응답을 최종 차단</li>
-<li>during-call: LLM 호출과 병렬로 입력만 검사, 추가 지연을 줄이는 용도(블로킹 아님)</li>
+<li>during-call: LLM 호출과 병렬로 입력만 검사해 지연을 줄이는 용도로, 위반 감지 시 예외를 던져 요청 거부 가능</li>
 <li>logging-only: 요청 흐름은 그대로 두고 로그에만 마스킹 적용</li>
 </ul>
 <p>탐지 후 처리 방식은 세 가지로 갈림</p>

@@ -1049,6 +1049,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../28/%EB%A1%9C%EC%BB%AC-llm-%EC%9E%90%EC%9C%A8-%EC%BD%94%EB%94%A9-%EC%8B%A4%EC%B8%A1-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 LLM 자율 코딩 실측 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../27/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
@@ -1825,33 +1852,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../kind%EC%97%90-argocd-%EC%98%AC%EB%A0%A4-gitops-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    kind에 ArgoCD 올려 GitOps 동작 확인하기
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -2071,7 +2071,7 @@
 <a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="mh">0x0050</span><span class="o">:</span><span class="w">  </span><span class="m">7965</span><span class="w"> </span><span class="m">6565</span><span class="w"> </span><span class="m">646</span><span class="n">f</span><span class="w"> </span><span class="m">746</span><span class="n">f</span><span class="w"> </span><span class="m">7279</span><span class="w"> </span><span class="m">6565</span><span class="w"> </span><span class="m">6564</span><span class="w"> </span><span class="m">6</span><span class="n">f74</span><span class="w">  </span><span class="n">yeeedotoryeeedot</span>
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="mh">0x0060</span><span class="o">:</span><span class="w">  </span><span class="m">6</span><span class="n">f72</span><span class="w"> </span><span class="m">7965</span><span class="w"> </span><span class="m">6565</span><span class="w"> </span><span class="m">646</span><span class="n">f</span><span class="w">                      </span><span class="n">oryeeedo</span>
 </code></pre></div>
-<p>바깥 헤더 첫 바이트 45는 IPv4이고, 그 뒤 프로토콜 필드가 04다(0x0000 줄 4004에서 뒤쪽 04, IP 헤더의 9번째 바이트). 04는 페이로드가 또 하나의 IP 패킷이라는 표시다. 벗겨낸 안쪽 45로 시작하는 바이트가 원본 ICMP 패킷 그대로다. 신뢰되지 않은 경로였다면 이 페이로드가 통째로 도청된다.</p>
+<p>바깥 헤더 첫 바이트 45는 IPv4이고, 그 뒤 프로토콜 필드가 04다(0x0000 줄 4004에서 뒤쪽 04, IP 헤더의 10번째 바이트). 04는 페이로드가 또 하나의 IP 패킷이라는 표시다. 벗겨낸 안쪽 45로 시작하는 바이트가 원본 ICMP 패킷 그대로다. 신뢰되지 않은 경로였다면 이 페이로드가 통째로 도청된다.</p>
 <p>이번엔 WireGuard다. 같은 dotoryeee 패턴 ping을 wg 터널로 쏘고 UDP 51820을 캡처한다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">node2</span><span class="w"> </span><span class="n">tcpdump</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">eth0</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="n">X</span><span class="w"> </span><span class="n">udp</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="m">51820</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="m">2</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">docker</span><span class="w"> </span><span class="n">exec</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">node1</span><span class="w"> </span><span class="n">ping</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="m">646</span><span class="n">f746f7279656565</span><span class="w"> </span><span class="m">10.200</span><span class="n">.</span><span class="m">0.2</span>
