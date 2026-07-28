@@ -42,6 +42,28 @@ opencode는 75개 이상 프로바이더를 지원하는 모델 무관 도구라
 
 ---
 
+## 자율 코딩 한 턴의 구조
+
+```mermaid
+sequenceDiagram
+    participant Agent as opencode
+    participant Server as llama-server
+    participant OS as 파일시스템·셸
+
+    Agent->>Server: POST /v1/chat/completions<br>(프롬프트 + tools 스펙)
+    Server-->>Agent: finish_reason=tool_calls<br>(함수명 + 인자 JSON)
+    Agent->>OS: 파일 읽기·편집, 명령 실행
+    OS-->>Agent: 결과 또는 오류 출력
+    Agent->>Server: tool 결과를 포함해 재요청
+    Server-->>Agent: finish_reason=stop<br>(최종 응답)
+```
+
+이 왕복이 태스크 하나에 수십 번 반복됨. 매 요청이 이전 컨텍스트를 다시 전송하므로 prompt cache 적중 여부가 전체 소요 시간을 좌우함.
+
+`--jinja` 없이 기동하면 chat template이 적용되지 않아 `tool_calls`가 나오지 않고, 그 순간 자율 코딩이 성립하지 않음.
+
+---
+
 ## 모델 아키텍처 실측
 
 gguf 헤더와 서버 기동 로그에서 확인한 값.
@@ -58,6 +80,17 @@ gguf 헤더와 서버 기동 로그에서 확인한 값.
 | `ssm.state_size` / `ssm.conv_kernel` | 128 / 4 |
 
 **4개 레이어 중 1개만 KV 캐시를 쌓는 하이브리드 구조.** 나머지 48개는 순환 상태를 쓰므로 컨텍스트 길이와 무관하게 크기가 고정됨. 모든 레이어가 KV를 저장한다고 가정하는 통상 계산식을 그대로 적용하면 약 4배 과대 추정이 나옴.
+
+```mermaid
+graph LR
+    subgraph 반복단위["4레이어 블록 x 16회 = 64레이어"]
+        L1[Layer 1<br>linear attention<br>순환 상태 고정] --> L2[Layer 2<br>linear attention<br>순환 상태 고정]
+        L2 --> L3[Layer 3<br>linear attention<br>순환 상태 고정]
+        L3 --> L4[Layer 4<br>full attention<br>KV 캐시 누적]
+    end
+```
+
+KV를 쌓는 레이어가 16개뿐이라 토큰당 KV가 q8_0에서 34KiB, f16에서 68KiB로 낮음. 반면 순환 상태는 64레이어 전체가 쓰지만 총 149.62MiB로 고정.
 
 ---
 
@@ -91,6 +124,24 @@ prompt cache 예약분 8GB가 고정으로 잡히는 점이 예산 산정에서 
 | 262,144 | 8.50GB | 17.00GB | 약 37분 |
 
 메모리는 128K까지도 여유. 제약은 메모리가 아니라 콜드 prompt eval 시간.
+
+---
+
+## 측정 조건 통제
+
+첫 측정은 무효 처리했음. 조건별 프롬프트 크기가 어긋나 KV 타입의 효과와 컨텍스트 길이의 효과가 섞였기 때문.
+
+```mermaid
+graph TD
+    A[1차 측정<br>f16 11.19 tok/s vs q8_0 5.72 tok/s] --> B{프롬프트 토큰 수 대조}
+    B -->|f16 780 vs q8_0 3850<br>5배 차이| C[무효 판정<br>속도차가 KV 타입 효과인지 불명]
+    C --> D[프롬프트를 파일로 고정<br>/tokenize로 토큰 수 실측]
+    D --> E[재측정<br>28036 vs 28036 토큰]
+    E --> F{통제 확인}
+    F -->|생성 토큰 37.9 vs 38.4<br>cache_n 315 동일| G[유효 판정<br>f16 11.29 vs q8_0 5.80 tok/s]
+```
+
+1차와 2차의 수치가 거의 일치했지만, 조건이 통제되지 않은 상태에서는 같은 결론을 낼 수 없음. 방향이 우연히 재현되는 경우가 있으므로 통제 확인이 먼저.
 
 ---
 
@@ -140,6 +191,21 @@ prompt cache 예약분 8GB가 고정으로 잡히는 점이 예산 산정에서 
 | nextjs | `/todos` 페이지 + route handler + vitest | `next build`, `npm test` |
 | spring | REST 3종 + 서비스 계층 + JUnit | `mvnw test` (JDK 21) |
 
+### 채점 기준선 보정
+
+빈 템플릿 상태에서 이미 빌드와 테스트가 통과함. 모델이 아무 일도 하지 않아도 두 항목을 얻는 구멍이 있으므로 기준선을 빼고 채점해야 함.
+
+| 태스크 | 빈 템플릿 테스트 | 빈 템플릿 빌드 | 점수 인정 조건 |
+|---|---|---|---|
+| nextjs | 0개 (파일 없음, exit 0) | 통과 | 신규 테스트 2개 이상 |
+| react | 0개 | 통과 | 신규 테스트 3개 이상 |
+| spring | 1개 | 통과 | 총 4개 이상 |
+| swift | 1개 | 통과 | 신규 3개 이상 |
+| uiux | axe violation 3건 | 해당 없음 | violation 0건 |
+| infra | 린트 대상 없음 | 해당 없음 | 3개 린터 무경고 |
+
+빌드 점수도 요구 파일이 실제로 생성됐을 때만 인정. 빈 프로젝트의 빌드 성공은 0점 처리.
+
 ### 원본 모델 결과
 
 | 태스크 | 소요 | 신규 테스트 | 빌드 | 테스트 | 요구사항 | 치팅 |
@@ -160,7 +226,24 @@ prompt cache 예약분 8GB가 고정으로 잡히는 점이 예산 산정에서 
 | nextjs | 9m41s | 3 | 통과 | 통과 | 충족 | 없음 |
 | uiux | 15m00s | axe 통과 | 통과 | 통과 | 충족 | 없음 |
 | spring | 15m30s | 3 | 통과 | 통과 | 충족 | 없음 |
-| swift | 18m40s | 36 | 통과 | 통과 | 충족 | 없음 |
+| swift | 18m40s | 37 | 통과 | 통과 | 충족 | 없음 |
+
+---
+
+## 모델 교체 조건
+
+두 모델을 같은 조건에 두기 위해 서버 플래그를 전부 동일하게 유지하고 모델 파일만 교체. alias도 `qwen3.6-27b-local` 그대로 두어 에이전트 설정을 건드리지 않음.
+
+| 항목 | 원본 | abliteration |
+|---|---|---|
+| `general.architecture` | qwen35 | qwen35 |
+| KV 캐시 | 4,096 MiB | 4,096 MiB |
+| 모델 버퍼 (GPU) | 21,469.35 MiB | 22,071.81 MiB |
+| 서버 RSS | 25.9GiB | 26.7GiB |
+| chat template | im_start 계열 | 동일 계열 |
+| tool call 스모크 테스트 | 기존 실측 19/19 | 3/3 |
+
+교체 전 우려는 abliteration 과정에서 chat template이 손상돼 tool call이 깨지는 것이었음. 헤더 검사에서 커스텀 XML 형태가 보여 리스크로 잡았으나, 스모크 테스트 3회와 6개 태스크 로그 전수 검사 결과 파싱 오류 0건으로 기각.
 
 ---
 
@@ -230,8 +313,9 @@ abliteration 모델의 유일한 차별점인 거부 억제는 이 6개 태스�
 | 함정 | 증상 | 대응 |
 |---|---|---|
 | KV 계산식 과대 추정 | 하이브리드 어텐션 모델에 통상 공식 적용 시 약 4배 차이 | 서버 로그의 `llama_kv_cache` 실측값 사용 |
-| 서버 재기동 중첩 | 구 프로세스와 신 프로세스가 겹쳐 21GB가 두 배로 상주, 스왑 급증 | kill 후 포트 해제까지 폴링한 뒤 기동 |
-| 스왑 경고 오탐 | `vm.swapusage`의 used는 잔류 지표라 압박이 끝나도 값이 남음 | 증가량과 `Swapouts` 델타로 판정 |
+| 서버 재기동 중첩 | 구 프로세스와 신 프로세스가 겹쳐 21GB가 두 배로 상주. swap used가 1,521MB에서 3,984MB로 급증하고 스왑 파일이 3,072MB에서 5,120MB로 자동 확장 | kill 후 포트 해제까지 폴링한 뒤 기동 |
+| 스왑 경고 오탐 | `vm.swapusage`의 used는 잔류 지표라 압박이 끝나도 값이 남음. 절대값 임계로 감시하면 정상 상태에서 15초마다 경고 | 증가량과 `Swapouts` 델타로 판정 |
+| 추론 예산 미지정 | 32토큰 답변을 요청해도 사고 과정이 출력 상한을 소진 | `--reasoning-budget`으로 상한 지정 |
 | `git diff --stat` 왜곡 | 신규 파일이 untracked라 집계에서 누락, 컴포넌트와 테스트 3개가 15줄로 표시 | `git status` 기반 신규 파일 목록 병행 |
 | vitest 출력 파싱 | "Test Files 1 passed"를 먼저 잡아 테스트 3개를 1개로 집계 | 재실행으로 교차 확인 |
 | Xet 저장소 이어받기 | 기존 방식으로 받은 부분 파일을 `hf` CLI가 이어받지 못하고 무한 대기 | Range 요청 지원 확인 후 curl `-C -`로 전환 |
