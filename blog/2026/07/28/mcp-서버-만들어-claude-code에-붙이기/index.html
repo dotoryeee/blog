@@ -10,13 +10,11 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">
       
       
-        <link rel="prev" href="../service-mesh-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
       
-      
-        <link rel="next" href="../../27/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/">
       
       
         
@@ -88,15 +86,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="MCP 서버 만들어 Claude Code에 붙이기 - dotoryeee's blog" />
 <meta property="og:description" content="Python으로 MCP 서버를 만들어 Inspector로 inputSchema와 값 제약 오류를 확인하고 Claude Code에 붙여 실제 호출까지 실측한 기록" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0.png" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="MCP 서버 만들어 Claude Code에 붙이기 - dotoryeee's blog" />
 <meta property="twitter:description" content="Python으로 MCP 서버를 만들어 Inspector로 inputSchema와 값 제약 오류를 확인하고 Claude Code에 붙여 실제 호출까지 실측한 기록" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/26/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0.png" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0.png" />
 </head>
   
   
@@ -1021,7 +1019,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-07-26 00:00:00+00:00" class="md-ellipsis">2026. 7. 26.</time>
+                        <time datetime="2026-07-28 00:00:00+00:00" class="md-ellipsis">2026. 7. 28.</time>
                       </div>
                     </li>
                     
@@ -1063,6 +1061,60 @@
                   </div>
                   <nav class="md-nav">
                     <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
                       
                         
                         
@@ -1179,7 +1231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1206,34 +1258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    k6로 부하 걸어 SLO 지표 확인하기
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1241,33 +1266,6 @@
     
   
     Service Mesh 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="./" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    MCP 서버 만들어 Claude Code에 붙이기
   
 
     
@@ -2344,7 +2342,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../service-mesh-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: Service Mesh 정리">
+          <a href="../k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: k6로 부하 걸어 SLO 지표 확인하기">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2354,27 +2352,11 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Service Mesh 정리
+                k6로 부하 걸어 SLO 지표 확인하기
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../../27/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: 로컬 모델로 RAG 파이프라인 구축하기">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                로컬 모델로 RAG 파이프라인 구축하기
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
