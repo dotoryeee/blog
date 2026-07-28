@@ -89,6 +89,7 @@ KV cache 바이트 = 2 × 레이어 수 × KV 헤드 수 × 헤드 차원 × 시
 - KV 헤드 수는 GQA(Grouped Query Attention)면 어텐션 헤드보다 적음 → Llama 3.1 8B는 헤드 32개 중 KV 헤드 8개라 KV가 1/4로 줄어듦
 - 정밀도 바이트: FP16/BF16이면 2, FP8/INT8이면 1
 - 배치까지 넣으면 위 값에 동시 시퀀스 수를 곱함
+- 위 식은 모든 레이어가 표준 어텐션으로 KV를 쌓는 모델 기준 → 일부 레이어만 full attention을 쓰는 하이브리드 구조는 KV를 쌓는 레이어 수만 대입해야 함
 
 !!! notice
     GQA를 쓰지 않는 MHA(Multi-Head Attention) 모델은 KV 헤드가 어텐션 헤드와 같음. 같은 규모라도 KV cache가 몇 배로 커지므로 위 식의 KV 헤드 수를 모델 config에서 반드시 확인.

@@ -455,9 +455,9 @@ allowed_fails와 cooldown_time은 그룹에 정상 배포가 남아 있을 때 �
 ```yaml title="litellm_config.yaml"
 router_settings:
   context_window_fallbacks:
-    - gpt-4o-mini: ["gpt-4o"]          # 컨텍스트 초과 시 더 큰 모델로 (설정 예시)
+    - chat-small: ["chat-large"]       # 컨텍스트 초과 시 더 큰 모델로 (설정 예시)
   content_policy_fallbacks:
-    - gpt-4o: ["claude-3-5-sonnet"]    # 콘텐츠 정책 차단 시 타 모델로 (설정 예시)
+    - chat-small: ["chat-alt"]         # 콘텐츠 정책 차단 시 타 모델로 (설정 예시)
 ```
 
 ## 캐싱

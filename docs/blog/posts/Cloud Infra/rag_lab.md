@@ -53,7 +53,7 @@ graph LR
 |기기|Mac Studio, Apple M1 Max, 64GB 통합 메모리|
 |Qdrant|1.18.3, docker 컨테이너 dotoryeee-qdrant|
 |임베딩 모델|Qwen3-Embedding-0.6B-Q8_0.gguf|
-|리랭커|gpustack/bge-reranker-v2-m3-GGUF Q8_0, 606MB|
+|리랭커|gpustack/bge-reranker-v2-m3-GGUF Q8_0, 606MiB|
 |생성 모델|Qwen3.6-35B-A3B-UD-Q4_K_M(22GB, alias dotoryeee-moe)<br>Qwen3.6-27B-Q4_K_M(16GB, alias dotoryeee-dense)|
 |llama.cpp|version 10090 (7347430f4)|
 

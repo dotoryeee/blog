@@ -41,7 +41,7 @@ hide:
 ---
 
 ## Sealed Secrets
-Sealed Secrets란 시크릿을 비대칭 암호화해 Git에 올릴 수 있게 만드는 Bitnami Labs의 쿠버네티스 컨트롤러
+Sealed Secrets란 시크릿을 비대칭 암호화해 Git에 올릴 수 있게 만드는 Bitnami의 쿠버네티스 컨트롤러
 
 ```mermaid
 graph LR
@@ -86,7 +86,7 @@ graph LR
 - 프로바이더: AWS Secrets Manager·SSM Parameter Store, GCP Secret Manager, Azure Key Vault, Vault 등 다수
 - Git에는 참조(CRD)만 커밋되고 실제 값은 외부 스토어에 존재 → GitOps와 양립
 - `refreshInterval` 주기로 재동기화 → 스토어에서 값을 회전하면 클러스터로 자동 전파
-- CNCF Sandbox 프로젝트(2022) → 2025년 여름 유지보수 공백으로 릴리스가 멈췄다가 후원 확충으로 회복, v1 API 안정화
+- CNCF Sandbox 프로젝트(2022) → 2025년 5월 v1 API 안정화, 같은 해 여름 유지보수 공백으로 릴리스가 한 달 넘게 멈췄다가 9월 재개
 - 결과물은 여전히 k8s Secret → etcd 암호화와 RBAC 최소화는 별도로 챙겨야 함
 
 ---
