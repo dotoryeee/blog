@@ -64,7 +64,7 @@ MPS(Multi-Process Service)란 여러 프로세스의 CUDA 커널을 하나의 GP
 - 시간이 아니라 공간으로 나눔 → 서로 다른 프로세스의 커널이 SM 위에서 겹쳐 실행
 - 컨텍스트 스위칭 대신 스케줄링 자원을 공유 → 협력적 다중 프로세스에서 점유율↑
 - Volta(compute capability 7.0) 이상에서 클라이언트마다 독립된 GPU 주소 공간 보유 → 기본적인 메모리 침범 방지
-- Volta 이상은 클라이언트 최대 48개, 이전 세대(pre-Volta)는 단일 주소 공간 공유에 최대 16개
+- Volta 이상은 클라이언트 최대 60개(CUDA 13.0 이하는 48개), 이전 세대(pre-Volta)는 단일 주소 공간 공유에 최대 16개
 - `CUDA_MPS_ACTIVE_THREAD_PERCENTAGE`로 클라이언트가 쓸 SM 스레드 비율 상한 지정
 - `CUDA_MPS_PINNED_DEVICE_MEM_LIMIT`로 클라이언트별 디바이스 메모리 할당 상한 지정
 

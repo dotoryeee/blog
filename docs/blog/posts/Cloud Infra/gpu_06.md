@@ -142,7 +142,7 @@ DRA란 파드가 정수 개수 대신 ResourceClaim으로 "어떤 속성의 GPU�
 - DeviceClass가 클레임의 템플릿, ResourceClaim이 실제 요청 단위 → 파드는 클레임을 참조해 디바이스를 받음
 - v1.34부터 API 기본값이 안정 v1 → beta 시절의 명시적 opt-in 없이 켜져 있음
 - 표의 성숙도는 코어 API 기준 → GPU를 속성으로 받으려면 NVIDIA DRA 드라이버(k8s-dra-driver-gpu)를 따로 설치해야 함
-- 드라이버의 GPU allocation 공식 지원은 v25.8.0부터로 코어 GA보다 늦음 → GPU Operator 통합 후에도 기본 비활성이라 옵트인이 필요
+- 드라이버가 공식 지원하는 것은 ComputeDomains(멀티노드 NVLink)이고 GPU allocation은 아직 공식 지원 전 → GPU kubelet 플러그인이 Helm 설치에서 기본 비활성이라 옵트인이 필요
 - device plugin을 대체하는 것이 아니라 한 클러스터에서 병행 가능 → 기존 nvidia.com/gpu 워크로드는 그대로 동작
 
 ---
