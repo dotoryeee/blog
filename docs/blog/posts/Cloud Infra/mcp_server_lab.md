@@ -1,6 +1,6 @@
 ---
 draft: false
-date: 2026-07-26
+date: 2026-07-28
 authors:
   - dotoryeee
 categories:
