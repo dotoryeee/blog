@@ -331,13 +331,12 @@ claude mcp add dotoryeee-tools -- python server.py
 Added stdio MCP server dotoryeee-tools with command: python server.py to local config
 ```
 
-등록한 서버는 claude mcp list로 확인한다. 이 환경에는 playwright 서버도 이미 등록돼 있어 같이 뜬다.
+등록한 서버는 claude mcp list로 확인한다.
 
 ```s
 claude mcp list
 Checking MCP server health…
 
-playwright: npx @playwright/mcp@latest - ✔ Connected
 dotoryeee-tools: python server.py - ✔ Connected
 ```
 

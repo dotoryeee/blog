@@ -14,12 +14,12 @@ description: "Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실�
 hide:
   - toc
 ---
-# Mac 로컬 영상 생성 정리
+# 로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
 
 <!-- more -->
 
 ## 로컬 영상 생성이란
-로컬 영상 생성이란 클라우드 API 없이 개인 장비의 GPU로 text-to-video·image-to-video 모델을 직접 추론시키는 방식
+클라우드 API 없이 로컬 맥스튜디오의 GPU로 text to video/image to video 모델을 직접 추론시키기
 
 Apple Silicon은 통합 메모리(Unified Memory) 덕에 64GB 장비가 22B 영상 모델을 올릴 수 있음. 문제는 용량이 아니라 프레임워크 지원임.
 
@@ -185,7 +185,7 @@ Error: Image dimensions must be multiples of 64, got 1536x864
 30편 전 회차의 스왑 증가는 0.0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.
 
 !!! warning
-    프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것. 200프레임 이하에서는 스왑이 관측되지 않음.
+    프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것.
 
 ---
 
@@ -238,7 +238,7 @@ macmon pipe -s 1 | jq '{cpu: .temp.cpu_temp_avg, gpu: .temp.gpu_temp_avg, fan: .
 
 ## 결론
 
-M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 29분에 나옴. 스왑 없이, 열 여유를 남기고 완주함.
+M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 메모리 스왑없이 29분에 나옴.
 
 - 화질을 올리려면 해상도보다 스텝을 먼저 올릴 것
 - 길이를 늘릴 때만 메모리를 경계할 것

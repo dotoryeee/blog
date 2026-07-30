@@ -585,9 +585,6 @@ predicted_tokens_seconds가 inf로 찍힌 것은 이 시점에 생성한 토큰�
 
 ![dotoryeee local llm 대시보드 전체. 여섯 패널에 두 모델 곡선이 함께 그려져 있다](moe_lab/1.PNG)
 
-!!! warning
-    💡 Playwright fullPage 스크린샷은 Grafana 캔버스를 비워서 찍으므로 뷰포트 캡처로 찍는다
-
 ## 정리
 
 ---
