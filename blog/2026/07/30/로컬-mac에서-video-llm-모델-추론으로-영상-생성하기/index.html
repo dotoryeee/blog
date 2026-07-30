@@ -1954,7 +1954,8 @@
 <hr />
 <h2 id="draw-things">Draw Things를 쓴 이유</h2>
 <p>처음엔 ComfyUI를 깔았음. 실행 자체는 됨. PyTorch 2.10이 MPS를 잡고 통합 메모리 64GB를 SHARED VRAM으로 인식함.</p>
-<p>문제는 체크포인트임.</p>
+<p>막힌 지점은 체크포인트임.</p>
+<p>체크포인트(Checkpoint)란 학습이 끝난 모델 가중치를 파일로 묶어 저장한 것. 같은 모델도 어떤 수치 정밀도로 저장했는지에 따라 파일이 갈리고, 그 정밀도를 실행 장치가 지원해야 읽힘.</p>
 <ul>
 <li>Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 못 씀</li>
 <li>우회로는 커뮤니티 GGUF 재양자화본뿐 → 양자화 등급이 낮아지고 배포 주체도 제각각</li>
@@ -2294,17 +2295,14 @@
 <li>FHD로 4초를 뽑는 편이 480p로 15초를 뽑는 것보다 안전</li>
 <li>300프레임 초과가 유일한 위험 구간</li>
 </ul>
-<p>30편 전 회차의 스왑 증가는 0.0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.</p>
+<p>30편 전 회차의 스왑 증가는 0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것.</p>
 </div>
 <hr />
 <h2 id="_9">열·전력</h2>
-<p>30편 10.3시간 연속 가동 중 온도를 추적함. sudo 없이 Apple Silicon 온도를 읽으려면 macmon을 씀(<code>powermetrics</code>는 root 권한 필요).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">macmon</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">macmon</span><span class="w"> </span><span class="n">pipe</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;{cpu: .temp.cpu_temp_avg, gpu: .temp.gpu_temp_avg, fan: .fans[0].rpm}&#39;</span>
-</code></pre></div>
+<p>30편 10.3시간 연속 가동 중 관측 범위임.</p>
 <table>
 <thead>
 <tr>
