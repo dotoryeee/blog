@@ -23,9 +23,30 @@ hide:
 
 Apple Silicon은 통합 메모리(Unified Memory) 덕에 64GB 장비가 22B 영상 모델을 올릴 수 있음. 문제는 용량이 아니라 프레임워크 지원임.
 
-- Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 그대로 쓸 수 없음
-- Draw Things는 자체 양자화 포맷(q8p, i8x, q6p)으로 모델을 재배포 → Metal에서 동작하는 경로 확보
-- 측정 환경: Mac Studio M1 Max 10코어, 64GB, macOS 26
+측정 환경은 Mac Studio M1 Max 10코어, 64GB, macOS 26.
+
+---
+
+## Draw Things를 쓴 이유
+
+처음엔 ComfyUI를 깔았음. 실행 자체는 됨. PyTorch 2.10이 MPS를 잡고 통합 메모리 64GB를 SHARED VRAM으로 인식함.
+
+막힌 지점은 체크포인트임.
+
+- Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 못 씀
+- 우회로는 커뮤니티 GGUF 재양자화본뿐 → 양자화 등급이 낮아지고 배포 주체도 제각각
+- 모델·VAE·텍스트 인코더·노드를 직접 맞춰야 함 → 조합이 어긋나면 샘플러 단계에서 NaN
+
+Draw Things는 같은 모델을 자체 양자화 포맷(q6p, q8p, i8x)으로 재배포하고 Metal 커널로 직접 추론함. fp8 문제가 처음부터 생기지 않음.
+
+| 항목 | ComfyUI | Draw Things |
+|---|---|---|
+| 추론 경로 | PyTorch MPS | Metal 네이티브 |
+| fp8 공식 체크포인트 | 사용 불가 | 해당 없음(자체 양자화 재배포) |
+| 모델 구성 | 본체·VAE·인코더를 직접 배치 | 본체만 지정하면 부속 파일 자동 확인 |
+| CLI | 별도 구성 필요 | `draw-things-cli` 공식 제공 |
+
+결정 요인은 CLI였음. 명령 한 줄로 t2v·i2v가 돌고 모델 목록 조회·다운로드까지 같은 도구로 처리되니 배치 실험을 스크립트로 묶을 수 있음.
 
 ---
 
