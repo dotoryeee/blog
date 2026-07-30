@@ -6,17 +6,15 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="MBR·GPT·UEFI·GRUB·ESP 개념과 AWS EC2 Xen·Nitro 세대에서 /boot/efi 없이 부팅되는 이유를 세대·OS별로 정리">
+        <meta name="description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2025/03/10/%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../storage-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../29/rag-%EC%A0%95%EB%A6%AC/">
       
-      
-        <link rel="next" href="../db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/">
       
       
         
@@ -30,7 +28,7 @@
     
     
       
-        <title>서버 부팅 방식 정리 - dotoryeee's blog</title>
+        <title>Mac 로컬 영상 생성 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +84,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="서버 부팅 방식 정리 - dotoryeee's blog" />
-<meta property="og:description" content="MBR·GPT·UEFI·GRUB·ESP 개념과 AWS EC2 Xen·Nitro 세대에서 /boot/efi 없이 부팅되는 이유를 세대·OS별로 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2025/03/10/%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:title" content="Mac 로컬 영상 생성 정리 - dotoryeee's blog" />
+<meta property="og:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2025/03/10/%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="서버 부팅 방식 정리 - dotoryeee's blog" />
-<meta property="twitter:description" content="MBR·GPT·UEFI·GRUB·ESP 개념과 AWS EC2 Xen·Nitro 세대에서 /boot/efi 없이 부팅되는 이유를 세대·OS별로 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2025/03/10/%EC%84%9C%EB%B2%84-%EB%B6%80%ED%8C%85-%EB%B0%A9%EC%8B%9D-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:title" content="Mac 로컬 영상 생성 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +112,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#mac" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              서버 부팅 방식 정리
+              Mac 로컬 영상 생성 정리
             
           </span>
         </div>
@@ -826,7 +824,7 @@
               
                 
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -845,143 +843,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로컬 영상 생성이란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        각 용어의 개념
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="각 용어의 개념">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#mbr-master-boot-record" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        MBR (Master Boot Record)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gpt-guid-partition-table" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GPT (GUID Partition Table)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#uefi-unified-extensible-firmware-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UEFI (Unified Extensible Firmware Interface)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#grub-grand-unified-bootloader" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GRUB (GRand Unified Bootloader)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#esp-efi-system-partition" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ESP (EFI System Partition)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#boot-bootefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /boot 및 /boot/efi 필요성
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-aws-ec2-bootefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#aws-xen-t2-m4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS Xen 기반 (예: t2, m4)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aws-nitro-m5-m6i-m7i-t4g-a1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#aws-nitro-uefi" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS Nitro 기반에서 UEFI 부팅이 필요한 경우
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#aws-ec2-os" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AWS EC2 인스턴스 세대 및 OS별 부팅 방식
+        설치
       
     </span>
   </a>
@@ -990,6 +866,105 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모델 선택
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        생성 명령
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        스텝별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        해상도별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        길이별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        메모리 한계는 프레임 수에서 옴
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        열·전력
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        제약 사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권장 설정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1055,7 +1030,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2025-03-10 00:00:00+00:00" class="md-ellipsis">2025. 3. 10.</time>
+                        <time datetime="2026-07-30 00:00:00+00:00" class="md-ellipsis">2026. 7. 30.</time>
                       </div>
                     </li>
                     
@@ -1066,7 +1041,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/linux/">Linux</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1077,7 +1052,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 4분
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -1105,7 +1080,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="./" class="md-nav__link">
         
   
   
@@ -1132,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1159,7 +1134,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1186,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1213,7 +1188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+      <a href="../../28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1240,7 +1215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1267,7 +1242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1294,7 +1269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1321,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1348,7 +1323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1375,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1402,7 +1377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1429,7 +1404,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+      <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
         
   
   
@@ -1456,7 +1431,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1483,7 +1458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1510,7 +1485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1537,7 +1512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1564,7 +1539,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+      <a href="../../22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
         
   
   
@@ -1591,7 +1566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1618,7 +1593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1645,7 +1620,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1672,7 +1647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1699,7 +1674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1726,7 +1701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1753,7 +1728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1780,7 +1755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1807,7 +1782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/vault-%EB%8F%99%EC%A0%81-%EC%8B%9C%ED%81%AC%EB%A6%BF-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+      <a href="../../21/vault-%EB%8F%99%EC%A0%81-%EC%8B%9C%ED%81%AC%EB%A6%BF-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
         
   
   
@@ -1834,7 +1809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1861,7 +1836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../20/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1888,7 +1863,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1930,194 +1905,461 @@
       
       
       
-        <a href="../../../../../tags/#tag:boot" class="md-tag">Boot</a>
+        <a href="../../../../../tags/#tag:apple-silicon" class="md-tag">Apple Silicon</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:ec2" class="md-tag">EC2</a>
+        <a href="../../../../../tags/#tag:draw-things" class="md-tag">Draw Things</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:grub" class="md-tag">GRUB</a>
+        <a href="../../../../../tags/#tag:ltx-23" class="md-tag">LTX-2.3</a>
       
     
       
       
       
       
-        <a href="../../../../../tags/#tag:uefi" class="md-tag">UEFI</a>
+        <a href="../../../../../tags/#tag:metal" class="md-tag">Metal</a>
       
     
   </nav>
 
 
 
-<h1 id="_1">서버 부팅 방식 정리</h1>
+<h1 id="mac">Mac 로컬 영상 생성 정리</h1>
 <!-- more -->
 
-<h2 id="_2">각 용어의 개념</h2>
-<h3 id="mbr-master-boot-record">MBR (Master Boot Record)</h3>
+<h2 id="_1">로컬 영상 생성이란</h2>
+<p>로컬 영상 생성이란 클라우드 API 없이 개인 장비의 GPU로 text-to-video·image-to-video 모델을 직접 추론시키는 방식</p>
+<p>Apple Silicon은 통합 메모리(Unified Memory) 덕에 64GB 장비가 22B 영상 모델을 올릴 수 있음. 문제는 용량이 아니라 프레임워크 지원임.</p>
 <ul>
-<li>역할: 디스크의 첫 번째 512바이트에 위치하는 데이터 구조로, 부트 로더 및 파티션 정보를 저장함.</li>
-<li>왜 사용하는가?</li>
-<li>오래된 BIOS 기반 시스템에서 부팅을 지원하기 위해 사용됨.</li>
-<li>부트 로더(예: GRUB)의 첫 번째 스테이지(Stage 1)를 저장하여 운영체제 로딩을 시작할 수 있도록 함.</li>
-<li>단순한 구조이지만, 최대 2TiB 크기까지만 지원하고, 최대 4개의 기본(primary) 파티션만 가질 수 있음.</li>
+<li>Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 그대로 쓸 수 없음</li>
+<li>Draw Things는 자체 양자화 포맷(q8p, i8x, q6p)으로 모델을 재배포 → Metal에서 동작하는 경로 확보</li>
+<li>측정 환경: Mac Studio M1 Max 10코어, 64GB, macOS 26</li>
 </ul>
 <hr />
-<h3 id="gpt-guid-partition-table">GPT (GUID Partition Table)</h3>
-<ul>
-<li>역할: 최신 디스크 파티션 테이블 형식으로, MBR보다 많은 파티션과 더 큰 디스크 크기를 지원함.</li>
-<li>왜 사용하는가?</li>
-<li>MBR의 2TiB 한계를 해결하여 대형 디스크(2TiB 이상)를 지원함.</li>
-<li>최대 128개의 파티션을 만들 수 있음.</li>
-<li>디스크 무결성을 위해 CRC32 체크섬을 사용하며, 복구 기능을 제공함.</li>
-<li>UEFI 부팅을 지원하는 최신 시스템에서 필수적으로 사용됨.</li>
-</ul>
+<h2 id="_2">설치</h2>
+<p>앱과 CLI를 따로 설치함. CLI가 앱과 같은 모델 디렉터리를 공유하므로 앱에서 받은 모델을 CLI가 그대로 씀.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">cask</span><span class="w"> </span><span class="n">draw</span><span class="o">-</span><span class="n">things</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span>
+</code></pre></div>
+<p>모델 경로는 다음과 같음.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">~/</span><span class="n">Library</span><span class="o">/</span><span class="n">Containers</span><span class="o">/</span><span class="n">com.liuliu.draw</span><span class="o">-</span><span class="n">things</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Models</span>
+</code></pre></div>
 <hr />
-<h3 id="uefi-unified-extensible-firmware-interface">UEFI (Unified Extensible Firmware Interface)</h3>
-<ul>
-<li>역할: BIOS를 대체하는 최신 펌웨어 인터페이스로, 운영체제와 하드웨어 간의 연결을 제공함.</li>
-<li>왜 사용하는가?</li>
-<li>기존 BIOS보다 빠르고 더 많은 기능을 지원하며, 보안 기능(예: Secure Boot)을 포함함.</li>
-<li>GPT와 함께 사용하여, MBR의 2TiB 제한을 극복하고 더 많은 파티션을 지원함.</li>
-<li>네트워크 부팅, 고해상도 GUI 인터페이스 제공 등 추가적인 기능을 제공함.</li>
-</ul>
-<hr />
-<h3 id="grub-grand-unified-bootloader">GRUB (GRand Unified Bootloader)</h3>
-<ul>
-<li>역할: 운영체제를 로드하는 부트 로더.</li>
-<li>왜 사용하는가?</li>
-<li>여러 운영체제를 지원하는 멀티 부트 기능 제공.</li>
-<li>MBR 또는 GPT에서 커널을 로드할 수 있도록 설계됨.</li>
-<li>BIOS 기반 부팅에서는 MBR의 Stage 1에 설치됨.</li>
-<li>UEFI 기반 부팅에서는 ESP 파티션(<code>/boot/efi</code>)에 <code>grubx64.efi</code> 형식으로 설치됨.</li>
-</ul>
-<hr />
-<h3 id="esp-efi-system-partition">ESP (EFI System Partition)</h3>
-<ul>
-<li>역할: UEFI 기반 시스템에서 부트 로더 및 부팅 관련 데이터를 저장하는 FAT32 파티션.</li>
-<li>왜 사용하는가?</li>
-<li>UEFI 부팅을 위해 필수적인 공간으로, 여기서 GRUB 또는 다른 EFI 부트 로더가 실행됨.</li>
-<li>일반적으로 <code>/boot/efi</code>에 마운트됨.</li>
-<li><code>EFI/BOOT/BOOTX64.EFI</code>와 같은 실행 가능한 EFI 파일이 포함됨.</li>
-</ul>
-<hr />
-<h2 id="boot-bootefi">/boot 및 /boot/efi 필요성</h2>
+<h2 id="_3">모델 선택</h2>
+<p>LTX-2.3은 dev·distilled 두 계열에 양자화 등급이 붙어 배포됨.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">ltx</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">--</span><span class="n">downloaded</span><span class="o">-</span><span class="n">only</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">ensure</span><span class="w"> </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span>
+</code></pre></div>
 <table>
 <thead>
 <tr>
-<th>부트 방식</th>
-<th><code>/boot</code> 별도 파티션</th>
-<th><code>/boot/efi</code> 별도 파티션</th>
+<th>계열</th>
+<th>성격</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>distilled</td>
+<td>8스텝 증류판. 스텝 수가 적고 메모리 부담도 낮음</td>
+<td>실사용 기본값</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>증류 없는 원본. 학습·파인튜닝 대상</td>
+<td>스텝을 충분히 줄 수 있을 때만</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>양자화</th>
+<th>22B 기준 용량</th>
+<th>64GB 적합성</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>q6p (6-bit)</td>
+<td>약 18GB</td>
+<td>여유 확보용</td>
+</tr>
+<tr>
+<td>i8x, q8p (8-bit)</td>
+<td>약 24GB</td>
+<td>최적점</td>
+</tr>
+<tr>
+<td>f16 (Exact)</td>
+<td>약 44GB</td>
+<td>VAE 디코드 여유 부족</td>
+</tr>
+</tbody>
+</table>
+<p>실제로 쓴 조합은 <code>ltx_2.3_22b_distilled_1.1_i8x.ckpt</code>임. 부속 파일까지 합쳐 40GB를 차지함.</p>
+<table>
+<thead>
+<tr>
+<th>파일</th>
+<th>용량</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ltx_2.3_22b_distilled_1.1_i8x.ckpt</td>
+<td>24GB</td>
+<td>본체</td>
+</tr>
+<tr>
+<td>gemma_3_12b_it_qat_q8p.ckpt</td>
+<td>12GB</td>
+<td>텍스트 인코더</td>
+</tr>
+<tr>
+<td>ltx_2.3_audio_video_vae_f16.ckpt</td>
+<td>1.7GB</td>
+<td>비디오 VAE</td>
+</tr>
+<tr>
+<td>ltx_2.3_spatial_upscaler_x2_1.1_f16.ckpt</td>
+<td>952MB</td>
+<td>2배 업스케일러</td>
+</tr>
+<tr>
+<td>ltx_2.3_spatial_upscaler_x1.5_f16.ckpt</td>
+<td>1.0GB</td>
+<td>1.5배 업스케일러</td>
+</tr>
+</tbody>
+</table>
+<p>Gemma는 프롬프트를 임베딩으로 바꾸는 인코더이므로 생략 불가. 컨텍스트가 약 1,000토큰에서 잘리고 초과분은 조용히 버려짐 → 긴 프롬프트는 낭비.</p>
+<hr />
+<h2 id="_4">생성 명령</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span>\
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span><span class="w"> </span>\
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;a horse-drawn carriage on a tree-lined path, deep focus, photorealistic&quot;</span><span class="w"> </span>\
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="o">--</span><span class="n">negative</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;blurry, bokeh, shallow depth of field, distorted faces&quot;</span><span class="w"> </span>\
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="o">--</span><span class="n">width</span><span class="w"> </span><span class="m">1536</span><span class="w"> </span><span class="o">--</span><span class="n">height</span><span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="o">--</span><span class="n">frames</span><span class="w"> </span><span class="m">49</span><span class="w"> </span><span class="o">--</span><span class="n">steps</span><span class="w"> </span><span class="m">20</span><span class="w"> </span>\
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">clip.mov</span><span class="w"> </span><span class="o">--</span><span class="n">video</span><span class="o">-</span><span class="n">format</span><span class="w"> </span><span class="n">prores4444</span><span class="w"> </span>\
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">preview</span>
+</code></pre></div>
+<p>image-to-video는 <code>--image</code>로 시작 프레임을 주고 <code>--strength</code>로 원본 유지 강도를 조절함.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span><span class="w"> </span>\
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;camera slowly pushes in&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">image</span><span class="w"> </span><span class="n">start.png</span><span class="w"> </span><span class="o">--</span><span class="n">strength</span><span class="w"> </span><span class="m">0.35</span><span class="w"> </span>\
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="o">--</span><span class="n">width</span><span class="w"> </span><span class="m">1536</span><span class="w"> </span><span class="o">--</span><span class="n">height</span><span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="o">--</span><span class="n">frames</span><span class="w"> </span><span class="m">49</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">clip.mov</span>
+</code></pre></div>
+<p>주요 인자는 다음과 같음.</p>
+<table>
+<thead>
+<tr>
+<th>인자</th>
 <th>설명</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>BIOS + MBR</td>
-<td>선택</td>
-<td>❌ 필요 없음</td>
-<td>GRUB이 MBR에 설치되고, <code>/boot</code>에서 커널을 로드</td>
+<td><code>--width</code>, <code>--height</code></td>
+<td><strong>64의 배수만 허용</strong>. 위반 시 즉시 거부</td>
 </tr>
 <tr>
-<td>UEFI + GPT</td>
-<td>선택</td>
-<td>✅ 필요</td>
-<td>GRUB이 <code>/boot/efi</code>의 ESP에서 실행되고, 커널을 <code>/boot</code>에서 로드</td>
+<td><code>--frames</code></td>
+<td>8n+1 형태(49, 73, 97, 121, 153). 길이는 프레임수÷25</td>
 </tr>
 <tr>
-<td>AWS Nitro 기반 (x86)</td>
-<td>선택</td>
-<td>❌ 필요 없음</td>
-<td>AWS 가상화 환경에서는 <code>/boot/efi</code> 없이도 부팅 가능</td>
+<td><code>--steps</code></td>
+<td>미지정 시 모델 권장값(distilled는 8+3 = 11스텝)</td>
 </tr>
 <tr>
-<td>AWS Xen 기반 (t2 등 구형)</td>
-<td>선택</td>
-<td>❌ 필요 없음</td>
-<td>MBR 기반 BIOS 부팅 사용</td>
+<td><code>--video-format</code></td>
+<td>prores4444, prores422hq, h264, hevc</td>
+</tr>
+<tr>
+<td><code>--config-json</code></td>
+<td>JSGenerationConfiguration 부분 오버라이드</td>
 </tr>
 </tbody>
 </table>
+<p>864처럼 64로 나뉘지 않는 값을 넣으면 모델 로딩 전에 끊김.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Image</span><span class="w"> </span><span class="n">dimensions</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">multiples</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="m">64</span><span class="p">,</span><span class="w"> </span><span class="n">got</span><span class="w"> </span><span class="m">1536</span><span class="n">x864</span>
+</code></pre></div>
 <hr />
-<h2 id="3-aws-ec2-bootefi">3. AWS EC2 인스턴스에서 /boot/efi가 필요 없는 이유</h2>
-<h3 id="aws-xen-t2-m4">AWS Xen 기반 (예: t2, m4)</h3>
-<ul>
-<li>Xen 하이퍼바이저는 기본적으로 BIOS 부팅 방식을 사용하며, <code>/boot/efi</code>가 필요 없음.</li>
-<li>AWS에서 제공하는 기본 AMI(Amazon Machine Image)는 MBR 기반이 많음.</li>
-<li>GRUB이 MBR에 설치되며, <code>/boot</code>에서 커널을 로드하여 부팅.</li>
-</ul>
-<h3 id="aws-nitro-m5-m6i-m7i-t4g-a1">AWS Nitro 기반 (예: m5, m6i, m7i, t4g, a1)</h3>
-<ul>
-<li>Nitro 기반 인스턴스는 UEFI 부팅을 지원하지만, AWS AMI 기본 설정은 BIOS + MBR 부팅을 사용.</li>
-<li><code>/boot/efi</code> 없이도 부팅 가능하도록 구성됨.</li>
-<li>Amazon Linux 2, Ubuntu 20.04, RHEL 8 등의 AMI는 기본적으로 MBR 부팅을 유지.</li>
-</ul>
-<h3 id="aws-nitro-uefi">AWS Nitro 기반에서 UEFI 부팅이 필요한 경우</h3>
-<ul>
-<li>일부 최신 OS(Amazon Linux 2023 등)는 UEFI-preferred 설정이 되어 있으며, ESP(<code>/boot/efi</code>)를 사용.</li>
-<li>Nitro 기반 인스턴스에서 UEFI 모드를 활성화하면 GPT 및 <code>/boot/efi</code>를 사용하여 부팅 가능.</li>
-<li>그러나 대부분의 리눅스 AMI는 여전히 MBR 기반 BIOS 부팅을 기본값으로 사용.</li>
-</ul>
-<h2 id="aws-ec2-os">AWS EC2 인스턴스 세대 및 OS별 부팅 방식</h2>
+<h2 id="_5">스텝별 소요 시간</h2>
+<p>동일 조건에서 스텝만 바꾼 결과임.</p>
 <table>
 <thead>
 <tr>
-<th>인스턴스 유형 및 OS</th>
-<th>ESP 사용</th>
-<th>파티션 타입</th>
-<th>부팅 방식</th>
-<th>비고</th>
+<th>해상도</th>
+<th>11스텝</th>
+<th>20스텝</th>
+<th>30스텝</th>
+<th>11→30 배율</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>t2, m4 (Xen기반) - Ubuntu, AL2, RHEL8/9</td>
-<td>❌</td>
-<td>MBR</td>
-<td>BIOS</td>
-<td>GRUB(MBR)로 부팅</td>
+<td>1280×704 / 49프레임</td>
+<td>7분31초</td>
+<td>10분32초</td>
+<td>12분42초</td>
+<td>1.69배</td>
 </tr>
 <tr>
-<td>m5, m6i, m7i (Nitro 기반, x86) - Ubuntu, AL2, RHEL8/9</td>
-<td>❌</td>
-<td>MBR</td>
-<td>BIOS(기본값)</td>
-<td>UEFI 지원하지만 기본 MBR/BIOS</td>
-</tr>
-<tr>
-<td>m5, m6i, m7i - Amazon Linux 2023</td>
-<td>✅</td>
-<td>GPT</td>
-<td>UEFI</td>
-<td>UEFI-preferred, ESP 존재</td>
-</tr>
-<tr>
-<td>a1, t4g, m6g (Nitro, ARM Graviton)</td>
-<td>✅</td>
-<td>GPT</td>
-<td>UEFI</td>
-<td>ARM 환경은 UEFI만 지원</td>
+<td>1920×1088 / 49프레임</td>
+<td>18분43초</td>
+<td>23분44초</td>
+<td>29분4초</td>
+<td>1.55배</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_3">결론</h2>
 <ul>
-<li>MBR은 BIOS 부팅에서 사용되며, 2TiB 이하의 디스크에서 유효함.</li>
-<li>GPT는 UEFI 부팅에서 표준으로 사용되며, 대형 디스크 및 보안 기능을 지원함.</li>
-<li>GRUB은 MBR 또는 UEFI 환경에서 동작할 수 있음.</li>
-<li>ESP(<code>/boot/efi</code>)는 UEFI 부팅에서 필수이며, AWS Nitro 기반에서는 일반적으로 사용되지 않음.</li>
-<li>AWS EC2 인스턴스에서는 대부분 MBR 기반 부팅을 사용하여 <code>/boot/efi</code> 없이도 정상 작동함.</li>
+<li>스텝 2.7배에 시간 1.6배 → 부선형</li>
+<li>해상도가 높을수록 배율이 낮아짐(1.69 → 1.55) → VAE 디코드 고정비가 커서 샘플링 증분이 묻힘</li>
+<li>같은 시간 예산이면 해상도보다 스텝에 배분하는 쪽이 유리</li>
 </ul>
 <hr />
+<h2 id="_6">해상도별 소요 시간</h2>
+<p>49프레임·20스텝 고정 기준임.</p>
+<table>
+<thead>
+<tr>
+<th>해상도</th>
+<th>픽셀</th>
+<th>시간</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1280×704</td>
+<td>0.90M</td>
+<td>10분32초</td>
+</tr>
+<tr>
+<td>1536×832</td>
+<td>1.28M</td>
+<td>14분42초</td>
+</tr>
+<tr>
+<td>1664×960</td>
+<td>1.60M</td>
+<td>17분23초</td>
+</tr>
+<tr>
+<td>1920×832</td>
+<td>1.60M</td>
+<td>18분31초</td>
+</tr>
+<tr>
+<td>1920×1088</td>
+<td>2.09M</td>
+<td>23분44초</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>픽셀 2.32배에 시간 2.25배 → 거의 선형</li>
+<li>1664×960과 1920×832는 픽셀이 같고 시간도 같음 → 비용은 화면비가 아니라 총 픽셀 수로 결정됨</li>
+<li>시네마틱 2.3:1 화면비에 추가 비용 없음</li>
+</ul>
+<hr />
+<h2 id="_7">길이별 소요 시간</h2>
+<p>1280×704·20스텝 고정 기준임.</p>
+<table>
+<thead>
+<tr>
+<th>프레임</th>
+<th>길이</th>
+<th>시간</th>
+<th>프레임당</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>49</td>
+<td>1.96초</td>
+<td>10분32초</td>
+<td>12.9초</td>
+</tr>
+<tr>
+<td>73</td>
+<td>2.92초</td>
+<td>14분22초</td>
+<td>11.8초</td>
+</tr>
+<tr>
+<td>121</td>
+<td>4.84초</td>
+<td>23분44초</td>
+<td>11.8초</td>
+</tr>
+<tr>
+<td>153</td>
+<td>6.12초</td>
+<td>31분15초</td>
+<td>12.3초</td>
+</tr>
+</tbody>
+</table>
+<p>프레임당 비용이 12초 안팎으로 고정됨 → 길이도 선형.</p>
+<hr />
+<h2 id="_8">메모리 한계는 프레임 수에서 옴</h2>
+<p>30편을 연속 생성하는 동안 스왑 증가량을 매 회차 기록함. 결과가 직관과 어긋남.</p>
+<table>
+<thead>
+<tr>
+<th>조합</th>
+<th>픽셀×프레임</th>
+<th>스왑 증가</th>
+<th>압축 메모리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1920×1088 / 97프레임</td>
+<td>203M</td>
+<td>0MB</td>
+<td>24.6GB</td>
+</tr>
+<tr>
+<td>768×512 / 377프레임</td>
+<td>148M</td>
+<td>+18,164MB</td>
+<td>37.3GB</td>
+</tr>
+</tbody>
+</table>
+<p>부하가 1.4배 적은 쪽이 스왑을 18GB 밀어냈음. macOS가 스왑 파일을 2GB에서 3GB로 확장할 정도였고, 그 구간에서 소요 시간이 예측치보다 23% 늘어남.</p>
+<ul>
+<li>총 부하가 아니라 프레임 수 자체가 병목 → 어텐션 메모리가 프레임 축에서 먼저 터짐</li>
+<li>FHD로 4초를 뽑는 편이 480p로 15초를 뽑는 것보다 안전</li>
+<li>300프레임 초과가 유일한 위험 구간</li>
+</ul>
+<p>30편 전 회차의 스왑 증가는 0.0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것. 200프레임 이하에서는 스왑이 관측되지 않음.</p>
+</div>
+<hr />
+<h2 id="_9">열·전력</h2>
+<p>30편 10.3시간 연속 가동 중 온도를 추적함. sudo 없이 Apple Silicon 온도를 읽으려면 macmon을 씀(<code>powermetrics</code>는 root 권한 필요).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">macmon</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">macmon</span><span class="w"> </span><span class="n">pipe</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">jq</span><span class="w"> </span><span class="s">&#39;{cpu: .temp.cpu_temp_avg, gpu: .temp.gpu_temp_avg, fan: .fans[0].rpm}&#39;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>관측 범위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU 온도</td>
+<td>34~61°C</td>
+</tr>
+<tr>
+<td>GPU 온도</td>
+<td>34~67°C</td>
+</tr>
+<tr>
+<td>팬</td>
+<td>1,320~1,335rpm (최대 3,500의 37~38%)</td>
+</tr>
+<tr>
+<td>전력</td>
+<td>0~40W</td>
+</tr>
+</tbody>
+</table>
+<p>10시간 내내 GPU를 100% 물려도 67°C를 넘지 않고 팬은 38%에서 움직이지 않았음 → Mac Studio에서 열은 제약 조건이 아님.</p>
+<hr />
+<h2 id="_10">제약 사항</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fps 조절</td>
+<td>불가. <code>--fps</code> 인자가 없고 <code>--config-json '{"fps":24}'</code>는 오류 없이 무시됨. 출력은 항상 25fps</td>
+</tr>
+<tr>
+<td>해상도</td>
+<td>64의 배수만. 1280×720, 1920×1080은 무효 → 1280×704, 1920×1088로 대체</td>
+</tr>
+<tr>
+<td>최대 길이</td>
+<td>LTX-2.3 스펙상 20초(25fps·1080p). 다만 300프레임 초과는 스왑 위험</td>
+</tr>
+<tr>
+<td>원경 인물</td>
+<td>화면에서 20~30픽셀 높이로 잡히는 인물은 해상도를 올려도 뭉개짐. 프롬프트·스텝으로 해결 안 됨</td>
+</tr>
+</tbody>
+</table>
+<p>프롬프트에 <code>shallow depth of field</code>를 넣으면 배경 인물이 설계대로 흐려짐. 배경까지 선명하게 뽑으려면 <code>deep focus</code>를 명시하고 네거티브 프롬프트로 <code>bokeh</code>, <code>shallow depth of field</code>를 눌러야 함.</p>
+<hr />
+<h2 id="_11">권장 설정</h2>
+<table>
+<thead>
+<tr>
+<th>목적</th>
+<th>설정</th>
+<th>소요</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>범용</td>
+<td>1536×1024 / 49프레임 / 30스텝</td>
+<td>20분</td>
+</tr>
+<tr>
+<td>최고 화질</td>
+<td>1920×1088 / 49프레임 / 30스텝</td>
+<td>29분</td>
+</tr>
+<tr>
+<td>시네마틱</td>
+<td>1920×832 / 49프레임 / 30스텝</td>
+<td>22분</td>
+</tr>
+<tr>
+<td>빠른 초안</td>
+<td>1280×704 / 49프레임 / 11스텝</td>
+<td>7분</td>
+</tr>
+<tr>
+<td>6초 컷</td>
+<td>1280×768 / 153프레임 / 20스텝</td>
+<td>31분</td>
+</tr>
+</tbody>
+</table>
+<p>긴 영상은 한 번에 뽑지 말고 6초 이하 컷을 여러 개 만들어 편집으로 이을 것.</p>
+<hr />
+<h2 id="_12">결론</h2>
+<p>M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 29분에 나옴. 스왑 없이, 열 여유를 남기고 완주함.</p>
+<ul>
+<li>화질을 올리려면 해상도보다 스텝을 먼저 올릴 것</li>
+<li>길이를 늘릴 때만 메모리를 경계할 것</li>
+<li>fps가 필요하면 생성이 아니라 후처리로 해결할 것</li>
+</ul>
 
 
 
@@ -2164,7 +2406,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../storage-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: Storage 정리">
+          <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: RAG 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2174,27 +2416,11 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Storage 정리
+                RAG 정리
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../db-%EB%A1%9C%EA%B7%B8%EC%99%80-aurora-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: DB 로그와 Aurora 정리">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                DB 로그와 Aurora 정리
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
