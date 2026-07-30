@@ -31,7 +31,9 @@ Apple Silicon은 통합 메모리를 VRAM으로 사용할 수 있어 64GB 장비
 
 처음엔 ComfyUI를 깔았음. 실행 자체는 됨. PyTorch 2.10이 MPS를 잡고 통합 메모리 64GB를 SHARED VRAM으로 인식함.
 
-문제는 체크포인트임.
+막힌 지점은 체크포인트임.
+
+체크포인트(Checkpoint)란 학습이 끝난 모델 가중치를 파일로 묶어 저장한 것. 같은 모델도 어떤 수치 정밀도로 저장했는지에 따라 파일이 갈리고, 그 정밀도를 실행 장치가 지원해야 읽힘.
 
 - Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 못 씀
 - 우회로는 커뮤니티 GGUF 재양자화본뿐 → 양자화 등급이 낮아지고 배포 주체도 제각각
@@ -210,12 +212,7 @@ Error: Image dimensions must be multiples of 64, got 1536x864
 
 ## 열·전력
 
-30편 10.3시간 연속 가동 중 온도를 추적함. sudo 없이 Apple Silicon 온도를 읽으려면 macmon을 씀(`powermetrics`는 root 권한 필요).
-
-```s
-brew install macmon
-macmon pipe -s 1 | jq '{cpu: .temp.cpu_temp_avg, gpu: .temp.gpu_temp_avg, fan: .fans[0].rpm}'
-```
+30편 10.3시간 연속 가동 중 관측 범위임.
 
 | 지표 | 관측 범위 |
 |---|---|
