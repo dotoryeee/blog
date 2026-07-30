@@ -1071,14 +1071,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Mac 로컬 영상 생성 정리
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
   
 
     
@@ -2237,12 +2237,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">claude</span><span class="w"> </span><span class="n">mcp</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">server.py</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">Added</span><span class="w"> </span><span class="n">stdio</span><span class="w"> </span><span class="n">MCP</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">command</span><span class="o">:</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">server.py</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">local</span><span class="w"> </span><span class="n">config</span>
 </code></pre></div>
-<p>등록한 서버는 claude mcp list로 확인한다. 이 환경에는 playwright 서버도 이미 등록돼 있어 같이 뜬다.</p>
+<p>등록한 서버는 claude mcp list로 확인한다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">claude</span><span class="w"> </span><span class="n">mcp</span><span class="w"> </span><span class="n">list</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">Checking</span><span class="w"> </span><span class="n">MCP</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">health</span>…
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">playwright</span><span class="o">:</span><span class="w"> </span><span class="n">npx</span><span class="w"> </span><span class="o">@</span><span class="n">playwright</span><span class="o">/</span><span class="n">mcp</span><span class="o">@</span><span class="n">latest</span><span class="w"> </span><span class="o">-</span><span class="w"> </span>✔<span class="w"> </span><span class="n">Connected</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span><span class="o">:</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">server.py</span><span class="w"> </span><span class="o">-</span><span class="w"> </span>✔<span class="w"> </span><span class="n">Connected</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span><span class="o">:</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="n">server.py</span><span class="w"> </span><span class="o">-</span><span class="w"> </span>✔<span class="w"> </span><span class="n">Connected</span>
 </code></pre></div>
 <p>claude mcp get으로 서버 하나만 자세히 볼 수도 있다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">claude</span><span class="w"> </span><span class="n">mcp</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span>

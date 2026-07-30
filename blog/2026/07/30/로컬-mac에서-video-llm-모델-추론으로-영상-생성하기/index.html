@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/">
       
       
         <link rel="prev" href="../../29/rag-%EC%A0%95%EB%A6%AC/">
@@ -28,7 +28,7 @@
     
     
       
-        <title>Mac 로컬 영상 생성 정리 - dotoryeee's blog</title>
+        <title>로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog</title>
       
     
     
@@ -84,17 +84,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Mac 로컬 영상 생성 정리 - dotoryeee's blog" />
+<meta property="og:title" content="로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog" />
 <meta property="og:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="Mac 로컬 영상 생성 정리 - dotoryeee's blog" />
+<meta property="twitter:title" content="로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog" />
 <meta property="twitter:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/mac-%EB%A1%9C%EC%BB%AC-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1-%EC%A0%95%EB%A6%AC.png" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.png" />
 </head>
   
   
@@ -112,7 +112,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mac" class="md-skip">
+        <a href="#mac-video-llm" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mac 로컬 영상 생성 정리
+              로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
             
           </span>
         </div>
@@ -1087,7 +1087,7 @@
   <span class="md-ellipsis">
     
   
-    Mac 로컬 영상 생성 정리
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
   
 
     
@@ -1933,11 +1933,11 @@
 
 
 
-<h1 id="mac">Mac 로컬 영상 생성 정리</h1>
+<h1 id="mac-video-llm">로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기</h1>
 <!-- more -->
 
 <h2 id="_1">로컬 영상 생성이란</h2>
-<p>로컬 영상 생성이란 클라우드 API 없이 개인 장비의 GPU로 text-to-video·image-to-video 모델을 직접 추론시키는 방식</p>
+<p>클라우드 API 없이 로컬 맥스튜디오의 GPU로 text to video/image to video 모델을 직접 추론시키기</p>
 <p>Apple Silicon은 통합 메모리(Unified Memory) 덕에 64GB 장비가 22B 영상 모델을 올릴 수 있음. 문제는 용량이 아니라 프레임워크 지원임.</p>
 <ul>
 <li>Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 그대로 쓸 수 없음</li>
@@ -2249,7 +2249,7 @@
 <p>30편 전 회차의 스왑 증가는 0.0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것. 200프레임 이하에서는 스왑이 관측되지 않음.</p>
+<p>프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것.</p>
 </div>
 <hr />
 <h2 id="_9">열·전력</h2>
@@ -2354,7 +2354,7 @@
 <p>긴 영상은 한 번에 뽑지 말고 6초 이하 컷을 여러 개 만들어 편집으로 이을 것.</p>
 <hr />
 <h2 id="_12">결론</h2>
-<p>M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 29분에 나옴. 스왑 없이, 열 여유를 남기고 완주함.</p>
+<p>M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 메모리 스왑없이 29분에 나옴.</p>
 <ul>
 <li>화질을 올리려면 해상도보다 스텝을 먼저 올릴 것</li>
 <li>길이를 늘릴 때만 메모리를 경계할 것</li>
