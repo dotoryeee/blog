@@ -68,8 +68,9 @@ sequenceDiagram
 - 별도 암호화 요금은 없고 표준 S3 요청 요금만 발생
 
 !!! warning
-    2026년 4월부터 신규 범용 버킷과 SSE-C 오브젝트가 없는 기존 버킷은 SSE-C가 기본 차단됨. 차단 상태에서 SSE-C를 지정한 PutObject·CopyObject·POST Object·멀티파트 업로드·복제 요청은 HTTP 403 AccessDenied로 거부.
+    2026년 4월부터 신규 범용 버킷은 SSE-C가 기본 차단됨. SSE-C로 암호화된 오브젝트가 하나도 없는 계정은 기존 버킷까지 함께 차단됨. 차단 상태에서 SSE-C를 지정한 PutObject·CopyObject·POST Object·멀티파트 업로드·복제 요청은 HTTP 403 AccessDenied로 거부.
 
+- 차단은 쓰기 요청에만 적용됨 → 차단 이전에 SSE-C로 암호화된 오브젝트는 헤더를 넘기면 GetObject·HeadObject로 계속 읽을 수 있음
 - 차단을 풀려면 PutBucketEncryption API로 버킷 기본 암호화 설정의 BlockedEncryptionTypes를 NONE으로 지정해야 함
 - AWS가 기본 차단으로 방향을 잡은 이유는 매 요청 키 전달 구조 때문. 다른 사용자·역할·AWS 서비스와 접근 공유가 사실상 불가능하고, 관리형 서비스가 오브젝트를 복호화하지 못함
 
@@ -131,6 +132,7 @@ Bucket Keys 없이 SSE-KMS를 쓰면 오브젝트마다 개별 데이터 키를 
 - 이미 버킷에 있던 오브젝트에는 적용되지 않음 → CopyObject로 다시 써야 함
 - 암호화 컨텍스트가 오브젝트 ARN에서 버킷 ARN으로 바뀜 → 오브젝트 ARN을 암호화 컨텍스트로 쓰는 IAM·키 정책은 미리 수정할 것
 - KMS CloudTrail 이벤트에 버킷 ARN이 기록되고 이벤트 건수 자체가 줄어듦
+- KMS가 생성한 키뿐 아니라 임포트한 키 재료, 커스텀 키 스토어 기반 키와도 호환됨
 
 ---
 
@@ -140,18 +142,36 @@ Bucket Keys 없이 SSE-KMS를 쓰면 오브젝트마다 개별 데이터 키를 
 
 ```json title="bucket-policy.json"
 {
-  "Effect": "Deny",
-  "Principal": "*",
-  "Action": "s3:*",
-  "Resource": "arn:aws:s3:::dotoryeee-bucket/*",
-  "Condition": {
-    "Bool": { "aws:SecureTransport": "false" }
-  }
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::dotoryeee-bucket",
+        "arn:aws:s3:::dotoryeee-bucket/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false",
+          "aws:PrincipalIsAWSService": "false"
+        }
+      }
+    }
+  ]
 }
 ```
 
 - 버킷 자체를 대상으로 하는 작업까지 막으려면 Resource에 버킷 ARN도 함께 넣을 것
-- SSE-C는 HTTPS가 이미 강제되지만, 나머지 방식은 이 정책이 없으면 HTTP 요청이 허용됨
+- aws:PrincipalIsAWSService를 false로 함께 걸어 AWS 서비스 주체를 Deny에서 제외할 것
+
+!!! warning
+    AWS 서비스가 사용자를 대신해 다른 서비스를 호출할 때는 aws:SecureTransport·aws:SourceIp·s3:TlsVersion 같은 네트워크 컨텍스트가 가려짐. 이 조건 키를 Deny에 쓰면 복제·로깅 등 서비스 간 호출이 의도치 않게 차단될 수 있음.
+
+- SSE-C와 SSE-KMS는 이미 HTTPS가 강제됨. SSE-KMS 암호화 오브젝트의 GET·PUT 요청은 SSL/TLS로만 가능
+- SSE-S3와 평문 업로드는 이 정책이 없으면 HTTP 요청이 허용됨 → 정책의 실질 효과는 이쪽
 
 ---
 

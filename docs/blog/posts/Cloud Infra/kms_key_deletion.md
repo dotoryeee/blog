@@ -45,10 +45,14 @@ KMS 키 삭제(Key Deletion)란 KMS 키의 키 재료와 모든 메타데이터�
 ```mermaid
 graph LR
     A[Enabled] -->|ScheduleKeyDeletion<br>7~30일 지정| B[Pending deletion]
+    D[Disabled] -->|ScheduleKeyDeletion| B
     B -->|대기 기간 만료| C[영구 삭제<br>복구 불가]
-    B -->|CancelKeyDeletion| D[Disabled]
+    B -->|CancelKeyDeletion| D
     D -->|EnableKey| A
+    A -->|DisableKey| D
 ```
+
+- 삭제 예약은 Enabled뿐 아니라 Disabled 상태에서도 가능 → 먼저 비활성화해 영향을 관찰한 뒤 예약하는 순서를 권장
 
 - 7일~30일 범위에서 지정. 기본값은 30일
 - 실제 삭제 시각은 예약한 시각보다 최대 24시간 늦을 수 있음 → 정확한 시각은 DescribeKey 응답이나 콘솔의 Scheduled deletion date로 확인
@@ -127,7 +131,7 @@ graph LR
 | 복구 | 대기 기간 안에만 취소 가능 | 동일 키 재료 재임포트로 복구 |
 
 - 삭제 직후 키는 사용 불가 상태가 됨(최종 일관성 적용). 문서에 소요 시간 수치는 명시되어 있지 않음
-- Key ID·키 정책·별칭·태그는 그대로 남음 → 사용을 빠르게, 그러나 일시적으로 멈추는 수단
+- Key ID·키 정책·별칭은 그대로 남음 → 사용을 빠르게, 그러나 일시적으로 멈추는 수단
 - 만료일이 설정된 키 재료는 만료 시점에 KMS가 자동 삭제
 - 대칭 암호화 키는 키 재료를 여러 개 가질 수 있음 → key-material-id를 생략하면 현재 키 재료가 지워짐
 
