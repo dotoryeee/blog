@@ -34,7 +34,9 @@ KMS 키 삭제(Key Deletion)란 KMS 키의 키 재료와 모든 메타데이터�
 | AWS 관리형 키 | 불가 | 불가 |
 | AWS 소유 키(AWS owned key) | 불가 | 불가 |
 
-- AWS 관리형 키(aws/s3 등)는 계정 안에 보이지만 정책 변경·회전·삭제 예약을 사용자가 할 수 없음. 2021년 이후 신규 서비스에는 만들어지지 않는 레거시 유형
+- AWS 관리형 키(aws/s3 등)는 계정 안에 보이지만 정책 변경·회전·삭제 예약을 사용자가 할 수 없음
+- AWS 문서는 이를 레거시 키 유형으로 분류. 2021년 이후 출시된 서비스는 AWS 관리형 키 대신 AWS 소유 키를 기본으로 씀
+- 다만 지금도 생성되는 현역 유형임. 기존 통합 서비스에서 고객 관리형 키를 지정하지 않으면 AWS가 계정에 AWS 관리형 키를 자동 생성함(SSE-KMS 첫 사용 시 aws/s3 생성 등)
 - AWS 소유 키는 계정 밖 서비스 계정에 있어 조회조차 되지 않음
 - Key ID 자체를 파기하는 경로는 어느 고객 관리형 키든 예약 삭제 하나뿐
 
@@ -170,6 +172,7 @@ aws kms delete-imported-key-material --key-id 1234abcd-12ab-34cd-56ef-1234567890
 
 - replica 키는 다른 키 상태와 무관하게 언제든 삭제 예약 가능
 - primary 키는 모든 replica가 삭제 완료된 뒤에야 대기 기간이 시작됨
+- 그동안 primary는 Pending deletion이 아니라 PendingReplicaDeletion 상태 → 암호화 작업은 이미 불가하지만 삭제 타이머는 아직 돌지 않음. 마지막 replica가 지워지면 PendingDeletion으로 전환
 - replica를 남긴 채 특정 리전의 primary를 지우려면 primary Region을 옮겨 그 키를 replica로 전환
 
 ---
