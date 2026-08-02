@@ -33,15 +33,32 @@ S3 암호화 방식이란 오브젝트를 누가 어디서 암호화하고 그 �
 |---|---|---|---|
 | SSE-S3 | S3 | AWS | 미사용 |
 | SSE-KMS | S3 | KMS 키(고객 관리형 또는 AWS 관리형) | 사용 |
-| DSSE-KMS | S3 | KMS 키 | 사용. AES-256 두 겹 적용 |
+| DSSE-KMS | S3 | 1층은 KMS 키, 2층은 S3 관리 키 | 사용 |
 | SSE-C | S3 | 사용자. 매 요청 헤더로 전달 | 미사용 |
 | CSE | 클라이언트 | 사용자 또는 KMS 랩핑 키 | 선택 |
+
+DSSE-KMS의 "두 겹"은 서로 독립적인 AES-256 두 층을 뜻함.
+
+- 1층은 KMS가 생성한 데이터 키, 2층은 이미 암호화된 데이터를 S3가 관리하는 별도 AES-256 키로 다시 암호화
+- KMS 키는 버킷과 같은 리전이어야 함
+- 연산 부담과 KMS 호출이 늘어 SSE-KMS보다 지연과 비용이 큼
 
 ---
 
 ## SSE-C
 
 SSE-C(Server-Side Encryption with Customer-Provided Keys)란 암호화 연산은 S3에 맡기고 AES-256 키는 요청마다 HTTP 헤더로 직접 넘기는 방식
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant S3
+    Client->>S3: PutObject (평문 + x-amz-server-side-encryption-customer-key)
+    Note over S3: 전달받은 키로 암호화 후 디스크 저장<br>키 자체는 저장하지 않음
+    S3-->>Client: 200 OK
+    Client->>S3: GetObject (같은 키를 헤더로 재전달)
+    S3-->>Client: 복호화된 오브젝트
+```
 
 - S3는 이 키를 저장하지 않음 → 다운로드 때마다 같은 키를 다시 넘겨야 함
 - 어떤 오브젝트를 어떤 키로 암호화했는지 매핑을 사용자가 관리. 키를 잃으면 오브젝트도 잃음
@@ -61,6 +78,13 @@ SSE-C(Server-Side Encryption with Customer-Provided Keys)란 암호화 연산은
 ## CSE
 
 CSE(Client-Side Encryption)란 데이터를 로컬에서 암호화한 뒤 암호문만 S3로 보내는 방식
+
+```mermaid
+graph LR
+    A[애플리케이션<br>평문] -->|Amazon S3 Encryption Client가<br>데이터 키로 암호화| B[암호문]
+    B -->|PutObject| C[S3<br>암호문 그대로 저장]
+    D[KMS 랩핑 키<br>CSE-KMS일 때만] -.-> A
+```
 
 - Amazon S3 Encryption Client가 PutObject·GetObject 과정에 끼어들어 오브젝트마다 고유한 데이터 키로 암복호화
 - S3는 암호문을 평범한 오브젝트로만 인식 → 암호화 여부 자체를 모름
