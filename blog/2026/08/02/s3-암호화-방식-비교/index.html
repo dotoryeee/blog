@@ -1983,9 +1983,10 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>2026년 4월부터 신규 범용 버킷과 SSE-C 오브젝트가 없는 기존 버킷은 SSE-C가 기본 차단됨. 차단 상태에서 SSE-C를 지정한 PutObject·CopyObject·POST Object·멀티파트 업로드·복제 요청은 HTTP 403 AccessDenied로 거부.</p>
+<p>2026년 4월부터 신규 범용 버킷은 SSE-C가 기본 차단됨. SSE-C로 암호화된 오브젝트가 하나도 없는 계정은 기존 버킷까지 함께 차단됨. 차단 상태에서 SSE-C를 지정한 PutObject·CopyObject·POST Object·멀티파트 업로드·복제 요청은 HTTP 403 AccessDenied로 거부.</p>
 </div>
 <ul>
+<li>차단은 쓰기 요청에만 적용됨 → 차단 이전에 SSE-C로 암호화된 오브젝트는 헤더를 넘기면 GetObject·HeadObject로 계속 읽을 수 있음</li>
 <li>차단을 풀려면 PutBucketEncryption API로 버킷 기본 암호화 설정의 BlockedEncryptionTypes를 NONE으로 지정해야 함</li>
 <li>AWS가 기본 차단으로 방향을 잡은 이유는 매 요청 키 전달 구조 때문. 다른 사용자·역할·AWS 서비스와 접근 공유가 사실상 불가능하고, 관리형 서비스가 오브젝트를 복호화하지 못함</li>
 </ul>
@@ -2085,23 +2086,44 @@
 <li>이미 버킷에 있던 오브젝트에는 적용되지 않음 → CopyObject로 다시 써야 함</li>
 <li>암호화 컨텍스트가 오브젝트 ARN에서 버킷 ARN으로 바뀜 → 오브젝트 ARN을 암호화 컨텍스트로 쓰는 IAM·키 정책은 미리 수정할 것</li>
 <li>KMS CloudTrail 이벤트에 버킷 ARN이 기록되고 이벤트 건수 자체가 줄어듦</li>
+<li>KMS가 생성한 키뿐 아니라 임포트한 키 재료, 커스텀 키 스토어 기반 키와도 호환됨</li>
 </ul>
 <hr />
 <h2 id="_2">전송 중 암호화 강제</h2>
 <p>저장 암호화와 별개로 HTTPS가 아닌 요청을 버킷 정책에서 거부하는 설정.</p>
 <div class="highlight"><span class="filename">bucket-policy.json</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:*&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::dotoryeee-bucket/*&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&quot;Bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;aws:SecureTransport&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DenyInsecureTransport&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:*&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="s2">&quot;arn:aws:s3:::dotoryeee-bucket&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="s2">&quot;arn:aws:s3:::dotoryeee-bucket/*&quot;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="p">],</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">&quot;Condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">&quot;Bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">          </span><span class="nt">&quot;aws:SecureTransport&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">          </span><span class="nt">&quot;aws:PrincipalIsAWSService&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>버킷 자체를 대상으로 하는 작업까지 막으려면 Resource에 버킷 ARN도 함께 넣을 것</li>
-<li>SSE-C는 HTTPS가 이미 강제되지만, 나머지 방식은 이 정책이 없으면 HTTP 요청이 허용됨</li>
+<li>aws:PrincipalIsAWSService를 false로 함께 걸어 AWS 서비스 주체를 Deny에서 제외할 것</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>AWS 서비스가 사용자를 대신해 다른 서비스를 호출할 때는 aws:SecureTransport·aws:SourceIp·s3:TlsVersion 같은 네트워크 컨텍스트가 가려짐. 이 조건 키를 Deny에 쓰면 복제·로깅 등 서비스 간 호출이 의도치 않게 차단될 수 있음.</p>
+</div>
+<ul>
+<li>SSE-C와 SSE-KMS는 이미 HTTPS가 강제됨. SSE-KMS 암호화 오브젝트의 GET·PUT 요청은 SSL/TLS로만 가능</li>
+<li>SSE-S3와 평문 업로드는 이 정책이 없으면 HTTP 요청이 허용됨 → 정책의 실질 효과는 이쪽</li>
 </ul>
 <hr />
 <h2 id="_3">선택 기준</h2>
