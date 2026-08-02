@@ -1021,7 +1021,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 6분
+                              읽는시간 7분
                             
                           </span>
                         </div>
@@ -1939,8 +1939,8 @@
 <tr>
 <td>DSSE-KMS</td>
 <td>S3</td>
-<td>KMS 키</td>
-<td>사용. AES-256 두 겹 적용</td>
+<td>1층은 KMS 키, 2층은 S3 관리 키</td>
+<td>사용</td>
 </tr>
 <tr>
 <td>SSE-C</td>
@@ -1956,9 +1956,23 @@
 </tr>
 </tbody>
 </table>
+<p>DSSE-KMS의 "두 겹"은 서로 독립적인 AES-256 두 층을 뜻함.</p>
+<ul>
+<li>1층은 KMS가 생성한 데이터 키, 2층은 이미 암호화된 데이터를 S3가 관리하는 별도 AES-256 키로 다시 암호화</li>
+<li>KMS 키는 버킷과 같은 리전이어야 함</li>
+<li>연산 부담과 KMS 호출이 늘어 SSE-KMS보다 지연과 비용이 큼</li>
+</ul>
 <hr />
 <h2 id="sse-c">SSE-C</h2>
 <p>SSE-C(Server-Side Encryption with Customer-Provided Keys)란 암호화 연산은 S3에 맡기고 AES-256 키는 요청마다 HTTP 헤더로 직접 넘기는 방식</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant S3
+    Client-&gt;&gt;S3: PutObject (평문 + x-amz-server-side-encryption-customer-key)
+    Note over S3: 전달받은 키로 암호화 후 디스크 저장&lt;br&gt;키 자체는 저장하지 않음
+    S3--&gt;&gt;Client: 200 OK
+    Client-&gt;&gt;S3: GetObject (같은 키를 헤더로 재전달)
+    S3--&gt;&gt;Client: 복호화된 오브젝트</code></pre>
 <ul>
 <li>S3는 이 키를 저장하지 않음 → 다운로드 때마다 같은 키를 다시 넘겨야 함</li>
 <li>어떤 오브젝트를 어떤 키로 암호화했는지 매핑을 사용자가 관리. 키를 잃으면 오브젝트도 잃음</li>
@@ -1978,6 +1992,10 @@
 <hr />
 <h2 id="cse">CSE</h2>
 <p>CSE(Client-Side Encryption)란 데이터를 로컬에서 암호화한 뒤 암호문만 S3로 보내는 방식</p>
+<pre class="mermaid"><code>graph LR
+    A[애플리케이션&lt;br&gt;평문] --&gt;|Amazon S3 Encryption Client가&lt;br&gt;데이터 키로 암호화| B[암호문]
+    B --&gt;|PutObject| C[S3&lt;br&gt;암호문 그대로 저장]
+    D[KMS 랩핑 키&lt;br&gt;CSE-KMS일 때만] -.-&gt; A</code></pre>
 <ul>
 <li>Amazon S3 Encryption Client가 PutObject·GetObject 과정에 끼어들어 오브젝트마다 고유한 데이터 키로 암복호화</li>
 <li>S3는 암호문을 평범한 오브젝트로만 인식 → 암호화 여부 자체를 모름</li>
