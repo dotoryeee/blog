@@ -869,6 +869,127 @@
     <div class="md-post__meta md-meta">
       <ul class="md-meta__list">
         <li class="md-meta__item">
+          <time datetime="2023-01-01 00:00:00+00:00">2023. 1. 1.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/python/" class="md-meta__link">Python</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 2분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="python-alternatives-poetry-conda"><a class="toclink" href="../../2023/01/01/python-%ED%99%98%EA%B2%BD-%EA%B4%80%EB%A6%AC-alternatives-poetry-conda/">Python 환경 관리: alternatives, poetry, conda</a></h2>
+<ol>
+<li>alternatives (심볼링 링크 자동화)<ul>
+<li>장점:<br>
+    간단한 방식으로 시스템 전체에서 사용할 Python 버전을 쉽게 변경할 수 있습니다.</li>
+<li>단점:<br>
+    프로젝트별 가상 환경을 지원하지 않아, 여러 프로젝트에서 서로 다른 종속성을 가진 경우 관리가 어렵습니다.</li>
+</ul>
+</li>
+</ol>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2023/01/01/python-%ED%99%98%EA%B2%BD-%EA%B4%80%EB%A6%AC-alternatives-poetry-conda/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
+          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
+        
+          <li class="md-meta__item">
+            카테고리
+            
+              <a href="../../category/aws/" class="md-meta__link">AWS</a></li>
+        
+        
+          
+          <li class="md-meta__item">
+            
+              읽는시간 10분
+            
+          </li>
+        
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="md-post__content md-typeset">
+    <h2 id="3-tier"><a class="toclink" href="../../2021/04/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/">3-Tier 기본 인프라 구성</a></h2>
+<h3 id="_1"><a class="toclink" href="../../2021/04/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/#_1">개념도</a></h3>
+<hr />
+<p><img alt="3-Tier Basic Infra/Untitled.png" src="../../Cloud%20Infra/3-Tier%20Basic%20Infra/Untitled.png" /></p>
+<h3 id="todo"><a class="toclink" href="../../2021/04/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/#todo">TODO</a></h3>
+<hr />
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> VPC생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 서브넷생성(public X 2, private X 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> public서버에 각각 bastion host 인스턴스 생성</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> ELB생성후 Auto Scaling 연계 → 웹 서버 인스턴스 자동생성(2~6개)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → WebServer 접속 확인</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> RDS DB생성(MySQL)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> HOST → Bastion Host → DB 접속 확인하기</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> MySQL Workbench 연결 (SSH 터널링) (SQL IDE)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jetbrains DataGrip 연결  (SSH 터널링) (SQL IDE)</li>
+</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2021/04/17/3-tier-%EA%B8%B0%EB%B3%B8-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%84%B1/">
+          계속 읽기
+        </a>
+      </nav>
+    
+    
+  </div>
+</article>
+      
+        <article class="md-post md-post--excerpt">
+  <header class="md-post__header">
+    
+      <nav class="md-post__authors md-typeset">
+        
+          <span class="md-author">
+            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+          </span>
+        
+      </nav>
+    
+    <div class="md-post__meta md-meta">
+      <ul class="md-meta__list">
+        <li class="md-meta__item">
           <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
         
           <li class="md-meta__item">
@@ -1316,131 +1437,6 @@ URI가 /api 로 시작하면 백엔드(NodeJS)로, 나머지( / )는 프론트(R
     
       <nav class="md-post__action">
         <a href="../../2021/04/17/multi-container-cicd/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/database/" class="md-meta__link">Database</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 8분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="docker-proxy-layer-for-mysql"><a class="toclink" href="../../2021/04/17/docker-proxy-layer-for-mysql/">Docker Proxy Layer for MySQL</a></h2>
-<h3 id="proxy-layer"><a class="toclink" href="../../2021/04/17/docker-proxy-layer-for-mysql/#proxy-layer">Proxy Layer의 필요성</a></h3>
-<hr />
-<ul>
-<li>외부(어플리케이션)에서 접속 시 3306포트의 MASTER DB가 에러가 발생했을 때, FailOver가 구현되어 SLAVE DB(3307)가 MASTER로 승격되더라도 3307포트로 자동으로 변경되지 않기 떄문에 사이에서 중재해줄 Layer가 필요합니다.</li>
-<li>
-<p>ex&gt;Nginx with Proxy</p>
-<p><img alt="Docker Proxy Layer for MySQL/Untitled.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled.png" /></p>
-</li>
-<li>
-<p>ex)Nginx without Proxy</p>
-<p><img alt="Docker Proxy Layer for MySQL/Untitled%201.png" src="../../Docker%20%26%20Kubernetes/Docker%20Proxy%20Layer%20for%20MySQL/Untitled%201.png" /></p>
-</li>
-</ul>
-<h3 id="_1"><a class="toclink" href="../../2021/04/17/docker-proxy-layer-for-mysql/#_1">목표</a></h3>
-<hr />
-<ul>
-<li>ProxySQL을 이용해 Proxy Layer를 구현합니다</li>
-<li>READ, WRITE작업을 수행하는 호스트그룹과 Read작업만 수행하는 호스트 그룹을 생성합니다</li>
-</ul>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/docker-proxy-layer-for-mysql/">
-          계속 읽기
-        </a>
-      </nav>
-    
-    
-  </div>
-</article>
-      
-        <article class="md-post md-post--excerpt">
-  <header class="md-post__header">
-    
-      <nav class="md-post__authors md-typeset">
-        
-          <span class="md-author">
-            <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
-          </span>
-        
-      </nav>
-    
-    <div class="md-post__meta md-meta">
-      <ul class="md-meta__list">
-        <li class="md-meta__item">
-          <time datetime="2021-04-17 00:00:00+00:00">2021. 4. 17.</time></li>
-        
-          <li class="md-meta__item">
-            카테고리
-            
-              <a href="../../category/docker/" class="md-meta__link">Docker</a></li>
-        
-        
-          
-          <li class="md-meta__item">
-            
-              읽는시간 7분
-            
-          </li>
-        
-        
-      </ul>
-      
-    </div>
-  </header>
-  <div class="md-post__content md-typeset">
-    <h2 id="docker-basics"><a class="toclink" href="../../2021/04/17/docker-basics/">Docker basics</a></h2>
-<h3 id="_1"><a class="toclink" href="../../2021/04/17/docker-basics/#_1">목표</a></h3>
-<hr />
-<ol>
-<li>도커를 복습 겸 간단하게 한 번 훑어봅니다</li>
-<li>간단한 node 백엔드를 작성하고 도커 이미지를 생성합니다</li>
-<li>Working Directory를 설정합니다</li>
-<li>node 종속성을 수정해 이미지 빌드 속도를 높여봅니다</li>
-<li>개발일을 할 떄 docker volume을 어떻게 활용할 수 있는지 한 번 살펴봅니다</li>
-<li>compose를 이용해 간단한 페이지를 만들어봅니다</li>
-</ol>
-
-    
-      <nav class="md-post__action">
-        <a href="../../2021/04/17/docker-basics/">
           계속 읽기
         </a>
       </nav>
