@@ -59,13 +59,12 @@ flowchart LR
 
 검색은 후보를 넉넉히 뽑는 단계고 그중 진짜 쓸 만한 걸 고르는 건 별도 단계로 두는 게 낫더라는 이야기다. 이 재정렬을 리랭킹이라고 한다.
 
-[에어비앤비](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/)는 전화 상담에서 질문 하나에 도움말 문서를 60ms 안에 최대 30건 뽑은 뒤 LLM으로 다시 줄 세워 최상위 문서를 안내한다. 이 시스템을 포함한 개편으로 음성 인식 단어 오류율이 33%에서 약 10%로 내려갔다.
-
+[에어비앤비](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/)는 전화 상담에서 질문 하나에 도움말 문서를 60ms 안에 최대 30건 뽑은 뒤 LLM으로 다시 줄 세워 최상위 문서를 안내한다.
 ### 조각에 맥락을 붙인다
 
 문서를 조각으로 자르면 맥락이 사라진다. "이 조항은 전항의 예외로 한다"라는 조각만 보면 무슨 조항인지 알 길이 없다.
 
-[앤트로픽](https://www.anthropic.com/engineering/contextual-retrieval)은 각 조각 앞에 문서 전체에서 이 조각이 어떤 위치인지 설명하는 50~100토큰짜리 문장을 모델로 생성해 붙였다. 이것만으로 상위 20개 검색 실패율이 5.7%에서 3.7%로 35% 줄었다. 키워드 검색까지 결합하면 49%까지 줄었고 리랭킹까지 더하면 67%까지 줄었다. 같은 글에는 자료 전체가 20만 토큰이 안 되면 RAG를 만들지 말고 통째로 프롬프트에 넣어 캐싱하라는 [조언](https://www.anthropic.com/engineering/contextual-retrieval)도 있다. 작은 규모에서는 검색 시스템 자체가 과투자라는 뜻이라 기억에 남았다. [우아한형제들](https://techblog.woowahan.com/25900/)도 검색 전략으로 이 문맥적 임베딩을 골랐다.
+[앤트로픽](https://www.anthropic.com/engineering/contextual-retrieval)은 각 조각 앞에 문서 전체에서 이 조각이 어떤 위치인지 설명하는 50~100토큰짜리 문장을 모델로 생성해 붙였다. 이것만으로 상위 20개 검색 실패율이 5.7%에서 3.7%로 35% 줄었다. 키워드 검색까지 결합하면 49%까지 줄었고 리랭킹까지 더하면 67%까지 줄었다. 같은 글에는 자료 전체가 20만 토큰이 안 되면 RAG를 만들지 말고 통째로 프롬프트에 넣어 캐싱하라는 [조언](https://www.anthropic.com/engineering/contextual-retrieval)도 있다. 작은 규모에서는 검색 시스템 자체가 과투자라는 뜻이라 기억에 남았다. [우아한형제들](https://techblog.woowahan.com/25900/)도 검색 전략으로 문맥적 임베딩을 골랐다. 다만 이쪽은 단어의 주변 문맥을 반영해 벡터로 바꾼다는 일반적인 뜻이고 조각 앞에 생성한 설명을 붙이는 앤트로픽 방식과는 다르다.
 
 ### 내보내기 전에 검사한다
 
@@ -80,7 +79,7 @@ flowchart LR
     C2 -.-> NG["문제 답변 걸러냄"]
 ```
 
-[도어대시](https://careersatdoordash.com/blog/large-language-modules-based-dasher-support-automation/)는 배달기사 지원 챗봇에 자체 개발한 경량 검사와 LLM 평가자로 이어지는 2단계 가드레일을 달고 검색 정확도와 응답 정확도 등 5개 축으로 품질을 평가한다. 이 장치로 환각을 90% 줄이고 심각한 규정 위반 답변을 99% 줄였다. 매일 수천 명의 배달기사를 자동 응대한다.
+[도어대시](https://careersatdoordash.com/blog/large-language-modules-based-dasher-support-automation/)는 배달기사 지원 챗봇에 자체 개발한 경량 검사와 LLM 평가자로 이어지는 2단계 가드레일을 달았다. 이 가드레일로 환각을 90% 줄이고 심각한 규정 위반 답변을 99% 줄였다. 품질은 별도로 검색 정확도와 응답 정확도 등 5개 축으로 나눠 점검한다. 매일 수천 명의 배달기사를 자동 응대한다.
 
 ### 검색 모델 자체를 다시 만든다
 
@@ -165,7 +164,7 @@ flowchart TD
 
 ### 우아한형제들
 
-[우아한형제들](https://techblog.woowahan.com/25900/) 검색봇의 목표 지표는 정보 찾는 시간 5분을 30초로 줄이고 시스템 세 번 열던 걸 한 번으로 줄이는 것이었다. 달성했다는 후기가 아니라 설계 시점의 목표라는 점은 짚어둔다. 그래도 RAG 도입의 기대 효과를 이렇게 업무 시간으로 환산해 두는 방식 자체가 배울 점이었다.
+[우아한형제들](https://techblog.woowahan.com/25900/) 검색봇의 목표 지표는 정보 분석 시간 5분을 30초로 줄이고 시스템 세 번 열던 걸 한 번으로 줄이는 것이었다. 달성했다는 후기가 아니라 설계 시점의 목표라는 점은 짚어둔다. 그래도 RAG 도입의 기대 효과를 이렇게 업무 시간으로 환산해 두는 방식 자체가 배울 점이었다.
 
 ### 토스
 
@@ -200,4 +199,4 @@ flowchart TD
 
 ### 판단이 안 설 때
 
-기본 RAG부터 시작하는 게 사례들의 공통 경로였다. 써보면 질문 분포가 보이고 그때 그래프든 에이전트든 필요한 만큼만 얹으면 된다. 자료 성질이 RAG와 안 맞을 수도 있으니 [토스](https://toss.tech/article/vulnerability-analysis-automation-1)처럼 접는 판단까지 열어두는 게 좋다.
+기본 RAG부터 시작하는 쪽이 무난하다. 써보면 질문 분포가 보이고 그때 그래프든 에이전트든 필요한 만큼만 얹으면 된다. 자료 성질이 RAG와 안 맞을 수도 있으니 [토스](https://toss.tech/article/vulnerability-analysis-automation-1)처럼 접는 판단까지 열어두는 게 좋다.
