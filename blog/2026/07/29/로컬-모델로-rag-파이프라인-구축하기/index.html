@@ -1126,6 +1126,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EA%B3%B5%EB%B6%80-%EA%B8%B0%EB%A1%9D-%EA%B8%B0%EC%97%85%EB%93%A4%EC%9D%B4-%EC%8B%A4%EC%A0%9C%EB%A1%9C-%EC%93%B0%EB%8A%94-%EA%B2%83%EB%A7%8C-%EB%AA%A8%EC%95%98%EB%8B%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 공부 기록: 기업들이 실제로 쓰는 것만 모았다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
@@ -1902,33 +1929,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../21/s3-%EC%84%B1%EB%8A%A5%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    S3 성능·비용 최적화 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -2088,7 +2088,7 @@
 <h2 id="_4">문서 청킹</h2>
 <hr />
 <p>경계 우선순위를 문단 → 줄바꿈 → 문장 종결 → 공백 → 길이 강제 순으로 두고 재귀 분할한다. 코드펜스는 원자 단위로 취급해 통째로 한 조각에 넣고, 상한을 넘을 때만 줄 단위로 쪼갠다. 줄 중간은 자르지 않는다.</p>
-<div class="highlight"><span class="filename">scripts/chunker.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">split_code_by_lines</span><span class="p">(</span><span class="n">code_text</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
+<div class="highlight"><span class="filename">scripts/chunker.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span> <span class="nf">split_code_by_lines</span><span class="p">(</span><span class="n">code_text</span><span class="p">,</span> <span class="n">max_size</span><span class="p">):</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;코드 펜스가 max_size를 초과할 때만 사용. 줄 중간은 절대 자르지 않는다.&quot;&quot;&quot;</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">lines</span> <span class="o">=</span> <span class="n">code_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2220,7 +2220,7 @@
 <h2 id="qdrant">Qdrant 색인</h2>
 <hr />
 <p>컬렉션 하나에 dense와 sparse를 명명 벡터로 함께 둔다. dense는 1024차원 Cosine, sparse는 modifier idf다.</p>
-<div class="highlight"><span class="filename">scripts/qdrant_setup.py</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_collection</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">with_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recreate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight"><span class="filename">scripts/qdrant_setup.py</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span> <span class="nf">create_collection</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">with_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">recreate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="k">if</span> <span class="n">recreate</span><span class="p">:</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">QDRANT</span><span class="si">}</span><span class="s2">/collections/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
@@ -2513,7 +2513,7 @@
 <p>이 제품의 지식 기능은 자체 청킹, 자체 임베딩, 자체 벡터 저장소를 쓰는 별개 파이프라인이다. 거기에 코퍼스를 넣으면 지금까지 만든 컬렉션이 아니라 다른 시스템을 재게 된다. <strong>측정은 전부 llama-server의 /v1/chat/completions를 직접 호출해서 했다.</strong></p>
 <p>통제 변수는 이렇게 잡았다. 시스템 프롬프트 골격은 동일하고 차이는 사용자 메시지에 컨텍스트 블록이 붙는지 여부뿐이다. temperature는 0, max_tokens는 300, 단일 턴, 추론 모드는 끈 상태다. 판정 기준도 생성 전에 정했다. 47.6~47.7 t/s 수치가 나오면 정답, 모른다고 답하면 정직한 거부, 다른 수치를 대면 환각으로 본다.</p>
 <p>질문은 이 블로그에만 있는 실측 수치를 골랐다. 코퍼스 대부분이 공개 지식의 정리라 그쪽을 물으면 모델이 사전 지식으로 맞혀 버린다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kr">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">gen_decode_speed_dotoryeee</span><span class="o">-</span><span class="n">moe.json</span><span class="w"> </span><span class="n">gen_decode_speed_dotoryeee</span><span class="o">-</span><span class="n">dense.json</span><span class="p">;</span><span class="w"> </span><span class="n">do</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">gen_decode_speed_dotoryeee</span><span class="o">-</span><span class="n">moe.json</span><span class="w"> </span><span class="n">gen_decode_speed_dotoryeee</span><span class="o">-</span><span class="n">dense.json</span><span class="p">;</span><span class="w"> </span><span class="n">do</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">jq</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="s">&#39;.rag_off.model_alias + &quot; RAG미적용: &quot; + (.rag_off.answer|gsub(&quot;\n&quot;;&quot; &quot;)) , (.rag_on.model_alias + &quot; RAG적용: &quot; + (.rag_on.answer|gsub(&quot;\n&quot;;&quot; &quot;)))&#39;</span><span class="w"> </span><span class="o">$</span><span class="n">f</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">done</span>
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">moe</span><span class="w"> </span><span class="n">RAG미적용</span><span class="o">:</span><span class="w"> </span><span class="n">dotoryeee</span><span class="w"> </span>블로그의<span class="w"> </span>구체적인<span class="w"> </span>테스트<span class="w"> </span>데이터나<span class="w"> </span>기록을<span class="w"> </span>확인할<span class="w"> </span>수<span class="w"> </span>없으므로<span class="p">,</span><span class="w"> </span>정확한<span class="w"> </span>수치를<span class="w"> </span>알<span class="w"> </span>수<span class="w"> </span>없습니다<span class="n">.</span>
