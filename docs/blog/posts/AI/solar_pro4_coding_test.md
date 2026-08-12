@@ -19,7 +19,7 @@ description: "같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5, O
 
 <!-- more -->
 
-Claude Code는 Claude Max 20x 요금제를 쓰고 있어서 손에 익은 도구다. [업스테이지](https://www.upstage.ai/)가 Solar Pro 4를 내놨길래 코딩 실력이 궁금했다. 마침 이 모델이 [Nous Research](https://nousresearch.com/)의 Hermes Agent를 기본 하네스로 지원한다고 해서 그 조합으로 시켜봤다. 비교 기준은 익숙한 Claude Code의 Sonnet 5와 Opus 5로 잡았고 내친김에 [z.ai](https://z.ai/)의 GLM-4.7 두 종(무료 Flash, 유료 일반)도 Hermes에 연동해 같은 과제를 줬다. 로그 분석에는 Opus 5 백그라운드 에이전트 다섯과 Fable 5를 썼다.
+Claude Code는 Claude Max 20x 요금제를 쓰고 있어서 손에 익은 도구다. [업스테이지](https://www.upstage.ai/)가 Solar Pro 4를 내놨길래 코딩 실력이 궁금했다. 마침 이 모델이 [Nous Research](https://nousresearch.com/)의 Hermes Agent를 기본 하네스로 지원한다고 해서 그 조합으로 시켜봤다. 비교 기준은 익숙한 Claude Code의 Sonnet 5와 Opus 5로 잡았고 내친김에 [z.ai](https://z.ai/)의 GLM-4.7 두 종(무료 Flash, 유료 일반)도 Hermes에 연동해 같은 과제를 줬다. 로그 분석에는 Fable 5를 썼다.
 
 이 글은 벤치마크가 아니다. 프롬프트 하나를 모델별로 한 번씩 돌린 기록이라 표본이 하나고 하네스도 서로 달라서 모델만 떼어 비교하는 실험이 될 수 없다. 덧붙이면 Hermes는 이번이 첫 사용이었다. 시작하자마자 config.yaml의 api_key 위치가 잘못됐다는 경고가 뜰 정도로 설정부터 서툴렀고 effort 같은 옵션도 손대지 않은 기본값 그대로였다. 그러니 뒤에 나오는 Hermes 세션들의 문제 중 일부는 모델이 아니라 내 미숙함이 만든 것일 수 있다. 애초에 누굴 깎아내리려는 비교가 아니라, 새 모델들이 개발을 얼마나 해내는지 궁금해서 시켜보고 남긴 기록이다.
 
