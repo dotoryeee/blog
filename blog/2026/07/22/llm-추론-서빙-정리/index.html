@@ -2062,7 +2062,7 @@
 </code></pre></div>
 <ul>
 <li>앞의 2 = Key와 Value 두 텐서</li>
-<li>KV 헤드 수는 GQA(Grouped Query Attention)면 어텐션 헤드보다 적음 → Llama 3.1 8B는 헤드 32개 중 KV 헤드 8개라 KV가 &frac14;로 줄어듦</li>
+<li>GQA(Grouped Query Attention)를 쓰는 모델은 KV 헤드 수가 어텐션 헤드보다 적음 → Llama 3.1 8B는 헤드 32개 중 KV 헤드 8개라 KV가 &frac14;로 줄어듦</li>
 <li>정밀도 바이트: FP16/BF16이면 2, FP8/INT8이면 1</li>
 <li>배치까지 넣으면 위 값에 동시 시퀀스 수를 곱함</li>
 <li>위 식은 모든 레이어가 표준 어텐션으로 KV를 쌓는 모델 기준 → 일부 레이어만 full attention을 쓰는 하이브리드 구조는 KV를 쌓는 레이어 수만 대입해야 함</li>
@@ -2117,7 +2117,7 @@
 <li>8B를 BF16로 올리면 가중치만 약 16GB → 24GB GPU면 KV·오버헤드에 약 8GB 남음</li>
 <li>그 8GB로 8,192토큰 시퀀스를 담으면 이론상 8개, 오버헤드(활성화·CUDA 컨텍스트·단편화)를 빼면 그보다 적음</li>
 <li>70B는 가중치만 140GB → 80GB GPU 한 장에 안 들어가 텐서 병렬(다중 GPU)이 전제</li>
-<li>컨텍스트를 최대 131,072토큰까지 키우면 시퀀스 하나의 KV가 8B에서 16GiB → 긴 컨텍스트는 가중치보다 KV가 VRAM을 지배</li>
+<li>8B 모델도 컨텍스트를 최대 131,072토큰까지 키우면 시퀀스 하나의 KV가 16GiB → 긴 컨텍스트는 가중치보다 KV가 VRAM을 지배</li>
 <li>양자화로 가중치를 줄여도(INT4면 약 &frac14;) KV cache는 별도로 남음 → KV 정밀도·PagedAttention이 같이 필요</li>
 </ul>
 <hr />

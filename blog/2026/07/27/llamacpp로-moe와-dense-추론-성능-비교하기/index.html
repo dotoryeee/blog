@@ -2095,7 +2095,7 @@
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="m">21</span><span class="n">G</span><span class="w"> </span><span class="n">Qwen3.6</span><span class="m">-35</span><span class="n">B</span><span class="o">-</span><span class="n">A3B</span><span class="o">-</span><span class="n">UD</span><span class="o">-</span><span class="n">Q4_K_M.gguf</span>
 </code></pre></div>
 <ol>
-<li>관측 스택 디렉터리를 따로 파고 compose 파일을 작성한다. Grafana는 호스트 3000번을 다른 데 쓰고 있어 3001로 매핑한다.</li>
+<li>관측 스택 디렉터리를 따로 파고 compose 파일을 작성한다. 호스트 3000번은 다른 데 쓰고 있어 Grafana는 3001로 매핑한다.</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">observability</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">vi</span><span class="w"> </span><span class="n">observability</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">compose.yml</span>

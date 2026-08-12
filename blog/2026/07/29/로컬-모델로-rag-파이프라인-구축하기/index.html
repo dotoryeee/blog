@@ -1981,11 +1981,11 @@
 <ul>
 <li>이 블로그의 글 104편을 코퍼스로 삼아 청킹부터 색인·검색·리랭킹·생성까지 전부 로컬에서 도는 RAG 파이프라인을 세운다</li>
 <li>같은 코퍼스를 300자, 800자, 2000자 세 벌로 잘라 색인하고 recall@k와 MRR이 어느 쪽으로 움직이는지 본다</li>
-<li>dense 단독 검색과 BM25를 섞은 하이브리드(RRF)를 같은 질의셋으로 대조한다</li>
+<li>BM25를 섞은 하이브리드(RRF)와 dense 단독 검색을 같은 질의셋으로 대조한다</li>
 <li>dense가 올린 후보 20개를 리랭커로 다시 매겨 순위가 얼마나 바뀌는지, 못 바꾸는 경우는 언제인지 확인한다</li>
-<li>같은 질문을 RAG 없이, 그리고 검색 결과를 붙여서 MoE와 Dense 두 모델에 각각 넣어 답이 어디서 갈리는지 본다</li>
+<li>같은 질문을 MoE와 Dense 두 모델에 각각 RAG 없이 한 번, 검색 결과를 붙여 한 번 넣어 답이 어디서 갈리는지 본다</li>
 </ul>
-<p>단계별 선택지와 검색 품질을 떨어뜨리는 함정은 <a href="../rag-%EC%A0%95%EB%A6%AC/">RAG 정리</a>에서 표로 다뤘다. 이 글은 그 표에 적힌 주장 중 몇 개를 실제 숫자로 확인하고, 맞지 않은 것도 그대로 적는다.</p>
+<p>검색 품질을 떨어뜨리는 함정과 단계별 선택지는 <a href="../rag-%EC%A0%95%EB%A6%AC/">RAG 정리</a>에서 표로 다뤘다. 이 글은 그 표에 적힌 주장 중 몇 개를 실제 숫자로 확인하고, 맞지 않은 것도 그대로 적는다.</p>
 <h2 id="_2">실습 구성</h2>
 <hr />
 <p>Qdrant와 Open WebUI만 docker로 올리고 모델은 전부 네이티브 llama-server로 띄운다.</p>
@@ -2522,7 +2522,7 @@
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dense</span><span class="w"> </span><span class="n">RAG미적용</span><span class="o">:</span><span class="w"> </span>제공된<span class="w"> </span><span class="n">dotoryeee</span><span class="w"> </span>블로그의<span class="w"> </span>내용에는<span class="w"> </span><span class="n">Mac</span><span class="w"> </span><span class="n">Studio</span><span class="w"> </span><span class="n">M1</span><span class="w"> </span><span class="n">Max에서</span><span class="w"> </span><span class="n">llama.cpp를</span><span class="w"> </span>사용하여<span class="w"> </span><span class="n">MoE</span><span class="w"> </span>모델을<span class="w"> </span>테스트한<span class="w"> </span>구체적인<span class="w"> </span><span class="n">decode</span><span class="w"> </span>속도<span class="p">(</span><span class="n">tg128</span><span class="w"> </span>기준<span class="w"> </span>초당<span class="w"> </span>토큰<span class="w"> </span>수<span class="p">)</span>에<span class="w"> </span>대한<span class="w"> </span>정보가<span class="w"> </span>포함되어<span class="w"> </span>있지<span class="w"> </span>않습니다<span class="n">.</span><span class="w">  </span>따라서<span class="w"> </span>해당<span class="w"> </span>질문에<span class="w"> </span>대해<span class="w"> </span>정확한<span class="w"> </span>답변을<span class="w"> </span>드릴<span class="w"> </span>수<span class="w"> </span>없습니다<span class="n">.</span>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">dense</span><span class="w"> </span><span class="n">RAG적용</span><span class="o">:</span><span class="w"> </span>문서<span class="w"> </span><span class="m">2</span>의<span class="w"> </span>표에<span class="w"> </span>따르면<span class="p">,</span><span class="w"> </span><span class="n">Mac</span><span class="w"> </span><span class="n">Studio에서</span><span class="w"> </span>측정한<span class="w"> </span><span class="n">MoE</span><span class="w"> </span>모델<span class="p">(</span><span class="n">Qwen3.6</span><span class="m">-35</span><span class="n">B</span><span class="o">-</span><span class="n">A3B</span><span class="p">)</span>의<span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">tg128</span><span class="p">)</span><span class="w"> </span>속도는<span class="w"> </span><span class="o">**</span>초당<span class="w"> </span><span class="m">47.63</span><span class="w"> </span>토큰<span class="o">**</span>입니다<span class="n">.</span>
 </code></pre></div>
-<p>Dense 차례에는 MoE를 내리고 같은 방식으로 8081 포트에 올린다. 검색 결과와 프롬프트는 MoE 때 쓴 것을 파일로 저장해 두고 그대로 재사용한다.</p>
+<p>Dense는 MoE를 내린 뒤 같은 방식으로 8081 포트에 올린다. 검색 결과와 프롬프트는 MoE 때 쓴 것을 파일로 저장해 두고 그대로 재사용한다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">pkill</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">llama</span><span class="o">-</span><span class="n">server</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">llama</span><span class="o">-</span><span class="n">server</span><span class="w"> </span><span class="o">-</span><span class="n">m</span><span class="w"> </span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">aaron</span><span class="o">/</span><span class="n">moe_lab</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">Qwen3.6</span><span class="m">-27</span><span class="n">B</span><span class="o">-</span><span class="n">Q4_K_M.gguf</span><span class="w"> </span>\
@@ -2572,12 +2572,12 @@
 </tbody>
 </table>
 <p>환각은 나오지 않았다. 두 모델 다 모른다고 답했고, 검색 결과를 붙이자 둘 다 47.63을 그대로 재현했다. <strong>검색 결과가 답을 만들었고 모델을 바꿔도 그 답은 유지됐다.</strong></p>
-<p>속도는 이 조건에서도 갈린다. 프롬프트 처리까지 포함한 wall-clock으로 검색 결과를 붙인 조건에서 MoE가 5.4배 빠르고, decode 속도만 보면 MoE 45~49 t/s 대 Dense 12.4 t/s로 3.8배 정도다.</p>
+<p>속도는 이 조건에서도 갈린다. 검색 결과를 붙인 조건에서는 프롬프트 처리까지 포함한 wall-clock으로 MoE가 5.4배 빠르고, decode 속도만 보면 MoE 45~49 t/s 대 Dense 12.4 t/s로 3.8배 정도다.</p>
 <div class="admonition notice">
 <p class="admonition-title">Notice</p>
 <p>💡 이 표의 decode 속도는 llama-server가 응답에 실어 주는 timings 값이라 llama-bench 수치와 계측 방식이 다르다</p>
 </div>
-<p>llama-bench는 같은 조건을 여러 번 돌려 평균을 내지만 여기 값은 58~64토큰짜리 단발 생성 하나에서 나왔다. MoE가 45.2와 48.9로 흩어진 것이 그 편차 폭이다. 순수 decode 벤치마크에서 잰 4.07배와 방법론은 다르지만 방향과 배율은 비슷하게 재확인됐다.</p>
+<p>llama-bench는 같은 조건을 여러 번 돌려 평균을 내지만 여기 값은 58~64토큰짜리 단발 생성 하나에서 나왔다. MoE가 45.2와 48.9로 흩어진 것이 그 편차 폭이다. 방법론은 순수 decode 벤치마크에서 잰 4.07배와 다르지만 방향과 배율은 비슷하게 재확인됐다.</p>
 <h2 id="_11">검색이 실패했을 때</h2>
 <hr />
 <p>두 가지 조건으로 나눠 봤다. 먼저 코퍼스에 아예 없는 주제다. 블록체인이라는 문자열 자체가 104편 어디에도 없는 것을 grep으로 확인하고 PoW와 PoS의 차이를 물었다.</p>

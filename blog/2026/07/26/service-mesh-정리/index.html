@@ -2001,7 +2001,7 @@
 </table>
 <ul>
 <li>ztunnel은 HTTP를 종료하지도 헤더를 파싱하지도 않음 → L7 인가·텔레메트리·VirtualService 라우팅이 필요하면 waypoint를 따로 배치해야 함</li>
-<li>Cilium은 L7 정책이 걸린 트래픽만 eBPF가 Envoy로 넘기고 나머지는 커널 경로에 그대로 둠</li>
+<li>Cilium은 eBPF가 L7 정책이 걸린 트래픽만 Envoy로 넘기고 나머지는 커널 경로에 그대로 둠</li>
 <li>앰비언트는 Istio 1.24에서 GA로 올라섰고 한 메시 안에서 사이드카 모드와 섞어 쓸 수 있음</li>
 <li>Linkerd도 사이드카 계열이지만 배치 방식이 Istio 사이드카와 같은 축이라 여기서는 뺌</li>
 </ul>
