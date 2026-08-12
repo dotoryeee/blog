@@ -246,7 +246,7 @@ oom_memcg 가 우리가 만든 dotoryeee 그룹이고, RSS 가 20MB 근처에서
 
 ---
 
-이미지는 읽기 전용 레이어를 쌓아 만든다. 컨테이너가 그 위에 쓰기 레이어를 얹어 하나의 루트로 보게 해 주는 것이 overlayfs 다. lowerdir(읽기 전용), upperdir(쓰기), merged(병합 뷰)를 직접 마운트해 동작을 본다.
+이미지는 읽기 전용 레이어를 쌓아 만든다. 그 위에 쓰기 레이어를 얹어 컨테이너가 하나의 루트로 보게 해 주는 것이 overlayfs 다. lowerdir(읽기 전용), upperdir(쓰기), merged(병합 뷰)를 직접 마운트해 동작을 본다.
 
 먼저 그냥 마운트하면 실패한다. Docker 컨테이너의 루트 자체가 이미 overlay2 라 그 위에 다시 overlay 를 얹지 못한다.
 
@@ -325,7 +325,7 @@ PING 10.10.0.2 (10.10.0.2) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2042ms
 ```
 
-두 격리된 네트워크가 veth 로 이어져 통신한다. 이 veth 도 10.10.0.x 라우트도 호스트에는 전혀 없다.
+격리된 두 네트워크가 veth 로 이어져 통신한다. 이 veth 도 10.10.0.x 라우트도 호스트에는 전혀 없다.
 
 ```s
 ip -br addr show | grep -c veth
@@ -343,7 +343,7 @@ ip route | grep -c 10.10.0
 여기까지 손으로 한 일을 한 줄로 요약하면, unshare 로 namespace 를 만들고, chroot 로 루트를 갈고, cgroup 에 memory.max 를 쓰고, overlayfs 로 레이어를 겹치고, veth 로 netns 를 이었다. 이 중 네트워크를 뺀 나머지가 그대로 저수준 런타임 runc 가 컨테이너를 띄울 때 하는 일이다.
 
 - runc 는 OCI runtime-spec 의 config.json 을 읽어 namespace 조합, cgroup 한도, rootfs 경로, 마운트를 세팅한 뒤 컨테이너 프로세스를 exec 한다
-- 네트워크는 runc 몫이 아니라서 빈 netns 를 만들거나 config.json 에 적힌 기존 netns 에 붙는 것까지만 하고, veth 생성과 IP 할당은 docker 의 libnetwork 나 k8s 의 CNI 플러그인이 runc 바깥에서 처리한다
+- runc 는 네트워크가 자기 몫이 아니라서 빈 netns 를 만들거나 config.json 에 적힌 기존 netns 에 붙는 것까지만 하고, veth 생성과 IP 할당은 docker 의 libnetwork 나 k8s 의 CNI 플러그인이 runc 바깥에서 처리한다
 - 실무에서는 pivot_root 로 루트를 더 안전하게 갈고, user namespace 로 컨테이너 root 를 호스트 비특권 UID 에 매핑해 격리를 강화한다
 - 이 조각들이 어떤 계층(docker CLI, dockerd, containerd, shim, runc)을 거쳐 조립되는지는 [컨테이너 내부 구조 정리](container_internals.md) 글에서 다뤘다
 

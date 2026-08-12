@@ -49,7 +49,7 @@ graph LR
 - otel-collector: OTLP를 4317(gRPC)·4318(HTTP)로 받아 가공한 뒤 Jaeger로 export
 - otel-jaeger: Collector가 보낸 trace를 저장하고 16686 UI로 조회
 
-이미지는 otel/opentelemetry-collector-contrib:0.109.0, jaegertracing/all-in-one:1.62.0, 앱은 python:3.12-slim에 Flask 3.0.3과 opentelemetry-distro 0.48b0로 고정한다.
+Collector와 Jaeger 이미지는 otel/opentelemetry-collector-contrib:0.109.0, jaegertracing/all-in-one:1.62.0으로 고정하고, 앱은 python:3.12-slim에 Flask 3.0.3과 opentelemetry-distro 0.48b0로 고정한다.
 
 !!! warning
     💡 Jaeger v1(all-in-one)은 2025년 말 EOL 되었으니 신규 구성시 v2 단일 바이너리 이미지 cr.jaegertracing.io/jaegertracing/jaeger를 사용한다
@@ -330,7 +330,7 @@ dotoryeee-backend   GET /api  [server]
 
 ![Jaeger 트레이스 목록](otel_lab/1.PNG)
 
-trace 하나를 열면 span 계층이 그대로 드러난다. dotoryeee-frontend의 GET / 아래 GET 클라이언트 span이, 다시 그 아래 dotoryeee-backend의 GET /api가 중첩되고, 상단 요약에 Services 2, Total Spans 3으로 잡힌다.
+trace 하나를 열면 span 계층이 그대로 드러난다. dotoryeee-frontend의 GET / 아래에 GET 클라이언트 span이 붙고, 그 아래에 다시 dotoryeee-backend의 GET /api가 중첩된다. 상단 요약에는 Services 2, Total Spans 3으로 잡힌다.
 
 ![frontend에서 backend로 이어진 span 계층](otel_lab/2.PNG)
 

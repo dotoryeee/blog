@@ -41,7 +41,7 @@ AWS 고성능 네트워킹이란 EC2 인스턴스 간 통신에서 대역폭↑�
 
 - Intel 82599 VF는 C3·C4·D2·I2·M4·R3 등 구형 인스턴스 계열에 한정
 - 모든 Nitro 기반 인스턴스는 ENA로 향상된 네트워킹 사용 → 일부 구형 Xen 계열(H1·I3·G3·P3·R4 등)도 ENA 지원
-- SR-IOV·VF의 동작 원리와 다른 NIC 가상화 방식은 [NIC 가상화와 커널 바이패스 정리](nic_virtualization.md)에서 다룸
+- SR-IOV와 VF의 동작 원리, 그 밖의 NIC 가상화 방식은 [NIC 가상화와 커널 바이패스 정리](nic_virtualization.md)에서 다룸
 
 ---
 
@@ -117,7 +117,7 @@ graph LR
 
 - 일반 경로는 애플리케이션이 커널 TCP/IP와 ENA 드라이버를 거침 → EFA는 libfabric으로 커널을 건너뜀
 - MPI·NCCL이 libfabric API에 직접 붙음 → 오버헤드↓로 분산 학습·HPC가 더 효율적으로 동작
-- GPUDirect RDMA와 결합하면 GPU 메모리를 시스템 메모리 복사 없이 NIC가 직접 전송
+- GPUDirect RDMA와 결합하면 NIC가 GPU 메모리를 시스템 메모리 복사 없이 직접 전송
 
 ---
 
@@ -141,7 +141,7 @@ SRD란 AWS가 자사 데이터센터에 맞춰 설계한 신뢰성 전송 프로
 
 RDMA·InfiniBand·RoCEv2 원리는 [InfiniBand vs RoCEv2 차이점 정리](gpu_04.md)에서 다뤘고, 여기서는 SRD와의 차이만 짚음.
 
-- RDMA는 원격 메모리를 상대 CPU·커널 개입 없이 NIC가 직접 읽고 쓰는 전송 → 커널 바이패스·zero-copy로 마이크로초대 지연
+- RDMA는 상대 CPU와 커널 개입 없이 NIC가 원격 메모리를 직접 읽고 쓰는 전송 → 커널 바이패스와 zero-copy로 마이크로초대 지연
 - 온프레는 InfiniBand(전용 패브릭)나 RoCEv2(무손실 이더넷)로 이를 구현 → 순서 보장과 무손실이 전제
 - SRD는 이 전제를 뒤집어 손실·순서를 프로토콜과 상위 계층에서 흡수하는 설계
 
@@ -153,7 +153,7 @@ RDMA·InfiniBand·RoCEv2 원리는 [InfiniBand vs RoCEv2 차이점 정리](gpu_0
 | 혼잡 제어 | DCQCN 등 별도 튜닝 | 프로토콜 내장, 경로 재분배로 회피 |
 | 운영 주체 | 사용자가 패브릭 무손실 구성 | AWS가 패브릭 운영 |
 
-- 순서를 보장하면 head-of-line blocking이 생김 → SRD는 재정렬을 메시지 의미를 아는 상위 계층에 맡겨 회피
+- 순서를 보장하면 head-of-line blocking이 생김 → SRD는 메시지 의미를 아는 상위 계층에 재정렬을 맡겨 회피
 - 재전송이 패브릭의 무손실 보장이 아니라 프로토콜 책임 → 표준 이더넷 위에서 동작 가능
 
 ---
@@ -173,7 +173,7 @@ placement group이란 상호 의존 인스턴스의 물리 배치를 제어해 �
 ---
 
 ## 온프레 RDMA와의 대비
-온프레는 전용 패브릭과 무손실 설정을 사용자가 직접 운영하고, AWS는 표준 패브릭 위에서 SRD로 대체
+온프레는 사용자가 전용 패브릭과 무손실 설정을 직접 운영하고, AWS는 표준 패브릭 위에서 SRD로 대체
 
 | 비교 항목 | 온프레 InfiniBand·RoCEv2 | AWS EFA(SRD) |
 |-----------|--------------------------|--------------|

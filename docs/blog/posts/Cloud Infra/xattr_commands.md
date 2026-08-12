@@ -89,7 +89,7 @@ user.comment="custom metadata"
 # setfattr -x user.comment dotoryeee.txt   #속성 삭제
 ```
 
-- getfattr -d는 user 네임스페이스만 덤프. 다른 네임스페이스까지 보려면 -m - 필요. -e hex로 바이너리 값은 16진수 표기
+- getfattr -d는 user 네임스페이스만 덤프. 다른 네임스페이스까지 보려면 -m - 필요. 바이너리 값은 -e hex로 16진수 표기
 
 ### Linux 네임스페이스
 

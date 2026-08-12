@@ -324,7 +324,7 @@ hide:
     qwen2.5:0.5b : 11
     ```
 
-    simple-shuffle의 절반씩 분산과 달리 대부분 빠른 qwen으로 갔다. 전략 한 줄로 분산 기준이 무작위에서 지연 기반으로 바뀐다.
+    simple-shuffle의 절반씩 분산과 달리 요청 대부분이 빠른 qwen으로 갔다. 전략 한 줄로 분산 기준이 무작위에서 지연 기반으로 바뀐다.
 
 ## 재시도와 타임아웃
 
@@ -362,7 +362,7 @@ hide:
     ... LiteLLM Retried: 2 times, LiteLLM Max Retries: 2
     ```
 
-allowed_fails와 cooldown_time은 그룹에 정상 배포가 남아 있을 때 효과가 드러난다. 고장난 배포가 allowed_fails를 넘겨 실패하면 cooldown_time 동안 후보에서 빠지고, 재시도가 정상 배포로 넘겨 앱은 200을 받는다. 배포가 하나뿐이거나 전부 죽은 경우엔 그룹이 비지 않도록 쿨다운을 걸지 않는다.
+allowed_fails와 cooldown_time은 그룹에 정상 배포가 남아 있을 때 효과가 드러난다. 고장난 배포가 allowed_fails를 넘겨 실패하면 cooldown_time 동안 후보에서 빠지고, 재시도가 정상 배포로 넘어가 앱은 200을 받는다. 배포가 하나뿐이거나 전부 죽은 경우엔 그룹이 비지 않도록 쿨다운을 걸지 않는다.
 
 !!! warning
     💡 timeout 검증시 값을 1로 낮췄다가 확인 후 원래 값으로 되돌린다
@@ -750,7 +750,7 @@ dotoryeee-spend-key로 보낸 호출이 별도 시계열로 잡혀 키 별칭 �
 
 ### 트레이싱: OpenTelemetry
 
-요청 하나를 내부 단계별 span으로 쪼개 어느 구간에서 시간이 샜는지 추적하는 표준이 OpenTelemetry(OTEL)
+OpenTelemetry(OTEL)는 요청 하나를 내부 단계별 span으로 쪼개 어느 구간에서 시간이 샜는지 추적하는 표준
 
 ```yaml title="litellm_config.yaml"
 litellm_settings:
@@ -827,7 +827,7 @@ Trace ID: c69af1f904d85841782a2f8bb8d585c2
 
 - 게이트웨이 하나로 통합 API, 키 관리, rate limit, 로드밸런싱, 폴백, 캐시, 비용 추적, 관측이 전부 한 스택에서 동작함을 확인했다
 - 백엔드를 Ollama에서 OpenAI/Bedrock으로 바꿔도 model_list에 항목만 추가하면 되고 당연히 앱 코드는 그대로다
-- weight와 routing_strategy는 정상일 때 트래픽을 고르게 나누고, num_retries·timeout·폴백 체인은 배포가 순차로 죽어도 마지막 정상 후보까지 요청을 이어준다
+- 배포가 모두 정상일 때는 weight와 routing_strategy가 트래픽을 고르게 나누고, 배포가 순차로 죽어도 num_retries, timeout, 폴백 체인이 마지막 정상 후보까지 요청을 이어준다
 - redis 캐시는 같은 요청의 두 번째 호출을 1.45초에서 0.004초로 줄이고 토큰 비용을 0으로 만들며, max_budget은 429 budget_exceeded로 예산을 강제한다
 - 응답 헤더·프로메테우스·OTEL 세 층위로 관측이 완성되고, 알람은 오류율·폴백·예산·TTFT 네 축이면 대부분의 사고를 조기에 포착한다
 - 게이트웨이를 세우는 일이 "한 곳으로 모으기"였다면, 운영은 "그 안을 밖에서 들여다보며 끊기지 않게 지키기"

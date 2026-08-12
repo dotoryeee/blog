@@ -145,7 +145,7 @@ Success! Data written to: database/config/dotoryeee-postgres
 
 connection_url의 host를 dotoryeee-postgres로 적으면 compose 네트워크가 컨테이너 이름을 DNS로 풀어준다. Vault는 컨테이너 안에서 5432로 붙으므로 호스트 매핑 포트 15432가 아니라 내부 포트 5432를 쓴다.
 
-동적 계정이 읽을 데모 테이블을 관리자 계정으로 하나 만든다. 이 테이블이 있어야 뒤에서 발급 계정에 준 SELECT 권한이 확인할 대상이 생긴다.
+동적 계정이 읽을 데모 테이블을 관리자 계정으로 하나 만든다. 이 테이블이 있어야 뒤에서 발급 계정에 준 SELECT 권한을 확인할 수 있다.
 
 ```s
 docker exec -e PGPASSWORD=dotoryeee-pass dotoryeee-postgres \

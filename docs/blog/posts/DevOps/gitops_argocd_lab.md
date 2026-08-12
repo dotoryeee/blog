@@ -336,5 +336,5 @@ GitOps 네 원칙과 Argo CD 아키텍처, push·pull 차이 같은 개념은 [G
 - kind와 install.yaml, argocd CLI 세 가지면 로컬에서 GitOps 루프를 통째로 돌려볼 수 있다
 - OutOfSync는 desired와 live가 다르다는 신호일 뿐, 되돌릴지 말지는 selfHeal 정책이 정한다
 - selfHeal을 켠 뒤 kubectl로 준 변경은 2초 만에 지워졌다. 클러스터를 직접 고치는 습관이 왜 GitOps와 안 맞는지 눈으로 보인다
-- 배포 이력이 그대로 남아 이전 리비전으로의 롤백이 명령 한 줄로 끝난다
+- 배포 이력이 그대로 남아 이전 리비전으로 롤백하는 일이 명령 한 줄로 끝난다
 - drift 방어와 롤백을 클러스터가 스스로 하니, 사람이 손댈 지점은 Git 커밋으로 좁혀진다
