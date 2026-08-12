@@ -882,7 +882,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 24분
+              읽는시간 25분
             
           </li>
         
@@ -893,7 +893,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="solar-pro-4"><a class="toclink" href="../../2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/">Solar Pro 4에게 개발을 시켜봤다</a></h2>
-<p>Claude Max 20x 요금제로 Claude Code를 쓰고 있어서 손에 익은 도구다. <a href="https://www.upstage.ai/">업스테이지</a>가 Solar Pro 4를 내놨길래 코딩 실력이 궁금했다. 마침 이 모델이 <a href="https://nousresearch.com/">Nous Research</a>의 Hermes Agent를 기본 하니스로 지원한다고 해서 그 조합으로 시켜봤다. 비교 기준은 익숙한 Claude Code의 Sonnet 5와 Opus 5로 잡았고, 내친김에 <a href="https://z.ai/">z.ai</a>의 GLM-4.7 두 종(무료 Flash, 유료 일반)도 Hermes에 연동해 같은 과제를 줬다. 로그 분석에는 Opus 5 백그라운드 에이전트 다섯과 Fable 5를 썼는데 방법은 글 후반에 적었다.</p>
+<p>같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5와 Opus 5, Hermes의 Solar Pro 4와 GLM-4.7 두 종에게 주고 시간, 비용, 결과 화면을 비교했다. 로그 전수 분석에서 나온 반복 실수 패턴과 컨테이너 충돌 사고까지 그대로 남긴 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -942,6 +942,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="rag"><a class="toclink" href="../../2026/08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/">RAG 선택 가이드</a></h2>
+<p>RAG를 처음 공부하면서 기업이 실제 서비스에 쓰는 방식만 골라 정리했다. 기본 구조부터 하이브리드 검색, 리랭킹, 가드레일, 그래프, 에이전틱까지 전부 공개된 실사용 사례로 확인한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -990,6 +991,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="mac-video-llm"><a class="toclink" href="../../2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/">로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기</a></h2>
+<p>Mac Studio M1 Max에서 Draw Things CLI로 영상 생성 모델 LTX-2.3을 돌려봤다. 스텝, 해상도, 길이별 소요 시간과 메모리 한계를 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1038,6 +1040,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="rag"><a class="toclink" href="../../2026/07/29/rag-%EC%A0%95%EB%A6%AC/">RAG 정리</a></h2>
+<p>RAG 파이프라인을 청킹, 임베딩, 벡터 검색, 하이브리드, 리랭킹 단계로 나눠 선택지를 표로 정리했다. 검색 품질을 떨어뜨리는 함정도 함께 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1086,6 +1089,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="rag"><a class="toclink" href="../../2026/07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/">로컬 모델로 RAG 파이프라인 구축하기</a></h2>
+<p>Qdrant와 로컬 임베딩 모델로 RAG 파이프라인을 직접 세워봤다. 청킹, 색인, 하이브리드 검색, 리랭킹을 단계별로 실측해 확인한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1134,6 +1138,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="mcp-claude-code"><a class="toclink" href="../../2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">MCP 서버 만들어 Claude Code에 붙이기</a></h2>
+<p>Python으로 MCP 서버를 직접 만들어 Inspector로 inputSchema와 값 제약 오류를 확인했다. Claude Code에 붙여 실제 호출까지 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1219,7 +1224,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 25분
+              읽는시간 26분
             
           </li>
         
@@ -1230,6 +1235,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="llamacpp-moe-dense"><a class="toclink" href="../../2026/07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/">llama.cpp로 MoE와 Dense 추론 성능 비교하기</a></h2>
+<p>Apple Silicon에서 llama.cpp로 MoE 35B-A3B와 Dense 27B를 나란히 돌려봤다. prefill과 decode 속도, KV cache 크기, 양자화별 차이를 실측해 비교한 기록이다.</p>
 
     
       <nav class="md-post__action">
