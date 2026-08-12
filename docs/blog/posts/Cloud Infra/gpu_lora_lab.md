@@ -303,7 +303,7 @@ Generation: 20 tokens, 198.805 tokens-per-sec
 Peak memory: 0.331 GB
 ```
 
-둘 다 틀렸다. CLI 이름은 doto-cli 대신 dotoryeee-cache-cli를 지어냈고, 부산 코드는 서울 코드인 ap-dotoryeee-1을 그대로 갖다 썼다. train.jsonl을 세어 보면 이유가 보인다. 포트와 무료 티어 용량은 각각 4번씩 단독 문장으로 반복됐지만, doto-cli는 train에 1번뿐이고 부산 코드는 "서울은 ap-dotoryeee-1, 부산은 ap-dotoryeee-2"처럼 항상 서울 코드와 한 문장에 묶여서만 등장했다. 43개짜리 데이터셋에서는 반복 횟수가 적거나 비슷한 두 값이 붙어 다니는 사실일수록 암기가 불안정하다.
+둘 다 틀렸다. CLI 이름은 doto-cli 대신 dotoryeee-cache-cli를 지어냈고, 부산 코드는 서울 코드인 ap-dotoryeee-1을 그대로 갖다 썼다. train.jsonl을 세어 보면 이유가 보인다. 포트와 무료 티어 용량은 각각 4번씩 단독 문장으로 반복됐지만, doto-cli는 train에 1번뿐이고 부산 코드는 "서울은 ap-dotoryeee-1, 부산은 ap-dotoryeee-2"처럼 항상 서울 코드와 한 문장에 묶여서만 등장했다. 43개짜리 데이터셋에서는 반복 횟수가 적은 사실도, 비슷한 값과 붙어 다니는 사실도 암기가 불안정하다.
 
 !!! warning
     💡 학습 데이터에 1~2번만 등장한 사실은 형식은 맞아도 값이 틀리게 나올 수 있다
@@ -346,6 +346,6 @@ deactivate
 rm -rf .venv .hf_cache
 ```
 
-- 494M짜리 4bit 모델에 파라미터 0.297%만 학습해도 반복해서 나온 사실 두 개는 300 iteration, peak memory 1.123GB, 43.7초 만에 정확히 암기됐다
+- 494M짜리 4bit 모델에 파라미터 0.297%만 학습해도 반복해서 나온 사실 두 개는 peak memory 1.123GB로 300 iteration, 43.7초 만에 정확히 암기됐다
 - 반면 데이터셋에 1~2번만 등장했거나 비슷한 값과 묶여 있던 사실은 형식은 맞지만 값이 틀리는 결과가 나왔다
 - adapter 파일은 5.6MB로 282MB 베이스 모델의 2% 수준이다. 로컬 한 대로도 LoRA 학습과 검증까지 비용 없이 끝난다

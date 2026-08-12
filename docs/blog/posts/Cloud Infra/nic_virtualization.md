@@ -174,5 +174,3 @@ SmartNIC/DPU(Data Processing Unit)란 NIC에 프로그래머블 CPU와 가속기
 - 가상화 NIC은 에뮬레이션 → virtio → vhost → SR-IOV → DPDK/DPU로, exit·복사·스위칭 비용을 줄이는 방향으로 진화
 - 축은 두 갈래 → 소프트웨어 경로를 빠르게(virtio+vhost)냐, 소프트웨어 경로를 아예 건너뛰냐(SR-IOV·DPDK·DPU)
 - 빠를수록 유연성을 내줌 → virtio 계열은 "이동성", SR-IOV·DPDK 계열은 "성능"
-</content>
-</invoke>

@@ -61,12 +61,12 @@ flowchart LR
 
 검색은 후보를 넉넉히 뽑는 단계고 그중 진짜 쓸 만한 걸 고르는 건 별도 단계로 두는 게 낫더라는 이야기다. 이 재정렬을 리랭킹이라고 한다.
 
-[에어비앤비](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/)는 전화 상담에서 질문 하나에 도움말 문서를 60ms 안에 최대 30건 뽑은 뒤 LLM으로 다시 줄 세워 최상위 문서를 안내한다.
+[에어비앤비](https://airbnb.tech/ai-ml/listening-learning-and-helping-at-scale-how-machine-learning-transforms-airbnbs-voice-support-experience/)는 전화 상담에서 질문 하나가 들어오면 60ms 안에 도움말 문서를 최대 30건 뽑은 뒤 LLM으로 다시 줄 세워 최상위 문서를 안내한다.
 ### 조각에 맥락을 붙인다
 
 문서를 조각으로 자르면 맥락이 사라진다. "이 조항은 전항의 예외로 한다"라는 조각만 보면 무슨 조항인지 알 길이 없다.
 
-[앤트로픽](https://www.anthropic.com/engineering/contextual-retrieval)은 각 조각 앞에 문서 전체에서 이 조각이 어떤 위치인지 설명하는 50~100토큰짜리 문장을 모델로 생성해 붙였다. 이것만으로 상위 20개 검색 실패율이 5.7%에서 3.7%로 35% 줄었다. 키워드 검색까지 결합하면 49%까지 줄었고 리랭킹까지 더하면 67%까지 줄었다. 같은 글에는 자료 전체가 20만 토큰이 안 되면 RAG를 만들지 말고 통째로 프롬프트에 넣어 캐싱하라는 [조언](https://www.anthropic.com/engineering/contextual-retrieval)도 있다. 작은 규모에서는 검색 시스템 자체가 과투자라는 뜻이라 기억에 남았다. [우아한형제들](https://techblog.woowahan.com/25900/)도 검색 전략으로 문맥적 임베딩을 골랐다. 다만 이쪽은 단어의 주변 문맥을 반영해 벡터로 바꾼다는 일반적인 뜻이고 조각 앞에 생성한 설명을 붙이는 앤트로픽 방식과는 다르다.
+[앤트로픽](https://www.anthropic.com/engineering/contextual-retrieval)은 문서 전체에서 이 조각이 어떤 위치인지 설명하는 50~100토큰짜리 문장을 모델로 생성해 각 조각 앞에 붙였다. 이것만으로 상위 20개 검색 실패율이 5.7%에서 3.7%로 35% 줄었다. 키워드 검색까지 결합하면 49%까지 줄었고 리랭킹까지 더하면 67%까지 줄었다. 같은 글에는 자료 전체가 20만 토큰이 안 되면 RAG를 만들지 말고 통째로 프롬프트에 넣어 캐싱하라는 [조언](https://www.anthropic.com/engineering/contextual-retrieval)도 있다. 작은 규모에서는 검색 시스템 자체가 과투자라는 뜻이라 기억에 남았다. [우아한형제들](https://techblog.woowahan.com/25900/)도 검색 전략으로 문맥적 임베딩을 골랐다. 다만 이쪽은 단어의 주변 문맥을 반영해 벡터로 바꾼다는 일반적인 뜻이고 조각 앞에 생성한 설명을 붙이는 앤트로픽 방식과는 다르다.
 
 ### 내보내기 전에 검사한다
 
@@ -170,7 +170,7 @@ flowchart TD
 
 ### 토스
 
-실패담이 제일 배울 게 많았다. [토스](https://toss.tech/article/vulnerability-analysis-automation-1)는 코드 취약점 분석 자동화에 코드를 임베딩해 검색하는 RAG를 먼저 시도했다. 그런데 코드 간 연관관계를 제대로 파악하기 어려웠고 존재하지 않는 취약점을 만들어내는 환각도 잦았다. 결국 미리 임베딩해 두는 방식을 버렸다. 구문 트리 분석(tree-sitter), 정의 위치 인덱스(ctags), 고속 텍스트 검색(ripgrep)으로 에이전트가 그때그때 코드를 뒤지는 MCP 방식으로 갈아탔다.
+실패담이 제일 배울 게 많았다. [토스](https://toss.tech/article/vulnerability-analysis-automation-1)는 코드 취약점 분석 자동화에 코드를 임베딩해 검색하는 RAG를 먼저 시도했다. 그런데 코드 간 연관관계를 제대로 파악하기 어려웠고 존재하지 않는 취약점을 만들어내는 환각도 잦았다. 결국 미리 임베딩해 두는 방식을 버렸다. 에이전트가 구문 트리 분석(tree-sitter), 정의 위치 인덱스(ctags), 고속 텍스트 검색(ripgrep)으로 그때그때 코드를 뒤지는 MCP 방식으로 갈아탔다.
 
 코드는 함수끼리 촘촘하게 얽혀 있어서 조각으로 자르는 순간 의미가 깨진다. RAG가 만능이 아니라 자료의 성질을 타는 도구라는 걸 이 사례가 제일 선명하게 보여줬다.
 

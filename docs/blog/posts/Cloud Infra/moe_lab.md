@@ -115,7 +115,7 @@ ls -lh models/*.gguf | awk '{print $5, $9}'
 21G Qwen3.6-35B-A3B-UD-Q4_K_M.gguf
 ```
 
-3. 관측 스택 디렉터리를 따로 파고 compose 파일을 작성한다. Grafana는 호스트 3000번을 다른 데 쓰고 있어 3001로 매핑한다.
+3. 관측 스택 디렉터리를 따로 파고 compose 파일을 작성한다. 호스트 3000번은 다른 데 쓰고 있어 Grafana는 3001로 매핑한다.
 
 ```s
 mkdir -p observability

@@ -109,7 +109,7 @@ graph TD
 ---
 
 ## GPUDirect P2P
-GPUDirect P2P(Peer-to-Peer)란 한 GPU가 다른 GPU의 메모리를 CPU·시스템 메모리를 거치지 않고 직접 읽고 쓰는 기능
+GPUDirect P2P(Peer-to-Peer)란 한 GPU가 CPU와 시스템 메모리를 거치지 않고 다른 GPU의 메모리를 직접 읽고 쓰는 기능
 
 | 모드 | 동작 |
 |------|------|
@@ -144,7 +144,7 @@ Fabric Manager(FM)란 NVSwitch 메모리 패브릭을 구성하고 상주하며 
 ---
 
 ## NVLink-C2C와 랙스케일 NVLink
-같은 NVLink 계열이지만 용도가 갈리는 두 확장이 있음: 슈퍼칩 안 CPU-GPU를 잇는 C2C와 랙 전체를 한 도메인으로 묶는 랙스케일
+슈퍼칩 안 CPU-GPU를 잇는 C2C와 랙 전체를 한 도메인으로 묶는 랙스케일은 같은 NVLink 계열이지만 용도가 갈리는 두 확장
 
 - NVLink-C2C(Chip-to-Chip)는 Grace CPU와 Hopper·Blackwell GPU를 한 모듈(슈퍼칩)로 잇는 메모리 일관성 칩간 인터커넥트
 - C2C 대역폭은 900GB/s → PCIe Gen5 x16의 약 7배, CPU·GPU가 서로 메모리를 캐시라인 단위로 접근

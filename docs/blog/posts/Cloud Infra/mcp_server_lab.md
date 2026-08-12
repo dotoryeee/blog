@@ -24,7 +24,7 @@ MCP 서버를 Python으로 바닥부터 만들어 Claude Code에 도구로 붙�
 
 ---
 
-- FastMCP로 도구 4개, 리소스 1개, 프롬프트 1개를 내놓는 dotoryeee-tools 서버를 만들고 stdio(클라이언트가 서버를 자식 프로세스로 띄워 표준 입출력으로 주고받는 전송 방식)로 직접 붙여 본다
+- 도구 4개, 리소스 1개, 프롬프트 1개를 내놓는 dotoryeee-tools 서버를 FastMCP로 만들고 stdio(클라이언트가 서버를 자식 프로세스로 띄워 표준 입출력으로 주고받는 전송 방식)로 직접 붙여 본다
 - MCP Inspector로 tools/list가 실제로 돌려주는 inputSchema·outputSchema를 원문으로 확인하고, 값 제약을 어긴 호출이 어떤 형태로 돌아오는지 실측한다
 - 같은 서버를 Claude Code에 등록해 claude mcp add부터 실제 도구 호출까지 명령어로 확인하고, 사양과 어긋나는 지점이 있는지 살펴본다
 
