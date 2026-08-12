@@ -15,7 +15,7 @@ hide:
 ---
 # AWS 고성능 네트워킹 정리
 
-Nitro 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass를 공식 스펙 기준으로 비교했다. GPUDirect RDMA 지원까지 정리한 글이다.
+Nitro 기반의 향상된 네트워킹과 ENA의 SR-IOV 노출, ENA Express의 SRD 멀티패스, EFA의 OS bypass를 공식 스펙 기준으로 비교했다. GPUDirect RDMA 지원까지 정리한 글이다.
 
 <!-- more -->
 

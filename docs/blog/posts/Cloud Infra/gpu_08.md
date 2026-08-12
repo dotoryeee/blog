@@ -15,7 +15,7 @@ hide:
 ---
 # LLM 파인튜닝 정리
 
-full fine-tuning에 VRAM이 왜 그렇게 필요한지부터 PEFT, LoRA, QLoRA의 원리까지 정리했다. 학습 파이프라인과 파인튜닝 대 RAG 선택 기준도 비교한다.
+full fine-tuning에 VRAM이 왜 그렇게 필요한지부터 PEFT, LoRA, QLoRA의 원리까지 정리했다. 학습 파이프라인과 함께 파인튜닝과 RAG 중 무엇을 골라야 하는지도 비교한다.
 
 <!-- more -->
 

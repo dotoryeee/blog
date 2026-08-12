@@ -13,7 +13,7 @@ description: "IPIP와 WireGuard의 캡슐화·암호화 원리와 Noise_IK 핸�
 ---
 # WireGuard vs IPIP 차이점 정리
 
-IPIP와 WireGuard의 캡슐화와 암호화 원리를 비교표로 정리했다. WireGuard는 공개키로 서로를 확인하고 그 키가 어느 상대에게 보낼지 정하는 주소 역할까지 하는데 이 구조가 IPIP와 어디서 갈리는지 풀어서 다룬다.
+IPIP와 WireGuard의 캡슐화와 암호화 원리를 비교표로 정리했다. WireGuard는 공개키로 서로를 확인하고 그 키가 패킷을 어느 상대에게 보낼지 정하는 주소 역할까지 하는데 이 구조가 IPIP와 어디서 갈리는지 풀어서 다룬다.
 
 <!-- more -->
 
