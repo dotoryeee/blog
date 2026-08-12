@@ -1966,7 +1966,7 @@
 <p>OpenGitOps가 정의한 네 원칙으로 정리됨.</p>
 <ul>
 <li>선언적(Declarative): 원하는 상태를 절차가 아닌 선언으로 기술 → 무엇을 원하는지만 적고 도달 방법은 시스템에 맡김</li>
-<li>버전 관리·불변(Versioned and Immutable): 상태를 불변·버전 이력이 남는 저장소에 보관 → Git이 단일 진실 원천(Single Source of Truth)</li>
+<li>버전 관리·불변(Versioned and Immutable): 상태를 버전 이력이 남는 불변 저장소에 보관 → Git이 단일 진실 원천(Single Source of Truth)</li>
 <li>자동 pull(Pulled Automatically): 소프트웨어 에이전트가 저장소에서 desired state를 스스로 가져옴</li>
 <li>지속 조정(Continuously Reconciled): 에이전트가 실제 상태를 상시 관측하고 desired state로 되돌림</li>
 </ul>
@@ -2213,7 +2213,7 @@
 <h3 id="rbac">RBAC</h3>
 <ul>
 <li>Argo CD 자체 RBAC(policy.csv)로 role·group을 매핑 → 프로젝트·액션 단위 권한 제어</li>
-<li>AppProject로 배포 가능한 소스 저장소·대상 클러스터·네임스페이스를 화이트리스트로 제한</li>
+<li>배포 가능한 소스 저장소, 대상 클러스터, 네임스페이스를 AppProject 화이트리스트로 제한</li>
 <li>SSO(OIDC·Dex) 연동 시 IdP 그룹을 Argo CD role에 매핑 → 팀별 권한 경계 유지</li>
 <li>admin 계정은 초기 설정 후 비활성화 권장. 상시 admin 사용은 감사 추적을 흐림</li>
 </ul>
