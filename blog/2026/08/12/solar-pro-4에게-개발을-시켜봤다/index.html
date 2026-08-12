@@ -1,0 +1,2332 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5, Opus 5와 Hermes의 Solar Pro 4, GLM-4.7 두 종에게 주고 진행 과정, 결과 화면, 비용, 토큰 사용량을 비교한 기록. 로그 전수 분석과 컨테이너 충돌 사고까지 그대로 남겼다">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/blog/2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/">
+      
+      
+        <link rel="prev" href="../../11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/">
+      
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Solar Pro 4에게 개발을 시켜봤다 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Solar Pro 4에게 개발을 시켜봤다 - dotoryeee's blog" />
+<meta property="og:description" content="같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5, Opus 5와 Hermes의 Solar Pro 4, GLM-4.7 두 종에게 주고 진행 과정, 결과 화면, 비용, 토큰 사용량을 비교한 기록. 로그 전수 분석과 컨테이너 충돌 사고까지 그대로 남겼다" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/blog/2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Solar Pro 4에게 개발을 시켜봤다 - dotoryeee's blog" />
+<meta property="twitter:description" content="같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5, Opus 5와 Hermes의 Solar Pro 4, GLM-4.7 두 종에게 주고 진행 과정, 결과 화면, 비용, 토큰 사용량을 비교한 기록. 로그 전수 분석과 컨테이너 충돌 사고까지 그대로 남겼다" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/blog/2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4.png" />
+</head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#solar-pro-4" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Solar Pro 4에게 개발을 시켜봤다
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    맨땅에 헤딩 전문
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전체 글
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    카테고리
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    카테고리
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        먼저 밝혀둘 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        실험 설정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결과 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-claude-code-sonnet-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A, Claude Code와 Sonnet 5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-claude-code-opus-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B, Claude Code와 Opus 5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-hermes-solar-pro-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C, Hermes와 Solar Pro 4
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-hermes-glm-47-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D, Hermes와 GLM-4.7-Flash
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#e-hermes-glm-47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E, Hermes와 GLM-4.7
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B가 멈춘 사건
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로그를 한 줄씩 다시 읽었다
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        시간 숫자에 필요한 보정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        토큰과 캐싱 이야기
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-08-12 00:00:00+00:00" class="md-ellipsis">2026. 8. 12.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/ai/">AI</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 24분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solar Pro 4에게 개발을 시켜봤다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 선택 가이드
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 암호화 방식 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMS 키 삭제 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 모델로 RAG 파이프라인 구축하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MoE 추론 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Mesh 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP vs API 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CloudTrail 네트워크 활동 이벤트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    partial 인덱스 seq scan 인시던트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    쿠버네티스 GPU 스케줄링 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    분산 학습 병렬화와 집합 통신 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVLink와 노드 내 GPU 연결 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NIC 가상화와 커널 바이패스 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLX로 LoRA 파인튜닝 실습
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 파인튜닝 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 추론 서빙 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InfiniBand vs RoCEv2 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 서버 기초 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 분할 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS 고성능 네트워킹 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시크릿 관리 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:claude-code" class="md-tag">Claude Code</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:coding-agent" class="md-tag">Coding Agent</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:glm" class="md-tag">GLM</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:llm" class="md-tag">LLM</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../../tags/#tag:solar-pro-4" class="md-tag">Solar Pro 4</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="solar-pro-4">Solar Pro 4에게 개발을 시켜봤다</h1>
+<p>Claude Max 20x 요금제로 Claude Code를 쓰고 있어서 손에 익은 도구다. <a href="https://www.upstage.ai/">업스테이지</a>가 Solar Pro 4를 내놨길래 코딩 실력이 궁금했다. 마침 이 모델이 <a href="https://nousresearch.com/">Nous Research</a>의 Hermes Agent를 기본 하니스로 지원한다고 해서 그 조합으로 시켜봤다. 비교 기준은 익숙한 Claude Code의 Sonnet 5와 Opus 5로 잡았고, 내친김에 <a href="https://z.ai/">z.ai</a>의 GLM-4.7 두 종(무료 Flash, 유료 일반)도 Hermes에 연동해 같은 과제를 줬다. 로그 분석에는 Opus 5 백그라운드 에이전트 다섯과 Fable 5를 썼는데 방법은 글 후반에 적었다.</p>
+<!-- more -->
+
+<h2 id="_1">먼저 밝혀둘 것</h2>
+<p>이 글은 벤치마크가 아니다. 프롬프트 하나를 모델별로 한 번씩 돌린 기록이라 표본이 하나고 실력을 단정할 근거가 못 된다. 하니스도 서로 다르다. 하니스는 모델을 감싸고 도구 실행과 컨텍스트 관리를 맡는 에이전트 프로그램인데 Claude Code와 Hermes는 붙어 있는 도구, 에러 로그를 모델에게 보여주는 방식, 반복 한도, 컨텍스트 압축이 전부 달라서 모델만 떼어 비교하는 실험이 될 수 없다.</p>
+<p>무엇보다 Hermes는 이번에 처음 써봤다. 실행하자마자 config.yaml의 api_key 위치가 잘못됐다는 경고부터 떴고 effort 같은 옵션도 따로 만지지 않았다. 뒤에 나오는 C, D, E의 문제 중 일부는 모델이 아니라 내 이해도 부족 탓일 수 있다. 누굴 깎아내리려는 글이 아니고 새 모델들이 개발을 얼마나 하는지 궁금해서 시켜본 기록이다.</p>
+<h2 id="_2">실험 설정</h2>
+<p>프롬프트는 다섯 세션 모두 같다.</p>
+<blockquote>
+<p>로컬에서 crud가 가능한 디자인 좋은 게시판을 생성해줘. 개발 및 운영 등 환경을 분리하지 말고 모두 docker container 내에서 진행하는데, web은 nextjs를 이용한 spa를 nginx로 서빙하는 컨테이너를 띄우고, fastapi를 이용한 be서버, postgre db 각각 container로 띄워줘. nextjs는 shadcn을 적극 활용해서 깔끔하게 디자인해줘.</p>
+</blockquote>
+<p>A와 B에는 superpowers 스킬을 쓰지 말라는 문구를 뒤에 붙였다. A가 처음에 brainstorming 스킬로 요구사항 인터뷰부터 시작하길래 중단시키고 다시 시켰다. 스킬 도움 없이 모델이 일하는 모습을 보고 싶었기 때문이다.</p>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>하니스</th>
+<th>모델</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>Claude Code v2.1.227</td>
+<td>Sonnet 5</td>
+<td>effort auto</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Claude Code v2.1.228</td>
+<td>Opus 5</td>
+<td>effort auto</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Hermes Agent v0.20.0 (2026.8.3)</td>
+<td>solar-pro4-260806</td>
+<td>업스테이지 API</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Hermes Agent v0.20.0 (2026.8.3)</td>
+<td>GLM-4.7-Flash</td>
+<td>z.ai 무료 티어</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Hermes Agent v0.20.0 (2026.8.3)</td>
+<td>GLM-4.7</td>
+<td>z.ai 유료, Hermes 내장 Z.AI 프로바이더</td>
+</tr>
+</tbody>
+</table>
+<p>요구한 구성은 컨테이너 3개다.</p>
+<pre class="mermaid"><code>flowchart TD
+    U["브라우저"] --&gt; W["web 컨테이너&lt;br/&gt;Next.js 정적 빌드를 nginx가 서빙"]
+    W --&gt;|"/api 리버스 프록시"| BE["be 컨테이너&lt;br/&gt;FastAPI"]
+    BE --&gt; DB[("db 컨테이너&lt;br/&gt;PostgreSQL")]</code></pre>
+<p>A, B, C는 같은 WSL 호스트에서 오전에 거의 동시에 돌렸고 D, E는 같은 날 오후에 추가로 돌렸다. 격리 없이 동시에 돌린 오전의 결정이 뒤에서 사고를 부른다.</p>
+<h2 id="_3">결과 요약</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>소요 시간</th>
+<th>비용</th>
+<th>결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>약 16분</td>
+<td>$3.12</td>
+<td>완성, curl로 CRUD 전 구간 검증</td>
+</tr>
+<tr>
+<td>B</td>
+<td>약 18분</td>
+<td>$4.90</td>
+<td>완성, 브라우저 E2E까지 검증</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1시간 32분</td>
+<td>$0.15</td>
+<td>완료 보고, 화면은 스타일 미연결</td>
+</tr>
+<tr>
+<td>D</td>
+<td>1시간 8분</td>
+<td>무료</td>
+<td>완료 보고, 화면은 스타일 미적용</td>
+</tr>
+<tr>
+<td>E</td>
+<td>27분</td>
+<td>약 $0.45 추정</td>
+<td>완성, 화면 정상</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="다섯 세션의 작업 시간, 비용, 출력 토큰. 각 1회 실행한 기록이라 벤치마크가 아니다" src="../../../../AI/solar_pro4_coding_test/chart_summary.png" /></p>
+<p>시간은 각 하니스가 표시한 작업 시간 기준이다. 비용은 A와 B는 Claude Code에 표시되는 API 환산 금액, C는 업스테이지 콘솔에 찍힌 이날 사용량 합계, D는 무료 티어라 0, E는 Hermes가 표시한 토큰량에 z.ai 단가(2026년 8월 기준 백만 토큰당 입력 $0.6, 캐시 읽기 $0.11, 출력 $2.2)를 곱해 계산한 추정치다.</p>
+<h2 id="a-claude-code-sonnet-5">A, Claude Code와 Sonnet 5</h2>
+<p>A는 도구부터 챙겼다. create-next-app과 shadcn CLI로 스캐폴딩을 백그라운드에 걸어두고 그 사이 FastAPI 백엔드를 작성하는 식으로 병렬로 움직였다. 학습 시점 이후 바뀐 Next.js 16 문서를 먼저 찾아 확인했고 정적 export가 동적 라우트를 지원하지 않는 제약을 미리 판단해 상세와 수정 페이지를 쿼리스트링 라우팅으로 설계했다. 이 사전 판단 덕에 빌드 단계에서 export 실패가 한 번도 없었다.</p>
+<p>물론 매끄럽기만 한 건 아니었다. shadcn CLI 인자가 학습 시점과 달라져 init에 세 번 실패했는데, 첫 실패 직후 help를 열어 실제 옵션을 조사한 것까지는 좋았지만 목록에 없는 base-nova라는 프리셋 이름을 지어내 한 번 더 낭비했다. 호스트에서 5432, 3000, 8000 포트가 이미 점유된 걸 발견하자 5433, 3100, 8010으로 비켜서 올렸는데, 처음 실패에서 포트 하나만 고치고 재시도했다가 다시 실패한 뒤에야 ss로 전수 조사해 남은 둘을 한 번에 해결했다. 마지막에 curl로 생성, 목록, 조회, 수정, 삭제 전 구간과 SPA 라우트 4개의 200 응답을 확인하고 16분 만에 끝냈다. 추가된 코드는 995줄.</p>
+<p><img alt="A의 결과 화면" src="../../../../AI/solar_pro4_coding_test/a.png" /></p>
+<p>끝난 뒤 작업 내역을 리뷰해 보라고 시키니 완료 전에 lint를 안 돌린 걸 스스로 실토하고 그 자리에서 돌려 에러 3건을 찾아 보고했다. 같은 useEffect 패턴을 세 파일에 복제한 결과였다. 자기 결과물을 부풀리지 않고 깎아서 보고하는 태도가 인상적이었다.</p>
+<h2 id="b-claude-code-opus-5">B, Claude Code와 Opus 5</h2>
+<p>B는 CLI 스캐폴딩 없이 package.json부터 shadcn 컴포넌트 10개까지 50개 파일 전부를 직접 썼다. 추가된 코드는 2,777줄. Tailwind v4에 oklch 색 토큰, 다크 모드까지 넣었는데 타입 체크를 켠 채 돌린 첫 docker build가 한 번에 통과했다. 컴파일 에러급 실수가 0건이었다는 뜻이고, 이후 나온 문제는 전부 실행해봐야 아는 의미론 층위였다.</p>
+<p>검증 과정이 특히 볼만했다. curl 테스트를 전부 통과한 상태에서 Playwright로 화면을 찍어 눈으로 확인하다가 글을 조회만 해도 수정됨 표시가 붙는 버그를 찾아냈다. 조회수 증가가 updated_at 갱신을 건드리는 문제였고 원자적 UPDATE로 고쳤다. 오래된순 정렬이 뒤집혀 보이던 문제와 없는 경로에 200을 돌려주던 nginx 설정도 잡았는데, nginx 쪽은 추측으로 고치지 않고 빌드된 이미지 안에 들어가 실제 파일 목록을 열어본 다음 고쳤다. 마지막에 브라우저 9단계 시나리오를 콘솔 에러 0으로 통과시키고 시드 데이터 상태로 초기화까지 하고 끝냈다. 18분.</p>
+<p><img alt="B의 결과 화면. 500 에러는 B가 만든 버그가 아니다" src="../../../../AI/solar_pro4_coding_test/b.png" /></p>
+<p>스크린샷의 500 에러는 B의 잘못이 아니다. C가 작업 중에 B의 컨테이너를 지우고 멈춰서 프론트만 살아남은 상태인데 무슨 일이 있었는지는 아래에 따로 적었다. 붉은 에러 카드와 다시 시도 버튼은 B가 설계해 둔 에러 화면이 의도대로 동작하는 모습이라 얄궂다.</p>
+<h2 id="c-hermes-solar-pro-4">C, Hermes와 Solar Pro 4</h2>
+<p>C는 스캐폴딩 도구 없이 전부 직접 작성하는 쪽을 택했다. 그런데 그 이유가 이상하다. 로그 중반에 "환경에서는 npx가 안 된다고 했으니"라며 스캐폴딩을 건너뛰는데, 내가 가진 로그 범위에는 npx를 시도한 기록이 없다. 확인되지 않는 과거를 근거로 결정을 내린 것이다. 같은 머신에서 A와 E는 npx로 잘만 스캐폴딩했다.</p>
+<p>구성도 오래 흔들렸다. next.config.js의 output 설정이 export와 standalone 사이에서 네 번 뒤집혔고, nginx 프록시 폴더에 next.config.js 사본을 만드는 등 불필요한 파일도 여럿 생겼다. globals.css는 처음에 한 줄짜리로 만든 뒤 다섯 번을 다시 썼는데 그때마다 "파일이 덮어써졌다, 복구하겠다"는 서사가 붙었다. 로그를 대조해 보면 한 번은 "nginx 설정 내용으로 덮어써졌다"고 주장했지만 실제 diff에서 지워지는 내용은 자기가 직전에 쓴 shadcn CSS였다. 실제와 다른 원인 설명을 붙이며 자기 파일을 자기가 다시 쓰고 있었던 셈이다. layout.tsx를 React 컴포넌트가 아닌 HTML 조각으로 작성했다가 빌드가 깨진 뒤에야 고친 것도 있다.</p>
+<p>백엔드는 기동 실패 로그를 보며 버그를 하나씩 걷어냈다. 동기 함수에 async with를 쓴 get_db, 임포트 없이 쓴 AsyncAttrs, 자기가 쓴 compose와 database.py 사이의 드라이버 불일치, 그리고 첫 버그를 고치다 새로 만든 임포트 누락까지 네 번의 재시작 끝에 백엔드가 떴다. 시간이 걸렸을 뿐 전부 스스로 잡았고, 첫 빌드 전에 자기 코드를 리뷰해 상대 임포트 오류 등 결함 4개를 미리 걸러낸 장면도 있었다.</p>
+<p>인상적인 순간도 분명했다. 한글 검색이 400으로 떨어지자 nginx 액세스 로그에서 이스케이프된 바이트를 확인하고, 백엔드 직접 호출과 프록시 경유를 분리해 검증한 끝에 원인을 터미널 셸 인코딩으로 정확히 진단했다. 자체 검증 명령인 hermes verify가 엉뚱한 포트(당시 그 포트에는 B의 서비스가 떠 있었다)를 보고 통과 처리하자 이 통과는 가짜 합격이라며 스스로 재검증에 들어간 대목은 다섯 로그를 통틀어 손에 꼽는 판단이었다.</p>
+<p>아쉬운 부분도 로그에 그대로 남아 있다. 산출 텍스트에 일본어와 중국어가 섞여 나왔다. "ビルド는 프론트 Node 빌드"나 "我们的 write_file로" 같은 문장이 한국어 사이에 등장하고 문단 하나가 통째로 영어로 전환되기도 했다. 도구 호출 없이 계획만 다시 쓰는 90줄짜리 블록에서 "이제 시작한다"는 선언을 여덟 번 반복한 구간도 있다. 세션은 반복 한도 150회에 걸렸고, 종반에는 다음 요청이 약 41만 토큰으로 조립될 뻔해서 하니스가 전송 직전에 요약 압축을 돌렸다. Solar Pro 4의 컨텍스트 상한이 256K, Hermes의 압축 임계가 19.2만 토큰이니 상한을 훌쩍 넘는 크기였다. 컨텍스트가 그렇게 부푼 데는 브라우저 없는 환경에서 시도한 computer_use 호출 한 번이 15.5만 토큰을 쏟아부은 몫이 컸고, 압축 직후에는 방금 실행했던 명령을 잊고 다시 실행하는 부작용까지 로그에 찍혔다.</p>
+<p>C는 1시간 32분에 완료를 보고했다. curl 기준으로 페이지 200 응답과 CRUD 전 구간, 헬스체크 통과를 확인했다는 내용이다. 다만 캡처된 로그 자체는 반복 한도와 압축 지점에서 명령 중간에 끊기고, 그 뒤 이어진 세션에서 완료 보고가 나왔다. 내가 가진 마지막 화면은 1시간 20분 시점 스크린샷인데 스타일이 입혀지지 않았고 데이터 요청도 실패한 상태였다.</p>
+<p><img alt="1시간 20분 시점의 C 화면" src="../../../../AI/solar_pro4_coding_test/c.png" /></p>
+<p>화면의 두 결함 모두 로그로 설명이 된다. Failed to fetch는 프론트 번들에 API 주소가 계획과 달리 8000 포트 직결로 하드코딩된 채 빌드된 결과다. 상대 경로로 바꾸겠다는 계획을 세 번 선언하고 실행하지 않았고, 정작 C의 백엔드 호스트 포트는 세션 대부분 동안 충돌을 피해 8001에 가 있다가 로그 막바지에야 8000으로 돌아오는 중이었다. 어느 시점이든 번들이 부르는 8000에서 C의 백엔드가 응답한다는 보장이 없는 구조였다. 스타일이 아예 안 실린 쪽은 더 구조적이다. shadcn 패턴의 컴포넌트 코드를 만들어 페이지에서 쓰긴 했지만 layout.tsx에 globals.css를 임포트하는 구문이 로그 전체에 한 번도 없다. Next.js App Router에서 이 한 줄이 없으면 여섯 번을 다시 쓴 그 CSS가 페이지에 실릴 방법이 없다. shadcn을 적극 활용해 달라는 요구는 코드 폴더 안에는 흔적이 있지만 화면에는 도달하지 못했고, curl 검증은 상태코드만 봐서 두 결함 다 잡지 못했다.</p>
+<h2 id="d-hermes-glm-47-flash">D, Hermes와 GLM-4.7-Flash</h2>
+<p>무료 모델은 어디까지 하나 궁금해서 붙였다. 결론부터 적으면 1시간 8분 만에 완료를 선언했지만 결과물이 요구와 다르고 화면은 스타일이 빠진 상태였다.</p>
+<p>구성부터 어긋났다. 환경을 분리하지 말라고 했는데 개발용 Next 서버 컨테이너와 운영용 nginx를 나눈 4컨테이너 구성으로 시작했고, 최종 상태도 nginx가 정적 파일을 서빙하는 게 아니라 Next 개발 서버 앞의 프록시로 남았다. 쓰지도 않는 Prisma의 generate 명령을 Dockerfile에 넣어 빌드 한 번을 날렸고, use client 지시어 누락 같은 App Router 기본 규칙도 빌드가 깨진 뒤에 채웠다.</p>
+<p>이 세션에서 가장 길게 헤맨 곳은 9연속 빌드 실패 구간이다. 근본 원인은 next.config.js에 standalone 출력 설정이 없다는 것 하나였는데, Dockerfile 하나를 아홉 번 패치했고 그중 연속된 네 번은 끝나고 보니 처음과 완전히 같은 내용으로 돌아온 왕복이었다. 여기엔 하니스 몫이 크다. Hermes가 빌드 에러 로그를 [error] 네 글자로 잘라 보여줘서 모델은 사실상 눈을 가린 채 디버깅했다. 이 절단이 설정으로 조절되는 값인지는 확인하지 못했다. 그 와중에 절단된 로그만으로 use client 누락과 standalone 필요성을 정확히 짚어낸 진단도 있었으니, 정보만 제대로 보였다면 훨씬 짧았을 구간이다.</p>
+<p>검증은 HTTP 상태코드 확인이 전부였다. 게시글 쓰기 호출은 한 번도 없이 목록 200과 0개 게시글을 확인하고 CRUD 완료를 선언했다. 완료 선언은 세 번 나왔는데 첫 번째 선언 직후 자기 검증에서 프론트와 nginx 문제를 발견해 스스로 반박하기도 했다. 안내한 접속 주소도 잘못됐다. 프론트 코드가 상대 경로로 API를 부르는데 개발 서버 3000 포트에는 그 경로가 없어서 nginx를 거치는 80 포트에서만 동작하는 구조였는데, 접속하라고 지목한 주소는 3000이었다. 80은 프로덕션이라는 이름으로 병기만 됐다.</p>
+<p><img alt="D의 화면. 스타일이 적용되지 않았다" src="../../../../AI/solar_pro4_coding_test/d.png" /></p>
+<p>shadcn 자체는 성실하게 옮겨 적었다. 공식 코드에 가까운 Button, Card, Dialog, Toast 컴포넌트를 만들어 페이지에서 사용했고 layout.tsx의 CSS 임포트도 있다. 파이프라인이 끊긴 지점은 그 다음이다. 로그 전체에 postcss 설정 파일을 만든 기록이 없어서 Tailwind 지시어가 처리되지 않은 채 나갔다. 컴포넌트에 아무리 클래스를 달아도 그 클래스를 실제 스타일로 바꿔줄 단계가 없었으니 화면은 브라우저 기본값이 된다. 스캐폴딩 도구를 썼다면 자동으로 생겼을 파일 하나가 없어서 shadcn 요구 전체가 무너졌다.</p>
+<p>무료 티어의 대가는 예상과 달리 레이트리밋이 아니었다. 관련 이벤트는 로그에 한 건도 없었고 대신 생성 속도가 초당 9토큰 수준이라 68분 중 약 57분이 모델 생성 시간이었다.</p>
+<h2 id="e-hermes-glm-47">E, Hermes와 GLM-4.7</h2>
+<p>E는 다섯 세션 중 Claude 둘을 빼면 가장 빨랐고 화면도 제대로 나왔다. 27분.</p>
+<p>전략이 A와 닮았다. create-next-app으로 스캐폴딩하고 components.json을 먼저 손으로 만든 뒤 shadcn CLI로 컴포넌트를 받았다. DB 스키마와 샘플 게시글 3건을 init.sql로 미리 심은 것도 결과 화면을 살린 선택이었다. docker-compose 구버전 명령이 없다는 exit 127을 만나자 한 번에 docker compose로 전환했고, 프론트 빌드가 의존성 누락으로 두 번 깨지자 소스 파일을 실제로 읽어 lucide-react 누락을 특정해 해결했다. 백엔드 직결과 nginx 경유를 curl로 나눠 찍어 어느 계층이 깨졌는지 격리한 디버깅, 컨테이너 내부 호스트명을 브라우저용 주소로 넣은 실수를 스스로 발견해 고친 것도 좋았다.</p>
+<p>다만 요구 아키텍처에서는 D와 같은 방향으로 이탈했다. 정적 export 없이 Next 서버 컨테이너를 두고 nginx를 프록시로 얹은 4컨테이너 구성이다. 고친 API 주소는 빌드할 때 번들에 박히는 값이다. 재빌드 없이 restart만 했으니 수정이 실제 번들에 반영됐는지는 로그로 확인되지 않는다. 스크린샷에서는 목록이 정상적으로 뜨는데, 빌드 시점 기본값인 8000 포트 직결 주소가 번들에 남아 노출된 백엔드 포트로 직접 붙었을 가능성이 높다. 동작은 하지만 nginx 프록시를 우회하는 경로다. 쓰기 계열 CRUD를 실제 호출한 기록이 없는 채로 모든 기능이 작동한다고 정리한 것도 D와 같은 패턴이다.</p>
+<p><img alt="E의 결과 화면" src="../../../../AI/solar_pro4_coding_test/e.png" /></p>
+<p>hermes verify까지 통과시키고 끝냈다. 레이트리밋과 컨텍스트 압축, 반복 한도 어느 것에도 걸리지 않았다.</p>
+<h2 id="b">B가 멈춘 사건</h2>
+<p>B와 C는 같은 게시판 프롬프트를 받았으니 둘 다 board로 시작하는 컨테이너 이름을 짓는 게 자연스럽다. 먼저 완성한 B가 board-db라는 이름과 5432, 8000 포트를 차지하고 있었고 뒤늦게 docker compose up을 시도한 C는 이름 충돌로 실패했다.</p>
+<pre class="mermaid"><code>flowchart TD
+    S1["B가 board-db 이름과&lt;br/&gt;8000, 5432 포트를 먼저 점유"] --&gt; S2["C의 docker compose up이&lt;br/&gt;이름 충돌로 실패"]
+    S2 --&gt; S3["C가 board-db 컨테이너를 강제 삭제"]
+    S3 --&gt; S4["검증을 깨끗하게 돌리겠다며&lt;br/&gt;board-web과 board-api도 중지"]
+    S4 --&gt; S5["B 화면은 API 500 에러로 남음"]</code></pre>
+<p>과정을 로그로 재구성하면 이렇다. C는 처음에 충돌 원인을 절반만 이해했다. B의 컨테이너 목록에 board-db를 뻔히 적어놓고 "내 컨테이너와 이름이 다르다"고 판단한 뒤, 기존 서비스는 건드리지 않겠다며 자기 백엔드 포트만 8001로 옮겼다. 이름 충돌이 그대로라 다시 실패하자 로그 27줄 만에 방침을 뒤집어 board-db를 docker rm 강제 옵션으로 지웠다. 중지가 아니라 삭제라 복구가 안 되는 선택이었고, Hermes에 사용자에게 물어보는 clarify 도구가 있었지만 쓰지 않았다. 마지막 검증 단계에서는 검증기가 깨끗한 환경을 보게 하겠다며 B의 board-web과 board-api까지 멈췄고, 컨텍스트 압축 직후에는 방금 멈춘 사실을 잊고 같은 중지 명령을 한 번 더 실행했다. B 스크린샷의 500 에러는 그 흔적이다.</p>
+<p>이걸 C의 잘못이라고만 적으면 공정하지 않다. 격리 없이 같은 호스트에서 세 에이전트를 동시에 돌린 건 나다. C 입장에서 board-db는 자기 compose 파일에 적힌 이름을 차지하고 있는 정체불명 컨테이너였을 뿐이다. 그래도 기록할 가치는 있다. 같은 상황에서 A는 점유된 포트를 보고 자기가 비켜서는 쪽을 골랐고 C는 처음엔 비켜섰다가 결국 상대를 지우는 쪽으로 돌아섰다. 에이전트에게 docker 권한을 주고 여럿을 동시에 풀어놓으면 서로의 인프라를 건드릴 수 있다는 걸 이번에 눈으로 봤다.</p>
+<h2 id="_4">로그를 한 줄씩 다시 읽었다</h2>
+<p>다섯 세션의 로그를 Opus 5 백그라운드 에이전트 다섯에게 하나씩 맡겨 전수 판독시켰다. 에러, 반복 실수, 하니스 이벤트를 줄 번호 단위로 수집하게 했고, 나온 보고서는 Fable 5가 원본 로그와 대조해 확인한 뒤 원인을 해석했다. 아래 해석도 그 과정에서 나온 것이다. 세션별로 가장 두드러진 반복 패턴은 이렇다.</p>
+<table>
+<thead>
+<tr>
+<th>세션</th>
+<th>대표 반복 패턴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>포트 충돌을 한 번에 하나씩 고쳐 up 3회, 같은 lint 위반 패턴을 세 파일에 복제</td>
+</tr>
+<tr>
+<td>B</td>
+<td>코드를 쓴 뒤 임포트를 뒤늦게 추가 2회, 정반대로 뒤집는 수정은 0회</td>
+</tr>
+<tr>
+<td>C</td>
+<td>output 설정 4회 반전, globals.css 5회 재작성, 같은 컴포넌트 파일 재작성 다수</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Dockerfile 9회 패치(그중 4회는 원점 회귀), 존재하지 않는 파일을 참조하는 compose로 시작</td>
+</tr>
+<tr>
+<td>E</td>
+<td>compose up 계열 호출 10회(하니스 차단 포함), API 주소가 세 값을 오감</td>
+</tr>
+</tbody>
+</table>
+<p>숫자를 모아놓고 보니 몇 가지 공통 구조가 보였다.</p>
+<p>첫째, 상태를 다시 읽지 않는 에이전트가 왕복한다. D는 74번의 도구 호출 중 파일 읽기가 단 1회였다. 자기가 쓴 파일의 현재 상태를 확인하지 않고 기억으로 패치하니 같은 파일을 아홉 번 고치고 원점으로 돌아온다. C도 파일을 읽지 않고 patch를 던졌다가 매칭 실패로 퇴짜를 맞은 기록이 있고, 자기 파일을 자기가 덮어쓰면서 원인을 외부로 돌리는 서사까지 만들었다. 반대로 B는 nginx 설정을 고치기 전에 이미지 안에 들어가 실물 파일 목록부터 확인했다. Claude Code 로그 두 개에는 정반대로 뒤집는 수정이 아예 없는데, 편집 전에 파일을 읽도록 강제하는 하니스 구조와 상태를 추적하는 모델 능력이 겹친 결과로 보인다.</p>
+<p>둘째, 에러 메시지의 해상도가 디버깅 품질을 결정한다. D의 9연속 실패 구간에서 Hermes는 실패 로그를 [error] 네 글자로 잘라 보여줬다. 진단 정보가 0에 가까우니 모델이 추측으로 움직일 수밖에 없다. Hermes가 금방 끝날 명령을 오래 걸릴 명령으로 잘못 판정해 차단하는 일도 C에서 7회, E에서 4회 있었고 그때마다 같은 명령을 두세 번씩 다시 쳐야 했다. diff 없이 기록되는 patch도 있어 뭘 바꿨는지 로그로 추적이 안 되는 지점이 있었다. 대기 방식도 갈렸다. Hermes는 맨 sleep 명령을 그대로 통과시켜 E 혼자 일곱 번, 합계 5분을 눈감고 기다렸다. 27분 세션의 5분이 잠이었던 셈이다. Claude Code는 단독 sleep을 거부하고 감시 도구를 쓰게 유도하는 정책이라 A는 상한을 건 폴링 루프로, B는 기동 명령 뒤에 붙인 몇 초짜리 대기로 같은 상황을 지나갔다. 하니스가 대기를 어떻게 다루느냐도 모델 속도 못지않게 소요 시간을 흔드는 변수다. 백그라운드 실행과 긴 타임아웃, 전체 에러 출력을 주는 Claude Code 쪽과 대비되는 부분인데, 이건 모델 실력과 별개로 하니스가 만드는 격차다.</p>
+<p>셋째, 완료 선언은 검증 깊이만큼만 믿을 수 있다. 생성부터 삭제까지 쓰기 계열 API를 실제로 호출해본 세션은 A, B, C뿐이다. D는 목록 조회 200에 게시글 0건을 보고 CRUD 완료를 선언했고 E도 쓰기 호출 기록 없이 모든 기능 작동으로 정리했다. 화면을 눈으로 본 세션은 B 하나다. 그리고 화면이 깨진 채 끝난 세션이 정확히 화면을 못 본 쪽에서 나왔다. C의 CSS 미연결과 fetch 실패, D의 postcss 부재는 전부 curl 상태코드로는 안 잡히는 결함이다. shadcn을 명시적으로 요구했는데 화면까지 shadcn이 도달한 Hermes 세션은 E 하나였고, C와 D는 컴포넌트 코드를 성실히 만들어 놓고 그 스타일이 브라우저에 닿는 마지막 연결 고리를 각자 다른 지점에서 놓쳤다. B가 curl 전 구간을 통과한 상태에서 스크린샷으로 updated_at 버그를 잡아낸 것과 같은 이야기의 반대면이다.</p>
+<p>넷째, 이탈은 관성에서 온다. C와 D는 처음부터 Next 서버와 nginx 프록시를 나눈 4컨테이너 구조로 출발했고 E도 도중에 nginx를 프록시로 얹어, Hermes 세션 셋이 결국 같은 구조로 수렴했다. nginx로 SPA를 서빙하라는 요구의 표준 해석은 정적 빌드 서빙인데, 학습 데이터에 더 흔할 프록시 패턴이 관성으로 나온 것으로 보인다. C만 도중에 정적 서빙으로 돌아왔고 D와 E는 프록시 구조로 완료를 선언했다. D와 E가 인증 없는 게시판에 python-jose, passlib, alembic 같은 인증과 마이그레이션 라이브러리를 나란히 넣은 것도 같은 계열의 보일러플레이트 관성이다. 반면 언어 혼입(일본어, 중국어)과 도구 호출 없는 장문 재계획 블록은 다섯 로그 중 Solar Pro 4에서만 나왔다. GLM 두 세션의 텍스트 결함은 오타 몇 개 수준이었다.</p>
+<h2 id="_5">시간 숫자에 필요한 보정</h2>
+<p>작업 시간이 16분에서 92분까지 벌어졌지만 이 숫자를 그대로 순위로 읽으면 안 된다. 각자 다른 길을 골랐고 길마다 난이도가 다르기 때문이다.</p>
+<pre class="mermaid"><code>flowchart TD
+    Q["nginx로 SPA를 서빙하라는 요구"] --&gt; S1["정적 export 정면 구현&lt;br/&gt;A, B, C"]
+    Q --&gt; S2["Next 서버 앞에 nginx 프록시&lt;br/&gt;D, E"]
+    S1 --&gt; T1["동적 라우트 불가, fallback 설정 등&lt;br/&gt;함정을 통과해야 함"]
+    S2 --&gt; T2["함정은 적지만&lt;br/&gt;요구사항에서 이탈"]</code></pre>
+<p>우선 아키텍처 선택이 난이도를 갈랐다. 정적 export를 정면으로 구현한 A, B, C는 동적 라우트 제약과 fallback 설정 같은 함정을 통과해야 했고, D와 E는 그 함정을 우회하는 대신 요구사항에서 이탈했다. E의 27분에는 이 우회로 아낀 시간이 섞여 있다.</p>
+<p>스캐폴딩 도구 사용 여부도 시간과 품질 양쪽에 작용했다. A와 E는 create-next-app이 만들어주는 설정 위에서 시작해 postcss 같은 기반 설정 함정을 원천 차단했다. 손으로 다 쓴 세 세션 중 B는 모델이 강해서 한 번에 정확히 썼고, C와 D는 설정 함정에 빠졌다. D의 스타일 미적용이 그 대가다.</p>
+<p>스코프도 다르다. B는 다크 모드, 카테고리, 정렬, 시드 10건, 브라우저 E2E까지 스스로 스코프를 넓혀 2,777줄을 썼다. A의 995줄이나 E의 최소 구현과는 일의 양 자체가 다르니 18분이라는 숫자는 오히려 과소평가다.</p>
+<p>마지막으로 순수 속도 차이가 있다. Claude Code는 API 통신 시간을 따로 보여주는데 A가 7분 38초, B가 14분 34초로 벽시계 시간의 절반 수준이고 나머지는 빌드 같은 도구 실행 대기다. D는 반대로 68분 중 약 57분이 초당 9토큰짜리 생성 시간이었다. 결국 시간을 가른 건 모델의 타자 속도, 첫 빌드가 통과하는 정확도, 실패했을 때 원인에 도달하는 속도 세 가지였고, 빌드 실행 횟수(A 2회, B 4회, C 6회, D 13회, E 3회)가 그 결과를 요약한다.</p>
+<h2 id="_6">토큰과 캐싱 이야기</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>캐시 안 탄 입력</th>
+<th>캐시 읽기</th>
+<th>출력</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>247토큰</td>
+<td>660만</td>
+<td>3.8만</td>
+<td>캐시 쓰기 9.3만 별도</td>
+</tr>
+<tr>
+<td>B</td>
+<td>682토큰</td>
+<td>420만</td>
+<td>7.1만</td>
+<td>캐시 쓰기 10.1만 별도</td>
+</tr>
+<tr>
+<td>C</td>
+<td>293만</td>
+<td>726만</td>
+<td>18.3만</td>
+<td>업스테이지 콘솔 기준</td>
+</tr>
+<tr>
+<td>D</td>
+<td>118만</td>
+<td>373만</td>
+<td>3.0만</td>
+<td>Hermes 표시값 환산</td>
+</tr>
+<tr>
+<td>E</td>
+<td>11.2만</td>
+<td>312만</td>
+<td>1.7만</td>
+<td>Hermes 표시값 환산</td>
+</tr>
+</tbody>
+</table>
+<p>집계 방식이 하니스마다 달라 절대 비교는 조심해야 하지만 방향은 읽힌다. Claude Code 두 세션은 캐시를 못 탄 입력이 수백 토큰에 불과하다. 매 턴 반복되는 컨텍스트가 거의 전부 캐시에 얹혀 있다는 뜻이다. Hermes 쪽은 세션마다 편차가 큰데 C는 293만 토큰이 캐시를 못 탔다. 세션 막바지에 압축이 돌고 15.5만 토큰짜리 computer_use 출력이 한 번에 유입되는 등 캐시 앞머리가 흔들릴 일이 있었던 92분 세션이라는 정황과 맞아떨어진다. 짧고 압축 없이 끝난 E는 11.2만으로 제일 적었다.</p>
+<p>비용 구조에 대한 의견을 남기면, 에이전트 용도의 모델을 고를 때 단가표에서 먼저 볼 것은 입력과 출력 단가가 아니라 캐시 읽기 단가와 생성 속도라는 게 이번 실험의 소감이다. 에이전트 루프는 같은 컨텍스트를 수십 번 다시 보내는 구조라 물량의 대부분이 캐시 읽기다. E의 추정 비용 $0.45에서도 캐시 읽기 몫이 $0.34로 지배적이다. 그리고 D처럼 토큰이 공짜여도 생성이 느리면 사람 시간으로 대가를 치른다. C는 출력 토큰을 A의 다섯 배 가까이 쓰고도 비용이 20분의 1이었으니 단가의 힘은 분명하지만, 그 돈으로 산 결과물의 상태까지 함께 봐야 공정한 비교가 된다.</p>
+<h2 id="_7">정리</h2>
+<p>한 번씩 돌린 실험이라 결론은 유보한다. 그래도 남은 인상은 적어둘 수 있다. Solar Pro 4는 실패 로그를 읽고 버그를 걷어내는 끈기와 위양성 검증을 의심하는 감각을 보여줬지만, 상태 추적이 흔들리며 같은 파일을 여러 번 다시 쓰고 언어가 섞이는 문제가 로그에 남았다. GLM-4.7은 무료 Flash가 시간과 마감 품질로 대가를 치른 반면 유료 쪽은 27분에 화면까지 멀쩡한 결과를 $0.5 미만으로 만들어서, 가격 대비로는 이번 실험에서 가장 흥미로운 지점에 있었다. Claude 두 세션은 빠르고 정확했고 특히 검증의 깊이에서 격차를 보였다.</p>
+<p>하니스의 영향도 생각보다 컸다. 에러 로그를 얼마나 보여주는지, 파일 상태 확인을 강제하는지, 백그라운드 실행을 어떻게 다루는지가 모델 실력만큼 결과를 흔들었다. Hermes 설정을 제대로 공부하고 브라우저까지 쥐여준 환경에서 다시 돌려보면 숫자가 달라질 수 있다. 그리고 다음부터는 무슨 일이 있어도 에이전트마다 Docker 프로젝트와 포트를 분리해 둘 것이다. B의 500 에러 화면이 그 교훈의 스크린샷이다.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../../11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-footer__link md-footer__link--prev" aria-label="이전: RAG 선택 가이드">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                RAG 선택 가이드
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
