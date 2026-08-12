@@ -16,6 +16,8 @@ hide:
 
 # llama.cpp로 MoE와 Dense 추론 성능 비교하기
 
+Apple Silicon에서 llama.cpp로 MoE 35B-A3B와 Dense 27B를 나란히 돌려봤다. prefill과 decode 속도, KV cache 크기, 양자화별 차이를 실측해 비교한 기록이다.
+
 <!-- more -->
 
 ## 목표
