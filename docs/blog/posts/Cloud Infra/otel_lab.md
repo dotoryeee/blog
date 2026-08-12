@@ -16,7 +16,7 @@ hide:
 
 # OpenTelemetry Collector로 분산 트레이싱 실습
 
-OpenTelemetry Collector와 Jaeger를 docker compose로 세워 Flask 서비스 두 개를 zero-code로 계측했다. 두 서비스의 요청이 traceparent로 한 trace에 묶이는지 실측한 기록이다.
+OpenTelemetry Collector와 Jaeger를 docker compose로 세우고 코드 수정 없이 자동 계측만으로 Flask 서비스 두 개에 추적을 붙였다. 두 서비스를 거치는 요청이 traceparent 헤더로 하나의 trace에 묶이는지 실측한 기록이다.
 
 <!-- more -->
 
