@@ -15,7 +15,7 @@ hide:
 ---
 # LLM 추론 서빙 정리
 
-LLM 추론의 prefill과 decode 단계 차이, KV cache 크기 계산과 VRAM 어림 계산을 정리했다. continuous batching, PagedAttention, 양자화, 서빙 엔진 비교까지 다룬다.
+LLM 추론의 prefill과 decode 단계 차이, KV cache 크기와 VRAM의 대략적인 계산을 정리했다. continuous batching, PagedAttention, 양자화, 서빙 엔진 비교까지 다룬다.
 
 <!-- more -->
 
