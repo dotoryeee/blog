@@ -15,6 +15,8 @@ hide:
 ---
 # GitOps와 ArgoCD 정리
 
+GitOps 네 원칙과 ArgoCD 아키텍처, push와 pull 모델의 차이를 정리했다. 동기화 정책과 Flux 비교까지 표로 다룬다.
+
 <!-- more -->
 
 ## GitOps란

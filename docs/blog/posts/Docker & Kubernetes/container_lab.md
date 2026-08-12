@@ -18,6 +18,8 @@ hide:
 
 # docker 없이 컨테이너 만들어보기
 
+docker 없이 unshare, cgroup, chroot, overlayfs, veth만으로 컨테이너를 손수 조립해 봤다. 20M 메모리 제한을 걸어 OOM까지 실측한 기록이다.
+
 <!-- more -->
 
 ## 목표

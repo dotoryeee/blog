@@ -15,6 +15,8 @@ hide:
 ---
 # CloudTrail 네트워크 활동 이벤트 정리
 
+VPC 엔드포인트를 지나는 API 호출을 기록하는 CloudTrail 네트워크 활동 이벤트를 정리했다. 이벤트 유형마다 갈리는 userIdentity.arn 지원 범위와 조건 평가 규칙도 비교한다.
+
 <!-- more -->
 
 ## 네트워크 활동 이벤트란

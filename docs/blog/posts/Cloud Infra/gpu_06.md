@@ -15,6 +15,8 @@ hide:
 ---
 # 쿠버네티스 GPU 스케줄링 정리
 
+기본 스케줄러가 GPU를 모르는 문제에서 시작해 device plugin 등록과 GPU Operator 구성요소를 정리했다. time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 다룬다.
+
 <!-- more -->
 
 ## 쿠버네티스 GPU 스케줄링이란

@@ -16,6 +16,8 @@ description: "DB CPU가 낮은데도 태스크가 15분마다 재시작된 장�
 
 # partial 인덱스 seq scan 인시던트
 
+DB CPU가 낮은데도 태스크가 15분마다 재시작되던 장애를 wait event로 추적했다. partial 인덱스의 함정을 찾아 인덱스 하나로 해결한 실전 기록이다.
+
 <!-- more -->
 
 ## 증상

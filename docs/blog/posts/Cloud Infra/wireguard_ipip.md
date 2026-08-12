@@ -13,6 +13,8 @@ description: "IPIP와 WireGuard의 캡슐화·암호화 원리와 Noise_IK 핸�
 ---
 # WireGuard vs IPIP 차이점 정리
 
+IPIP와 WireGuard의 캡슐화와 암호화 원리를 비교표로 정리했다. Noise_IK 핸드셰이크와 cryptokey routing이 만드는 차이를 다룬다.
+
 <!-- more -->
 
 ## 터널링이란

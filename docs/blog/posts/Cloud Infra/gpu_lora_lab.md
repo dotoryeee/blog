@@ -14,6 +14,8 @@ description: "Apple Silicon에서 MLX로 소형 4bit 모델에 LoRA를 적용해
 
 # MLX로 LoRA 파인튜닝 실습
 
+Apple Silicon에서 MLX로 소형 4bit 모델에 LoRA를 적용해 가상 서비스의 FAQ를 학습시켜 봤다. loss와 메모리, adapter 크기를 실측으로 비교한 기록이다.
+
 <!-- more -->
 
 ## 목표

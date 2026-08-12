@@ -16,6 +16,8 @@ hide:
 
 # Vault 동적 시크릿 실습
 
+Vault와 PostgreSQL을 docker compose로 세워 TTL 2분짜리 동적 DB 계정을 발급해 봤다. 만료와 lease revoke로 계정이 자동 회수되는지 psql로 실측한 기록이다.
+
 <!-- more -->
 
 ## 목표

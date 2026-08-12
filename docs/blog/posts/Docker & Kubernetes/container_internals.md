@@ -17,6 +17,8 @@ hide:
 ---
 # 컨테이너 내부 구조 정리
 
+namespace와 cgroup부터 dockerd, containerd, runc 계층과 dockershim 제거까지 정리했다. overlayfs와 gVisor, Kata 같은 런타임 선택지도 표로 비교한다.
+
 <!-- more -->
 
 ## 컨테이너란

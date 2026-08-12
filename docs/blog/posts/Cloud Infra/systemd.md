@@ -16,6 +16,8 @@ hide:
 ---
 # systemd 정리
 
+systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책을 표로 정리했다. cgroup 리소스 제어와 타이머, target 부팅, journald 구조까지 다룬다.
+
 <!-- more -->
 
 ## systemd란

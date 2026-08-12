@@ -16,7 +16,7 @@ hide:
 
 # MCP 서버 만들어 Claude Code에 붙이기
 
-Python으로 MCP 서버를 직접 만들어 Inspector로 inputSchema와 값 제약 오류를 확인했다. Claude Code에 붙여 실제 호출까지 실측한 기록이다.
+MCP 서버를 Python으로 바닥부터 만들어 Claude Code에 도구로 붙여봤다. Inspector로 스키마와 입력값 검증이 어떻게 동작하는지 확인하고 실제 호출까지 이어진 기록이다.
 
 <!-- more -->
 

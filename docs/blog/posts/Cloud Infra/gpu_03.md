@@ -15,6 +15,8 @@ hide:
 ---
 # NVLink와 노드 내 GPU 연결 정리
 
+노드 안에서 GPU를 잇는 NVLink의 세대별 대역폭과 NVSwitch, GPUDirect P2P, Fabric Manager의 역할을 정리했다. PCIe와의 차이를 표로 비교한다.
+
 <!-- more -->
 
 ## 노드 내 GPU 연결이란

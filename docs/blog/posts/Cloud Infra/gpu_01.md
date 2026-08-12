@@ -15,6 +15,8 @@ hide:
 ---
 # GPU 서버 기초 정리
 
+CPU 대비 GPU 구조 차이부터 HBM 세대, PCIe와 SXM 폼팩터, HGX와 DGX 서버 형태까지 정리했다. CUDA 스택과 nvidia-smi 사용률 지표도 다룬다.
+
 <!-- more -->
 
 ## GPU 서버란

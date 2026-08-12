@@ -16,6 +16,8 @@ hide:
 ---
 # 시크릿 관리 정리
 
+쿠버네티스 시크릿 관리 3유형인 Sealed Secrets, External Secrets Operator, Vault의 동작 원리를 비교했다. 시나리오별로 무엇을 골라야 하는지 적용 사례로 정리한다.
+
 <!-- more -->
 
 ## 시크릿 관리란

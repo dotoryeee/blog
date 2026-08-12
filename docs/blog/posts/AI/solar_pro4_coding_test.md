@@ -13,7 +13,7 @@ tags:
   - Coding Agent
 description: "같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5, Opus 5와 Hermes의 Solar Pro 4, GLM-4.7 두 종에게 주고 진행 과정, 결과 화면, 비용, 토큰 사용량을 비교한 기록. 로그 전수 분석과 컨테이너 충돌 사고까지 그대로 남겼다"
 ---
-# Solar Pro 4에게 개발을 시켜봤다
+# Claude만 쓰다가 Solar와 GLM을 돌려봤다
 
 같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5와 Opus 5, Hermes의 Solar Pro 4와 GLM-4.7 두 종에게 주고 시간, 비용, 결과 화면을 비교했다. 로그 전수 분석에서 나온 반복 실수 패턴과 컨테이너 충돌 사고까지 그대로 남긴 기록이다.
 

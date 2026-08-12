@@ -17,6 +17,8 @@ hide:
 
 # kind에 ArgoCD 올려 GitOps 동작 확인하기
 
+kind 클러스터에 ArgoCD를 올려 guestbook 앱을 sync해 봤다. kubectl로 낸 drift가 selfHeal로 2초 만에 되돌아가는 과정과 롤백까지 실측한 기록이다.
+
 <!-- more -->
 
 ## 목표

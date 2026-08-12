@@ -14,6 +14,8 @@ description: "macOS xattr와 Linux getfattr·setfacl·setcap·chattr가 다루�
 
 # xattr 유사 명령어 정리
 
+macOS의 xattr와 Linux의 getfattr, setfacl, setcap, chattr가 각각 무엇을 다루는지 비교했다. 대상과 저장 위치 차이를 실측으로 정리한 글이다.
+
 <!-- more -->
 
 ## 확장 속성(xattr)이란

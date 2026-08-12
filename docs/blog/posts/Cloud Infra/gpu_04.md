@@ -15,6 +15,8 @@ hide:
 ---
 # InfiniBand vs RoCEv2 차이점 정리
 
+노드 간 GPU 통신에 RDMA가 필요한 이유부터 InfiniBand 구성요소와 속도 등급, RoCEv2의 무손실 이더넷 요구까지 정리했다. GPUDirect RDMA와 rail-optimized 토폴로지도 다룬다.
+
 <!-- more -->
 
 ## 노드 간 GPU 통신이란

@@ -15,6 +15,8 @@ description: "Docker 컨테이너 두 대에 IPIP·WireGuard 터널을 직접 �
 
 # IPIP와 WireGuard 터널 직접 구성하고 비교하기
 
+Docker 컨테이너 두 대에 IPIP와 WireGuard 터널을 직접 올려 tcpdump로 평문과 암호문을 대조했다. iperf3 처리량과 MTU까지 실측한 기록이다.
+
 <!-- more -->
 
 ## 목표

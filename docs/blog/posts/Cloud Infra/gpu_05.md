@@ -15,6 +15,8 @@ hide:
 ---
 # 분산 학습 병렬화와 집합 통신 정리
 
+집합 통신 연산과 Data, Tensor, Pipeline, Expert 병렬화, ZeRO와 FSDP 샤딩을 정리했다. 병렬화별로 NVLink와 InfiniBand 링크가 어떻게 매핑되는지 표로 비교한다.
+
 <!-- more -->
 
 ## 집합 통신이란

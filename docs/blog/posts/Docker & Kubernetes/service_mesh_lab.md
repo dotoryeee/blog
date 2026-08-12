@@ -15,6 +15,8 @@ hide:
 ---
 # kind에 Istio 앰비언트 올려 mTLS 확인하기
 
+kind 단일 노드에 Istio 앰비언트를 설치해 mTLS 전환 전후의 패킷을 tcpdump로 대조했다. L4와 L7 인가 정책이 waypoint에 어떻게 의존하는지도 실측한 기록이다.
+
 <!-- more -->
 
 ## 목표
