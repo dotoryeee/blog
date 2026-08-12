@@ -891,6 +891,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="xattr"><a class="toclink" href="../../2026/07/20/xattr-%EC%9C%A0%EC%82%AC-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/">xattr 유사 명령어 정리</a></h2>
+<p>macOS의 xattr와 Linux의 getfattr, setfacl, setcap, chattr가 각각 무엇을 다루는지 비교했다. 대상과 저장 위치 차이를 실측으로 정리한 글이다.</p>
 
     
       <nav class="md-post__action">
@@ -928,7 +929,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 8분
+              읽는시간 9분
             
           </li>
         
@@ -939,6 +940,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="gitops-argocd"><a class="toclink" href="../../2026/07/20/gitops%EC%99%80-argocd-%EC%A0%95%EB%A6%AC/">GitOps와 ArgoCD 정리</a></h2>
+<p>GitOps 네 원칙과 ArgoCD 아키텍처, push와 pull 모델의 차이를 정리했다. 동기화 정책과 Flux 비교까지 표로 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -987,6 +989,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="kind-argocd-gitops"><a class="toclink" href="../../2026/07/20/kind%EC%97%90-argocd-%EC%98%AC%EB%A0%A4-gitops-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">kind에 ArgoCD 올려 GitOps 동작 확인하기</a></h2>
+<p>kind 클러스터에 ArgoCD를 올려 guestbook 앱을 sync해 봤다. kubectl로 낸 drift가 selfHeal로 2초 만에 되돌아가는 과정과 롤백까지 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1035,6 +1038,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="_1"><a class="toclink" href="../../2026/07/20/%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%82%B4%EB%B6%80-%EA%B5%AC%EC%A1%B0-%EC%A0%95%EB%A6%AC/">컨테이너 내부 구조 정리</a></h2>
+<p>namespace와 cgroup부터 dockerd, containerd, runc 계층과 dockershim 제거까지 정리했다. overlayfs와 gVisor, Kata 같은 런타임 선택지도 표로 비교한다.</p>
 
     
       <nav class="md-post__action">
@@ -1083,6 +1087,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="docker"><a class="toclink" href="../../2026/07/20/docker-%EC%97%86%EC%9D%B4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EB%A7%8C%EB%93%A4%EC%96%B4%EB%B3%B4%EA%B8%B0/">docker 없이 컨테이너 만들어보기</a></h2>
+<p>docker 없이 unshare, cgroup, chroot, overlayfs, veth만으로 컨테이너를 손수 조립해 봤다. 20M 메모리 제한을 걸어 OOM까지 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">

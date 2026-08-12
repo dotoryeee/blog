@@ -891,6 +891,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="systemd"><a class="toclink" href="../../2026/07/21/systemd-%EC%A0%95%EB%A6%AC/">systemd 정리</a></h2>
+<p>systemd의 유닛 종류와 서비스 Type, 의존성, Restart 정책을 표로 정리했다. cgroup 리소스 제어와 타이머, target 부팅, journald 구조까지 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -939,6 +940,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="vault"><a class="toclink" href="../../2026/07/21/vault-%EB%8F%99%EC%A0%81-%EC%8B%9C%ED%81%AC%EB%A6%BF-%EC%8B%A4%EC%8A%B5/">Vault 동적 시크릿 실습</a></h2>
+<p>Vault와 PostgreSQL을 docker compose로 세워 TTL 2분짜리 동적 DB 계정을 발급해 봤다. 만료와 lease revoke로 계정이 자동 회수되는지 psql로 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1227,6 +1229,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="opentelemetry-collector"><a class="toclink" href="../../2026/07/20/opentelemetry-collector%EB%A1%9C-%EB%B6%84%EC%82%B0-%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%8B%B1-%EC%8B%A4%EC%8A%B5/">OpenTelemetry Collector로 분산 트레이싱 실습</a></h2>
+<p>OpenTelemetry Collector와 Jaeger를 docker compose로 세워 Flask 서비스 두 개를 zero-code로 계측했다. 두 서비스의 요청이 traceparent로 한 trace에 묶이는지 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1275,6 +1278,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="wireguard-vs-ipip"><a class="toclink" href="../../2026/07/20/wireguard-vs-ipip-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">WireGuard vs IPIP 차이점 정리</a></h2>
+<p>IPIP와 WireGuard의 캡슐화와 암호화 원리를 비교표로 정리했다. Noise_IK 핸드셰이크와 cryptokey routing이 만드는 차이를 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1323,6 +1327,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="ipip-wireguard"><a class="toclink" href="../../2026/07/20/ipip%EC%99%80-wireguard-%ED%84%B0%EB%84%90-%EC%A7%81%EC%A0%91-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B3%A0-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/">IPIP와 WireGuard 터널 직접 구성하고 비교하기</a></h2>
+<p>Docker 컨테이너 두 대에 IPIP와 WireGuard 터널을 직접 올려 tcpdump로 평문과 암호문을 대조했다. iperf3 처리량과 MTU까지 실측한 기록이다.</p>
 
     
       <nav class="md-post__action">

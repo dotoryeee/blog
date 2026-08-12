@@ -1038,14 +1038,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Solar Pro 4에게 개발을 시켜봤다
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
   
 
     
@@ -1885,7 +1885,7 @@
 
 
 <h1 id="k6-slo">k6로 부하 걸어 SLO 지표 확인하기</h1>
-<p>k6 컨테이너로 인위적 지연을 넣은 HTTP 서버에 부하를 걸어 p95와 에러율, RPS를 실측했다. threshold로 SLO 위반을 종료 코드로 확인하는 것까지 다룬 기록이다.</p>
+<p>일부러 느리게 만든 HTTP 서버에 k6 컨테이너로 부하를 걸어 응답 지연 p95, 에러율, 초당 요청 수가 어떻게 움직이는지 실측했다. 목표치를 threshold로 걸어두면 SLO 위반이 종료 코드로 떨어져 CI에서 자동으로 잡아낼 수 있다는 것까지 확인한 기록이다.</p>
 <!-- more -->
 
 <h2 id="_1">목표</h2>

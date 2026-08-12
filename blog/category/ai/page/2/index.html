@@ -891,6 +891,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="gpu"><a class="toclink" href="../../../../2026/07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/">GPU 서버 기초 정리</a></h2>
+<p>CPU 대비 GPU 구조 차이부터 HBM 세대, PCIe와 SXM 폼팩터, HGX와 DGX 서버 형태까지 정리했다. CUDA 스택과 nvidia-smi 사용률 지표도 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -939,6 +940,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="gpu"><a class="toclink" href="../../../../2026/07/22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/">GPU 분할 정리</a></h2>
+<p>GPU 한 장을 나눠 쓰는 Time-slicing, MPS, MIG, vGPU 네 방식을 비교했다. 분할 단위와 메모리, 장애 격리, 지원 하드웨어 기준으로 정리한 글이다.</p>
 
     
       <nav class="md-post__action">
@@ -987,6 +989,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="nvlink-gpu"><a class="toclink" href="../../../../2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/">NVLink와 노드 내 GPU 연결 정리</a></h2>
+<p>노드 안에서 GPU를 잇는 NVLink의 세대별 대역폭과 NVSwitch, GPUDirect P2P, Fabric Manager의 역할을 정리했다. PCIe와의 차이를 표로 비교한다.</p>
 
     
       <nav class="md-post__action">
@@ -1035,6 +1038,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="infiniband-vs-rocev2"><a class="toclink" href="../../../../2026/07/22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">InfiniBand vs RoCEv2 차이점 정리</a></h2>
+<p>노드 간 GPU 통신에 RDMA가 필요한 이유부터 InfiniBand 구성요소와 속도 등급, RoCEv2의 무손실 이더넷 요구까지 정리했다. GPUDirect RDMA와 rail-optimized 토폴로지도 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1083,6 +1087,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="_1"><a class="toclink" href="../../../../2026/07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/">분산 학습 병렬화와 집합 통신 정리</a></h2>
+<p>집합 통신 연산과 Data, Tensor, Pipeline, Expert 병렬화, ZeRO와 FSDP 샤딩을 정리했다. 병렬화별로 NVLink와 InfiniBand 링크가 어떻게 매핑되는지 표로 비교한다.</p>
 
     
       <nav class="md-post__action">
@@ -1131,6 +1136,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="gpu"><a class="toclink" href="../../../../2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/">쿠버네티스 GPU 스케줄링 정리</a></h2>
+<p>기본 스케줄러가 GPU를 모르는 문제에서 시작해 device plugin 등록과 GPU Operator 구성요소를 정리했다. time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1179,6 +1185,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="llm"><a class="toclink" href="../../../../2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/">LLM 추론 서빙 정리</a></h2>
+<p>LLM 추론의 prefill과 decode 단계 차이, KV cache 크기 계산과 VRAM 어림법을 정리했다. continuous batching, PagedAttention, 양자화, 서빙 엔진 비교까지 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1216,7 +1223,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 9분
+              읽는시간 10분
             
           </li>
         
@@ -1227,6 +1234,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="llm"><a class="toclink" href="../../../../2026/07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/">LLM 파인튜닝 정리</a></h2>
+<p>full fine-tuning에 VRAM이 왜 그렇게 필요한지부터 PEFT, LoRA, QLoRA의 원리까지 정리했다. 학습 파이프라인과 파인튜닝 대 RAG 선택 기준도 비교한다.</p>
 
     
       <nav class="md-post__action">
@@ -1264,7 +1272,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 14분
+              읽는시간 15분
             
           </li>
         
@@ -1275,6 +1283,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="mlx-lora"><a class="toclink" href="../../../../2026/07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/">MLX로 LoRA 파인튜닝 실습</a></h2>
+<p>Apple Silicon에서 MLX로 소형 4bit 모델에 LoRA를 적용해 가상 서비스의 FAQ를 학습시켜 봤다. loss와 메모리, adapter 크기를 실측으로 비교한 기록이다.</p>
 
     
       <nav class="md-post__action">

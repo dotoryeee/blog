@@ -892,12 +892,12 @@
     </div>
   </header>
   <div class="md-post__content md-typeset">
-    <h2 id="solar-pro-4"><a class="toclink" href="../../2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/">Solar Pro 4에게 개발을 시켜봤다</a></h2>
+    <h2 id="claude-solar-glm"><a class="toclink" href="../../2026/08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/">Claude만 쓰다가 Solar와 GLM을 돌려봤다</a></h2>
 <p>같은 게시판 개발 프롬프트를 Claude Code의 Sonnet 5와 Opus 5, Hermes의 Solar Pro 4와 GLM-4.7 두 종에게 주고 시간, 비용, 결과 화면을 비교했다. 로그 전수 분석에서 나온 반복 실수 패턴과 컨테이너 충돌 사고까지 그대로 남긴 기록이다.</p>
 
     
       <nav class="md-post__action">
-        <a href="../../2026/08/12/solar-pro-4%EC%97%90%EA%B2%8C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%8B%9C%EC%BC%9C%EB%B4%A4%EB%8B%A4/">
+        <a href="../../2026/08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/">
           계속 읽기
         </a>
       </nav>
@@ -1040,7 +1040,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="rag"><a class="toclink" href="../../2026/07/29/rag-%EC%A0%95%EB%A6%AC/">RAG 정리</a></h2>
-<p>RAG 파이프라인을 청킹, 임베딩, 벡터 검색, 하이브리드, 리랭킹 단계로 나눠 선택지를 표로 정리했다. 검색 품질을 떨어뜨리는 함정도 함께 다룬다.</p>
+<p>RAG 파이프라인을 청킹, 임베딩, 벡터 검색, 하이브리드, 리랭킹 단계로 나눠 선택지를 표로 정리했다.</p>
 
     
       <nav class="md-post__action">
@@ -1138,7 +1138,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="mcp-claude-code"><a class="toclink" href="../../2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/">MCP 서버 만들어 Claude Code에 붙이기</a></h2>
-<p>Python으로 MCP 서버를 직접 만들어 Inspector로 inputSchema와 값 제약 오류를 확인했다. Claude Code에 붙여 실제 호출까지 실측한 기록이다.</p>
+<p>MCP 서버를 Python으로 바닥부터 만들어 Claude Code에 도구로 붙여봤다. Inspector로 스키마와 입력값 검증이 어떻게 동작하는지 확인하고 실제 호출까지 이어진 기록이다.</p>
 
     
       <nav class="md-post__action">
@@ -1187,6 +1187,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="moe"><a class="toclink" href="../../2026/07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/">MoE 추론 정리</a></h2>
+<p>MoE의 총 파라미터와 활성 파라미터가 왜 다른지에서 시작해 top-k 라우팅과 공유 전문가 구성을 정리했다. Dense 대비 메모리와 연산의 트레이드오프도 표로 비교한다.</p>
 
     
       <nav class="md-post__action">
@@ -1284,6 +1285,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="claude-code-claude-apps-gateway"><a class="toclink" href="../../2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/">사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리</a></h2>
+<p>개발자에게 API 키를 나눠주지 않고 Claude Code를 사내에 배포하는 자체 호스팅 게이트웨이를 정리했다. 사설 네트워크 강제 제약에서 파생되는 AWS 구성과 배포 절차를 다룬다.</p>
 
     
       <nav class="md-post__action">
@@ -1332,6 +1334,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="mcp-vs-api"><a class="toclink" href="../../2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/">MCP vs API 차이점 정리</a></h2>
+<p>기존 API가 AI 에이전트에 맞지 않는 이유와 MCP가 그 틈을 메우는 방식을 JSON-RPC 메시지 단위로 비교했다. 도구 탐색, 호출 규격, 변경 전파 관점으로 정리한 글이다.</p>
 
     
       <nav class="md-post__action">
