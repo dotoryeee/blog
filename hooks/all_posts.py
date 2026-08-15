@@ -1,6 +1,6 @@
 """포스트 화면에서만 좌측 네비에 최근 글을 띄우고, 전체 글 목록 페이지를 만든다.
 
-on_files:        blog/all.md 를 만들어 전체 목록을 담는다.
+on_files:        all.md 를 만들어 전체 목록을 담는다.
 on_nav:          최근 글 섹션을 만들어 두되 네비에 붙이지는 않는다.
 on_page_context: 포스트 페이지를 그릴 때만 그 섹션을 붙인다.
 
@@ -53,7 +53,7 @@ def _meta(text):
 
 
 def _collect(docs_dir):
-    root = os.path.join(docs_dir, "blog", "posts")
+    root = os.path.join(docs_dir, "posts")
     posts = []
     for dirpath, _, names in os.walk(root):
         for name in sorted(names):
@@ -63,9 +63,7 @@ def _collect(docs_dir):
             info = _meta(_read(path))
             if not info:
                 continue
-            info["rel"] = os.path.relpath(
-                path, os.path.join(docs_dir, "blog")
-            ).replace(os.sep, "/")
+            info["rel"] = os.path.relpath(path, docs_dir).replace(os.sep, "/")
             info["src"] = os.path.relpath(path, docs_dir).replace(os.sep, "/")
             posts.append(info)
     posts.sort(key=lambda p: (p["date"], p["title"]), reverse=True)
@@ -94,7 +92,7 @@ def _render(posts):
 def on_files(files, config):
     posts = _collect(config.docs_dir)
     config._all_posts = posts
-    files.append(File.generated(config, "blog/all.md", content=_render(posts)))
+    files.append(File.generated(config, "all.md", content=_render(posts)))
     return files
 
 
@@ -124,7 +122,7 @@ def on_page_context(context, page, config, nav):
     패널로 바꿔 그리고 기본 네비게이션은 숨긴다. 그래서 네비에 섹션을 끼우는 방식은
     화면에 나오지 않는다. overrides/blog-post.html 이 이 값을 받아 직접 그린다.
     """
-    if _recent and page.file.src_uri.startswith("blog/posts/"):
+    if _recent and page.file.src_uri.startswith("posts/"):
         context["recent_posts"] = _recent
         context["recent_posts_title"] = NAV_TITLE
     return context
