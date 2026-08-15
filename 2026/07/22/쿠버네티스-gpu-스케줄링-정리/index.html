@@ -1,0 +1,2366 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="prev" href="../llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="next" href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/">
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Dodum:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Dodum";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog" />
+<meta property="og:description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="쿠버네티스 GPU 스케줄링 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="기본 스케줄러가 GPU를 모르는 문제부터 device plugin 등록, GPU Operator 구성요소, time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC.png" />
+</head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gpu" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              쿠버네티스 GPU 스케줄링 정리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전체 글
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    카테고리
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    카테고리
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gpu_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        쿠버네티스 GPU 스케줄링이란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#device-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        device plugin 동작
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU Operator 구성요소
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gpu_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU 분할과 공유
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GPU 분할과 공유">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-slicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        time-slicing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIG
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dra-dynamic-resource-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRA (Dynamic Resource Allocation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gang-scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        gang scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dcgm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCGM 기반 모니터링
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-22 00:00:00+00:00" class="md-ellipsis">2026. 7. 22.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/ai/">AI</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 9분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 선택 가이드
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 암호화 방식 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMS 키 삭제 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 모델로 RAG 파이프라인 구축하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MoE 추론 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Mesh 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP vs API 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CloudTrail 네트워크 활동 이벤트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    partial 인덱스 seq scan 인시던트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    쿠버네티스 GPU 스케줄링 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    분산 학습 병렬화와 집합 통신 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVLink와 노드 내 GPU 연결 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NIC 가상화와 커널 바이패스 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLX로 LoRA 파인튜닝 실습
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 파인튜닝 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 추론 서빙 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InfiniBand vs RoCEv2 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 서버 기초 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 분할 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS 고성능 네트워킹 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시크릿 관리 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:gpu" class="md-tag">GPU</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:gpu-operator" class="md-tag">GPU Operator</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:kubernetes" class="md-tag">Kubernetes</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="gpu">쿠버네티스 GPU 스케줄링 정리</h1>
+<p>기본 스케줄러가 GPU를 모르는 문제에서 시작해 device plugin 등록과 GPU Operator 구성요소를 정리했다. time-slicing과 MIG, DRA 성숙도, gang scheduling과 DCGM 지표까지 다룬다.</p>
+<!-- more -->
+
+<h2 id="gpu_1">쿠버네티스 GPU 스케줄링이란</h2>
+<p>쿠버네티스 GPU 스케줄링이란 device plugin이 확장 리소스로 광고한 GPU를 kube-scheduler가 파드에 배치하고, 필요하면 분할·격리·큐잉까지 얹는 배치 체계</p>
+<p>GPU가 CPU·메모리와 달리 파드 간 공유·오버커밋이 기본 불가능한 정수 리소스여서, 값비싼 카드를 놀리지 않게 배치·분할·모니터링하는 별도 계층이 필요해짐.</p>
+<ul>
+<li>kube-scheduler는 CPU·메모리·확장 리소스의 "개수"만 봄 → GPU 모델·VRAM 용량·카드 간 토폴로지는 스케줄링 입력이 아님</li>
+<li>GPU는 device plugin이 확장 리소스로 광고해야 비로소 스케줄러에 보임 → 플러그인이 없으면 노드에 GPU가 꽂혀 있어도 nvidia.com/gpu는 0</li>
+<li>확장 리소스는 정수·비오버커밋 → CPU식 공유·초과 배치가 원천 차단됨</li>
+</ul>
+<hr />
+<h2 id="device-plugin">device plugin 동작</h2>
+<p>device plugin이란 kubelet에 특정 하드웨어를 확장 리소스로 등록하고 컨테이너에 할당하는 gRPC 서비스</p>
+<ul>
+<li>플러그인이 /var/lib/kubelet/device-plugins/<name>.sock 에 gRPC 서버를 띄운 뒤 kubelet.sock 으로 Register 호출</li>
+<li>등록 시 ResourceName을 nvidia.com/gpu 로 광고 → kubelet이 노드 status에 확장 리소스로 반영</li>
+<li>파드는 resources.limits.nvidia.com/gpu 로 요청 → 스케줄러는 이 값을 정수 리소스로만 취급해 개수만 보고 배치</li>
+<li>실제 디바이스 마운트·환경변수 주입은 컨테이너 생성 시점의 Allocate 응답으로 처리</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>메서드</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Register</td>
+<td>소켓 경로·API 버전·ResourceName(nvidia.com/gpu)을 kubelet에 등록</td>
+</tr>
+<tr>
+<td>ListAndWatch</td>
+<td>관리 중인 디바이스 목록과 헬스를 스트림으로 보고, 상태 변화 시 갱신</td>
+</tr>
+<tr>
+<td>Allocate</td>
+<td>컨테이너 생성 시 호출, 디바이스 마운트·env·라이브러리 경로 주입</td>
+</tr>
+<tr>
+<td>GetPreferredAllocation</td>
+<td>가용 디바이스 중 우선 할당 후보 반환(GPU 토폴로지 고려)</td>
+</tr>
+<tr>
+<td>GetDevicePluginOptions</td>
+<td>kubelet과의 통신 옵션 반환</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>nvidia.com/gpu는 확장 리소스여서 requests와 limits를 다르게 지정할 수 없음. limits만 적으면 requests가 같은 값으로 채워지지만, limits 없이 requests만 적는 것은 불가. 정수만 허용하며 오버커밋 불가. CPU처럼 requests를 낮게 잡아 버스트를 노리는 배치 전략은 GPU엔 통하지 않음.</p>
+</div>
+<hr />
+<h2 id="gpu-operator">GPU Operator 구성요소</h2>
+<p>GPU Operator란 드라이버부터 모니터링까지 GPU 노드에 필요한 소프트웨어 스택 전체를 오퍼레이터 패턴으로 자동 설치·관리하는 배포체</p>
+<p>노드마다 드라이버·런타임·플러그인을 손으로 맞추면 버전 어긋남과 오류가 잦아, 한 벌로 묶어 선언적으로 굴리려는 목적.</p>
+<table>
+<thead>
+<tr>
+<th>구성요소</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node Feature Discovery(NFD)</td>
+<td>노드 하드웨어·PCI 정보를 라벨링, GPU 노드 식별의 전제</td>
+</tr>
+<tr>
+<td>NVIDIA Driver</td>
+<td>커널 모듈·CUDA 런타임을 컨테이너로 설치해 OS와 GPU를 연결</td>
+</tr>
+<tr>
+<td>Container Toolkit</td>
+<td>컨테이너 런타임이 GPU 디바이스를 컨테이너에 노출하도록 설정</td>
+</tr>
+<tr>
+<td>GPU Feature Discovery(GFD)</td>
+<td>GPU 모델·메모리·MIG 프로파일을 노드 라벨로 노출</td>
+</tr>
+<tr>
+<td>Device Plugin</td>
+<td>nvidia.com/gpu 리소스를 kubelet에 등록·할당</td>
+</tr>
+<tr>
+<td>DCGM / DCGM Exporter</td>
+<td>GPU 텔레메트리 수집, Prometheus 포맷으로 /metrics 노출</td>
+</tr>
+<tr>
+<td>MIG Manager</td>
+<td>노드의 MIG 파티션을 선언적으로 생성·변경</td>
+</tr>
+<tr>
+<td>Driver Manager</td>
+<td>드라이버 업그레이드 시 파드 축출·롤아웃 관리</td>
+</tr>
+<tr>
+<td>Operator Validator</td>
+<td>각 구성요소 정상 여부를 검증하는 init 게이트</td>
+</tr>
+</tbody>
+</table>
+<p>구성요소는 앞 단계가 준비돼야 다음이 뜨는 의존 사슬로 묶임.</p>
+<pre class="mermaid"><code>graph LR
+    NFD["Node Feature&lt;br&gt;Discovery"] --&gt; DRV["NVIDIA&lt;br&gt;Driver"]
+    DRV --&gt; TK["Container&lt;br&gt;Toolkit"]
+    TK --&gt; DP["Device&lt;br&gt;Plugin"]
+    DP --&gt; GFD["GPU Feature&lt;br&gt;Discovery"]
+    DRV --&gt; DCGM["DCGM&lt;br&gt;Exporter"]
+    DRV --&gt; MIG["MIG&lt;br&gt;Manager"]
+    DP --&gt; VAL["Validator"]</code></pre>
+<ul>
+<li>드라이버 파드가 죽으면 하위 구성요소가 전부 Init에서 멈춤 → 드라이버 문제 하나가 "전부 고장"처럼 보이는 이유</li>
+<li>각 단계는 앞 단계 헬스를 기다리는 init 컨테이너를 둠 → 장애 지점 추적은 사슬의 위에서 아래로</li>
+</ul>
+<hr />
+<h2 id="gpu_2">GPU 분할과 공유</h2>
+<p>nvidia.com/gpu는 정수 단위라, GPU 하나를 여러 파드가 나눠 쓰려면 device plugin 위에 별도 분할·공유 기술을 얹어야 함</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>격리 수준</th>
+<th>메모리 분리</th>
+<th>노출 방식</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time-slicing</td>
+<td>없음(시간 분할)</td>
+<td>없음</td>
+<td>replicas 수만큼 nvidia.com/gpu 증식</td>
+</tr>
+<tr>
+<td>MPS</td>
+<td>약함(장애 격리 없음)</td>
+<td>클라이언트당 균등 한도</td>
+<td>replicas 수만큼 증식, 커널 동시 실행(MIG 병용 불가)</td>
+</tr>
+<tr>
+<td>MIG</td>
+<td>하드웨어 격리</td>
+<td>있음</td>
+<td>전략별로 nvidia.com/gpu 또는 프로파일 리소스로 노출</td>
+</tr>
+</tbody>
+</table>
+<h3 id="time-slicing">time-slicing</h3>
+<p>time-slicing이란 한 GPU에 replicas를 정의해 여러 파드가 시간을 번갈아 점유하도록 오버서브스크립션하는 방식</p>
+<ul>
+<li>스케줄러엔 replicas 수만큼 nvidia.com/gpu가 있는 것처럼 보임 → 물리 GPU는 1장, 파드는 시분할로 교차 실행</li>
+<li>메모리·장애 격리가 없음 → 한 파드의 OOM이나 오류가 같은 GPU의 다른 파드로 파급</li>
+<li>지원 리소스는 nvidia.com/gpu와 mixed MIG 전략에서 나오는 리소스 유형뿐</li>
+<li>격리가 필요 없는 추론·개발 워크로드의 밀도를 올리는 용도, 학습 격리에는 부적합</li>
+</ul>
+<h3 id="mig">MIG</h3>
+<p>MIG(Multi-Instance GPU)란 GPU를 하드웨어 수준에서 여러 인스턴스로 물리 분할해 메모리·연산·캐시를 격리하는 기술</p>
+<p>MIG 전략은 device plugin이 파티션을 리소스로 어떻게 노출하는지를 정함.</p>
+<table>
+<thead>
+<tr>
+<th>전략</th>
+<th>노출 리소스</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>single</td>
+<td>nvidia.com/gpu</td>
+<td>노드 내 모든 인스턴스가 동일 프로파일, 스케줄러 관점은 일반 GPU와 동일</td>
+</tr>
+<tr>
+<td>mixed</td>
+<td>nvidia.com/mig-1g.5gb 등</td>
+<td>프로파일별 리소스명으로 분리 노출, 한 노드에 이종 프로파일 공존 가능</td>
+</tr>
+</tbody>
+</table>
+<p>A100 40GB 기준 프로파일. 한 GPU를 최대 7개 인스턴스까지 나눌 수 있음.</p>
+<table>
+<thead>
+<tr>
+<th>프로파일</th>
+<th>메모리</th>
+<th>컴퓨트 슬라이스</th>
+<th>최대 인스턴스</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1g.5gb</td>
+<td>5GB</td>
+<td>1</td>
+<td>7</td>
+</tr>
+<tr>
+<td>2g.10gb</td>
+<td>10GB</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3g.20gb</td>
+<td>20GB</td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4g.20gb</td>
+<td>20GB</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7g.40gb</td>
+<td>40GB</td>
+<td>7</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>프로파일은 메모리·컴퓨트가 함께 묶임 → 1g.5gb 7개, 2g.10gb 3개처럼 조합 개수가 정해져 있음</li>
+<li>time-slicing과 달리 인스턴스 간 메모리·장애가 분리됨 → 멀티테넌트·SLA 워크로드에 적합</li>
+<li>mixed 전략은 time-slicing과도 조합 가능 → 특정 프로파일(예: nvidia.com/mig-1g.5gb)에 다시 replicas를 걸 수 있음</li>
+</ul>
+<hr />
+<h2 id="dra-dynamic-resource-allocation">DRA (Dynamic Resource Allocation)</h2>
+<p>DRA란 파드가 정수 개수 대신 ResourceClaim으로 "어떤 속성의 GPU를" 요청하게 해, 스케줄러가 디바이스 속성까지 보고 매칭하게 하는 프레임워크</p>
+<p>개수만 아는 확장 리소스로는 모델·메모리·MIG 프로파일을 지정할 수 없어, 속성 기반 요청을 표준 API로 끌어올린 것.</p>
+<table>
+<thead>
+<tr>
+<th>버전</th>
+<th>성숙도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.32</td>
+<td>구조화 파라미터(structured parameters) 기반 DRA가 beta 진입</td>
+</tr>
+<tr>
+<td>v1.33</td>
+<td>beta 유지, 드라이버 소유 ResourceClaim 상태 등 확장</td>
+</tr>
+<tr>
+<td>v1.34</td>
+<td>핵심 DRA가 GA, resource.k8s.io/v1 안정화, 기본 활성화</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>드라이버가 ResourceSlice로 노드의 가용 디바이스·속성을 광고 → 스케줄러가 ResourceClaim과 매칭</li>
+<li>DeviceClass가 클레임의 템플릿, ResourceClaim이 실제 요청 단위 → 파드는 클레임을 참조해 디바이스를 받음</li>
+<li>v1.34부터 API 기본값이 안정 v1 → beta 시절의 명시적 opt-in 없이 켜져 있음</li>
+<li>표의 성숙도는 코어 API 기준 → GPU를 속성으로 받으려면 NVIDIA DRA 드라이버(k8s-dra-driver-gpu)를 따로 설치해야 함</li>
+<li>드라이버가 공식 지원하는 것은 ComputeDomains(멀티노드 NVLink)이고 GPU allocation은 아직 공식 지원 전 → GPU kubelet 플러그인이 Helm 설치에서 기본 비활성이라 옵트인이 필요</li>
+<li>device plugin을 대체하는 것이 아니라 한 클러스터에서 병행 가능 → 기존 nvidia.com/gpu 워크로드는 그대로 동작</li>
+</ul>
+<hr />
+<h2 id="gang-scheduling">gang scheduling</h2>
+<p>gang scheduling이란 잡을 구성하는 여러 파드를 원자적으로(all-or-nothing) 배치해, 일부만 뜨는 상태를 막는 스케줄링 방식</p>
+<ul>
+<li>분산 학습은 N개 파드가 동시에 떠야 통신 링을 형성 → 일부만 배치되면 나머지 GPU를 점유한 채 무한 대기(부분 배치 데드락)</li>
+<li>기본 kube-scheduler는 파드 단위 배치 → 잡 전체를 한 덩어리로 다루는 개념이 없음</li>
+<li>점유된 GPU가 다른 잡까지 막아 클러스터 전체 처리량이 떨어짐 → 부분 배치는 비용·신뢰성 양쪽의 위험</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Kueue</th>
+<th>Volcano</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>스케줄링 방식</td>
+<td>기본 kube-scheduler 유지, 잡을 suspend·queue·admit</td>
+<td>자체 스케줄러가 PodGroup 단위로 배치(schedulerName 지정)</td>
+</tr>
+<tr>
+<td>gang scheduling</td>
+<td>waitForPodsReady로 all-or-nothing 근사(타임아웃 시 축출·재큐잉)</td>
+<td>PodGroup all-or-nothing 지원</td>
+</tr>
+<tr>
+<td>주 역할</td>
+<td>팀·네임스페이스별 쿼터와 큐 거버넌스</td>
+<td>분산 잡의 원자적 배치·플레이스먼트</td>
+</tr>
+<tr>
+<td>배치 방식</td>
+<td>승인된 잡을 기본 스케줄러가 배치</td>
+<td>자체 스케줄러가 직접 배치</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>둘을 겹쳐 쓸 수 있음 → Kueue가 상위에서 쿼터·승인, Volcano가 하위에서 gang 배치</li>
+<li>소규모 단일 잡이면 Volcano 하나로 충분, 팀별 쿼터 경쟁이 생기면 Kueue를 얹음</li>
+</ul>
+<hr />
+<h2 id="dcgm">DCGM 기반 모니터링</h2>
+<p>DCGM Exporter가 GPU 텔레메트리를 Prometheus 포맷으로 노출하며, /metrics 엔드포인트에서 필드별 게이지로 수집됨</p>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>의미</th>
+<th>단위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DCGM_FI_DEV_GPU_UTIL</td>
+<td>GPU 사용률</td>
+<td>%</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_MEM_COPY_UTIL</td>
+<td>메모리 사용률</td>
+<td>%</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_FB_USED</td>
+<td>프레임버퍼(VRAM) 사용량</td>
+<td>MiB</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_FB_FREE</td>
+<td>프레임버퍼 여유</td>
+<td>MiB</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_POWER_USAGE</td>
+<td>전력 소모</td>
+<td>W</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_GPU_TEMP</td>
+<td>GPU 온도</td>
+<td>C</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_SM_CLOCK</td>
+<td>SM 클럭 주파수</td>
+<td>MHz</td>
+</tr>
+<tr>
+<td>DCGM_FI_PROF_GR_ENGINE_ACTIVE</td>
+<td>그래픽스 엔진이 활성인 시간 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_PROF_PIPE_TENSOR_ACTIVE</td>
+<td>텐서(HMMA) 파이프가 활성인 사이클 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_PROF_DRAM_ACTIVE</td>
+<td>디바이스 메모리 인터페이스가 활성인 사이클 비율</td>
+<td>ratio</td>
+</tr>
+<tr>
+<td>DCGM_FI_DEV_XID_ERRORS</td>
+<td>마지막으로 발생한 XID 에러 값</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>DCGM_FI_DEV_GPU_UTIL은 커널 실행 여부 기반이라 실제 연산 점유율과 다를 수 있음 → 학습 효율은 PROF 계열(GR_ENGINE_ACTIVE·PIPE_TENSOR_ACTIVE)로 교차 확인</li>
+<li>VRAM은 DCGM_FI_DEV_FB_USED로 봄 → GPU_UTIL이 높아도 FB가 남으면 배치 밀도를 더 올릴 여지</li>
+<li>XID_ERRORS는 하드웨어·드라이버 이상 신호 → 값이 뜨면 노드 격리·교체 판단의 근거</li>
+<li>텐서 파이프 활성 비율이 낮으면 데이터 로더·전처리 병목 의심 → GPU가 아니라 입력 파이프라인 점검</li>
+</ul>
+<hr />
+<h2 id="_1">결론</h2>
+<ul>
+<li>GPU는 확장 리소스라 개수만 스케줄링에 들어옴 → 모델·메모리·토폴로지를 쓰려면 DRA 같은 속성 기반 표현이 필요</li>
+<li>한 GPU를 쪼개려면 time-slicing(격리 없음)과 MIG(하드웨어 격리)를 워크로드 격리 요구에 맞춰 나눠 씀</li>
+<li>분산 학습은 부분 배치 데드락이 실질 위험 → gang 배치는 Volcano, 팀 쿼터는 Kueue로 층을 나눔</li>
+<li>사용률은 "GPU_UTIL 한 지표"가 아니라 "PROF 계열과 VRAM을 함께" 볼 것</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: LLM 추론 서빙 정리">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                LLM 추론 서빙 정리
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 분산 학습 병렬화와 집합 통신 정리">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                분산 학습 병렬화와 집합 통신 정리
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

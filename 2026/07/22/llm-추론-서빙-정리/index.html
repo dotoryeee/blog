@@ -1,0 +1,2412 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LLM 추론의 prefill·decode 단계 차이, KV cache 크기 계산과 VRAM 어림, continuous batching·PagedAttention·양자화·서빙 엔진 비교 정리">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="prev" href="../llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="next" href="../%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/">
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LLM 추론 서빙 정리 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Dodum:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Dodum";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="LLM 추론 서빙 정리 - dotoryeee's blog" />
+<meta property="og:description" content="LLM 추론의 prefill·decode 단계 차이, KV cache 크기 계산과 VRAM 어림, continuous batching·PagedAttention·양자화·서빙 엔진 비교 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="LLM 추론 서빙 정리 - dotoryeee's blog" />
+<meta property="twitter:description" content="LLM 추론의 prefill·decode 단계 차이, KV cache 크기 계산과 VRAM 어림, continuous batching·PagedAttention·양자화·서빙 엔진 비교 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC.png" />
+</head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#llm" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LLM 추론 서빙 정리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전체 글
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    카테고리
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    카테고리
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#llm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM 추론 서빙이란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        학습과 추론의 자원 특성 차이
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prefill-decode-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prefill과 decode 2단계
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kv-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KV cache란
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="KV cache란">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        크기 계산식
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        필요 VRAM 어림 계산
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-batching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        continuous batching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pagedattention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PagedAttention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        양자화 개요
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        서빙 엔진 비교
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        처리량 vs 지연
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        함정: 낮은 연산 활용률이 여유가 아님
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-22 00:00:00+00:00" class="md-ellipsis">2026. 7. 22.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/ai/">AI</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 11분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 선택 가이드
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 암호화 방식 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMS 키 삭제 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 모델로 RAG 파이프라인 구축하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MoE 추론 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Mesh 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP vs API 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CloudTrail 네트워크 활동 이벤트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    partial 인덱스 seq scan 인시던트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    쿠버네티스 GPU 스케줄링 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    분산 학습 병렬화와 집합 통신 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVLink와 노드 내 GPU 연결 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NIC 가상화와 커널 바이패스 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLX로 LoRA 파인튜닝 실습
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 파인튜닝 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 추론 서빙 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InfiniBand vs RoCEv2 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 서버 기초 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 분할 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS 고성능 네트워킹 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시크릿 관리 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:gpu" class="md-tag">GPU</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:kv-cache" class="md-tag">KV Cache</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:vllm" class="md-tag">vLLM</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="llm">LLM 추론 서빙 정리</h1>
+<p>LLM 추론의 prefill과 decode 단계 차이, KV cache 크기와 VRAM의 대략적인 계산을 정리했다. continuous batching, PagedAttention, 양자화, 서빙 엔진 비교까지 다룬다.</p>
+<!-- more -->
+
+<h2 id="llm_1">LLM 추론 서빙이란</h2>
+<p>LLM 추론 서빙(Inference Serving)이란 학습이 끝난 언어 모델을 올려두고 사용자 요청을 받아 토큰을 생성해 응답하는 실시간 처리 체계</p>
+<p>학습은 한 번이지만 추론은 서비스 내내 돌기 때문에 서빙 단계의 자원 효율이 전체 GPU 비용을 좌우함.</p>
+<ul>
+<li>요청이 실시간으로 도착 → 배치가 고정되지 않고 매 순간 바뀜</li>
+<li>응답이 자기회귀(Autoregressive) 생성 → 토큰을 한 개씩 순차로 뽑음</li>
+<li>병목이 단계마다 다름 → 연산 성능만 올려서는 풀리지 않는 문제</li>
+<li>여러 프로바이더·모델을 앞단에서 통제하는 계층은 <a href="../../20/ai-gateway-%EC%A0%95%EB%A6%AC/">AI Gateway 정리</a>에서 별도로 다룸</li>
+</ul>
+<hr />
+<h2 id="_1">학습과 추론의 자원 특성 차이</h2>
+<p>같은 모델이라도 학습과 추론은 연산 패턴·메모리 구성·지연 요구가 다름</p>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>학습(Training)</th>
+<th>추론(Inference)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>연산 방향</td>
+<td>forward + backward, 그래디언트 계산</td>
+<td>forward만</td>
+</tr>
+<tr>
+<td>메모리 점유</td>
+<td>가중치 + 그래디언트 + 옵티마이저 상태 + 활성화</td>
+<td>가중치 + KV cache</td>
+</tr>
+<tr>
+<td>배치</td>
+<td>큰 배치를 고정해 처리</td>
+<td>요청이 실시간 도착, 가변 배치</td>
+</tr>
+<tr>
+<td>주 병목</td>
+<td>대체로 연산(FLOPs)</td>
+<td>단계별로 갈림(prefill 연산, decode 대역폭)</td>
+</tr>
+<tr>
+<td>지연 요구</td>
+<td>배치 처리라 지연에 둔감</td>
+<td>사용자 대면, 첫 토큰·토큰 간 지연 민감</td>
+</tr>
+<tr>
+<td>정밀도</td>
+<td>BF16/FP16(+FP8)</td>
+<td>FP16/BF16 + 양자화(INT4·INT8·FP8) 적극</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>추론에선 그래디언트·옵티마이저 상태가 사라짐 → 메모리 대부분이 가중치와 KV cache로 재편됨</li>
+<li>학습은 처리량만 맞추면 되지만 추론은 처리량과 지연을 동시에 맞춰야 함</li>
+</ul>
+<hr />
+<h2 id="prefill-decode-2">prefill과 decode 2단계</h2>
+<p>추론 한 번은 프롬프트를 한꺼번에 처리하는 prefill과 토큰을 하나씩 뽑는 decode 두 단계로 나뉨</p>
+<pre class="mermaid"><code>graph LR
+    P["Prefill&lt;br&gt;프롬프트 전체 병렬 처리&lt;br&gt;연산 바운드"] --&gt;|"K·V 저장"| KV["KV cache&lt;br&gt;레이어별 Key·Value"]
+    KV --&gt;|"이전 K·V 재사용"| D["Decode&lt;br&gt;토큰 1개씩 생성&lt;br&gt;대역폭 바운드"]
+    D --&gt;|"새 토큰 K·V 추가"| KV
+    D --&gt;|"토큰 출력"| Out["응답 스트림"]</code></pre>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>처리 대상</th>
+<th>연산 성격</th>
+<th>병목</th>
+<th>영향 지표</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prefill</td>
+<td>프롬프트 전체 토큰을 병렬 처리</td>
+<td>행렬×행렬(GEMM)</td>
+<td>연산 바운드(Compute-bound)</td>
+<td>TTFT(첫 토큰 지연)</td>
+</tr>
+<tr>
+<td>Decode</td>
+<td>토큰을 1개씩 자기회귀 생성</td>
+<td>행렬×벡터</td>
+<td>메모리 대역폭 바운드(Bandwidth-bound)</td>
+<td>TPOT(토큰 간 지연)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>prefill은 프롬프트 토큰이 서로를 참조 → 어텐션 연산량이 시퀀스 길이 제곱으로 늘어 텐서 코어를 포화시킴</li>
+<li>decode는 스텝마다 토큰 1개만 생성 → 연산량은 작지만 가중치와 KV cache를 매 스텝 메모리에서 다시 읽어옴</li>
+<li>한 요청 안에서 병목이 prefill(연산)→decode(대역폭)로 바뀜 → 두 단계를 같은 잣대로 최적화하면 한쪽이 손해</li>
+<li>최근 서빙은 두 단계를 서로 다른 GPU에 나누기도 함(Prefill-Decode Disaggregation)</li>
+</ul>
+<hr />
+<h2 id="kv-cache">KV cache란</h2>
+<p>KV cache란 이미 계산한 토큰들의 Key·Value 텐서를 저장해 decode 단계에서 재사용하는 캐시</p>
+<p>self-attention은 새 토큰마다 앞선 모든 토큰의 K·V가 필요함. 매번 다시 계산하지 않으려고 저장해두는 것이 KV cache임.</p>
+<ul>
+<li>없으면 decode 스텝마다 전체 시퀀스의 K·V를 재계산 → 길이 제곱의 낭비</li>
+<li>있으면 이전 K·V를 재사용하고 새 토큰의 K·V만 덧붙임 → decode가 대역폭 바운드가 되는 직접 원인</li>
+<li>시퀀스가 길어지고 동시 요청이 늘수록 선형으로 커짐 → 가중치와 함께 VRAM을 양분하는 두 축</li>
+</ul>
+<h3 id="_2">크기 계산식</h3>
+<p>KV cache 크기는 레이어 수·KV 헤드 수·헤드 차원·시퀀스 길이·정밀도로 결정됨</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>KV cache 바이트 = 2 × 레이어 수 × KV 헤드 수 × 헤드 차원 × 시퀀스 길이 × 정밀도 바이트
+</code></pre></div>
+<ul>
+<li>앞의 2 = Key와 Value 두 텐서</li>
+<li>GQA(Grouped Query Attention)를 쓰는 모델은 KV 헤드 수가 어텐션 헤드보다 적음 → Llama 3.1 8B는 헤드 32개 중 KV 헤드 8개라 KV가 &frac14;로 줄어듦</li>
+<li>정밀도 바이트: FP16/BF16이면 2, FP8/INT8이면 1</li>
+<li>배치까지 넣으면 위 값에 동시 시퀀스 수를 곱함</li>
+<li>위 식은 모든 레이어가 표준 어텐션으로 KV를 쌓는 모델 기준 → 일부 레이어만 full attention을 쓰는 하이브리드 구조는 KV를 쌓는 레이어 수만 대입해야 함</li>
+</ul>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>GQA를 쓰지 않는 MHA(Multi-Head Attention) 모델은 KV 헤드가 어텐션 헤드와 같음. 같은 규모라도 KV cache가 몇 배로 커지므로 위 식의 KV 헤드 수를 모델 config에서 반드시 확인.</p>
+</div>
+<hr />
+<h2 id="vram">필요 VRAM 어림 계산</h2>
+<p>필요 VRAM은 가중치와 KV cache, 오버헤드를 더해 어림함</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>필요 VRAM ≈ 가중치(파라미터 수 × 정밀도 바이트) + KV cache(토큰당 크기 × 총 토큰 수) + 오버헤드
+</code></pre></div>
+<p>공개 스펙으로 두 모델을 대입하면 규모 감이 잡힘(BF16, GQA KV 헤드 8, 헤드 차원 128 기준).</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Llama 3.1 8B</th>
+<th>Llama 3.1 70B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>레이어 수</td>
+<td>32</td>
+<td>80</td>
+</tr>
+<tr>
+<td>어텐션 헤드 / KV 헤드</td>
+<td>32 / 8</td>
+<td>64 / 8</td>
+</tr>
+<tr>
+<td>가중치 VRAM(BF16)</td>
+<td>약 16GB</td>
+<td>약 140GB</td>
+</tr>
+<tr>
+<td>KV cache / 토큰</td>
+<td>128KiB (2×32×8×128×2)</td>
+<td>320KiB (2×80×8×128×2)</td>
+</tr>
+<tr>
+<td>KV cache / 시퀀스(8,192토큰)</td>
+<td>1GiB</td>
+<td>2.5GiB</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>8B를 BF16로 올리면 가중치만 약 16GB → 24GB GPU면 KV·오버헤드에 약 8GB 남음</li>
+<li>그 8GB로 8,192토큰 시퀀스를 담으면 이론상 8개, 오버헤드(활성화·CUDA 컨텍스트·단편화)를 빼면 그보다 적음</li>
+<li>70B는 가중치만 140GB → 80GB GPU 한 장에 안 들어가 텐서 병렬(다중 GPU)이 전제</li>
+<li>8B 모델도 컨텍스트를 최대 131,072토큰까지 키우면 시퀀스 하나의 KV가 16GiB → 긴 컨텍스트는 가중치보다 KV가 VRAM을 지배</li>
+<li>양자화로 가중치를 줄여도(INT4면 약 &frac14;) KV cache는 별도로 남음 → KV 정밀도·PagedAttention이 같이 필요</li>
+</ul>
+<hr />
+<h2 id="continuous-batching">continuous batching</h2>
+<p>continuous batching이란 배치를 요청 단위가 아니라 생성 스텝(iteration) 단위로 갱신하는 스케줄링</p>
+<p>정적 배칭은 배치 안 모든 요청이 끝날 때까지 기다림. 길이가 제각각인 LLM 요청에선 짧은 요청이 긴 요청을 기다리며 GPU가 노는 손해가 큼.</p>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>정적 배칭(Static)</th>
+<th>continuous batching</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>배치 갱신</td>
+<td>배치 전체 완료 후</td>
+<td>매 생성 스텝마다</td>
+</tr>
+<tr>
+<td>완료된 요청</td>
+<td>남은 요청을 기다림</td>
+<td>즉시 빠지고 대기 요청이 자리 채움</td>
+</tr>
+<tr>
+<td>GPU 유휴</td>
+<td>짧은 요청이 긴 요청 대기(head-of-line)</td>
+<td>빈 슬롯을 바로 회수</td>
+</tr>
+<tr>
+<td>TTFT</td>
+<td>배치가 찰 때까지 지연</td>
+<td>도착 즉시 합류</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>완료된 시퀀스 자리에 대기 요청을 끼워 넣음 → 같은 지연에서 처리량이 정적 배칭 대비 크게 오름</li>
+<li>iteration-level scheduling(Orca에서 제안)이 원리 → vLLM·TensorRT-LLM·SGLang 등 현행 엔진의 기본 동작</li>
+<li>PagedAttention과 결합해야 실효 → 요청이 수시로 들고 나며 생기는 KV cache 단편화를 페이징으로 흡수</li>
+</ul>
+<hr />
+<h2 id="pagedattention">PagedAttention</h2>
+<p>PagedAttention이란 KV cache를 고정 크기 블록으로 나눠 OS 가상 메모리의 페이징처럼 관리하는 기법(vLLM에서 제안)</p>
+<p>시퀀스마다 최대 길이만큼 연속 메모리를 미리 잡던 방식은 실제 안 쓴 공간과 조각난 틈으로 KV cache 상당량을 낭비함.</p>
+<ul>
+<li>KV cache를 고정 크기 블록(vLLM 기본 16토큰)으로 분할 → 물리적으로 연속이 아니어도 됨</li>
+<li>블록 테이블이 논리 블록↔물리 블록을 매핑 → 모델은 연속으로 보지만 실제로는 흩어져 저장</li>
+<li>최대 길이를 미리 잡지 않음 → 외부 단편화 제거, 내부 단편화는 블록 크기로 상한</li>
+<li>같은 프리픽스(공용 시스템 프롬프트 등)면 블록을 공유 → 여러 요청이 물리 블록 하나를 참조</li>
+<li>vLLM 논문 기준 기존 시스템의 KV 낭비(60~80%)를 크게 줄여 처리량 2~4배</li>
+</ul>
+<hr />
+<h2 id="_3">양자화 개요</h2>
+<p>양자화(Quantization)란 가중치·활성화를 낮은 비트로 표현해 VRAM과 메모리 대역폭 부담을 줄이는 기법</p>
+<p>decode가 대역폭 바운드라 가중치를 작게 만들면 스텝마다 읽는 양이 줄어 지연·처리량이 함께 개선됨.</p>
+<table>
+<thead>
+<tr>
+<th>방식</th>
+<th>비트</th>
+<th>대상</th>
+<th>특징</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FP8(E4M3/E5M2)</td>
+<td>8</td>
+<td>가중치+활성화</td>
+<td>Hopper·Ada 세대 텐서 코어 네이티브, 큰 모델에서 정확도 안정적</td>
+</tr>
+<tr>
+<td>INT8(SmoothQuant·LLM.int8)</td>
+<td>8</td>
+<td>가중치+활성화</td>
+<td>활성화 outlier 처리가 관건, W8A8 구성</td>
+</tr>
+<tr>
+<td>GPTQ</td>
+<td>3~4</td>
+<td>가중치 전용</td>
+<td>Hessian 기반 오차 보정 PTQ, 소형 모델 4bit에서 정확도 하락 주의</td>
+</tr>
+<tr>
+<td>AWQ</td>
+<td>4</td>
+<td>가중치 전용</td>
+<td>활성화 크기로 중요 가중치 보호, weight-only에서 GPTQ보다 정확도 우위 경향</td>
+</tr>
+<tr>
+<td>GGUF K-quant</td>
+<td>2~6</td>
+<td>가중치 전용</td>
+<td>llama.cpp 포맷, 비트 폭 선택 폭 넓음</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>weight-only(GPTQ·AWQ·GGUF)는 가중치만 낮추고 계산은 FP16 → 대역폭·용량 절감이 주 목적</li>
+<li>FP8·INT8은 활성화까지 낮춰 연산도 가속 → 대신 활성화 outlier로 정확도 관리가 까다로움</li>
+<li>FP8은 16bit 대비 메모리·대역폭 약 2배 절감 → Hopper 이후 하드웨어에서 특히 유리</li>
+<li>KV cache도 FP8·INT8로 양자화 가능 → 가중치와 별개로 KV 용량을 추가로 줄임</li>
+</ul>
+<hr />
+<h2 id="_4">서빙 엔진 비교</h2>
+<p>엔진마다 KV 관리·런타임 구조·하드웨어 지원이 달라 워크로드에 맞춰 고름</p>
+<table>
+<thead>
+<tr>
+<th>엔진</th>
+<th>개발</th>
+<th>강점</th>
+<th>적합 상황</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vLLM</td>
+<td>오픈소스(PagedAttention 원조)</td>
+<td>범용 기본값, 폭넓은 하드웨어(CUDA·ROCm·TPU·Gaudi·CPU)</td>
+<td>프로덕션 기본 서빙</td>
+</tr>
+<tr>
+<td>TensorRT-LLM</td>
+<td>NVIDIA</td>
+<td>PyTorch 네이티브 런타임 기반, NVIDIA에서 최고 처리량</td>
+<td>NVIDIA 전용 극한 최적화</td>
+</tr>
+<tr>
+<td>SGLang</td>
+<td>오픈소스</td>
+<td>RadixAttention으로 prefix KV 재사용</td>
+<td>멀티턴·프리픽스 재사용 큰 워크로드</td>
+</tr>
+<tr>
+<td>llama.cpp</td>
+<td>오픈소스(ggml)</td>
+<td>GGUF, CPU·Apple Silicon(Metal) 1급 지원</td>
+<td>로컬·온디바이스·맥</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>vLLM은 하드웨어 지원이 넓고 PagedAttention·continuous batching이 기본 → 고민 없이 시작하기 좋은 기본값</li>
+<li>TensorRT-LLM은 지금은 PyTorch 네이티브 런타임이 기본(구 TensorRT 엔진 컴파일 방식은 레거시) → NVIDIA 하드웨어에 고정해 최고 성능을 뽑을 때</li>
+<li>SGLang은 프리픽스가 겹치는 워크로드(공용 시스템 프롬프트·멀티턴 대화)에서 KV 재사용 이득이 큼</li>
+<li>llama.cpp는 GPU 없이 CPU·통합 메모리로 로컬 실행 → 온디바이스·맥 환경 로컬 추론에 적합</li>
+</ul>
+<hr />
+<h2 id="vs">처리량 vs 지연</h2>
+<p>서빙 최적화는 처리량(throughput)과 지연(latency)을 동시에 극대화할 수 없는 트레이드오프</p>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>의미</th>
+<th>좌우 요인</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TTFT(Time To First Token)</td>
+<td>요청 후 첫 토큰까지 지연</td>
+<td>prefill 단계, 프롬프트 길이</td>
+</tr>
+<tr>
+<td>TPOT(Time Per Output Token)</td>
+<td>토큰 간 지연</td>
+<td>decode 단계, 메모리 대역폭</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>초당 총 생성 토큰 수</td>
+<td>배치 크기·동시성</td>
+</tr>
+<tr>
+<td>Goodput</td>
+<td>SLO를 만족한 요청만 센 처리량</td>
+<td>위 지표의 균형</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>배치를 키우면 GPU 활용·처리량↑ → 대신 각 요청의 TPOT·대기 지연↑</li>
+<li>지연을 줄이려 배치를 작게 하면 GPU가 놀아 처리량↓</li>
+<li>그래서 배치 상한·목표 SLO를 정해두고 그 안에서 처리량을 최대화하는 식으로 균형</li>
+<li>prefill 지연(TTFT)과 decode 지연(TPOT)은 원인이 달라 따로 튜닝 → chunked prefill·prefill-decode 분리 등이 그 도구</li>
+</ul>
+<hr />
+<h2 id="_5">함정: 낮은 연산 활용률이 여유가 아님</h2>
+<p>decode 단계는 연산이 아니라 메모리 대역폭에 묶여 있어 사용률 지표만 보면 자원을 오판함</p>
+<ul>
+<li>decode는 스텝마다 가중치·KV cache를 반복 스트리밍 → 연산 유닛이 놀아도 메모리 대역폭은 포화 상태일 수 있음</li>
+<li>이때 연산 활용률(달성 FLOPs·텐서 코어 기준)이 낮게 나옴 → 여유로 보고 배치를 더 키우면 대역폭 한계라 처리량은 안 오르고 지연만 늘어남</li>
+<li>진짜 병목은 연산 활용률이 아니라 메모리 대역폭 사용률로 봐야 함 → decode 위주 워크로드는 연산 코어보다 대역폭이 먼저 바닥남</li>
+<li>prefill은 반대로 연산 바운드라 연산 활용률이 높게 나옴 → 같은 GPU라도 단계에 따라 지표 해석이 달라짐</li>
+<li>그래서 대역폭 절감 수단(양자화·KV 압축)이 decode 처리량에 직접 효과 → 코어를 더 꽂는 것보다 우선</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>nvidia-smi 필드</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU 사용률</td>
+<td>GPU-Util</td>
+<td>최근 구간에 커널이 하나라도 돈 시간 비율, 연산·대역폭 포화도와 무관</td>
+</tr>
+<tr>
+<td>메모리 점유</td>
+<td>Memory-Usage</td>
+<td>VRAM 사용량, 대역폭 사용률과 다름</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>기본 nvidia-smi의 GPU-Util은 커널이 돈 시간 비율일 뿐이라 대역폭에 묶인 decode 중에도 100% 가깝게 찍힘 → 대역폭·연산 활용률은 DCGM·Nsight 같은 도구로 별도 측정</li>
+</ul>
+<hr />
+<h2 id="_6">결론</h2>
+<ul>
+<li>추론은 prefill(연산 바운드)과 decode(대역폭 바운드) 두 성격이 한 요청에 섞여 있어 단일 잣대 최적화가 안 됨</li>
+<li>VRAM은 가중치와 KV cache가 양분 → 긴 컨텍스트·많은 동시 요청일수록 KV가 지배, PagedAttention·양자화로 관리</li>
+<li>decode 병목은 GPU 코어 사용률이 아니라 메모리 대역폭 → 처리량은 "코어 추가"보다 "읽을 양 줄이기"로 개선</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: LLM 파인튜닝 정리">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                LLM 파인튜닝 정리
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: 쿠버네티스 GPU 스케줄링 정리">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                쿠버네티스 GPU 스케줄링 정리
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

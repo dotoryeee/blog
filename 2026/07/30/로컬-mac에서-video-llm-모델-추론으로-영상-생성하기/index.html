@@ -1,0 +1,2473 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/">
+      
+      
+        <link rel="prev" href="../../29/rag-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="next" href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/">
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Dodum:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Dodum";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog" />
+<meta property="og:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기 - dotoryeee's blog" />
+<meta property="twitter:description" content="Mac Studio M1 Max에서 Draw Things CLI로 LTX-2.3을 돌린 실측 기록. 스텝·해상도·길이별 소요 시간과 메모리 한계 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.png" />
+</head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mac-video-llm" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://dotoryeee.github.io" title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전체 글
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    카테고리
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    카테고리
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        로컬 영상 생성이란
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#draw-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Draw Things를 쓴 이유
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        설치
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모델 선택
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        생성 명령
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        스텝별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        해상도별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        길이별 소요 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        메모리 한계는 프레임 수에서 옴
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        열·전력
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        제약 사항
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권장 설정
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        결론
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-07-30 00:00:00+00:00" class="md-ellipsis">2026. 7. 30.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/ai/">AI</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 8분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 선택 가이드
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 암호화 방식 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMS 키 삭제 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 모델로 RAG 파이프라인 구축하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MoE 추론 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Mesh 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP vs API 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CloudTrail 네트워크 활동 이벤트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    partial 인덱스 seq scan 인시던트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    쿠버네티스 GPU 스케줄링 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    분산 학습 병렬화와 집합 통신 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVLink와 노드 내 GPU 연결 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NIC 가상화와 커널 바이패스 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MLX로 LoRA 파인튜닝 실습
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 파인튜닝 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM 추론 서빙 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InfiniBand vs RoCEv2 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 서버 기초 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/gpu-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPU 분할 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS 고성능 네트워킹 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../21/%EC%8B%9C%ED%81%AC%EB%A6%BF-%EA%B4%80%EB%A6%AC-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    시크릿 관리 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:apple-silicon" class="md-tag">Apple Silicon</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:draw-things" class="md-tag">Draw Things</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:ltx-23" class="md-tag">LTX-2.3</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:metal" class="md-tag">Metal</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="mac-video-llm">로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기</h1>
+<p>Mac Studio M1 Max에서 Draw Things CLI로 영상 생성 모델 LTX-2.3을 돌려봤다. 스텝, 해상도, 길이별 소요 시간과 메모리 한계를 실측한 기록이다.</p>
+<!-- more -->
+
+<h2 id="_1">로컬 영상 생성이란</h2>
+<p>클라우드 API 없이 로컬 맥스튜디오의 GPU로 text to video/image to video 모델을 직접 추론시키기</p>
+<p>Apple Silicon은 통합 메모리를 VRAM으로 사용할 수 있어 64GB 장비가 22B 영상 모델을 올릴 수 있음. 문제는 용량이 아니라 프레임워크 지원임.</p>
+<p>측정 환경은 Mac Studio M1 Max 10코어, 64GB, macOS 26.</p>
+<hr />
+<h2 id="draw-things">Draw Things를 쓴 이유</h2>
+<p>처음엔 ComfyUI를 깔았음. 실행 자체는 됨. PyTorch 2.10이 MPS를 잡고 통합 메모리 64GB를 SHARED VRAM으로 인식함.</p>
+<p>막힌 지점은 체크포인트임.</p>
+<p>체크포인트(Checkpoint)란 학습이 끝난 모델 가중치를 파일로 묶어 저장한 것. 같은 모델도 어떤 수치 정밀도로 저장했는지에 따라 파일이 갈리고, 그 정밀도를 실행 장치가 지원해야 읽힘.</p>
+<ul>
+<li>Metal에는 fp8 하드웨어 지원이 없음 → Lightricks가 배포하는 fp8 공식 체크포인트를 못 씀</li>
+<li>우회로는 커뮤니티 GGUF 재양자화본뿐 → 양자화 등급이 낮아지고 배포 주체도 제각각</li>
+<li>모델·VAE·텍스트 인코더·노드를 직접 맞춰야 함 → 조합이 어긋나면 샘플러 단계에서 실패</li>
+</ul>
+<p>Draw Things는 같은 모델을 자체 양자화 포맷(q6p, q8p, i8x)으로 재배포하고 Metal 커널로 직접 추론함. fp8 문제가 처음부터 생기지 않음.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>ComfyUI</th>
+<th>Draw Things</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>추론 경로</td>
+<td>PyTorch MPS</td>
+<td>Metal 네이티브</td>
+</tr>
+<tr>
+<td>fp8 공식 체크포인트</td>
+<td>사용 불가</td>
+<td>해당 없음(자체 양자화 재배포)</td>
+</tr>
+<tr>
+<td>모델 구성</td>
+<td>본체·VAE·인코더를 직접 배치</td>
+<td>본체만 지정하면 부속 파일 자동 확인</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>별도 구성 필요</td>
+<td><code>draw-things-cli</code> 공식 제공</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">설치</h2>
+<p>앱과 CLI를 따로 설치함. CLI가 앱과 같은 모델 디렉터리를 공유하므로 앱에서 받은 모델을 CLI가 그대로 씀.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">cask</span><span class="w"> </span><span class="n">draw</span><span class="o">-</span><span class="n">things</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span>
+</code></pre></div>
+<p>모델 경로는 다음과 같음.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">~/</span><span class="n">Library</span><span class="o">/</span><span class="n">Containers</span><span class="o">/</span><span class="n">com.liuliu.draw</span><span class="o">-</span><span class="n">things</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Models</span>
+</code></pre></div>
+<hr />
+<h2 id="_3">모델 선택</h2>
+<p>LTX-2.3은 dev·distilled 두 계열에 양자화 등급이 붙어 배포됨.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="n">ltx</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">--</span><span class="n">downloaded</span><span class="o">-</span><span class="n">only</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">models</span><span class="w"> </span><span class="n">ensure</span><span class="w"> </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>계열</th>
+<th>성격</th>
+<th>권장</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>distilled</td>
+<td>8스텝 증류판. 스텝 수가 적고 메모리 부담도 낮음</td>
+<td>실사용 기본값</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>증류 없는 원본. 학습·파인튜닝 대상</td>
+<td>스텝을 충분히 줄 수 있을 때만</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>양자화</th>
+<th>22B 기준 용량</th>
+<th>64GB 적합성</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>q6p (6-bit)</td>
+<td>약 18GB</td>
+<td>여유 확보용</td>
+</tr>
+<tr>
+<td>i8x, q8p (8-bit)</td>
+<td>약 24GB</td>
+<td>최적점</td>
+</tr>
+<tr>
+<td>f16 (Exact)</td>
+<td>약 44GB</td>
+<td>VAE 디코드 여유 부족</td>
+</tr>
+</tbody>
+</table>
+<p>실제로 쓴 조합은 <code>ltx_2.3_22b_distilled_1.1_i8x.ckpt</code>임. 부속 파일까지 합쳐 40GB를 차지함.</p>
+<table>
+<thead>
+<tr>
+<th>파일</th>
+<th>용량</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ltx_2.3_22b_distilled_1.1_i8x.ckpt</td>
+<td>24GB</td>
+<td>본체</td>
+</tr>
+<tr>
+<td>gemma_3_12b_it_qat_q8p.ckpt</td>
+<td>12GB</td>
+<td>텍스트 인코더</td>
+</tr>
+<tr>
+<td>ltx_2.3_audio_video_vae_f16.ckpt</td>
+<td>1.7GB</td>
+<td>비디오 VAE</td>
+</tr>
+<tr>
+<td>ltx_2.3_spatial_upscaler_x2_1.1_f16.ckpt</td>
+<td>952MB</td>
+<td>2배 업스케일러</td>
+</tr>
+<tr>
+<td>ltx_2.3_spatial_upscaler_x1.5_f16.ckpt</td>
+<td>1.0GB</td>
+<td>1.5배 업스케일러</td>
+</tr>
+</tbody>
+</table>
+<p>Gemma는 프롬프트를 임베딩으로 바꾸는 인코더이므로 생략 불가. 컨텍스트가 약 1,000토큰에서 잘리고 초과분은 버려짐 → 긴 프롬프트는 낭비.</p>
+<hr />
+<h2 id="_4">생성 명령</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span>\
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span><span class="w"> </span>\
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;a horse-drawn carriage on a tree-lined path, deep focus, photorealistic&quot;</span><span class="w"> </span>\
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="o">--</span><span class="n">negative</span><span class="o">-</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;blurry, bokeh, shallow depth of field, distorted faces&quot;</span><span class="w"> </span>\
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="o">--</span><span class="n">width</span><span class="w"> </span><span class="m">1536</span><span class="w"> </span><span class="o">--</span><span class="n">height</span><span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="o">--</span><span class="n">frames</span><span class="w"> </span><span class="m">49</span><span class="w"> </span><span class="o">--</span><span class="n">steps</span><span class="w"> </span><span class="m">20</span><span class="w"> </span>\
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">clip.mov</span><span class="w"> </span><span class="o">--</span><span class="n">video</span><span class="o">-</span><span class="n">format</span><span class="w"> </span><span class="n">prores4444</span><span class="w"> </span>\
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">preview</span>
+</code></pre></div>
+<p>image-to-video는 <code>--image</code>로 시작 프레임을 주고 <code>--strength</code>로 원본 유지 강도를 조절함.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">draw</span><span class="o">-</span><span class="n">things</span><span class="o">-</span><span class="n">cli</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="o">--</span><span class="n">model</span><span class="w"> </span><span class="n">ltx_2.3_22b_distilled_1.1_i8x.ckpt</span><span class="w"> </span>\
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="o">--</span><span class="n">prompt</span><span class="w"> </span><span class="s">&quot;camera slowly pushes in&quot;</span><span class="w"> </span><span class="o">--</span><span class="n">image</span><span class="w"> </span><span class="n">start.png</span><span class="w"> </span><span class="o">--</span><span class="n">strength</span><span class="w"> </span><span class="m">0.35</span><span class="w"> </span>\
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="o">--</span><span class="n">width</span><span class="w"> </span><span class="m">1536</span><span class="w"> </span><span class="o">--</span><span class="n">height</span><span class="w"> </span><span class="m">1024</span><span class="w"> </span><span class="o">--</span><span class="n">frames</span><span class="w"> </span><span class="m">49</span><span class="w"> </span><span class="o">--</span><span class="n">output</span><span class="w"> </span><span class="n">clip.mov</span>
+</code></pre></div>
+<p>주요 인자는 다음과 같음.</p>
+<table>
+<thead>
+<tr>
+<th>인자</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--width</code>, <code>--height</code></td>
+<td><strong>64의 배수만 허용</strong>. 위반 시 즉시 거부</td>
+</tr>
+<tr>
+<td><code>--frames</code></td>
+<td>8n+1 형태(49, 73, 97, 121, 153). 길이는 프레임수÷25</td>
+</tr>
+<tr>
+<td><code>--steps</code></td>
+<td>미지정 시 모델 권장값(distilled는 8+3 = 11스텝)</td>
+</tr>
+<tr>
+<td><code>--video-format</code></td>
+<td>prores4444, prores422hq, h264, hevc</td>
+</tr>
+<tr>
+<td><code>--config-json</code></td>
+<td>JSGenerationConfiguration 부분 오버라이드</td>
+</tr>
+</tbody>
+</table>
+<p>864처럼 64로 나뉘지 않는 값을 넣으면 모델 로딩 전에 끊김.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">Error</span><span class="o">:</span><span class="w"> </span><span class="n">Image</span><span class="w"> </span><span class="n">dimensions</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">multiples</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="m">64</span><span class="p">,</span><span class="w"> </span><span class="n">got</span><span class="w"> </span><span class="m">1536</span><span class="n">x864</span>
+</code></pre></div>
+<hr />
+<h2 id="_5">스텝별 소요 시간</h2>
+<p>스텝(Step)이란 추론할 때 노이즈에서 영상을 깎아내는 반복 횟수. 체크포인트가 디스크에 놓인 가중치 파일이라면 스텝은 그 파일을 읽어 실제로 그림을 만드는 과정의 반복 횟수이므로 둘은 별개임. 스텝을 늘리면 같은 체크포인트로도 디테일이 올라가고 대신 시간이 늘어남.</p>
+<p>동일 조건에서 스텝만 바꾼 결과임.</p>
+<table>
+<thead>
+<tr>
+<th>해상도</th>
+<th>11스텝</th>
+<th>20스텝</th>
+<th>30스텝</th>
+<th>11→30 배율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1280×704 / 49프레임</td>
+<td>7분31초</td>
+<td>10분32초</td>
+<td>12분42초</td>
+<td>1.69배</td>
+</tr>
+<tr>
+<td>1920×1088 / 49프레임</td>
+<td>18분43초</td>
+<td>23분44초</td>
+<td>29분4초</td>
+<td>1.55배</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>스텝 2.7배에 시간 1.6배 → 부선형</li>
+<li>해상도가 높을수록 배율이 낮아짐(1.69 → 1.55) → VAE 디코드 고정비가 커서 샘플링 증분이 묻힘</li>
+<li>같은 시간 예산이면 해상도보다 스텝에 배분하는 쪽이 유리</li>
+</ul>
+<hr />
+<h2 id="_6">해상도별 소요 시간</h2>
+<p>49프레임·20스텝 고정 기준임.</p>
+<table>
+<thead>
+<tr>
+<th>해상도</th>
+<th>픽셀</th>
+<th>시간</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1280×704</td>
+<td>0.90M</td>
+<td>10분32초</td>
+</tr>
+<tr>
+<td>1536×832</td>
+<td>1.28M</td>
+<td>14분42초</td>
+</tr>
+<tr>
+<td>1664×960</td>
+<td>1.60M</td>
+<td>17분23초</td>
+</tr>
+<tr>
+<td>1920×832</td>
+<td>1.60M</td>
+<td>18분31초</td>
+</tr>
+<tr>
+<td>1920×1088</td>
+<td>2.09M</td>
+<td>23분44초</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>픽셀 2.32배에 시간 2.25배 → 거의 선형</li>
+<li>1664×960과 1920×832는 픽셀이 같고 시간도 같음 → 비용은 화면비가 아니라 총 픽셀 수로 결정됨</li>
+<li>시네마틱 2.3:1 화면비에 추가 비용 없음</li>
+</ul>
+<hr />
+<h2 id="_7">길이별 소요 시간</h2>
+<p>1280×704·20스텝 고정 기준임.</p>
+<table>
+<thead>
+<tr>
+<th>프레임</th>
+<th>길이</th>
+<th>시간</th>
+<th>프레임당</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>49</td>
+<td>1.96초</td>
+<td>10분32초</td>
+<td>12.9초</td>
+</tr>
+<tr>
+<td>73</td>
+<td>2.92초</td>
+<td>14분22초</td>
+<td>11.8초</td>
+</tr>
+<tr>
+<td>121</td>
+<td>4.84초</td>
+<td>23분44초</td>
+<td>11.8초</td>
+</tr>
+<tr>
+<td>153</td>
+<td>6.12초</td>
+<td>31분15초</td>
+<td>12.3초</td>
+</tr>
+</tbody>
+</table>
+<p>프레임당 비용이 12초 안팎으로 고정됨 → 길이도 선형.</p>
+<hr />
+<h2 id="_8">메모리 한계는 프레임 수에서 옴</h2>
+<p>30편을 연속 생성하는 동안 스왑 증가량을 매 회차 기록함.</p>
+<table>
+<thead>
+<tr>
+<th>조합</th>
+<th>픽셀×프레임</th>
+<th>스왑 증가</th>
+<th>압축 메모리</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1920×1088 / 97프레임</td>
+<td>203M</td>
+<td>0MB</td>
+<td>24.6GB</td>
+</tr>
+<tr>
+<td>768×512 / 377프레임</td>
+<td>148M</td>
+<td>+18,164MB</td>
+<td>37.3GB</td>
+</tr>
+</tbody>
+</table>
+<p>부하가 1.4배 적은 쪽이 스왑을 18GB 밀어냈음. macOS가 스왑 파일을 2GB에서 3GB로 확장할 정도임.</p>
+<ul>
+<li>총 부하가 아니라 프레임 수 자체가 병목 → 어텐션 메모리가 프레임 축에서 먼저 터짐</li>
+<li>FHD로 4초를 뽑는 편이 480p로 15초를 뽑는 것보다 안전</li>
+<li>300프레임 초과가 유일한 위험 구간</li>
+</ul>
+<p>30편 전 회차의 스왑 증가는 0MB였음. 위험 구간은 이 배치 밖의 377프레임 시도에서만 나타남.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>프레임 수를 늘릴 때는 해상도를 올릴 때보다 훨씬 보수적으로 접근할 것.</p>
+</div>
+<hr />
+<h2 id="_9">열·전력</h2>
+<p>30편 10.3시간 연속 가동 중 관측 범위임.</p>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>관측 범위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU 온도</td>
+<td>34~61°C</td>
+</tr>
+<tr>
+<td>GPU 온도</td>
+<td>34~67°C</td>
+</tr>
+<tr>
+<td>팬</td>
+<td>1,320~1,335rpm (최대 3,500의 37~38%)</td>
+</tr>
+<tr>
+<td>전력</td>
+<td>0~40W</td>
+</tr>
+</tbody>
+</table>
+<p>10시간 내내 GPU를 100% 물려도 67°C를 넘지 않고 팬은 38%에서 움직이지 않았음 → Mac Studio에서 열은 제약 조건이 아님.</p>
+<hr />
+<h2 id="_10">제약 사항</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fps 조절</td>
+<td>불가. <code>--fps</code> 인자가 없고 <code>--config-json '{"fps":24}'</code>는 오류 없이 무시됨. 출력은 항상 25fps</td>
+</tr>
+<tr>
+<td>해상도</td>
+<td>64의 배수만. 1280×720, 1920×1080은 무효 → 1280×704, 1920×1088로 대체</td>
+</tr>
+<tr>
+<td>최대 길이</td>
+<td>LTX-2.3 스펙상 20초(25fps·1080p). 다만 300프레임 초과는 스왑 위험</td>
+</tr>
+<tr>
+<td>원경 인물</td>
+<td>화면에서 20~30픽셀 높이로 잡히는 인물은 해상도를 올려도 뭉개짐. 프롬프트·스텝으로 해결 안 됨</td>
+</tr>
+</tbody>
+</table>
+<p>프롬프트에 <code>shallow depth of field</code>를 넣으면 배경 인물이 설계대로 흐려짐. 배경까지 선명하게 뽑으려면 <code>deep focus</code>를 명시하고 네거티브 프롬프트로 <code>bokeh</code>, <code>shallow depth of field</code>를 눌러야 함.</p>
+<hr />
+<h2 id="_11">권장 설정</h2>
+<table>
+<thead>
+<tr>
+<th>목적</th>
+<th>설정</th>
+<th>소요</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>범용</td>
+<td>1536×1024 / 49프레임 / 30스텝</td>
+<td>20분</td>
+</tr>
+<tr>
+<td>최고 화질</td>
+<td>1920×1088 / 49프레임 / 30스텝</td>
+<td>29분</td>
+</tr>
+<tr>
+<td>시네마틱</td>
+<td>1920×832 / 49프레임 / 30스텝</td>
+<td>22분</td>
+</tr>
+<tr>
+<td>빠른 초안</td>
+<td>1280×704 / 49프레임 / 11스텝</td>
+<td>7분</td>
+</tr>
+<tr>
+<td>6초 컷</td>
+<td>1280×768 / 153프레임 / 20스텝</td>
+<td>31분</td>
+</tr>
+</tbody>
+</table>
+<p>긴 영상은 한 번에 뽑지 말고 6초 이하 컷을 여러 개 만들어 편집으로 이을 것.</p>
+<hr />
+<h2 id="_12">결론</h2>
+<p>M1 Max 64GB에서 FHD 2초 클립이 30스텝으로 메모리 스왑없이 29분에 나옴.</p>
+<ul>
+<li>화질을 올리려면 해상도보다 스텝을 먼저 올릴 것</li>
+<li>길이를 늘릴 때만 메모리를 경계할 것</li>
+<li>fps가 필요하면 생성이 아니라 후처리로 해결할 것</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../../29/rag-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: RAG 정리">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                RAG 정리
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-footer__link md-footer__link--next" aria-label="다음: S3 암호화 방식 비교">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                S3 암호화 방식 비교
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy", "navigation.expand", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
