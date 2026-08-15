@@ -1,4 +1,7 @@
-/* 우측 목차(secondary sidebar)를 전 페이지에서 숨김. 본문 폭이 그만큼 넓어진다 */
-.md-sidebar--secondary {
+/* 목차(ToC)를 전 페이지에서 숨김.
+   md-sidebar--secondary: 넓은 화면의 우측 목차 영역
+   md-nav--secondary: 좁은 화면에서 좌측 네비·모바일 드로어에 통합되는 목차 본체 */
+.md-sidebar--secondary,
+.md-nav--secondary {
   display: none;
 }
