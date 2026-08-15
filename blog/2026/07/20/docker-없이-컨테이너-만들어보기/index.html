@@ -51,8 +51,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Batang:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Batang";--md-code-font:"Roboto Mono"}</style>
       
     
     
@@ -1038,6 +1038,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
         
   
@@ -1814,33 +1841,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    systemd 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -1967,7 +1967,7 @@
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w"> </span><span class="n">ns</span><span class="w"> </span>내부<span class="w"> </span><span class="n">mount</span><span class="o">:</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="n">none</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span><span class="w"> </span><span class="n">tmpfs</span><span class="w"> </span><span class="n">rw</span><span class="p">,</span><span class="n">relatime</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span>
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w"> </span><span class="n">ns</span><span class="w"> </span>내부<span class="w"> </span>파일<span class="o">:</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">only</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">ns</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">only</span><span class="o">-</span><span class="kr">in</span><span class="o">-</span><span class="n">ns</span>
 </code></pre></div>
 <p>같은 경로를 호스트에서 보면 마운트도 파일도 없다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">grep</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">ns</span><span class="o">-</span><span class="n">mnt</span><span class="w"> </span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">mounts</span>
@@ -2024,7 +2024,7 @@
 <p>namespace 는 "무엇을 보는가"를 격리하지, "얼마나 쓰는가"는 막지 못한다. 메모리 상한은 cgroup 이 건다. cgroup v2 에서 자식 그룹이 memory 컨트롤러를 쓰려면 부모의 subtree_control 에 memory 를 위임해야 하는데, 프로세스가 직접 들어 있는 cgroup 은 자식으로 컨트롤러를 위임하지 못한다(no internal processes 규칙). 컨테이너 안 /sys/fs/cgroup 은 cgroup namespace 때문에 루트처럼 보여도 실제로는 위임된 비루트 서브트리라 이 규칙이 그대로 걸린다. 그래서 먼저 그 프로세스를 leaf 로 옮긴 뒤 위임한다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">cgroup</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="n">init</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">for</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">cat</span><span class="w"> </span><span class="n">cgroup.procs</span><span class="p">);</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="o">$</span><span class="n">pid</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">init</span><span class="o">/</span><span class="n">cgroup.procs</span><span class="w"> </span><span class="m">2</span><span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="p">;</span><span class="w"> </span><span class="n">done</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kr">for</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">cat</span><span class="w"> </span><span class="n">cgroup.procs</span><span class="p">);</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="o">$</span><span class="n">pid</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">init</span><span class="o">/</span><span class="n">cgroup.procs</span><span class="w"> </span><span class="m">2</span><span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="p">;</span><span class="w"> </span><span class="n">done</span>
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">echo</span><span class="w"> </span><span class="s">&quot;+memory +pids&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">cgroup.subtree_control</span>
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">cat</span><span class="w"> </span><span class="n">cgroup.subtree_control</span>
 <a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="n">memory</span><span class="w"> </span><span class="n">pids</span>

@@ -51,8 +51,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Changa:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Changa";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Batang:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Batang";--md-code-font:"Roboto Mono"}</style>
       
     
     
@@ -1082,6 +1082,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
         
   
@@ -1858,33 +1885,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../07/21/systemd-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    systemd 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -2007,7 +2007,7 @@
 <li>Pending deletion 상태에서는 암호화 작업 불가. 키 재료 자동 회전도 멈춤</li>
 <li>예약 시점과 실제 삭제 시점이 각각 CloudTrail에 기록됨</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">kms</span><span class="w"> </span><span class="n">schedule</span><span class="o">-</span><span class="n">key</span><span class="o">-</span><span class="n">deletion</span><span class="w"> </span><span class="o">--</span><span class="n">key</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="m">1234</span><span class="n">abcd</span><span class="m">-12</span><span class="n">ab</span><span class="m">-34</span><span class="n">cd</span><span class="m">-56</span><span class="n">ef</span><span class="m">-1234567890</span><span class="n">ab</span><span class="w"> </span><span class="o">--</span><span class="n">pending</span><span class="o">-</span><span class="n">window</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">days</span><span class="w"> </span><span class="m">7</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">kms</span><span class="w"> </span><span class="n">schedule</span><span class="o">-</span><span class="n">key</span><span class="o">-</span><span class="n">deletion</span><span class="w"> </span><span class="o">--</span><span class="n">key</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="m">1234</span><span class="n">abcd</span><span class="m">-12</span><span class="n">ab</span><span class="m">-34</span><span class="n">cd</span><span class="m">-56</span><span class="n">ef</span><span class="m">-1234567890</span><span class="n">ab</span><span class="w"> </span><span class="o">--</span><span class="n">pending</span><span class="o">-</span><span class="n">window</span><span class="o">-</span><span class="kr">in</span><span class="o">-</span><span class="n">days</span><span class="w"> </span><span class="m">7</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&quot;KeyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:kms:ap-northeast-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab&quot;</span><span class="p">,</span>
