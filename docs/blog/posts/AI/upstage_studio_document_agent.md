@@ -15,6 +15,8 @@ description: "Upstage Studio로 계약 검토 Agent를 만들고 상충 조항, 
 ---
 # Upstage Studio 문서 Agent PoC
 
+Upstage Studio로 계약 검토 Agent를 만들고 상충 조항, 필드 누락, 문서 내부 명령문, 회전 문서를 넣어 설정별 결과를 비교했다.
+
 <!-- more -->
 
 ## Upstage Studio란
@@ -74,7 +76,7 @@ Studio는 설정을 고칠 때마다 Config 번호를 올린다. 초안에서 �
 
 ---
 
-## Config 3에서 생긴 회귀
+## Config 3에서 새로 생긴 문제
 
 Config 3에는 다음 규칙을 추가했다.
 
@@ -94,7 +96,7 @@ Config 3에는 다음 규칙을 추가했다.
 
 ![Config 3에서 서비스 제공 합의 메모가 기타 문서로 분류된 화면](upstage_studio_document_agent/03-service-memo-regression.png)
 
-문제를 하나 막으니 정상 입력까지 막힌 회귀가 생겼다. Config 3에서는 분류 규칙과 추출 스키마를 함께 고쳤기 때문에 어떤 변경이 영향을 줬는지 확인하려면 전체 평가 문서를 다시 실행해야 했다.
+문제를 하나 막으니 정상 입력까지 막혔다. Config 3에서는 분류 규칙과 추출 스키마를 함께 고쳤기 때문에 어떤 변경이 영향을 줬는지 확인하려면 전체 평가 문서를 다시 실행해야 했다.
 
 ---
 
@@ -122,7 +124,7 @@ Config 4에서는 다섯 문서의 분류와 위험 판단이 기대 결과와 �
 | 설정 | Studio Latency | Studio Accuracy | 관찰 |
 |---|---:|---:|---|
 | Config 2 | 34.41초 | 46.3% | 인보이스를 서비스 계약으로 오분류 |
-| Config 3 | 43.08초 | 51.3% | 인보이스 해결, 합의 메모와 정상 계약에서 회귀 |
+| Config 3 | 43.08초 | 51.3% | 인보이스 해결, 합의 메모와 정상 계약이 틀어짐 |
 | Config 4 첫 실행 | 44.98초 | 58.9% | 5개 문서의 기대 결과와 일치 |
 | Config 4 재실행 | 0.60초 | 59.7% | 분류와 최종 판단 재현, 짧아진 원인은 확인하지 못함 |
 
@@ -136,7 +138,7 @@ Config 4에서는 다섯 문서의 분류와 위험 판단이 기대 결과와 �
 
 ---
 
-## 불리언만으로 구분되지 않은 값
+## boolean만으로 구분되지 않은 값
 
 Config 4에도 남은 문제가 있다. 자동 갱신 조항 자체가 없는 서비스 제공 합의 메모에서 auto_renewal은 false로 추출됐고 missing_required_fields에는 auto_renewal이 다시 들어갔다.
 
@@ -145,7 +147,7 @@ Config 4에도 남은 문제가 있다. 자동 갱신 조항 자체가 없는 �
 - 자동 갱신하지 않는다는 조항이 있음
 - 자동 갱신 조항 자체가 없음
 
-하지만 true와 false만 받는 불리언 필드에는 모른다는 상태가 없다. 운영용 스키마라면 true, false, null이나 별도 상태 enum을 원문 근거와 함께 저장하는 쪽이 안전하다. 모델 성능이 아니라 출력 타입 설계에서 생긴 문제다.
+하지만 true와 false만 받는 boolean 필드에는 모른다는 상태가 없다. 운영용 스키마라면 true, false, null이나 별도 상태 enum을 원문 근거와 함께 저장하는 쪽이 안전하다. 모델 성능이 아니라 출력 타입 설계에서 생긴 문제다.
 
 ---
 
@@ -159,11 +161,21 @@ Config 4에도 남은 문제가 있다. 자동 갱신 조항 자체가 없는 �
 
 ---
 
+## n8n, Dify와 비교
+
+| 비교 항목 | Upstage Studio | [n8n](https://docs.n8n.io/) | [Dify](https://docs.dify.ai/) |
+|---|---|---|---|
+| 성격 | 문서 특화 Agent 제작 도구 | 범용 워크플로 자동화 플랫폼 | LLM 앱 개발 플랫폼 |
+| 문서 처리 | Parse, 분류, 필드 추출, 원문 근거를 전용 노드로 처리 | Extract From File 노드로 텍스트 추출, 필드 추출은 LLM 기반 Information Extractor 노드 | Doc Extractor 노드로 텍스트 추출, 필드 추출은 LLM 기반 Parameter Extractor 노드 |
+| 제공 형태 | 웹 SaaS | 셀프호스팅 또는 n8n Cloud | 셀프호스팅 또는 Dify Cloud |
+| 외부 연동 | 이번 PoC에서 확인하지 않음 | 수백 개 서비스 노드 | 마켓플레이스 플러그인과 도구 |
+| 적합한 경우 | 문서 필드 추출이 핵심인 업무 | 여러 SaaS를 잇는 자동화 | 챗봇과 RAG 앱 |
+
+---
+
 ## Pydantic AI, LangGraph, Langfuse와 비교
 
-네 제품은 일부 기능이 겹치지만 중심 역할이 다르다. Upstage Studio는 화면에서 문서 Agent를 구성하는 도구고 나머지 셋은 코드 구현과 실행 제어, 관측을 맡는 서로 다른 층이다.
-
-| 비교 항목 | Upstage Studio | Pydantic AI | LangGraph | Langfuse |
+| 비교 항목 | Upstage Studio | [Pydantic AI](https://pydantic.dev/docs/ai/overview/) | [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) | [Langfuse](https://langfuse.com/docs) |
 |---|---|---|---|---|
 | 주 역할 | 문서 파싱, 분류, 추출, 판단 | 타입 기반 Agent 개발 | 상태 기반 워크플로 제어 | 실행 추적, 평가, 프롬프트 관리 |
 | 개발 방식 | UI와 자연어 설정 | Python | Python 또는 JavaScript | SDK와 UI |
@@ -172,12 +184,6 @@ Config 4에도 남은 문제가 있다. 자동 갱신 조항 자체가 없는 �
 | 문서 처리 | Parse 노드 제공 | 별도 파서나 문서 API 연동 필요 | 별도 파서나 문서 API 연동 필요 | 문서 처리 기능이 아님 |
 | 운영 관측 | 노드별 지연 시간, Stability, Accuracy | Logfire나 OpenTelemetry 연동 | LangSmith 또는 외부 도구 연동 | 비용, 지연, trace, dataset 평가 |
 | 적합한 경우 | 문서 PoC와 정형 업무 | 커스텀 도구와 타입 검증이 필요한 Agent | 장시간 실행과 복잡한 분기 및 승인 | 운영 중인 LLM 시스템의 품질 관리 |
-
-[Pydantic AI](https://pydantic.dev/docs/ai/overview/)는 output_type에 Pydantic 모델을 지정해 결과 형태를 검증할 수 있다. 이번 PoC의 auto_renewal도 bool | None이나 별도 상태 enum으로 정의했다면 모르는 값을 false와 구분하기 쉬웠을 것이다. Agent가 다른 Agent를 도구처럼 부르거나 애플리케이션 코드가 다음 Agent를 고르는 방식도 지원한다. 복잡한 상태 기반 제어가 필요하면 별도 pydantic-graph를 선택할 수 있다.
-
-[LangGraph](https://docs.langchain.com/oss/python/langgraph/overview)는 Agent보다 실행 흐름에 초점이 있다. 상태를 체크포인트로 저장하고 해당 상태에서 재개하거나 중간에 사람 승인을 기다리는 구조에 맞다. 계약 위험을 발견했을 때 법무 검토를 요청하고 승인 뒤 수정된 값으로 실행을 이어가는 시스템이라면 Instruct 결과 반환으로 끝난 이번 PoC 흐름보다 LangGraph의 interrupt가 잘 맞는다.
-
-[Langfuse](https://langfuse.com/docs)는 Agent를 실행하지 않는다. Pydantic AI나 LangGraph로 만든 실행을 trace로 남기고 비용, 지연, 프롬프트 버전, 평가 결과를 연결한다. 이번처럼 Config를 고칠 때 인보이스는 해결됐지만 정상 계약이 틀어지는 회귀를 dataset 평가로 잡는 역할이다. Studio의 Accuracy가 무엇을 뜻하는지 애매했던 것과 달리 Langfuse에서는 문서 유형 정답률, 누락값 환각, 위험 판정 일치처럼 평가 항목을 직접 정의할 수 있다.
 
 ---
 
