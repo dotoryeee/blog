@@ -11,11 +11,11 @@ tags:
   - Pydantic AI
   - LangGraph
   - Langfuse
-description: "Upstage Studio로 계약 검토 Agent를 만들고 상충 조항, 필드 누락, 프롬프트 인젝션, 90도 가로 회전 문서를 넣어 설정별 결과를 비교한 PoC 기록"
+description: "Upstage Studio로 계약 검토 Agent를 만들고 조항 충돌, 필드 누락, 프롬프트 인젝션, 90도 가로 회전 문서를 넣어 설정별 결과를 비교한 PoC 기록"
 ---
 # Upstage Studio 문서 Agent PoC
 
-Upstage Studio로 계약 검토 Agent를 만들고 상충 조항, 필드 누락, 문서 내부 명령문, 90도 가로 회전 문서를 넣어 설정별 결과를 비교했다.
+Upstage Studio로 계약 검토 Agent를 만들고 조항 충돌, 필드 누락, 문서 내부 명령문, 90도 가로 회전 문서를 넣어 설정별 결과를 비교했다.
 
 <!-- more -->
 
