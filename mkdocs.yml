@@ -8,7 +8,7 @@ theme:
   language: ko
   logo: logo.svg
   font:
-    text: Gowun Batang
+    text: Gowun Dodum
   features:
     - content.code.copy
     - navigation.expand
@@ -67,7 +67,7 @@ plugins:
       cards_layout_options:
         background_color: "#ff6e42"
         color: "#ffffff"
-        font_family: Gowun Batang
+        font_family: Gowun Dodum
   - rss:
       match_path: blog/posts/.*
       date_from_meta:
