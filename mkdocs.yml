@@ -18,6 +18,9 @@ theme:
   palette:
     primary: deep orange
 
+extra_css:
+  - stylesheets/extra.css
+
 extra:
   homepage: https://dotoryeee.github.io
   social:

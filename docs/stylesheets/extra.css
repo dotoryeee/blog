@@ -1,0 +1,4 @@
+/* 우측 목차(secondary sidebar)를 전 페이지에서 숨김. 본문 폭이 그만큼 넓어진다 */
+.md-sidebar--secondary {
+  display: none;
+}
