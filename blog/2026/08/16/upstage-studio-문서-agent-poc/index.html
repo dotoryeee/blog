@@ -54,6 +54,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -879,7 +881,7 @@
   <a href="#config-3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Config 3에서 생긴 회귀
+        Config 3에서 새로 생긴 문제
       
     </span>
   </a>
@@ -898,10 +900,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#boolean" class="md-nav__link">
     <span class="md-ellipsis">
       
-        불리언만으로 구분되지 않은 값
+        boolean만으로 구분되지 않은 값
       
     </span>
   </a>
@@ -909,10 +911,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         페이지별 분할의 한계
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n8n-dify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n8n, Dify와 비교
       
     </span>
   </a>
@@ -931,7 +944,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         실제로 조합한다면
@@ -942,7 +955,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1030,7 +1043,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 12분
+                              읽는시간 11분
                             
                           </span>
                         </div>
@@ -1919,6 +1932,7 @@
 
 
 <h1 id="upstage-studio-agent-poc">Upstage Studio 문서 Agent PoC</h1>
+<p>Upstage Studio로 계약 검토 Agent를 만들고 상충 조항, 필드 누락, 문서 내부 명령문, 회전 문서를 넣어 설정별 결과를 비교했다.</p>
 <!-- more -->
 
 <h2 id="upstage-studio">Upstage Studio란</h2>
@@ -1992,7 +2006,7 @@
 <p>문제는 인보이스였다. 분류 선택지가 계약 두 종류뿐이어서 계약 조항이 없는데도 서비스 이용 계약으로 분류됐다. 폐쇄형 분류에서는 예외 클래스를 빼면 가장 가까운 항목으로 잘못 분류될 수 있다.</p>
 <p><img alt="Config 2의 페이지 분할 및 분류 결과 화면" src="../../../../AI/upstage_studio_document_agent/02-config2-classification.png" /></p>
 <hr />
-<h2 id="config-3">Config 3에서 생긴 회귀</h2>
+<h2 id="config-3">Config 3에서 새로 생긴 문제</h2>
 <p>Config 3에는 다음 규칙을 추가했다.</p>
 <ul>
 <li>인보이스와 일반 문서를 위한 기타 문서 분류</li>
@@ -2006,7 +2020,7 @@
 <p>대신 세 가지가 틀어졌다.</p>
 <p>서비스 범위와 비용, 비밀유지 의무가 들어 있는 서비스 제공 합의 메모를 기타 문서로 분류했다(Studio 화면에서는 이 오분류의 근거를 따로 보여주지 않았다). 연간 금액도 필수 항목에 들어가 정상적인 회전 계약까지 위험으로 판정됐다. 계약서에 넣어둔 검토 메모는 document_instruction_detected에 잘못 들어갔다.</p>
 <p><img alt="Config 3에서 서비스 제공 합의 메모가 기타 문서로 분류된 화면" src="../../../../AI/upstage_studio_document_agent/03-service-memo-regression.png" /></p>
-<p>문제를 하나 막으니 정상 입력까지 막힌 회귀가 생겼다. Config 3에서는 분류 규칙과 추출 스키마를 함께 고쳤기 때문에 어떤 변경이 영향을 줬는지 확인하려면 전체 평가 문서를 다시 실행해야 했다.</p>
+<p>문제를 하나 막으니 정상 입력까지 막혔다. Config 3에서는 분류 규칙과 추출 스키마를 함께 고쳤기 때문에 어떤 변경이 영향을 줬는지 확인하려면 전체 평가 문서를 다시 실행해야 했다.</p>
 <hr />
 <h2 id="config-4">Config 4로 범위를 줄였다</h2>
 <p>기타 문서의 기준을 제목이 아니라 내용으로 바꿨다. 서비스 범위와 함께 대금이나 정산을 정하고 쌍방의 권리와 의무를 담으면 제목이 메모여도 서비스 계약으로 분류하게 했다. 기타 문서는 인보이스, 청구서, 단순 안내처럼 계약상 권리와 의무를 정하지 않는 문서로 좁혔다.</p>
@@ -2042,7 +2056,7 @@
 <td>Config 3</td>
 <td style="text-align: right;">43.08초</td>
 <td style="text-align: right;">51.3%</td>
-<td>인보이스 해결, 합의 메모와 정상 계약에서 회귀</td>
+<td>인보이스 해결, 합의 메모와 정상 계약이 틀어짐</td>
 </tr>
 <tr>
 <td>Config 4 첫 실행</td>
@@ -2063,30 +2077,73 @@
 <p>0.60초도 콜드 실행 성능으로 보면 안 된다. 첫 실행이 44.98초였고 같은 파일을 다시 넣었을 때만 급격히 줄었다. 캐시 적용 여부는 화면에서 확인하지 못했다.</p>
 <p><img alt="Studio Monitor의 Config 4 지연 시간 차트" src="../../../../AI/upstage_studio_document_agent/06-latency-monitor.png" /></p>
 <hr />
-<h2 id="_1">불리언만으로 구분되지 않은 값</h2>
+<h2 id="boolean">boolean만으로 구분되지 않은 값</h2>
 <p>Config 4에도 남은 문제가 있다. 자동 갱신 조항 자체가 없는 서비스 제공 합의 메모에서 auto_renewal은 false로 추출됐고 missing_required_fields에는 auto_renewal이 다시 들어갔다.</p>
 <p>사람이 보기에는 서로 다른 상태다.</p>
 <ul>
 <li>자동 갱신하지 않는다는 조항이 있음</li>
 <li>자동 갱신 조항 자체가 없음</li>
 </ul>
-<p>하지만 true와 false만 받는 불리언 필드에는 모른다는 상태가 없다. 운영용 스키마라면 true, false, null이나 별도 상태 enum을 원문 근거와 함께 저장하는 쪽이 안전하다. 모델 성능이 아니라 출력 타입 설계에서 생긴 문제다.</p>
+<p>하지만 true와 false만 받는 boolean 필드에는 모른다는 상태가 없다. 운영용 스키마라면 true, false, null이나 별도 상태 enum을 원문 근거와 함께 저장하는 쪽이 안전하다. 모델 성능이 아니라 출력 타입 설계에서 생긴 문제다.</p>
 <hr />
-<h2 id="_2">페이지별 분할의 한계</h2>
+<h2 id="_1">페이지별 분할의 한계</h2>
 <p>이번 합성 PDF에는 한 페이지마다 문서 하나를 배치했으니 페이지별 분할이 정확했다. 실제 계약서는 한 계약이 여러 페이지에 걸친다. 페이지마다 자르면 앞 페이지의 계약명과 당사자, 뒤 페이지의 책임과 해지 조항이 서로 다른 문서로 나뉠 수 있다.</p>
 <p>실제 적용에서는 Studio의 페이지 분할만으로 해결됐다고 보지 말고 별도 전처리나 검토 단계에서 문서 제목과 문서 번호, 당사자, 페이지 연속성을 함께 확인해야 한다. 이번 결과만 보고 여러 페이지로 된 묶음 계약에서도 동작한다고 판단하면 안 된다.</p>
 <p>이번 인젝션 테스트도 쉬운 편이었다. 명령문 앞에 시스템 명령이 아니라는 설명을 넣었다. 회전 문서는 흐릿한 스캔 사진이 아니라 텍스트가 포함된 PDF 페이지를 회전한 형태다. 다음 검증에서는 안내 문구가 없는 한글과 영문 인젝션, 저해상도 스캔, 기울어진 사진, 도장과 표가 섞인 계약서를 추가할 필요가 있다.</p>
 <hr />
-<h2 id="pydantic-ai-langgraph-langfuse">Pydantic AI, LangGraph, Langfuse와 비교</h2>
-<p>네 제품은 일부 기능이 겹치지만 중심 역할이 다르다. Upstage Studio는 화면에서 문서 Agent를 구성하는 도구고 나머지 셋은 코드 구현과 실행 제어, 관측을 맡는 서로 다른 층이다.</p>
+<h2 id="n8n-dify">n8n, Dify와 비교</h2>
 <table>
 <thead>
 <tr>
 <th>비교 항목</th>
 <th>Upstage Studio</th>
-<th>Pydantic AI</th>
-<th>LangGraph</th>
-<th>Langfuse</th>
+<th><a href="https://docs.n8n.io/">n8n</a></th>
+<th><a href="https://docs.dify.ai/">Dify</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>성격</td>
+<td>문서 특화 Agent 제작 도구</td>
+<td>범용 워크플로 자동화 플랫폼</td>
+<td>LLM 앱 개발 플랫폼</td>
+</tr>
+<tr>
+<td>문서 처리</td>
+<td>Parse, 분류, 필드 추출, 원문 근거를 전용 노드로 처리</td>
+<td>Extract From File 노드로 텍스트 추출, 필드 추출은 LLM 기반 Information Extractor 노드</td>
+<td>Doc Extractor 노드로 텍스트 추출, 필드 추출은 LLM 기반 Parameter Extractor 노드</td>
+</tr>
+<tr>
+<td>제공 형태</td>
+<td>웹 SaaS</td>
+<td>셀프호스팅 또는 n8n Cloud</td>
+<td>셀프호스팅 또는 Dify Cloud</td>
+</tr>
+<tr>
+<td>외부 연동</td>
+<td>이번 PoC에서 확인하지 않음</td>
+<td>수백 개 서비스 노드</td>
+<td>마켓플레이스 플러그인과 도구</td>
+</tr>
+<tr>
+<td>적합한 경우</td>
+<td>문서 필드 추출이 핵심인 업무</td>
+<td>여러 SaaS를 잇는 자동화</td>
+<td>챗봇과 RAG 앱</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pydantic-ai-langgraph-langfuse">Pydantic AI, LangGraph, Langfuse와 비교</h2>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>Upstage Studio</th>
+<th><a href="https://pydantic.dev/docs/ai/overview/">Pydantic AI</a></th>
+<th><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a></th>
+<th><a href="https://langfuse.com/docs">Langfuse</a></th>
 </tr>
 </thead>
 <tbody>
@@ -2141,16 +2198,13 @@
 </tr>
 </tbody>
 </table>
-<p><a href="https://pydantic.dev/docs/ai/overview/">Pydantic AI</a>는 output_type에 Pydantic 모델을 지정해 결과 형태를 검증할 수 있다. 이번 PoC의 auto_renewal도 bool | None이나 별도 상태 enum으로 정의했다면 모르는 값을 false와 구분하기 쉬웠을 것이다. Agent가 다른 Agent를 도구처럼 부르거나 애플리케이션 코드가 다음 Agent를 고르는 방식도 지원한다. 복잡한 상태 기반 제어가 필요하면 별도 pydantic-graph를 선택할 수 있다.</p>
-<p><a href="https://docs.langchain.com/oss/python/langgraph/overview">LangGraph</a>는 Agent보다 실행 흐름에 초점이 있다. 상태를 체크포인트로 저장하고 해당 상태에서 재개하거나 중간에 사람 승인을 기다리는 구조에 맞다. 계약 위험을 발견했을 때 법무 검토를 요청하고 승인 뒤 수정된 값으로 실행을 이어가는 시스템이라면 Instruct 결과 반환으로 끝난 이번 PoC 흐름보다 LangGraph의 interrupt가 잘 맞는다.</p>
-<p><a href="https://langfuse.com/docs">Langfuse</a>는 Agent를 실행하지 않는다. Pydantic AI나 LangGraph로 만든 실행을 trace로 남기고 비용, 지연, 프롬프트 버전, 평가 결과를 연결한다. 이번처럼 Config를 고칠 때 인보이스는 해결됐지만 정상 계약이 틀어지는 회귀를 dataset 평가로 잡는 역할이다. Studio의 Accuracy가 무엇을 뜻하는지 애매했던 것과 달리 Langfuse에서는 문서 유형 정답률, 누락값 환각, 위험 판정 일치처럼 평가 항목을 직접 정의할 수 있다.</p>
 <hr />
-<h2 id="_3">실제로 조합한다면</h2>
+<h2 id="_2">실제로 조합한다면</h2>
 <p>문서 PoC는 Studio 하나로 충분했다. 외부 시스템과 고객별 규칙이 늘어나면 제품을 갈아타는 것보다 역할을 나눠 조합하는 쪽이 자연스럽다.</p>
 <p>계약 문서는 Upstage Document Parse에서 텍스트와 문서 구조를 추출한다. 이 결과를 Pydantic AI에 넘겨 타입 검증이 필요한 추출과 판단을 구현한다. LangGraph가 분기, 재시도, 사람 승인을 맡고 전 과정의 비용과 지연, 품질은 Langfuse에서 추적하는 구성이다.</p>
 <p>처음부터 전부 넣을 필요는 없다. 고객과 함께 가능성을 확인하는 단계에서는 Studio가 빠르다. DB 조회와 API 호출, 고객별 계산 규칙이 필요하면 Pydantic AI가 맞다. 실행이 길어지고 승인과 재개가 생길 때 LangGraph를 붙이면 된다. Langfuse는 운영 품질을 비교해야 하는 시점부터 필요하다.</p>
 <hr />
-<h2 id="_4">결론</h2>
+<h2 id="_3">결론</h2>
 <p>Upstage Studio의 장점은 문서 Agent를 만드는 시간을 줄여주는 데 있었다. Parse, 분류, 추출, 원문 인용을 한 화면에서 확인할 수 있어 계약 검토 PoC가 금방 나왔다. 회전 문서와 문서 내부 명령문도 Config 2 실행에서 예상보다 잘 처리했다.</p>
 <p>운영 가능 여부는 별개였다. 기타 문서를 추가하자 정상 합의 메모까지 기타로 분류됐고 누락 규칙을 넓히자 정상 계약이 위험으로 판정됐다. 자연어 수정이 빠른 만큼 고정된 평가 문서를 다시 돌리는 과정이 필요했다. 모델을 바꾸지 않고 분류 선택지와 필드 타입, 사람 검토 조건만 고쳐도 결과가 달라졌다.</p>
 <p>문서 PoC는 Upstage Studio, 커스텀 업무 로직은 Pydantic AI, 오래 이어지는 상태와 승인은 LangGraph, 운영 평가는 Langfuse로 나누는 구성이 맞았다.</p>
