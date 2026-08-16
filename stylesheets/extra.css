@@ -1,9 +1,17 @@
 /* 목차(ToC)를 전 페이지에서 숨김.
    md-sidebar--secondary: 넓은 화면의 우측 목차 영역
-   md-nav--secondary: 좁은 화면에서 좌측 네비·모바일 드로어에 통합되는 목차 본체 */
+   md-nav--secondary: 좁은 화면에서 좌측 네비·모바일 드로어에 통합되는 목차 본체
+   :not([hidden]) 변형은 테마가 같은 선택자로 큰 화면에서 다시 표시하는 규칙을
+   같은 특이도로 누르기 위한 것. 이게 빠지면 목차 있는 글에만 빈 우측 기둥이 남는다 */
 .md-sidebar--secondary,
+.md-sidebar--secondary:not([hidden]),
 .md-nav--secondary {
   display: none;
+}
+
+/* 글 본문 폭 통일: 목차 유무와 무관하게 모든 글이 같은 폭 */
+.md-content--post > .md-content__inner {
+  max-width: 37rem;
 }
 
 /* 목차를 없애며 생긴 우측 여백 배분: 그리드 폭을 61rem에서 70rem으로 약 15% 확대.
