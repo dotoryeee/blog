@@ -9,30 +9,26 @@
   display: none;
 }
 
-/* 글 본문 폭 통일: 목차 유무와 무관하게 모든 글이 같은 폭 */
-.md-content--post > .md-content__inner {
-  max-width: 37rem;
+/* 본문 폭 통일. 홈·목록·태그·전체 글·포스트 전부 같은 폭.
+   포스트만 걸면 홈은 끝까지 늘어나고 포스트는 오른쪽이 비어 화면이 왼쪽으로 쏠린다 */
+.md-content__inner {
+  max-width: 40rem;
 }
 
-/* 목차를 없애며 생긴 우측 여백 배분: 그리드 폭을 61rem에서 70rem으로 약 15% 확대.
-   material이 1600px 이상 화면에서 루트 글자를 키워 70rem이 창을 꽉 채울 수 있어,
-   창 폭 - 8rem 상한을 함께 걸어 어떤 창에서도 좌우 여백이 남게 한다.
-   margin-left는 가운데 정렬에서 화면 폭의 5%만큼 우측 이동. clamp 상한이
-   오른쪽 여백 3rem을 보장한다. 헤더·본문·푸터가 전부 md-grid라 같이 움직인다 */
+/* 그리드 폭 = 좌측 사이드바(12.1rem) + 간격 + 본문(40rem) + 본문 좌우 마진.
+   본문 폭에 맞춰 그리드를 잡아야 빈 공간 없이 화면 가운데에 놓인다.
+   창이 좁으면 창 폭 - 6rem으로 줄어 좌우 여백이 남는다 */
 .md-grid {
-  --grid-w: min(70rem, 100% - 8rem);
+  --grid-w: min(58rem, 100% - 6rem);
   max-width: var(--grid-w);
-  margin-left: clamp(0rem, calc((100% - var(--grid-w)) / 2 + 5%), calc(100% - var(--grid-w) - 3rem));
+  margin-left: clamp(0rem, calc((100% - var(--grid-w)) / 2 + 3%), calc(100% - var(--grid-w) - 3rem));
 }
 
 /* 좌측 사이드바와 본문 사이 간격.
    margin이 아니라 flex gap이라 사이드바가 없는 화면에서는 자동으로 무시된다.
    홈·목록·태그: 사이드바와 본문이 md-main__inner의 형제 요소
    포스트: 최근 글 사이드바가 md-content--post 안쪽에 있어 그 컨테이너에 준다 */
-.md-main__inner {
-  column-gap: 3%;
-}
-
+.md-main__inner,
 .md-content--post {
-  column-gap: 3%;
+  column-gap: 2rem;
 }
