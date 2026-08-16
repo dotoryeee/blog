@@ -6,15 +6,19 @@
   display: none;
 }
 
-/* 목차를 없애며 생긴 우측 여백 배분.
-   그리드 폭을 61rem에서 70rem으로 약 15% 늘려 본문을 넓히고,
-   사이드바가 보이는 화면에서는 본문 좌측에 10% 마진을 둬 최근 글 영역과 띄운다 */
+/* 목차를 없애며 생긴 우측 여백 배분: 그리드 폭을 61rem에서 70rem으로 약 15% 확대 */
 .md-grid {
   max-width: 70rem;
 }
 
-@media screen and (min-width: 60em) {
-  .md-content {
-    margin-left: 10%;
-  }
+/* 좌측 사이드바와 본문 사이 간격.
+   margin이 아니라 flex gap이라 사이드바가 없는 화면에서는 자동으로 무시된다.
+   홈·목록·태그: 사이드바와 본문이 md-main__inner의 형제 요소
+   포스트: 최근 글 사이드바가 md-content--post 안쪽에 있어 그 컨테이너에 준다 */
+.md-main__inner {
+  column-gap: 3%;
+}
+
+.md-content--post {
+  column-gap: 3%;
 }
