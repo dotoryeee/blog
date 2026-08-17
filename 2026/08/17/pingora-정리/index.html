@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/08/17/pingora-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/">
+        <link rel="prev" href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
       
       
       
@@ -961,7 +961,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 13분
+                              읽는시간 14분
                             
                           </span>
                         </div>
@@ -981,6 +981,33 @@
                   </div>
                   <nav class="md-nav">
                     <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
                       
                         
                         
@@ -1765,33 +1792,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    AWS 고성능 네트워킹 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -1849,13 +1849,11 @@
 <h2 id="pingora_1">Pingora란</h2>
 <p>Pingora란 프록시 동작을 코드로 직접 구현하도록 Cloudflare가 Rust로 만들어 공개한 라이브러리. 설정 파일만으로 띄우는 완제품 프록시 서버는 아님</p>
 <ul>
-<li>형태: 크레이트 묶음 → 요청 처리 로직을 작성해 자기 바이너리를 빌드</li>
+<li>형태: 설치해서 띄우는 실행 파일이 없음. Rust 라이브러리(크레이트) 묶음을 의존성으로 받은 뒤, 요청을 어느 백엔드로 보낼지 같은 처리 로직을 콜백 함수로 작성하고 컴파일하면 그 결과물이 자기만의 프록시 바이너리가 됨</li>
 <li>프로토콜: HTTP/1과 HTTP/2 종단 간 프록시, gRPC·websocket 프록시 지원</li>
 <li>HTTP/3·QUIC: 기능 목록에 없음 → 미지원</li>
 <li>지원 OS: Linux가 tier 1. 유닉스 계열은 대부분 컴파일되지만 macOS는 일부 기능이 빠짐</li>
-<li>Windows: 커뮤니티 기여에만 의존하는 예비 지원 단계</li>
-<li>아키텍처: x86_64와 aarch64</li>
-<li>릴리스: 최신 stable 0.8.1(2026-06-04). 이 태그 기준 MSRV는 Rust 1.84이고 6개월 rolling 정책</li>
+<li>릴리스: 최신 stable 0.8.1(2026-06-04)</li>
 <li>빌드 의존: BoringSSL을 쓰면 Clang, OpenSSL을 쓰면 Perl 5 필요</li>
 </ul>
 <hr />
@@ -1883,7 +1881,7 @@
 <tr>
 <td>커넥션 풀 범위</td>
 <td>upstream keepalive 커넥션이 워커 프로세스별 캐시에 보존</td>
-<td>커넥터의 풀을 같은 서비스의 스레드끼리 공유. 프록시 서비스가 하나면 프로세스 전체가 풀 하나</td>
+<td>upstream 연결을 만들고 재사용하는 커넥터의 풀을 같은 서비스의 스레드끼리 공유. 프록시 서비스가 하나면 프로세스 전체가 풀 하나</td>
 </tr>
 <tr>
 <td>설정 방식</td>
@@ -1898,7 +1896,7 @@
 <tr>
 <td>확장 방법</td>
 <td>C 모듈 컴파일 또는 njs 스크립트</td>
-<td><code>ProxyHttp</code> 트레이트의 phase 콜백 구현</td>
+<td><code>ProxyHttp</code> 트레이트(Rust의 인터페이스)의 phase 콜백 구현</td>
 </tr>
 <tr>
 <td>재시작 방식</td>
@@ -1908,6 +1906,7 @@
 </tbody>
 </table>
 <ul>
+<li>Pingora의 서비스는 리스너와 tokio 런타임을 함께 갖는 실행 단위(프록시 서비스, 헬스체크 같은 백그라운드 서비스, Prometheus 서비스 등) → 스레드와 커넥션 풀은 이 단위로 갈림</li>
 <li>무중단 재시작은 양쪽 다 가능 → 갈리는 것은 구 마스터가 새 실행 파일을 직접 기동하느냐, 서로 무관한 두 프로세스가 소켓으로 fd를 주고받느냐</li>
 <li>nginx의 <code>keepalive</code> 지시어는 워커 프로세스별 캐시에 보존되는 idle keepalive 커넥션 수를 지정 → 워커가 여러 개면 풀도 그 수만큼 나뉨</li>
 <li>Pingora의 <code>work_stealing</code> 설정은 기본 true → 유휴 스레드가 다른 스레드의 작업을 가져가는 런타임으로 시작</li>
@@ -1926,7 +1925,7 @@
 <tbody>
 <tr>
 <td>커넥션 재사용률</td>
-<td>한 대형 고객 기준 87.1% → 99.92%. 오리진으로 나가는 신규 커넥션이 160분의 1로 감소</td>
+<td>한 대형 고객 기준 87.1% → 99.92%. 오리진으로 나가는 신규 커넥션 비율이 12.9%에서 0.08%로 줄어 160분의 1</td>
 </tr>
 <tr>
 <td>초당 신규 커넥션</td>
@@ -1951,7 +1950,7 @@
 </ul>
 <hr />
 <h2 id="phase">요청 처리 phase</h2>
-<p>요청 하나가 지나는 지점마다 콜백이 정의돼 있고, <code>ProxyHttp</code> 트레이트에서 필요한 것만 구현하는 구조</p>
+<p>요청 하나가 지나는 지점마다 콜백이 정의돼 있고, <code>ProxyHttp</code> 트레이트에서 필요한 것만 구현하는 구조. 아래 흐름도는 본문·모듈 관련 phase를 뺀 주 흐름만 그린 것</p>
 <pre class="mermaid"><code>graph TD
     A[request_filter] --&gt; B[upstream_peer]
     B --&gt; C[connected_to_upstream]
@@ -1978,12 +1977,12 @@
 <tr>
 <td><code>early_request_filter()</code></td>
 <td>모든 요청의 첫 단계</td>
-<td>다운스트림 모듈의 동작을 요청별로 세밀하게 제어</td>
+<td>다운스트림 요청에 붙는 내장 모듈(압축 등)의 동작을 요청별로 조정</td>
 </tr>
 <tr>
 <td><code>request_filter()</code></td>
 <td>요청 헤더를 받은 뒤</td>
-<td>입력 검증, rate limiting, 컨텍스트 초기화</td>
+<td>입력 검증, rate limiting, phase 사이에서 값을 나르는 요청별 컨텍스트 초기화</td>
 </tr>
 <tr>
 <td><code>request_body_filter()</code></td>
@@ -1992,7 +1991,7 @@
 </tr>
 <tr>
 <td><code>proxy_upstream_filter()</code></td>
-<td>캐시에서 응답하지 못한 뒤, upstream 연결 직전</td>
+<td>(캐시를 켠 경우) 캐시에서 응답하지 못한 뒤, upstream 연결 직전</td>
 <td>upstream까지 갈지 여기서 끊을지 판단</td>
 </tr>
 <tr>
@@ -2072,7 +2071,7 @@
 <tr>
 <td>연결 수립 후 프록시 중 오류</td>
 <td><code>error_while_proxy()</code></td>
-<td>기본 구현이 재사용 커넥션에서 난 오류인지와 재전송 버퍼가 잘리지 않았는지로 재시도 여부를 결정. 공식 문서는 재사용 커넥션 + 멱등(idempotent) 메서드일 때 재시도할 수 있다고 설명</td>
+<td>기본 구현이 재사용 커넥션에서 난 오류인지와 다시 보내려고 담아 둔 요청 본문 버퍼가 잘리지 않았는지로 재시도 여부를 결정. 공식 문서는 재사용 커넥션 + 멱등(idempotent) 메서드일 때 재시도할 수 있다고 설명</td>
 </tr>
 <tr>
 <td>어느 단계에서든 오류가 발생함</td>
@@ -2086,7 +2085,7 @@
 <li>재시도가 표시되면 <code>upstream_peer()</code>가 다시 호출됨 → 같은 upstream 재시도와 다른 peer로의 failover를 여기서 갈라 씀</li>
 <li>failover는 시도 횟수를 컨텍스트에 쌓아 두고 <code>upstream_peer()</code>가 그 값을 보고 다른 peer를 고르는 방식</li>
 <li>연결 실패는 재시도 표시를 하지 않으면 그대로 오류 응답 → 로드밸런서를 만들 때 이 콜백을 비워 두면 죽은 백엔드로 간 요청이 바로 실패함</li>
-<li>재시도 횟수 상한은 설정 키 <code>max_retries</code>이고 기본 16</li>
+<li>재시도 횟수 상한은 conf.yaml의 <code>max_retries</code> 키이고 기본 16</li>
 </ul>
 <hr />
 <h2 id="_2">크레이트 구성</h2>
@@ -2126,10 +2125,10 @@
 </tbody>
 </table>
 <ul>
-<li><code>default</code> feature가 빈 목록 → 필요한 기능을 feature로 켜서 씀</li>
+<li>Cargo의 feature(빌드할 때 켜고 끄는 기능 스위치)는 <code>default</code>가 빈 목록 → 필요한 기능을 feature로 켜서 씀</li>
 <li><code>lb</code> feature는 <code>pingora-load-balancing</code>과 <code>proxy</code>를 함께 끌어옴 → 로드밸런싱만 켜도 프록시 모듈이 딸려옴</li>
 <li>그 밖의 feature: <code>proxy</code>, <code>cache</code>, <code>sentry</code>, <code>time</code>, <code>connection_filter</code>, <code>patched_http1</code></li>
-<li>같은 워크스페이스에 <code>pingora-http</code>, <code>pingora-error</code>, <code>pingora-timeout</code>, <code>pingora-limits</code>, <code>pingora-ketama</code>, <code>pingora-memory-cache</code>, <code>pingora-pool</code>, <code>pingora-lru</code>, <code>pingora-runtime</code>, <code>pingora-header-serde</code>, TinyUfo가 함께 있음</li>
+<li>같은 워크스페이스에 <code>pingora-http</code>, <code>pingora-error</code>, <code>pingora-timeout</code>, <code>pingora-limits</code>, <code>pingora-ketama</code>, <code>pingora-memory-cache</code>, <code>pingora-pool</code>, <code>pingora-lru</code>, <code>pingora-runtime</code>, <code>pingora-header-serde</code>, 캐시 알고리즘 크레이트 TinyUfo가 함께 있음</li>
 </ul>
 <hr />
 <h2 id="_3">무중단 업그레이드</h2>
@@ -2142,20 +2141,21 @@
     Note over New: 업그레이드 모드(-u)로 기동
     New-&gt;&gt;New: upgrade_sock bind 후 대기
     Note over Old: SIGQUIT 수신
-    Old-&gt;&gt;New: 리스닝 소켓 fd 전달&lt;br&gt;(unix 도메인 소켓 + SCM_RIGHTS)
+    Old-&gt;&gt;New: 리스닝 소켓 fd 전달&lt;br&gt;(unix 도메인 소켓의 SCM_RIGHTS)
     New-&gt;&gt;Client: 신규 커넥션 accept 시작
-    Note over Old,New: 5초 동안 두 프로세스가 함께 accept
+    Note over Old,New: 5초(고정값) 동안 두 프로세스가 함께 accept
     Old-&gt;&gt;Client: 진행 중 요청만 마무리 후 종료</code></pre>
 <ul>
 <li>보장 1: 서버 엔드포인트로 접속하는 요청이 connection refused를 보지 않음</li>
 <li>보장 2: grace period 안에 끝나는 요청은 도중에 끊기지 않음</li>
-<li>순서: 두 프로세스가 같은 <code>upgrade_sock</code> 경로를 보게 맞춤 → 신 프로세스를 <code>--upgrade</code>로 기동 → 구 프로세스에 SIGQUIT</li>
+<li>순서: 두 프로세스가 같은 <code>upgrade_sock</code> 경로를 보게 맞춤 → 신 프로세스를 <code>-u</code>(<code>--upgrade</code>)로 기동 → 구 프로세스에 SIGQUIT</li>
 <li>바인드 주체는 신 프로세스 → 신 프로세스가 <code>upgrade_sock</code>을 bind하고 구 프로세스가 connect해서 fd를 보냄</li>
-<li>전달 수단은 unix 도메인 소켓의 SCM_RIGHTS이고 한 번에 최대 32개 fd</li>
-<li>양쪽 다 기본 5회, 1초 간격으로 재시도 → 신 프로세스 기동과 SIGQUIT 사이에 5초쯤의 여유가 있음</li>
-<li>fd를 넘긴 뒤에도 구 프로세스가 5초 동안 리스너를 유지 → 그 구간에는 구·신 프로세스가 같은 소켓에서 함께 accept</li>
+<li>전달 수단은 unix 도메인 소켓의 SCM_RIGHTS(열린 fd 자체를 다른 프로세스에 건네는 제어 메시지)이고 한 번에 최대 32개 fd</li>
+<li>신 프로세스의 fd 수신 대기와 구 프로세스의 소켓 연결 모두 기본 5회, 1초 간격으로 재시도 → 신 프로세스 기동과 SIGQUIT 사이에 5~6초쯤의 여유가 있음</li>
+<li>fd를 넘긴 뒤에도 구 프로세스가 5초(설정 키가 아닌 고정값) 동안 리스너를 유지 → 그 구간에는 구·신 프로세스가 같은 소켓에서 함께 accept</li>
 <li>이후 grace period 동안 진행 중 요청만 마무리하고 종료</li>
-<li>비Linux 빌드에서는 fd 이관 함수가 스텁으로 컴파일됨 → 신 프로세스 쪽은 지원되지 않는다는 오류 로그를 남기고 실패하고, 구 프로세스 쪽 스텁은 로그 없이 성공한 것처럼 반환</li>
+<li>비Linux 빌드에서는 fd 이관 함수가 스텁으로 컴파일됨 → 신 프로세스 쪽은 지원되지 않는다는 오류 로그를 남기고 실패</li>
+<li>구 프로세스 쪽 스텁은 로그 없이 성공한 것처럼 반환 → 구 프로세스는 이관에 성공한 것처럼 종료 절차로 들어가고 소켓을 넘겨받은 프로세스는 없음</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 신 프로세스를 업그레이드 모드로 먼저 기동</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">.</span><span class="o">/</span><span class="n">lb</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="n">conf.yaml</span><span class="w"> </span><span class="o">-</span><span class="n">u</span>
@@ -2185,7 +2185,7 @@
 </tr>
 <tr>
 <td><code>graceful_shutdown_timeout_seconds</code></td>
-<td>graceful shutdown 마무리 대기 시간. 미설정 시 5초</td>
+<td>grace period가 끝난 뒤 런타임이 정리되기를 기다리는 시간. 미설정 시 5초</td>
 </tr>
 <tr>
 <td>SIGQUIT</td>
@@ -2206,6 +2206,7 @@
 <ul>
 <li><code>grace_period_seconds</code>를 비워 두면 구 프로세스가 5분간 남음 → 자주 배포하는 환경에서는 값을 줄여 명시</li>
 <li>foreground로 띄우면 pid 파일이 생기지 않음 → PID는 <code>pgrep</code>이나 <code>ss -lntp</code>로 확인</li>
+<li>신·구 프로세스의 설정 파일은 <code>upgrade_sock</code>만 같으면 됨 → pid·로그 경로는 나눠도 됨</li>
 </ul>
 <hr />
 <h2 id="tls">TLS 백엔드 선택</h2>
@@ -2252,7 +2253,7 @@
 </ul>
 <hr />
 <h2 id="_4">보안 이력</h2>
-<p>지금까지 공개된 CVE는 5건. 4건은 HTTP 메시지 경계 해석과 캐시 키 범위 문제이고 1건은 HTTP/2 스트림 리셋 반복에 따른 메모리 소모 문제</p>
+<p>지금까지 공개된 CVE는 5건. 4건은 HTTP 메시지 경계 해석(요청 스머글링, request smuggling)과 캐시 키 범위 문제이고 1건은 HTTP/2 스트림 리셋 반복에 따른 메모리 소모 문제</p>
 <table>
 <thead>
 <tr>
@@ -2296,8 +2297,8 @@
 </tbody>
 </table>
 <ul>
-<li>CVE-2026-2833/2835/2836 세 건은 2026-03-04에 함께 공개됐고 모두 0.8.0에서 수정 → 둘은 메시지 경계 해석, 하나는 캐시 키 범위 문제</li>
-<li>CVE-2025-4366은 Cloudflare CDN 무료 요금제 이용자와 pingora-proxy·pingora-cache의 캐시 기능 사용자가 노출 대상</li>
+<li>CVE-2026-2833/2835/2836 세 건은 2026-03-04에 함께 공개됐고 모두 0.8.0에서 수정</li>
+<li>CVE-2025-4366은 Cloudflare가 밝힌 노출 대상이 자사 CDN 무료 요금제 이용자와 pingora-proxy·pingora-cache의 캐시 기능 사용자</li>
 </ul>
 <hr />
 <h2 id="_5">도입 판단</h2>
@@ -2345,7 +2346,7 @@
 <ul>
 <li>도입 비용은 프록시 로직보다 접근 로그·메트릭·설정 관리 같은 주변 도구를 얼마나 새로 만들어야 하는지에서 나옴</li>
 <li>0.x 버전대라 릴리스마다 API가 바뀔 수 있음 → 의존성 버전을 고정해 쓸 것</li>
-<li>MSRV가 6개월 rolling 정책이라 툴체인 갱신 주기를 같이 잡아야 함</li>
+<li>MSRV(빌드에 필요한 최소 Rust 버전)는 6개월 rolling 정책(6개월 이상 지난 Rust 버전까지 요구 버전을 올릴 수 있음)이라 툴체인 갱신 주기를 같이 잡아야 함</li>
 </ul>
 <hr />
 <h2 id="_6">결론</h2>
@@ -2403,7 +2404,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-footer__link md-footer__link--prev" aria-label="이전: Upstage Studio 문서 Agent PoC">
+          <a href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2413,7 +2414,7 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Upstage Studio 문서 Agent PoC
+                Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
               </div>
             </div>
           </a>
