@@ -13,8 +13,10 @@
         <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/08/17/pingora-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
+        <link rel="prev" href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/">
       
+      
+        <link rel="next" href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
       
       
         
@@ -989,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1907,7 +1909,7 @@
 </table>
 <ul>
 <li>Pingora의 서비스는 리스너와 tokio 런타임을 함께 갖는 실행 단위(프록시 서비스, 헬스체크 같은 백그라운드 서비스, Prometheus 서비스 등) → 스레드와 커넥션 풀은 이 단위로 갈림</li>
-<li>무중단 재시작은 양쪽 다 가능 → 갈리는 것은 구 마스터가 새 실행 파일을 직접 기동하느냐, 서로 무관한 두 프로세스가 소켓으로 fd를 주고받느냐</li>
+<li>무중단 재시작은 양쪽 다 가능. 차이는 새 프로세스를 누가 띄우고 리스닝 소켓을 어떻게 넘기느냐 → nginx는 돌고 있는 마스터가 USR2를 받아 새 바이너리를 자식 프로세스로 직접 띄우고 그 자식이 리스닝 소켓을 상속받음, Pingora는 운영자가 새 프로세스를 따로 띄우고 구 프로세스가 SIGQUIT을 받으면 unix 도메인 소켓으로 리스닝 소켓 fd를 건네줌</li>
 <li>nginx의 <code>keepalive</code> 지시어는 워커 프로세스별 캐시에 보존되는 idle keepalive 커넥션 수를 지정 → 워커가 여러 개면 풀도 그 수만큼 나뉨</li>
 <li>Pingora의 <code>work_stealing</code> 설정은 기본 true → 유휴 스레드가 다른 스레드의 작업을 가져가는 런타임으로 시작</li>
 <li><code>upstream_keepalive_pool_size</code>는 upstream keepalive 커넥션 풀에 유지할 커넥션 총량이고 기본 128 → 워커별로 쪼개지는 값이 없음</li>
@@ -2404,7 +2406,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="이전: Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기">
+          <a href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-footer__link md-footer__link--prev" aria-label="이전: Upstage Studio 문서 Agent PoC">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2414,11 +2416,27 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
+                Upstage Studio 문서 Agent PoC
               </div>
             </div>
           </a>
         
+        
+          
+          <a href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
         
       </nav>
     
