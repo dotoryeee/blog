@@ -162,6 +162,36 @@ sequenceDiagram
     Old->>Client: 진행 중 요청만 마무리 후 종료
 ```
 
+같은 목적을 nginx는 상속으로 이룸. 구 마스터가 새 바이너리를 자식으로 띄우고, 자식이 리스닝 소켓을 물려받는 흐름
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant OldM as 구 마스터
+    participant OldW as 구 워커
+    participant NewM as 신 마스터·워커
+    Client->>OldW: 요청 처리 중
+    Note over OldM: USR2 수신
+    OldM->>NewM: 새 바이너리를 자식으로 exec<br>리스닝 소켓 fd 상속
+    NewM->>Client: 신규 커넥션 accept 시작
+    Note over OldW,NewM: WINCH 전까지 구 워커도 함께 accept
+    Note over OldM: WINCH 수신
+    OldM->>OldW: graceful 종료 지시
+    OldW->>Client: 진행 중 요청만 마무리 후 종료
+    Note over OldM: QUIT 수신 후 종료
+```
+
+| 비교 항목 | nginx | Pingora |
+|---|---|---|
+| 새 프로세스를 띄우는 주체 | 구 마스터(USR2를 받고 자식으로 exec) | 운영자(`-u`로 따로 기동) |
+| 소켓 전달 방식 | fork/exec 상속 | unix 도메인 소켓의 SCM_RIGHTS |
+| 두 프로세스 관계 | 부모·자식 | 서로 무관 |
+| 함께 accept하는 구간 | USR2 뒤 WINCH를 보내기 전까지(운영자가 정함) | fd 이관 뒤 5초(고정값) |
+| 롤백 | 구 마스터가 살아 있는 동안 HUP으로 구 워커 재기동 후 신 마스터에 QUIT | 별도 절차 없음. 이전 바이너리를 같은 절차로 다시 올림 |
+| 플랫폼 | fd 상속은 유닉스 공통 | 구현이 Linux 전용 |
+
+Pingora 절차의 세부는 다음과 같음
+
 - 보장 1: 서버 엔드포인트로 접속하는 요청이 connection refused를 보지 않음
 - 보장 2: grace period 안에 끝나는 요청은 도중에 끊기지 않음
 - 순서: 두 프로세스가 같은 `upgrade_sock` 경로를 보게 맞춤 → 신 프로세스를 `-u`(`--upgrade`)로 기동 → 구 프로세스에 SIGQUIT
