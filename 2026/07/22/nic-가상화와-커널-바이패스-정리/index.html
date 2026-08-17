@@ -1892,9 +1892,9 @@
 <h2 id="virtio">virtio (반가상화)</h2>
 <p>virtio란 게스트가 가상화 환경임을 전제로 설계된 반가상화(Paravirtualization) 표준 I/O 인터페이스로, 실제 하드웨어를 흉내 내지 않음</p>
 <ul>
-<li>게스트에 virtio 프런트엔드 드라이버, 호스트에 백엔드 드라이버를 두고 둘이 공유 메모리로 통신</li>
+<li>게스트에 virtio 프론트엔드 드라이버, 호스트에 백엔드 드라이버를 두고 둘이 공유 메모리로 통신</li>
 <li>통신 통로는 virtqueue → 그 실체는 링 버퍼인 vring</li>
-<li>프런트엔드가 요청을 vring에 넣고 백엔드에 알림(notify) → 실제 하드웨어 레지스터 접근을 대체해 exit 횟수를 줄임</li>
+<li>프론트엔드가 요청을 vring에 넣고 백엔드에 알림(notify) → 실제 하드웨어 레지스터 접근을 대체해 exit 횟수를 줄임</li>
 <li>실제 NIC 동작을 흉내 낼 필요가 없음 → 에뮬레이션 대비 경로가 짧고 CPU 비용이 낮음</li>
 </ul>
 <h3 id="virtqueue">두 가지 virtqueue</h3>
@@ -1927,7 +1927,7 @@
 <li>vhost-net은 백엔드를 호스트 커널로 이동 → 커널의 vhost 워커 스레드가 vring을 처리해 호스트 네트워크 스택으로 전달</li>
 <li>vhost-user는 백엔드를 QEMU 옆 별도 유저 프로세스로 이동 → 제어 메시지는 UNIX 도메인 소켓, vring 접근은 공유 메모리</li>
 <li>vhost-user 백엔드로 DPDK PMD, OVS-DPDK, SPDK 등을 붙임 → 유저 공간 고속 스위칭과 결합</li>
-<li>게스트는 그대로 virtio 프런트엔드만 봄 → 백엔드만 교체해 성능을 끌어올리는 구조</li>
+<li>게스트는 그대로 virtio 프론트엔드만 봄 → 백엔드만 교체해 성능을 끌어올리는 구조</li>
 </ul>
 <hr />
 <h2 id="sr-iov">SR-IOV</h2>
