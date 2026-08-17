@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·관측 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교">
+        <meta name="description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교">
       
       
       
@@ -87,7 +87,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="AI 에이전트 개발 도구 레이어별 비교 - dotoryeee's blog" />
-<meta property="og:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·관측 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교" />
+<meta property="og:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교" />
 <meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -95,7 +95,7 @@
 <meta property="og:url" content="https://dotoryeee.github.io/blog/2026/08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="AI 에이전트 개발 도구 레이어별 비교 - dotoryeee's blog" />
-<meta property="twitter:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·관측 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교" />
+<meta property="twitter:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교" />
 <meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90.png" />
 </head>
   
@@ -848,7 +848,7 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        관측과 평가
+        모니터링과 평가
       
     </span>
   </a>
@@ -856,10 +856,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+  <a href="#de-facto" class="md-nav__link">
     <span class="md-ellipsis">
       
-        요약
+        업계 사실상 표준(de facto)
       
     </span>
   </a>
@@ -944,7 +944,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 9분
+                              읽는시간 8분
                             
                           </span>
                         </div>
@@ -1833,7 +1833,7 @@
 
 
 <h1 id="ai">AI 에이전트 개발 도구 레이어별 비교</h1>
-<p>에이전트를 만들 때 쓰는 오픈소스 도구를 레이어로 묶어 표로 정리했다. 성격, 로컬 실행 여부, 셀프호스팅 여부를 축으로 잡았다.</p>
+<p>에이전트를 만들 때 쓰는 오픈소스 도구를 레이어로 묶어 표로 정리했다. 빠른 이해를 위해 목적별로 묶어봤다.</p>
 <!-- more -->
 
 <h2 id="_1">오케스트레이션 프레임워크</h2>
@@ -1853,28 +1853,28 @@
 <td>에이전트·LLM 앱 범용 프레임워크</td>
 <td>Python<br>JS·TS는 별도 라이브러리</td>
 <td>모델·도구·벡터 저장소 통합량</td>
-<td>MIT. 1.x에서 에이전트 실행 기능 내장</td>
+<td>MIT. 최근 메이저부터 에이전트 실행 기능 내장</td>
 </tr>
 <tr>
 <td>LlamaIndex</td>
 <td>데이터 프레임워크. 인덱싱·검색 중심</td>
 <td>Python</td>
 <td>데이터 커넥터와 인덱스 구성</td>
-<td>MIT. 2026-08 기준 v0.14</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>Haystack</td>
 <td>파이프라인 그래프 오케스트레이션</td>
 <td>Python</td>
 <td>검색·라우팅·생성 단계를 명시적으로 조립</td>
-<td>Apache-2.0. 2026-07 기준 v3.0</td>
+<td>Apache-2.0</td>
 </tr>
 <tr>
 <td>Semantic Kernel</td>
 <td>모델 중립 에이전트 오케스트레이션 SDK</td>
 <td>C#, Python, Java 3종 공식 SDK</td>
 <td>엔터프라이즈 관측·보안</td>
-<td>MIT. Python SDK는 2026-08 기준 v1.44</td>
+<td>MIT</td>
 </tr>
 </tbody>
 </table>
@@ -1903,7 +1903,7 @@
 <td>에이전트 ↔ 에이전트</td>
 <td>클라이언트, 서버(원격 에이전트)</td>
 <td>JSON-RPC, gRPC, HTTP+JSON 바인딩<br>스트리밍은 SSE</td>
-<td>Apache-2.0. 2026-05 기준 v1.0</td>
+<td>Apache-2.0</td>
 </tr>
 <tr>
 <td>AG-UI(Agent-User Interaction Protocol)</td>
@@ -1930,14 +1930,14 @@
 <td>MCP</td>
 <td>MCP 서버·클라이언트 구축 프레임워크</td>
 <td><code>fastmcp</code></td>
-<td>Apache-2.0. 1.0이 공식 SDK로 흡수, 이후 독립 유지보수. 2026-08 기준 v3.4</td>
+<td>Apache-2.0. 초기 버전이 공식 SDK로 흡수된 뒤 독립 유지보수</td>
 </tr>
 <tr>
 <td>MCP Python SDK</td>
 <td>MCP</td>
 <td>공식 Python 구현</td>
 <td><code>mcp</code></td>
-<td>MIT. v2.0에서 FastMCP 클래스가 MCPServer로 개명</td>
+<td>MIT. 최근 메이저 개편에서 FastMCP 클래스가 MCPServer로 개명</td>
 </tr>
 </tbody>
 </table>
@@ -1960,15 +1960,15 @@
 <td>라이브러리</td>
 <td>상태와 노드, 엣지로 짜는 그래프</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
-<td>MIT. 2026-08 기준 v1.2</td>
+<td>가능</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>PydanticAI</td>
 <td>라이브러리</td>
 <td>타입 검증이 붙은 에이전트 루프</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
+<td>가능</td>
 <td>MIT. 그래프가 필요하면 Pydantic Graph</td>
 </tr>
 <tr>
@@ -1976,7 +1976,7 @@
 <td>라이브러리</td>
 <td>파이썬 코드를 써서 실행하는 코드 에이전트</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. 샌드박스 실행 지원</td>
 </tr>
 <tr>
@@ -1984,7 +1984,7 @@
 <td>런타임(실행형)</td>
 <td>설정 파일 기반 도구 호출 루프</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
+<td>가능</td>
 <td>MIT. WebUI·터미널로 실행하고 OpenAI 호환 API 노출</td>
 </tr>
 <tr>
@@ -1992,7 +1992,7 @@
 <td>라이브러리</td>
 <td>내장 루프에 handoffs와 guardrails</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
+<td>가능</td>
 <td>MIT. 로컬은 OpenAI 호환 base_url과 LiteLLM 어댑터 경유</td>
 </tr>
 <tr>
@@ -2000,23 +2000,23 @@
 <td>라이브러리</td>
 <td>그래프 기반 Workflow와 에이전트 위임</td>
 <td>프로바이더 중립. Gemini에 최적화</td>
-<td>✅</td>
-<td>Apache-2.0. 2026-08 기준 v2.7</td>
+<td>가능</td>
+<td>Apache-2.0</td>
 </tr>
 <tr>
 <td>CrewAI</td>
 <td>라이브러리</td>
 <td>역할 기반 Crew와 이벤트 기반 Flow</td>
 <td>프로바이더 중립</td>
-<td>✅</td>
-<td>MIT. 2026-08 기준 v1.15</td>
+<td>가능</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>Strands Agents</td>
 <td>라이브러리</td>
 <td>모델이 주도하는 에이전트 루프</td>
 <td>프로바이더 중립. 기본값은 Amazon Bedrock</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. Python과 TypeScript</td>
 </tr>
 <tr>
@@ -2024,7 +2024,7 @@
 <td>라이브러리. Claude Code CLI 번들</td>
 <td>모델 주도 루프에 도구·훅·권한</td>
 <td>Claude 모델 전용</td>
-<td>❌</td>
+<td>불가</td>
 <td>MIT. Bedrock, Google Cloud, Microsoft Foundry 경유 호출</td>
 </tr>
 </tbody>
@@ -2046,36 +2046,29 @@
 <td>Mem0</td>
 <td>벡터</td>
 <td>라이브러리<br>저장소 <code>server/</code>의 Docker Compose 스택</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. 그래프 기억은 OSS에서 제거되어 관리형 Platform 전용</td>
 </tr>
 <tr>
 <td>Letta</td>
 <td>읽기·쓰기 가능한 메모리 블록 + 시맨틱 검색 아카이브</td>
 <td>서버와 SDK</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. Docker 이미지는 비유지보수로 문서에 명시</td>
 </tr>
 <tr>
 <td>Graphiti</td>
 <td>그래프. 임베딩·BM25·그래프 순회 병용 검색</td>
 <td>라이브러리<br>FastAPI 서버 별도 제공</td>
-<td>✅</td>
-<td>Apache-2.0. 2026-07 기준 v0.29</td>
+<td>가능</td>
+<td>Apache-2.0</td>
 </tr>
 <tr>
 <td>Cognee</td>
 <td>그래프 + 벡터</td>
 <td>라이브러리<br>API 서버 별도 제공</td>
-<td>✅</td>
-<td>Apache-2.0. 2026-08 기준 v1.5</td>
-</tr>
-<tr>
-<td>LangMem</td>
-<td>벡터. 저장은 LangGraph BaseStore에 위임</td>
-<td>라이브러리</td>
-<td>✅</td>
-<td>MIT. 0.0.x 초기 단계</td>
+<td>가능</td>
+<td>Apache-2.0</td>
 </tr>
 </tbody>
 </table>
@@ -2162,47 +2155,6 @@
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>프로바이더</th>
-<th>공식 Python SDK</th>
-<th>주 API</th>
-<th>OpenAI 호환 엔드포인트</th>
-<th>로컬 대체</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OpenAI</td>
-<td><code>openai</code></td>
-<td>Responses API</td>
-<td>해당 없음</td>
-<td>SDK가 base_url 지정을 지원해 로컬 서버로 돌릴 수 있음</td>
-</tr>
-<tr>
-<td>Anthropic</td>
-<td><code>anthropic</code></td>
-<td>Messages API <code>/v1/messages</code></td>
-<td>있음. 테스트·비교 용도</td>
-<td>SDK가 base_url 지정을 지원. 로컬 모델 사용은 문서화되지 않음</td>
-</tr>
-<tr>
-<td>Google Gemini</td>
-<td><code>google-genai</code></td>
-<td>Gemini API</td>
-<td>있음</td>
-<td>커스텀 base_url은 API 게이트웨이 용도로 문서화</td>
-</tr>
-<tr>
-<td>Upstage</td>
-<td>없음. OpenAI SDK에 base_url 지정</td>
-<td><code>/v1/chat/completions</code>, <code>/v1/embeddings</code></td>
-<td>있음</td>
-<td>OpenAI SDK를 그대로 쓰므로 base_url만 로컬 서버로 바꾸면 됨</td>
-</tr>
-</tbody>
-</table>
 <hr />
 <h2 id="_6">문서 수집과 구조화 출력</h2>
 <table>
@@ -2261,28 +2213,28 @@
 <td>Instructor</td>
 <td>프로바이더 클라이언트를 감싸 응답 모델을 붙이고 Pydantic 검증 실패 시 자동 재시도</td>
 <td>클라이언트</td>
-<td>✅</td>
-<td>MIT. 2026-06 기준 v1.15</td>
+<td>가능</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>Outlines</td>
 <td>정규식·문법·JSON Schema 기반 제약 디코딩</td>
 <td>추론 엔진</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. 백엔드는 Transformers, llama.cpp, vLLM, Ollama</td>
 </tr>
 <tr>
 <td>BAML</td>
 <td>전용 DSL을 컴파일해 타입 있는 클라이언트를 만들고 출력 텍스트를 스키마에 맞춰 보정 파싱</td>
 <td>컴파일러·파서</td>
-<td>✅</td>
+<td>가능</td>
 <td>Apache-2.0. 디코딩 자체는 제약하지 않음</td>
 </tr>
 <tr>
 <td>OpenAI Structured Outputs</td>
 <td>프로바이더가 JSON Schema를 강제</td>
 <td>프로바이더</td>
-<td>❌</td>
+<td>불가</td>
 <td>Responses는 <code>text.format</code>, Chat Completions는 <code>response_format</code></td>
 </tr>
 </tbody>
@@ -2367,14 +2319,14 @@
 <td>자체 Parquet 인덱스 산출물과 설정한 벡터 저장소</td>
 <td>LLM으로 엔티티·관계·클레임을 추출한 뒤 Leiden 계층 클러스터링과 커뮤니티 요약</td>
 <td>텍스트</td>
-<td>MIT. 2026-07 기준 v3.1</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>LightRAG</td>
 <td>기본은 파일로 영속화되는 인메모리 저장소<br>프로덕션은 PostgreSQL, Milvus·Qdrant, Neo4j·Memgraph 교체</td>
 <td>청크별 엔티티·관계 추출. 그래프와 벡터 이중 계층</td>
 <td>텍스트</td>
-<td>MIT. 2026-08 기준 v1.5</td>
+<td>MIT</td>
 </tr>
 <tr>
 <td>RAG-Anything</td>
@@ -2386,7 +2338,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_8">관측과 평가</h2>
+<h2 id="_8">모니터링과 평가</h2>
 <table>
 <thead>
 <tr>
@@ -2401,23 +2353,23 @@
 <tr>
 <td>Langfuse</td>
 <td>자체 SDK와 OpenTelemetry 둘 다</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
+<td>가능</td>
+<td>있음</td>
+<td>있음</td>
 </tr>
 <tr>
 <td>Arize Phoenix</td>
 <td>OpenTelemetry. OpenInference 시맨틱 규약</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
+<td>가능</td>
+<td>있음</td>
+<td>있음</td>
 </tr>
 <tr>
 <td>Opik</td>
 <td>자체 SDK 데코레이터와 OpenTelemetry 둘 다</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
+<td>가능</td>
+<td>있음</td>
+<td>있음</td>
 </tr>
 <tr>
 <td>OpenLLMetry</td>
@@ -2451,7 +2403,7 @@
 <td>LLM 앱 전체 흐름과 에이전트 궤적</td>
 <td>둘 다. 로컬에서 도는 NLP 모델도 사용</td>
 <td>파이썬 프레임워크와 CLI. pytest 방식</td>
-<td>Apache-2.0. 2026-07 기준 v4.1</td>
+<td>Apache-2.0</td>
 </tr>
 <tr>
 <td>promptfoo</td>
@@ -2465,70 +2417,80 @@
 <td>LLM 앱과 에이전트. RAG Triad 축</td>
 <td>LLM 판정 중심. 채점 근거 설명 동반</td>
 <td>파이썬 패키지와 대시보드</td>
-<td>MIT. 2026-08 기준 v2.13</td>
+<td>MIT</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_9">요약</h2>
+<h2 id="de-facto">업계 사실상 표준(de facto)</h2>
 <table>
 <thead>
 <tr>
 <th>레이어</th>
-<th>로컬 무료 조합</th>
-<th>사유</th>
+<th>GitHub star 최다(2026-08)</th>
+<th>차순위</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>에이전트</td>
-<td>PydanticAI</td>
-<td>MIT, 프로바이더 중립</td>
+<td>오케스트레이션 프레임워크</td>
+<td>LangChain</td>
+<td>LlamaIndex</td>
 </tr>
 <tr>
 <td>도구 연결</td>
-<td>FastMCP</td>
-<td>Apache-2.0, 로컬 실행</td>
+<td>MCP. SDK는 FastMCP</td>
+<td>MCP Python SDK</td>
 </tr>
 <tr>
-<td>메모리</td>
+<td>에이전트 프레임워크</td>
+<td>CrewAI</td>
+<td>nanobot, LangGraph</td>
+</tr>
+<tr>
+<td>에이전트 메모리</td>
 <td>Mem0</td>
-<td>Docker Compose 셀프호스팅 스택 동봉</td>
+<td>Cognee, Graphiti</td>
 </tr>
 <tr>
 <td>프롬프트 최적화</td>
 <td>DSPy</td>
-<td>MIT, GEPA 내장</td>
+<td>GEPA</td>
 </tr>
 <tr>
-<td>모델 실행</td>
+<td>로컬 런타임</td>
 <td>Ollama</td>
-<td>OpenAI 호환 엔드포인트 → 상용 API 코드 그대로 재사용</td>
+<td>llama.cpp</td>
 </tr>
 <tr>
-<td>수집</td>
-<td>Docling</td>
-<td>MIT, 전 과정 로컬 실행</td>
+<td>문서 수집·파싱</td>
+<td>Firecrawl</td>
+<td>Crawl4AI</td>
 </tr>
 <tr>
 <td>구조화 출력</td>
+<td>Outlines</td>
 <td>Instructor</td>
-<td>클라이언트 계층이라 로컬 모델에도 그대로 적용</td>
 </tr>
 <tr>
-<td>벡터 저장소</td>
-<td>ChromaDB</td>
-<td>서버 없이 영속 클라이언트로 시작 가능</td>
+<td>벡터 DB</td>
+<td>Milvus</td>
+<td>Qdrant</td>
 </tr>
 <tr>
-<td>관측</td>
+<td>그래프·멀티모달 RAG</td>
+<td>LightRAG</td>
+<td>Microsoft GraphRAG</td>
+</tr>
+<tr>
+<td>모니터링</td>
 <td>Langfuse</td>
-<td>코어 MIT, 로컬 Docker Compose</td>
+<td>Opik</td>
 </tr>
 <tr>
 <td>평가</td>
-<td>Ragas</td>
-<td>Apache-2.0, 로컬 실행</td>
+<td>promptfoo</td>
+<td>DeepEval</td>
 </tr>
 </tbody>
 </table>
