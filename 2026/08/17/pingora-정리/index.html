@@ -16,8 +16,6 @@
         <link rel="prev" href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/">
       
       
-        <link rel="next" href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/">
-      
       
         
       
@@ -856,17 +854,6 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        보안 이력
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         도입 판단
       
     </span>
@@ -875,7 +862,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -963,7 +950,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 14분
+                              읽는시간 13분
                             
                           </span>
                         </div>
@@ -983,33 +970,6 @@
                   </div>
                   <nav class="md-nav">
                     <ul class="md-nav__list">
-                      
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
                       
                         
                         
@@ -1794,6 +1754,33 @@
   
 
                       
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/aws-%EA%B3%A0%EC%84%B1%EB%8A%A5-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%82%B9-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS 고성능 네트워킹 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
                     </ul>
                   </nav>
                 </li>
@@ -2254,56 +2241,7 @@
 <li>평문 HTTP만 프록시하면 TLS feature 없이 빌드 가능 → 네이티브 의존성이 빠져 빌드가 단순해짐</li>
 </ul>
 <hr />
-<h2 id="_4">보안 이력</h2>
-<p>지금까지 공개된 CVE는 5건. 4건은 HTTP 메시지 경계 해석(요청 스머글링, request smuggling)과 캐시 키 범위 문제이고 1건은 HTTP/2 스트림 리셋 반복에 따른 메모리 소모 문제</p>
-<table>
-<thead>
-<tr>
-<th>CVE</th>
-<th>내용</th>
-<th>영향 버전</th>
-<th>수정 버전</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CVE-2025-4366</td>
-<td>캐시 HIT 응답에서 HTTP/1.1 요청 본문을 읽지 않은 채 커넥션을 재사용 → 남은 본문이 다음 요청으로 해석되는 요청 스머글링. 2025-05-22 공개</td>
-<td>0.5.0 미만(캐시 기능 사용 시)</td>
-<td>0.5.0</td>
-</tr>
-<tr>
-<td>CVE-2025-8671</td>
-<td>HTTP/2 스트림 리셋을 반복하는 클라이언트(MadeYouReset)가 서버 메모리 소모를 비정상적으로 키움. 2025-09-17 공개</td>
-<td>0.6.0 미만</td>
-<td>0.6.0</td>
-</tr>
-<tr>
-<td>CVE-2026-2833</td>
-<td>백엔드가 101 Switching Protocols를 주기 전에 Upgrade 헤더만 보고 passthrough 모드로 진입</td>
-<td>0.8.0 미만</td>
-<td>0.8.0</td>
-</tr>
-<tr>
-<td>CVE-2026-2835</td>
-<td>Transfer-Encoding 해석 결함(HTTP/1.0 요청의 Transfer-Encoding 허용, 인식 못한 인코딩을 close 종료 본문으로 처리 등)으로 프록시와 백엔드가 보는 본문 경계가 어긋남</td>
-<td>0.8.0 미만</td>
-<td>0.8.0</td>
-</tr>
-<tr>
-<td>CVE-2026-2836</td>
-<td>기본 CacheKey가 URI path만 사용. host 헤더나 upstream 스킴 같은 다른 요소를 반영하지 않음</td>
-<td>0.8.0 미만(alpha 캐시 기능)</td>
-<td>0.8.0</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>CVE-2026-2833/2835/2836 세 건은 2026-03-04에 함께 공개됐고 모두 0.8.0에서 수정</li>
-<li>CVE-2025-4366은 Cloudflare가 밝힌 노출 대상이 자사 CDN 무료 요금제 이용자와 pingora-proxy·pingora-cache의 캐시 기능 사용자</li>
-</ul>
-<hr />
-<h2 id="_5">도입 판단</h2>
+<h2 id="_4">도입 판단</h2>
 <table>
 <thead>
 <tr>
@@ -2351,7 +2289,7 @@
 <li>MSRV(빌드에 필요한 최소 Rust 버전)는 6개월 rolling 정책(6개월 이상 지난 Rust 버전까지 요구 버전을 올릴 수 있음)이라 툴체인 갱신 주기를 같이 잡아야 함</li>
 </ul>
 <hr />
-<h2 id="_6">결론</h2>
+<h2 id="_5">결론</h2>
 <ul>
 <li>Pingora는 프록시를 만들어 쓰는 Rust 라이브러리 → 설치해서 바로 띄우는 nginx와 놓이는 자리가 다름</li>
 <li>구조 차이의 핵심은 요청을 태우는 실행 단위 → 워커 프로세스냐 프로세스 하나 안의 스레드 풀이냐에 따라 커넥션 풀이 나뉘는 단위도 갈림</li>
@@ -2421,22 +2359,6 @@
             </div>
           </a>
         
-        
-          
-          <a href="../../18/pingora%EB%A1%9C-%EB%A1%9C%EB%93%9C%EB%B0%B8%EB%9F%B0%EC%84%9C-%EB%A7%8C%EB%93%A4%EC%96%B4-%EB%AC%B4%EC%A4%91%EB%8B%A8-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-footer__link md-footer__link--next" aria-label="다음: Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                다음
-              </span>
-              <div class="md-ellipsis">
-                Pingora로 로드밸런서 만들어 무중단 업그레이드 확인하기
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
