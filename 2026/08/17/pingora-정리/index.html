@@ -950,7 +950,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 13분
+                              읽는시간 14분
                             
                           </span>
                         </div>
@@ -2134,6 +2134,63 @@
     New-&gt;&gt;Client: 신규 커넥션 accept 시작
     Note over Old,New: 5초(고정값) 동안 두 프로세스가 함께 accept
     Old-&gt;&gt;Client: 진행 중 요청만 마무리 후 종료</code></pre>
+<p>같은 목적을 nginx는 상속으로 이룸. 구 마스터가 새 바이너리를 자식으로 띄우고, 자식이 리스닝 소켓을 물려받는 흐름</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client
+    participant OldM as 구 마스터
+    participant OldW as 구 워커
+    participant NewM as 신 마스터·워커
+    Client-&gt;&gt;OldW: 요청 처리 중
+    Note over OldM: USR2 수신
+    OldM-&gt;&gt;NewM: 새 바이너리를 자식으로 exec&lt;br&gt;리스닝 소켓 fd 상속
+    NewM-&gt;&gt;Client: 신규 커넥션 accept 시작
+    Note over OldW,NewM: WINCH 전까지 구 워커도 함께 accept
+    Note over OldM: WINCH 수신
+    OldM-&gt;&gt;OldW: graceful 종료 지시
+    OldW-&gt;&gt;Client: 진행 중 요청만 마무리 후 종료
+    Note over OldM: QUIT 수신 후 종료</code></pre>
+<table>
+<thead>
+<tr>
+<th>비교 항목</th>
+<th>nginx</th>
+<th>Pingora</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>새 프로세스를 띄우는 주체</td>
+<td>구 마스터(USR2를 받고 자식으로 exec)</td>
+<td>운영자(<code>-u</code>로 따로 기동)</td>
+</tr>
+<tr>
+<td>소켓 전달 방식</td>
+<td>fork/exec 상속</td>
+<td>unix 도메인 소켓의 SCM_RIGHTS</td>
+</tr>
+<tr>
+<td>두 프로세스 관계</td>
+<td>부모·자식</td>
+<td>서로 무관</td>
+</tr>
+<tr>
+<td>함께 accept하는 구간</td>
+<td>USR2 뒤 WINCH를 보내기 전까지(운영자가 정함)</td>
+<td>fd 이관 뒤 5초(고정값)</td>
+</tr>
+<tr>
+<td>롤백</td>
+<td>구 마스터가 살아 있는 동안 HUP으로 구 워커 재기동 후 신 마스터에 QUIT</td>
+<td>별도 절차 없음. 이전 바이너리를 같은 절차로 다시 올림</td>
+</tr>
+<tr>
+<td>플랫폼</td>
+<td>fd 상속은 유닉스 공통</td>
+<td>구현이 Linux 전용</td>
+</tr>
+</tbody>
+</table>
+<p>Pingora 절차의 세부는 다음과 같음</p>
 <ul>
 <li>보장 1: 서버 엔드포인트로 접속하는 요청이 connection refused를 보지 않음</li>
 <li>보장 2: grace period 안에 끝나는 요청은 도중에 끊기지 않음</li>
