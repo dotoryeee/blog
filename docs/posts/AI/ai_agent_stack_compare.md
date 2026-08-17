@@ -36,7 +36,7 @@ description: "에이전트 개발에 쓰는 오픈소스 도구를 오케스트�
 |---|---|---|---|---|
 | MCP(Model Context Protocol) | 앱 ↔ 도구·데이터 | 호스트, 클라이언트, 서버 | stdio<br>Streamable HTTP | 데이터 계층은 JSON-RPC 2.0 |
 | A2A(Agent2Agent) | 에이전트 ↔ 에이전트 | 클라이언트, 서버(원격 에이전트) | JSON-RPC, gRPC, HTTP+JSON 바인딩<br>스트리밍은 SSE | Apache-2.0 |
-| AG-UI(Agent-User Interaction Protocol) | 에이전트 ↔ 프런트엔드 | 에이전트 백엔드, 사용자 화면 애플리케이션 | 전송 비종속. SSE·WebSocket·웹훅 | MIT. 이벤트 기반 계층 |
+| AG-UI(Agent-User Interaction Protocol) | 에이전트 ↔ 프론트엔드 | 에이전트 백엔드, 사용자 화면 애플리케이션 | 전송 비종속. SSE·WebSocket·웹훅 | MIT. 이벤트 기반 계층 |
 
 | SDK | 대상 프로토콜 | 성격 | PyPI | 비고 |
 |---|---|---|---|---|
