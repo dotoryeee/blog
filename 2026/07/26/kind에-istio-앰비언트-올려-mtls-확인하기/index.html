@@ -985,14 +985,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Pingora 정리
+    AI 에이전트 개발 도구 레이어별 비교
   
 
     
@@ -1012,14 +1012,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AI 에이전트 개발 도구 레이어별 비교
+    Pingora 정리
   
 
     
@@ -1875,7 +1875,7 @@
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">Set</span><span class="w"> </span><span class="n">kubectl</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;kind-dotoryeee-mesh&quot;</span>
 </code></pre></div>
 <p>노드가 Ready로 올라올 때까지 기다린다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">wait</span><span class="w"> </span><span class="o">--</span><span class="kr">for</span><span class="o">=</span><span class="n">condition</span><span class="o">=</span><span class="n">Ready</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">--</span><span class="n">all</span><span class="w"> </span><span class="o">--</span><span class="n">timeout</span><span class="o">=</span><span class="m">120</span><span class="n">s</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">wait</span><span class="w"> </span><span class="o">--</span><span class="n">for</span><span class="o">=</span><span class="n">condition</span><span class="o">=</span><span class="n">Ready</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="o">--</span><span class="n">all</span><span class="w"> </span><span class="o">--</span><span class="n">timeout</span><span class="o">=</span><span class="m">120</span><span class="n">s</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">node</span><span class="o">/</span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">mesh</span><span class="o">-</span><span class="n">control</span><span class="o">-</span><span class="n">plane</span><span class="w"> </span><span class="n">condition</span><span class="w"> </span><span class="n">met</span>
 </code></pre></div>
 <p>istioctl은 공식 다운로드 스크립트로 받는다. 버전을 지정하지 않으면 그 시점의 최신 안정 버전이 내려온다. 이번엔 1.30.3이었다.</p>
@@ -2102,7 +2102,7 @@
 </code></pre></div>
 <p>apply 시점부터 경고가 붙는다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">kubectl</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">httpbin</span><span class="o">-</span><span class="n">l7</span><span class="o">-</span><span class="n">policy.yaml</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">Warning</span><span class="o">:</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">AuthorizationPolicy</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">deny</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">traffic</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">TCP</span><span class="w"> </span><span class="n">ports</span><span class="w"> </span><span class="n">under</span><span class="w"> </span><span class="n">its</span><span class="w"> </span><span class="n">scope</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">HTTP</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">DENY</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">recommended</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">explicitly</span><span class="w"> </span><span class="n">specify</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">port</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">Warning</span><span class="o">:</span><span class="w"> </span><span class="n">configured</span><span class="w"> </span><span class="n">AuthorizationPolicy</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">deny</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">traffic</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">TCP</span><span class="w"> </span><span class="n">ports</span><span class="w"> </span><span class="n">under</span><span class="w"> </span><span class="n">its</span><span class="w"> </span><span class="n">scope</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">HTTP</span><span class="w"> </span><span class="n">attributes</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">DENY</span><span class="w"> </span><span class="n">rule</span><span class="p">;</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">recommended</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">explicitly</span><span class="w"> </span><span class="n">specify</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">port</span>
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="n">authorizationpolicy.security.istio.io</span><span class="o">/</span><span class="n">httpbin</span><span class="o">-</span><span class="n">l7</span><span class="o">-</span><span class="n">policy</span><span class="w"> </span><span class="n">created</span>
 </code></pre></div>
 <p>그런데 GET도 POST도 똑같이 통과한다.</p>
@@ -2162,7 +2162,7 @@
 <p>💡 --for 없이 적용하면 istio.io/waypoint-for 라벨이 안 붙어 list에는 none으로 뜨지만, 라벨이 없는 waypoint는 기본값으로 Service 트래픽을 처리한다</p>
 </div>
 <p>none은 표시일 뿐 아무 트래픽도 못 받는다는 뜻이 아니라서, 트래픽 타입을 명시적으로 남기려는 목적으로 for 옵션을 붙여 다시 적용한다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">istioctl</span><span class="w"> </span><span class="n">waypoint</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="o">--</span><span class="n">namespace</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">demo</span><span class="w"> </span><span class="o">--</span><span class="n">enroll</span><span class="o">-</span><span class="n">namespace</span><span class="w"> </span><span class="o">--</span><span class="kr">for</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="o">--</span><span class="n">overwrite</span><span class="w"> </span><span class="o">--</span><span class="n">wait</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">istioctl</span><span class="w"> </span><span class="n">waypoint</span><span class="w"> </span><span class="n">apply</span><span class="w"> </span><span class="o">--</span><span class="n">namespace</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">demo</span><span class="w"> </span><span class="o">--</span><span class="n">enroll</span><span class="o">-</span><span class="n">namespace</span><span class="w"> </span><span class="o">--</span><span class="n">for</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="o">--</span><span class="n">overwrite</span><span class="w"> </span><span class="o">--</span><span class="n">wait</span>
 <a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>✅<span class="w"> </span><span class="n">waypoint</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">waypoint</span><span class="w"> </span><span class="n">applied</span>
 <a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>✅<span class="w"> </span><span class="n">waypoint</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">waypoint</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">ready</span><span class="o">!</span>
 <a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>

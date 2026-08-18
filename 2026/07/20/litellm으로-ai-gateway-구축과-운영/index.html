@@ -1180,14 +1180,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Pingora 정리
+    AI 에이전트 개발 도구 레이어별 비교
   
 
     
@@ -1207,14 +1207,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AI 에이전트 개발 도구 레이어별 비교
+    Pingora 정리
   
 
     
@@ -2274,7 +2274,7 @@
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">call</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
 <a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">call</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">200</span>
 <a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">call</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">HTTP</span><span class="o">:</span><span class="m">429</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span>에러<span class="o">:</span><span class="w"> </span><span class="n">Rate</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">exceeded</span><span class="w"> </span><span class="kr">for</span><span class="w"> </span><span class="n">api_key</span><span class="o">:</span><span class="w"> </span><span class="n">ebd5686b...</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">requests.</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span>에러<span class="o">:</span><span class="w"> </span><span class="n">Rate</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="n">exceeded</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">api_key</span><span class="o">:</span><span class="w"> </span><span class="n">ebd5686b...</span><span class="w"> </span><span class="n">Limit</span><span class="w"> </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">requests.</span>
 </code></pre></div>
 </li>
 </ol>
@@ -2304,7 +2304,7 @@
 <p>게이트웨이를 재시작하고 chat-small로 10회 호출하면서 x-litellm-model-name 헤더로 어느 백엔드가 처리했는지 확인한다</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">docker</span><span class="w"> </span><span class="n">compose</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">litellm</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kr">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">seq</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">10</span><span class="p">);</span><span class="w"> </span><span class="n">do</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">$</span><span class="p">(</span><span class="n">seq</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">10</span><span class="p">);</span><span class="w"> </span><span class="n">do</span>
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">D</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localhost</span><span class="o">:</span><span class="m">4000</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">chat</span><span class="o">/</span><span class="n">completions</span><span class="w"> </span>\
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Authorization: Bearer sk-dotoryeee-1234&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">H</span><span class="w"> </span><span class="s">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>\
 <a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="s">&#39;{&quot;model&quot;:&quot;chat-small&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;hi&quot;}],&quot;max_tokens&quot;:1}&#39;</span><span class="w"> </span>\

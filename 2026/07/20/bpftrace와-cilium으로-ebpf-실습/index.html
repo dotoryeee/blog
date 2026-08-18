@@ -980,14 +980,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Pingora 정리
+    AI 에이전트 개발 도구 레이어별 비교
   
 
     
@@ -1007,14 +1007,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../08/17/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EB%8F%84%EA%B5%AC-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    AI 에이전트 개발 도구 레이어별 비교
+    Pingora 정리
   
 
     
@@ -1926,12 +1926,12 @@
 <h2 id="strace-vs-ebpf">strace vs eBPF 오버헤드 실측</h2>
 <hr />
 <p>이 글의 핵심이다. 같은 워크로드를 세 가지 상태에서 실행해 소요 시간을 비교한다. 워크로드는 1바이트 read와 write를 40만번 반복하는 dd다.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">dd</span><span class="w"> </span><span class="kr">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span><span class="w">   </span><span class="c1"># read 20만 + write 20만 = 시스템 콜 40만회</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">dd</span><span class="w"> </span><span class="n">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span><span class="w">   </span><span class="c1"># read 20만 + write 20만 = 시스템 콜 40만회</span>
 </code></pre></div>
 <ol>
 <li>
 <p>아무 추적 없이 그냥 실행한다. 5회 반복해도 편차가 거의 없다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">TIMEFORMAT</span><span class="o">=</span><span class="s">&#39;%R&#39;</span><span class="p">;</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="kr">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">TIMEFORMAT</span><span class="o">=</span><span class="s">&#39;%R&#39;</span><span class="p">;</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="n">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="m">0.077</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="m">0.077</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="m">0.078</span>
@@ -1939,7 +1939,7 @@
 </li>
 <li>
 <p>strace로 read, write를 추적하며 실행한다. 출력은 버리고 시간만 잰다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">time</span><span class="w"> </span><span class="n">strace</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">trace</span><span class="o">=</span><span class="n">read</span><span class="p">,</span><span class="n">write</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="kr">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">time</span><span class="w"> </span><span class="n">strace</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="n">trace</span><span class="o">=</span><span class="n">read</span><span class="p">,</span><span class="n">write</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="n">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="m">28.343</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="m">28.546</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="m">28.354</span>
@@ -1947,7 +1947,7 @@
 </li>
 <li>
 <p>dd의 read, write를 시스템 전체에서 집계하는 bpftrace를 붙여둔 채 같은 dd를 실행한다</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">time</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="kr">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">time</span><span class="w"> </span><span class="n">dd</span><span class="w"> </span><span class="n">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span><span class="w"> </span><span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="w"> </span><span class="n">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="n">count</span><span class="o">=</span><span class="m">200000</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="m">0.087</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="m">0.088</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="m">0.089</span>
