@@ -11,11 +11,12 @@ tags:
   - PydanticAI
   - Mem0
   - Langfuse
-description: "에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교"
+  - Bedrock
+description: "에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리"
 ---
-# AI 에이전트 개발 도구 레이어별 비교
+# AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교
 
-에이전트를 만들 때 쓰는 오픈소스 도구를 레이어로 묶어 표로 정리했다. 빠른 이해를 위해 목적별로 묶어봤다.
+에이전트를 만들 때 쓰는 오픈소스 도구를 레이어로 묶어 표로 정리했다. 빠른 이해를 위해 목적별로 묶어봤다. 마지막에는 같은 레이어를 AWS Bedrock으로 채우면 어떻게 되는지 대응시켰다.
 
 <!-- more -->
 
@@ -184,3 +185,92 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 | 그래프·멀티모달 RAG | LightRAG | Microsoft GraphRAG |
 | 모니터링 | Langfuse | Opik |
 | 평가 | promptfoo | DeepEval |
+
+---
+
+## Amazon Bedrock과 OSS 대응
+
+위 레이어를 AWS 관리형 서비스로 채우면 어떤 그림이 되는지 Bedrock 기준으로 대응시켰다. 관리형은 인프라 운영을 맡아 주는 대신 손댈 수 있는 범위가 정해져 있고 OSS는 그 반대다.
+
+| 레이어 | Bedrock | 이 글의 OSS 대응 |
+|---|---|---|
+| 모델 실행 | Bedrock 기반 모델 호출 | vLLM, Ollama, llama.cpp, SGLang |
+| RAG 파이프라인 | Bedrock Knowledge Bases | LangChain, LlamaIndex + Qdrant, Milvus, ChromaDB |
+| 에이전트 | Bedrock AgentCore | LangGraph, CrewAI, Strands Agents |
+| 안전 필터 | Bedrock Guardrails | NeMo Guardrails, Guardrails AI |
+| 평가 | Bedrock Evaluations, AgentCore Evaluations | Ragas, DeepEval, promptfoo |
+
+안전 필터는 위 레이어 표에 따로 두지 않았던 항목이라 여기서 처음 나온다.
+
+### 기반 모델 호출 vs vLLM, Ollama, SGLang
+
+Claude, Llama, Mistral, Amazon Nova, OpenAI 모델 등을 하나의 API로 호출하는 서빙 계층이다.
+
+| 구분 | Bedrock 기반 모델 | OSS 런타임 |
+|---|---|---|
+| 방식 | 온디맨드 토큰 과금, Provisioned Throughput, 배치 추론, Priority와 Flex 서비스 티어, 리전 간 추론 라우팅. Custom Model Import로 Llama, Mistral, Qwen 등 지원 아키텍처의 오픈 웨이트 모델을 직접 올릴 수 있음 | EC2나 온프레미스 GPU에 가중치를 올려 직접 서빙 |
+| 장점 | GPU 운영 없음, Claude 같은 독점 모델 즉시 사용, 쿼터 안에서 수요에 따라 자동 확장, OpenAI와 Anthropic 호환 API로 기존 SDK를 그대로 사용 | 토큰당 API 비용 없음, 데이터가 밖으로 나가지 않는 폐쇄망 운영, 양자화와 KV 캐시, 배칭 파라미터를 직접 조정 |
+| 단점 | 호출량이 늘면 비용이 선형으로 증가, 서빙 엔진 내부 파라미터 조정 불가 | GPU 확보 난이도와 고정 인프라 비용, 장애 대응과 스케일링을 직접 담당 |
+| 맞는 경우 | 트래픽 변동이 크거나 최신 모델을 빠르게 붙여야 할 때 | 요청량이 일정하게 높고 데이터 외부 전송이 불가할 때 |
+
+### Knowledge Bases vs LangChain, LlamaIndex + 벡터 DB
+
+문서 수집, 청킹, 임베딩, 벡터 저장, 검색까지 이어지는 RAG 파이프라인 계층이다. Knowledge Bases는 두 가지 형태로 나뉜다. Managed는 임베딩과 리랭킹, 저장소까지 AWS가 맡고 S3, SharePoint, Confluence, Google Drive, OneDrive, 웹 크롤러 커넥터와 문서 단위 권한 필터, 다단계 검색을 제공한다. Customer-managed는 벡터 저장소를 OpenSearch Serverless와 관리형 클러스터, Aurora pgvector, Neptune Analytics(그래프 RAG), Pinecone, MongoDB Atlas, Redis, S3 Vectors 중에서 고르고 청킹과 파싱을 직접 설정한다.
+
+| 구분 | Bedrock Knowledge Bases | OSS 조합 |
+|---|---|---|
+| 방식 | 콘솔이나 API로 데이터 소스와 저장소를 지정하면 인제스천부터 검색 API까지 자동 구축 | 파서, 청킹, 임베딩, 벡터 DB, 리랭커를 코드로 조립 |
+| 장점 | 파이프라인 운영 공수가 거의 없음, 청킹은 고정 크기와 계층, 시맨틱 세 가지에 Lambda 커스텀 변환까지 제공, 그래프 RAG와 멀티모달 파싱(Bedrock Data Automation)도 지원 | 청킹 전략, 리트리버 알고리즘, 리랭킹 로직을 어디까지든 바꿀 수 있음, 저장소와 파서 선택에 제한 없음 |
+| 단점 | 청킹과 저장소는 제공 목록 안에서 선택, 리트리버 자체를 갈아끼울 수 없음, 관리형 저장소 최소 비용 발생 | 인제스천 파이프라인, 임베딩 캐싱, 벡터 DB 인프라를 직접 운영 |
+| 맞는 경우 | 사내 규정이나 FAQ 챗봇을 가장 빠르게 세울 때 | 수식과 표가 많은 도메인 문서를 정밀하게 검색하거나 검색 방식 자체를 실험할 때 |
+
+### AgentCore vs LangGraph, CrewAI, Strands Agents
+
+에이전트 실행 계층이다. 2023년에 나온 Bedrock Agents는 2026년 7월 30일부터 Bedrock Agents Classic이라는 이름으로 유지보수 모드에 들어갔다. 직전 12개월간 사용 이력이 없는 계정은 새 에이전트를 만들 수 없고 모델 카탈로그도 그날 기준으로 고정됐다. 기존 에이전트는 계속 동작하지만 신규 기능은 없다. AWS가 안내하는 후속은 AgentCore다.
+
+AgentCore는 하나의 에이전트 프레임워크가 아니라 Runtime, Gateway(도구를 MCP로 노출), Memory, Identity, Observability, Code Interpreter, Browser, Policy, Evaluations에 결제(Payments), 자동 최적화(Optimization), 카탈로그(Registry)까지 조합하는 인프라 묶음이다. 그 위에서 Strands, LangGraph, CrewAI, LlamaIndex, Google ADK, OpenAI Agents SDK, Claude Agent SDK 등 어떤 프레임워크로 짠 에이전트든 돌릴 수 있고 설정만으로 시작하는 managed harness도 따로 있다. 모델도 Bedrock 카탈로그 외에 OpenAI, Gemini, OpenAI 호환 엔드포인트를 붙일 수 있다.
+
+| 구분 | Bedrock AgentCore | OSS 프레임워크 단독 |
+|---|---|---|
+| 방식 | 에이전트 코드는 프레임워크로 짜고 실행, 메모리, 인증, 관측은 AgentCore가 담당. harness를 쓰면 모델과 도구, 지시문만 선언 | 프레임워크로 루프를 짜고 상태 저장소, 세션, 재시도, 관측을 직접 구성 |
+| 장점 | 컨테이너 런타임과 세션 격리, IAM 기반 권한, 도구를 MCP로 통일, 추적이 기본 내장 | 실행 환경 제약 없음, 어디서든 같은 코드로 실행 |
+| 단점 | AWS 종속, harness 경로는 단계별 프롬프트 오버라이드나 라우팅형 다중 에이전트가 제한적 | 운영 계층을 전부 직접 만들어야 함 |
+| 맞는 경우 | 이미 AWS 위에 있고 에이전트 운영 인프라를 직접 만들 인력이 없을 때 | 멀티 클라우드나 온프레미스, 로컬 모델을 섞어야 할 때 |
+
+에이전트 로직 자체는 두 쪽 다 LangGraph나 CrewAI로 짜는 경우가 많다. 그래서 이 항목은 프레임워크끼리의 비교라기보다 그 프레임워크를 어디서 어떻게 돌리느냐의 비교다.
+
+### Guardrails vs NeMo Guardrails, Guardrails AI
+
+입력과 출력에서 유해 콘텐츠, 금지 주제, 민감정보, 근거 없는 답변을 걸러내는 계층이다.
+
+| 구분 | Bedrock Guardrails | OSS |
+|---|---|---|
+| 방식 | 콘텐츠 필터(증오, 모욕, 성적, 폭력, 위법, 프롬프트 공격), 자연어로 정의하는 금지 주제, 단어 필터, PII와 정규식 기반 민감정보 필터, 컨텍스트 근거 검사, 논리 규칙 기반 Automated Reasoning 검사. 모델 호출에 붙이거나 ApplyGuardrail API로 단독 호출 | NeMo Guardrails는 Colang 스크립트로 대화 흐름을 정의, Guardrails AI는 Hub의 validator와 Pydantic 검증을 코드에 내장 |
+| 장점 | 정책을 콘솔에서 버전 관리하고 애플리케이션 코드와 분리, ApplyGuardrail로 Bedrock 밖 모델에도 적용 가능 | 대화 주제 이탈 통제와 도메인별 검증 룰을 원하는 대로 프로그래밍 |
+| 단점 | 정책 종류가 정해진 범위 안, 정책마다 지연과 텍스트 단위 과금이 추가 | 룰 엔진과 임베딩 모델을 앱 서버에서 돌려야 해 리소스를 씀 |
+| 맞는 경우 | PII 마스킹, 유해 콘텐츠 차단 같은 표준 컴플라이언스 | 특정 경쟁사 언급 금지, 주제 이탈 시 안내 문구 같은 세밀한 대화 흐름 통제 |
+
+### Evaluations vs Ragas, DeepEval, promptfoo
+
+프롬프트나 파이프라인이 바뀌었을 때 품질이 어떻게 달라졌는지 재는 계층이다. Bedrock 쪽은 둘로 나뉜다. Bedrock Evaluations는 모델 평가(내장 지표, LLM 판정, 사람 평가)와 RAG 평가(Knowledge Bases 또는 외부 RAG 대상, 검색 관련성과 커버리지, 정확성, 완전성, 충실도)를 맡고 2026년 3월 GA된 AgentCore Evaluations는 세션, 트레이스, 도구 호출 단위로 에이전트 궤적을 평가한다.
+
+| 구분 | Bedrock Evaluations, AgentCore Evaluations | OSS |
+|---|---|---|
+| 방식 | Bedrock Evaluations는 데이터셋을 S3에 올리고 평가 작업을 만들면 결과를 콘솔과 S3로 받음. AgentCore Evaluations는 CloudWatch에 쌓인 세션 트레이스를 Evaluate API나 CLI로 평가하고 결과를 CloudWatch 대시보드로 봄 | 코드에서 지표를 정의하고 테스트처럼 실행. DeepEval은 pytest, promptfoo는 CLI와 YAML |
+| 장점 | S3에 둔 데이터셋과 바로 연동, 팀원 간 사람 평가 작업 분배, 에이전트 궤적 평가가 관측 데이터와 붙어 있음 | 커스텀 지표 자유, GitHub Actions 같은 CI 파이프라인에 PR 단위 회귀 테스트로 붙이기 쉬움 |
+| 단점 | Bedrock Evaluations는 비동기 배치 작업이라 CI에 끼우려면 폴링과 결과 파싱을 직접 감싸야 함. AgentCore Evaluations는 동기 API가 있지만 평가 전에 트레이스를 CloudWatch에서 꺼내는 단계가 필요 | 판정용 LLM 호출 비용과 테스트 환경을 직접 관리 |
+| 맞는 경우 | 비즈니스 조직과 함께 여러 모델과 프롬프트를 정성 비교할 때 | 코드나 프롬프트가 바뀔 때마다 RAG 성능 하락을 자동 검증할 때 |
+
+### 선택 기준
+
+Bedrock 쪽이 맞는 경우다.
+
+- 인프라 인력이 적고 개발 속도와 IAM, VPC, PII 마스킹 같은 컴플라이언스가 우선일 때
+- 검색, 함수 실행, 안전 검사로 끝나는 표준 업무 흐름이고 이미 AWS 위에 있을 때
+
+OSS 쪽이 맞는 경우다.
+
+- 자기 수정 루프, 상태 롤백, 다단계 검증처럼 실행 흐름을 세밀하게 통제해야 할 때
+- AWS 외 클라우드, 온프레미스, 로컬 모델을 섞어야 해서 종속을 피해야 할 때
+
+두 쪽을 섞는 것도 흔하다. 에이전트는 LangGraph로 짜고 AgentCore에서 돌리거나 모델은 vLLM으로 직접 서빙하면서 Guardrails만 ApplyGuardrail로 붙이는 식이다.
