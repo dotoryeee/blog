@@ -29,7 +29,7 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 | LangChain | 에이전트·LLM 앱 범용 프레임워크 | Python<br>JS·TS는 별도 라이브러리 | 모델·도구·벡터 저장소 통합량 | MIT. 최근 메이저부터 에이전트 실행 기능 내장 |
 | LlamaIndex | 데이터 프레임워크. 인덱싱·검색 중심 | Python | 데이터 커넥터와 인덱스 구성 | MIT |
 | Haystack | 파이프라인 그래프 오케스트레이션 | Python | 검색·라우팅·생성 단계를 명시적으로 조립 | Apache-2.0 |
-| Semantic Kernel | 모델 중립 에이전트 오케스트레이션 SDK | C#, Python, Java 3종 공식 SDK | 엔터프라이즈 관측·보안 | MIT |
+| Semantic Kernel | 모델 중립 에이전트 오케스트레이션 SDK | C#, Python, Java 3종 공식 SDK | 엔터프라이즈 관측·보안 | MIT. 2026-04 출시된 Microsoft Agent Framework(AutoGen과 통합)로 계승되어 유지보수 모드 |
 
 ---
 
@@ -64,7 +64,7 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 | Google ADK | 라이브러리 | 그래프 기반 Workflow와 에이전트 위임 | 프로바이더 중립. Gemini에 최적화 | 가능 | Apache-2.0 |
 | CrewAI | 라이브러리 | 역할 기반 Crew와 이벤트 기반 Flow | 프로바이더 중립 | 가능 | MIT |
 | Strands Agents | 라이브러리 | 모델이 주도하는 에이전트 루프 | 프로바이더 중립. 기본값은 Amazon Bedrock | 가능 | Apache-2.0. Python과 TypeScript |
-| Claude Agent SDK | 라이브러리. Claude Code CLI 번들 | 모델 주도 루프에 도구·훅·권한 | Claude 모델 전용 | 불가 | MIT. Bedrock, Google Cloud, Microsoft Foundry 경유 호출 |
+| Claude Agent SDK | 라이브러리. Claude Code CLI 번들 | 모델 주도 루프에 도구·훅·권한 | Claude 모델 전용 | 불가 | 래퍼 코드는 MIT, 번들된 CLI는 Anthropic 상용 약관. Bedrock, Google Cloud, Microsoft Foundry 경유 호출 |
 
 ---
 
@@ -178,7 +178,7 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 |---|---|---|---|---|
 | Ragas | LLM 앱 전반. RAG와 에이전트 포함 | 둘 다 | 파이썬 라이브러리 | Apache-2.0. 2026-01 이후 릴리스 없음 |
 | DeepEval | LLM 앱 전체 흐름과 에이전트 궤적 | 둘 다. 로컬에서 도는 NLP 모델도 사용 | 파이썬 프레임워크와 CLI. pytest 방식 | Apache-2.0 |
-| promptfoo | 프롬프트·모델 비교와 레드티밍 | 둘 다. 결정적 assertion과 LLM 루브릭 | CLI와 YAML 설정 중심 | MIT. npm 배포 |
+| promptfoo | 프롬프트·모델 비교와 레드티밍 | 둘 다. 결정적 assertion과 LLM 루브릭 | CLI와 YAML 설정 중심 | MIT. npm 배포. 2026-03 OpenAI가 인수, 오픈소스 유지 |
 | TruLens | LLM 앱과 에이전트. RAG Triad 축 | LLM 판정 중심. 채점 근거 설명 동반 | 파이썬 패키지와 대시보드 | MIT |
 
 ---
