@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리">
+        <meta name="description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·안전 필터·모니터링 10개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리">
       
       
       
@@ -87,7 +87,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교 - dotoryeee's blog" />
-<meta property="og:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리" />
+<meta property="og:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·안전 필터·모니터링 10개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리" />
 <meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -95,7 +95,7 @@
 <meta property="og:url" content="https://dotoryeee.github.io/blog/2026/08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교 - dotoryeee's blog" />
-<meta property="twitter:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리" />
+<meta property="twitter:description" content="에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·안전 필터·모니터링 10개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리" />
 <meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90.png" />
 </head>
   
@@ -848,6 +848,17 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
+        안전 필터
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         모니터링과 평가
       
     </span>
@@ -882,7 +893,7 @@
   <a href="#vs-vllm-ollama-sglang" class="md-nav__link">
     <span class="md-ellipsis">
       
-        기반 모델 호출 vs vLLM, Ollama, SGLang
+        파운데이션 모델 호출 vs vLLM, Ollama, SGLang
       
     </span>
   </a>
@@ -934,7 +945,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+  <a href="#_10" class="md-nav__link">
     <span class="md-ellipsis">
       
         선택 기준
@@ -1027,7 +1038,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 16분
+                              읽는시간 17분
                             
                           </span>
                         </div>
@@ -2436,7 +2447,58 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_8">모니터링과 평가</h2>
+<h2 id="_8">안전 필터</h2>
+<p>모델 앞뒤에서 유해 콘텐츠, 금지 주제, 민감정보, 프롬프트 인젝션을 걸러내는 계층이다.</p>
+<table>
+<thead>
+<tr>
+<th>도구</th>
+<th>성격</th>
+<th>적용 지점</th>
+<th>로컬 실행</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NeMo Guardrails</td>
+<td>프레임워크. Colang 스크립트로 입력, 출력, 대화 흐름 레일 정의</td>
+<td>앱 코드에 내장</td>
+<td>가능</td>
+<td>Apache-2.0. NVIDIA</td>
+</tr>
+<tr>
+<td>Guardrails AI</td>
+<td>프레임워크. Hub에서 validator를 골라 입력과 출력 검증</td>
+<td>앱 코드에 내장</td>
+<td>가능</td>
+<td>Apache-2.0. Pydantic 출력 검증</td>
+</tr>
+<tr>
+<td>LLM Guard</td>
+<td>스캐너 모음. 프롬프트 인젝션, PII, 독성, 금지 주제 등 입력과 출력 스캐너</td>
+<td>앱 코드 또는 API 서버</td>
+<td>가능</td>
+<td>MIT. Protect AI. 2026-07 저장소 archive 처리로 유지보수 종료</td>
+</tr>
+<tr>
+<td>Presidio</td>
+<td>PII 탐지와 익명화 엔진</td>
+<td>앱 코드 또는 서버</td>
+<td>가능</td>
+<td>MIT. Microsoft가 만들었고 2026년 커뮤니티 조직 Data Privacy Stack으로 이관. LLM 이전부터 쓰던 도구라 star는 가장 많지만 PII 전용</td>
+</tr>
+<tr>
+<td>Llama Guard</td>
+<td>안전성 분류 모델. 입력과 출력을 유해 범주로 분류</td>
+<td>별도 모델 추론</td>
+<td>가능</td>
+<td>Llama 라이선스. Meta. Prompt Guard는 인젝션 전용 소형 분류기</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_9">모니터링과 평가</h2>
 <p>에이전트가 실제로 어떻게 움직였는지 기록하고 그 결과가 좋았는지 점수를 매기는 계층이다.</p>
 <table>
 <thead>
@@ -2582,6 +2644,11 @@
 <td>Microsoft GraphRAG</td>
 </tr>
 <tr>
+<td>안전 필터</td>
+<td>Guardrails AI</td>
+<td>NeMo Guardrails</td>
+</tr>
+<tr>
 <td>모니터링</td>
 <td>Langfuse</td>
 <td>Opik</td>
@@ -2607,7 +2674,7 @@
 <tbody>
 <tr>
 <td>모델 실행</td>
-<td>Bedrock 기반 모델 호출</td>
+<td>Bedrock 파운데이션 모델 호출</td>
 <td>vLLM, Ollama, llama.cpp, SGLang</td>
 </tr>
 <tr>
@@ -2632,14 +2699,13 @@
 </tr>
 </tbody>
 </table>
-<p>안전 필터는 위 레이어 표에 따로 두지 않았던 항목이라 여기서 처음 나온다.</p>
-<h3 id="vs-vllm-ollama-sglang">기반 모델 호출 vs vLLM, Ollama, SGLang</h3>
+<h3 id="vs-vllm-ollama-sglang">파운데이션 모델 호출 vs vLLM, Ollama, SGLang</h3>
 <p>Claude, Llama, Mistral, Amazon Nova, OpenAI 모델 등을 하나의 API로 호출하는 서빙 계층이다.</p>
 <table>
 <thead>
 <tr>
 <th>구분</th>
-<th>Bedrock 기반 모델</th>
+<th>Bedrock 파운데이션 모델</th>
 <th>OSS 런타임</th>
 </tr>
 </thead>
@@ -2800,7 +2866,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="_9">선택 기준</h3>
+<h3 id="_10">선택 기준</h3>
 <p>Bedrock 쪽이 맞는 경우다.</p>
 <ul>
 <li>인프라 인력이 적고 개발 속도와 IAM, VPC, PII 마스킹 같은 컴플라이언스가 우선일 때</li>
