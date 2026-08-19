@@ -12,7 +12,7 @@ tags:
   - Mem0
   - Langfuse
   - Bedrock
-description: "에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·모니터링 9개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리"
+description: "에이전트 개발에 쓰는 오픈소스 도구를 오케스트레이션·에이전트·메모리·모델 실행·수집·저장소·안전 필터·모니터링 10개 레이어로 묶어 성격과 로컬 실행 여부를 표로 비교. Amazon Bedrock 관리형 서비스와의 대응도 정리"
 ---
 # AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교
 
@@ -149,6 +149,20 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 
 ---
 
+## 안전 필터
+
+모델 앞뒤에서 유해 콘텐츠, 금지 주제, 민감정보, 프롬프트 인젝션을 걸러내는 계층이다.
+
+| 도구 | 성격 | 적용 지점 | 로컬 실행 | 비고 |
+|---|---|---|---|---|
+| NeMo Guardrails | 프레임워크. Colang 스크립트로 입력, 출력, 대화 흐름 레일 정의 | 앱 코드에 내장 | 가능 | Apache-2.0. NVIDIA |
+| Guardrails AI | 프레임워크. Hub에서 validator를 골라 입력과 출력 검증 | 앱 코드에 내장 | 가능 | Apache-2.0. Pydantic 출력 검증 |
+| LLM Guard | 스캐너 모음. 프롬프트 인젝션, PII, 독성, 금지 주제 등 입력과 출력 스캐너 | 앱 코드 또는 API 서버 | 가능 | MIT. Protect AI. 2026-07 저장소 archive 처리로 유지보수 종료 |
+| Presidio | PII 탐지와 익명화 엔진 | 앱 코드 또는 서버 | 가능 | MIT. Microsoft가 만들었고 2026년 커뮤니티 조직 Data Privacy Stack으로 이관. LLM 이전부터 쓰던 도구라 star는 가장 많지만 PII 전용 |
+| Llama Guard | 안전성 분류 모델. 입력과 출력을 유해 범주로 분류 | 별도 모델 추론 | 가능 | Llama 라이선스. Meta. Prompt Guard는 인젝션 전용 소형 분류기 |
+
+---
+
 ## 모니터링과 평가
 
 에이전트가 실제로 어떻게 움직였는지 기록하고 그 결과가 좋았는지 점수를 매기는 계층이다.
@@ -183,6 +197,7 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 | 구조화 출력 | Outlines | Instructor |
 | 벡터 DB | Milvus | Qdrant |
 | 그래프·멀티모달 RAG | LightRAG | Microsoft GraphRAG |
+| 안전 필터 | Guardrails AI | NeMo Guardrails |
 | 모니터링 | Langfuse | Opik |
 | 평가 | promptfoo | DeepEval |
 
@@ -194,19 +209,17 @@ LLM 호출과 검색, 도구 실행을 파이프라인으로 조립하는 상위
 
 | 레이어 | Bedrock | 이 글의 OSS 대응 |
 |---|---|---|
-| 모델 실행 | Bedrock 기반 모델 호출 | vLLM, Ollama, llama.cpp, SGLang |
+| 모델 실행 | Bedrock 파운데이션 모델 호출 | vLLM, Ollama, llama.cpp, SGLang |
 | RAG 파이프라인 | Bedrock Knowledge Bases | LangChain, LlamaIndex + Qdrant, Milvus, ChromaDB |
 | 에이전트 | Bedrock AgentCore | LangGraph, CrewAI, Strands Agents |
 | 안전 필터 | Bedrock Guardrails | NeMo Guardrails, Guardrails AI |
 | 평가 | Bedrock Evaluations, AgentCore Evaluations | Ragas, DeepEval, promptfoo |
 
-안전 필터는 위 레이어 표에 따로 두지 않았던 항목이라 여기서 처음 나온다.
-
-### 기반 모델 호출 vs vLLM, Ollama, SGLang
+### 파운데이션 모델 호출 vs vLLM, Ollama, SGLang
 
 Claude, Llama, Mistral, Amazon Nova, OpenAI 모델 등을 하나의 API로 호출하는 서빙 계층이다.
 
-| 구분 | Bedrock 기반 모델 | OSS 런타임 |
+| 구분 | Bedrock 파운데이션 모델 | OSS 런타임 |
 |---|---|---|
 | 방식 | 온디맨드 토큰 과금, Provisioned Throughput, 배치 추론, Priority와 Flex 서비스 티어, 리전 간 추론 라우팅. Custom Model Import로 Llama, Mistral, Qwen 등 지원 아키텍처의 오픈 웨이트 모델을 직접 올릴 수 있음 | EC2나 온프레미스 GPU에 가중치를 올려 직접 서빙 |
 | 장점 | GPU 운영 없음, Claude 같은 독점 모델 즉시 사용, 쿼터 안에서 수요에 따라 자동 확장, OpenAI와 Anthropic 호환 API로 기존 SDK를 그대로 사용 | 토큰당 API 비용 없음, 데이터가 밖으로 나가지 않는 폐쇄망 운영, 양자화와 KV 캐시, 배칭 파라미터를 직접 조정 |
