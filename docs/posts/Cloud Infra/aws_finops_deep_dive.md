@@ -6,39 +6,37 @@ authors:
 categories:
   - AWS
 tags:
-  - CUR
   - FinOps
+  - CUR
+  - FOCUS
   - Savings Plans
   - Reserved Instance
-  - Capacity Reservation
-  - FOCUS
-  - Organizations
 description: "상각(Amortized)·약정(RI/SP·EDP)·용량예약(ODCR·Capacity Blocks)·Payer 구조까지, AWS CUR과 FOCUS 데이터를 기반으로 FinOps 실무 지식을 총정리"
 ---
 
-# FinOps 정리(상각, 약정, 용량예약, Payer 구조 등)
+# AWS FinOps 정리
 
-AWS 비용 관리에서 쓰이는 FinOps 개념을 레이어별로 정리했다. 비용 지표 → 청구 데이터(CUR·FOCUS) → 비용 배분 → 할인 수단(RI/SP·EDP) → 용량 예약 → 계정 거버넌스 순서로, 각 레이어에서 같은 층위에 있는 용어들을 표로 비교한다.
+AWS 비용 관리에서 쓰이는 FinOps 개념을 레이어별로 정리했다. 비용 지표부터 청구 데이터(CUR·FOCUS), 비용 배분, 할인 수단(RI/SP·EDP), 용량 예약, 계정 거버넌스까지 각 레이어에서 같은 층위에 있는 용어를 표로 비교한 글이다.
 
 <!-- more -->
 
 ## FinOps란
 
-FinOps는 FinOps Foundation이 정의한 클라우드 재무 관리 문화·실무 체계다. 엔지니어링·재무·비즈니스가 함께 클라우드 비용의 책임을 지고, 데이터 기반으로 비즈니스 가치를 극대화하는 것을 목표로 한다.
+FinOps란 엔지니어링·재무·비즈니스가 함께 클라우드 비용에 책임을 지고 데이터 기반으로 비즈니스 가치를 높이도록 FinOps Foundation이 정의한 클라우드 재무 관리 실무 체계
 
 | 프레임워크 단계 | 내용 | 이 글의 관련 레이어 |
 |---|---|---|
-| Inform (가시화) | 비용 데이터 수집·배분·벤치마킹 | 비용 지표, 청구 데이터, 비용 배분 기초 |
+| Inform (가시화) | 비용 데이터 수집·배분·벤치마킹 | 비용 지표, 청구 데이터, 비용 배분 |
 | Optimize (최적화) | 단가·사용량 최적화 | 할인 수단, 용량 예약, 낭비 제거 |
 | Operate (운영) | 거버넌스·프로세스 정착 | Chargeback 실무, 계정 거버넌스 |
 
-성숙도는 Crawl → Walk → Run 3단계로 표현한다. FinOps Foundation의 공식 성숙도 모델 용어이며, 완벽한 체계를 한 번에 만들기보다 작은 범위에서 시작해 반복적으로 고도화하는 것을 권장한다.
+성숙도 표현은 Crawl → Walk → Run 3단계(FinOps Foundation 공식 성숙도 모델). 완벽한 체계를 한 번에 만들기보다 작은 범위에서 시작해 반복적으로 고도화하는 방향을 권장
 
 ---
 
-## 1. 비용 지표 같은 청구서를 보는 여러 관점
+## 비용 지표
 
-같은 한 달 치 청구서라도 어떤 기준으로 집계하느냐에 따라 다른 숫자가 나온다. Amortized Cost는 단독 개념이 아니라 아래 지표들과 같은 층위에서 비교해야 정확히 잡힌다.
+같은 한 달 치 청구서라도 집계 기준에 따라 다른 숫자가 나옴. Amortized Cost는 아래 지표들과 같은 층위에 놓고 비교해야 정확히 잡히는 개념
 
 | 지표 | 집계 기준 | 설명 | 주 용도 |
 |---|---|---|---|
@@ -65,7 +63,7 @@ FinOps는 FinOps Foundation이 정의한 클라우드 재무 관리 문화·실�
 
 ### FOCUS 표준에서의 대응 컬럼
 
-멀티클라우드 표준인 FOCUS에는 amortized라는 열이 없다. 상각 개념은 EffectiveCost로 표준화됐고, 위 지표들은 다음 4개 컬럼으로 대응된다.
+멀티클라우드 표준인 FOCUS에는 amortized라는 열이 없음. 상각 개념은 EffectiveCost로 표준화됐고, 위 지표들은 4개 컬럼으로 대응됨
 
 | FOCUS 컬럼 | 기존 AWS 개념 | 설명 |
 |---|---|---|
@@ -76,9 +74,9 @@ FinOps는 FinOps Foundation이 정의한 클라우드 재무 관리 문화·실�
 
 ---
 
-## 2. 청구 데이터 CUR, Data Exports, FOCUS
+## 청구 데이터
 
-지표를 계산하려면 원천 데이터가 필요하다. AWS의 비용 데이터 소스는 같은 층위에서 다음 네 가지로 비교된다.
+지표를 계산하려면 원천 데이터가 필요함. AWS의 비용 데이터 소스는 Cost Explorer, legacy CUR, CUR 2.0(Data Exports), FOCUS 네 가지
 
 | 데이터 소스 | 성격 | 세분성 | 스키마 특징 |
 |---|---|---|---|
@@ -87,7 +85,7 @@ FinOps는 FinOps Foundation이 정의한 클라우드 재무 관리 문화·실�
 | CUR 2.0 (Data Exports) | S3 원천 데이터 + SQL 컬럼/행 선택 | 리소스 ID·시간 단위 | 고정 스키마, snake_case, 중첩 컬럼 |
 | FOCUS 1.2 / 1.0 | Data Exports의 표준 스키마 내보내기 | 리소스 ID·시간 단위 | 3사(AWS·Azure·GCP) 공통 컬럼 |
 
-### CUR 핵심 특징
+### CUR 특징
 
 | 특징 | 내용 |
 |---|---|
@@ -106,7 +104,7 @@ FinOps는 FinOps Foundation이 정의한 클라우드 재무 관리 문화·실�
 | `pricing/` | 온디맨드 정가(publicOnDemandCost/Rate) |
 | `resourceTags/` | 사용자 정의 태그 (`resourceTags/user:Project` 등) |
 
-> 위 `접두어/컬럼` 표기는 legacy CUR(1.0) 기준이다. CUR 2.0(Data Exports)에서는 `line_item_line_item_type`처럼 snake_case 컬럼으로 제공되고, 태그·product 속성은 중첩(nested) 컬럼으로 재구성된다.
+참고: 위 `접두어/컬럼` 표기는 legacy CUR(1.0) 기준. CUR 2.0(Data Exports)에서는 `line_item_line_item_type`처럼 snake_case 컬럼으로 제공되고, 태그·product 속성은 중첩(nested) 컬럼으로 재구성됨
 
 ### 분석 파이프라인
 
@@ -117,14 +115,14 @@ graph LR
     C --> D["QuickSight / Redshift / BI<br>대시보드 시각화"]
 ```
 
-시각화는 AWS 오픈소스 템플릿인 CID(Cloud Intelligence Dashboards)를 QuickSight에 연동하면 C-Level 요약, 약정 최적화, 유휴 자원 대시보드를 빠르게 구축할 수 있다.
+시각화는 AWS 오픈소스 템플릿인 CID(Cloud Intelligence Dashboards)를 QuickSight에 연동하면 C-Level 요약, 약정 최적화, 유휴 자원 대시보드를 빠르게 구축 가능
 
-### CUR 2.0과 FOCUS는 다르다
+### CUR 2.0과 FOCUS의 차이
 
-흔한 오해: "CUR 2.0 = FOCUS라서 3사 컬럼명이 같다" → 절반만 맞다.
+"CUR 2.0 = FOCUS라서 3사 컬럼명이 같다"는 절반만 맞는 이해
 
-- CUR 2.0은 여전히 AWS 고유 컬럼 체계를 유지한다. 스키마 고정 + SQL 선택 기능이 추가된 것뿐이다.
-- FOCUS(FinOps Open Cost and Usage Specification)는 FinOps Foundation 주도로 AWS·Microsoft·Google이 함께 만든 오픈 표준이며, AWS Data Exports에서 FOCUS 테이블을 별도 Export type으로 선택해야 표준 컬럼으로 출력된다. 2026년 현재 Data Exports는 CUR 2.0 외에 FOCUS 1.2(권장)/1.0, Cost optimization recommendations, Carbon emissions 테이블을 제공한다(FOCUS 스펙 자체의 최신 릴리스는 1.4).
+- CUR 2.0은 여전히 AWS 고유 컬럼 체계를 유지. 스키마 고정 + SQL 선택 기능이 추가된 것뿐
+- FOCUS(FinOps Open Cost and Usage Specification)는 FinOps Foundation 주도로 AWS·Microsoft·Google이 함께 만든 오픈 표준. AWS Data Exports에서 FOCUS 테이블을 별도 Export type으로 선택해야 표준 컬럼으로 출력됨. 2026년 현재 Data Exports는 CUR 2.0 외에 FOCUS 1.2/1.0, Cost optimization recommendations, Carbon emissions 테이블을 제공(FOCUS 스펙 자체의 최신 릴리스는 1.4)
 
 ```mermaid
 graph TB
@@ -143,13 +141,13 @@ graph TB
 | 리소스 ID | `lineItem/ResourceId` | `ResourceId` | `resource.name` | `ResourceId` |
 | 계정 ID | `lineItem/UsageAccountId` | `SubscriptionId` | `project.id` | `SubAccountId` |
 
-> Azure 네이티브 스키마에는 `EffectiveCost` 열이 없으며(FOCUS 내보내기 전용 컬럼) 상각 값은 별도의 Amortized cost 데이터셋으로 제공된다. GCP `cost`는 크레딧이 별도 필드라 인보이스 금액은 `cost + credits.amount` 합산이 필요하고, `resource.name`은 Detailed export에만 존재한다.
+참고: Azure 네이티브 스키마에는 `EffectiveCost` 열이 없고(FOCUS 내보내기 전용 컬럼) 상각 값은 별도의 Amortized cost 데이터셋으로 제공. GCP `cost`는 크레딧이 별도 필드라 인보이스 금액은 `cost + credits.amount` 합산이 필요하고, `resource.name`은 Detailed export에만 존재
 
-멀티클라우드를 하나의 테이블/대시보드로 관리하려면 CUR 2.0이 아닌 FOCUS 내보내기를 선택해야 한다.
+멀티클라우드를 하나의 테이블/대시보드로 관리하려면 CUR 2.0이 아닌 FOCUS 내보내기를 선택해야 함
 
 ### Line Item 구조
 
-CUR에서 Line Item은 리소스 사용량, 약정 할인, 세금, 크레딧 등 비용이 발생하는 최소 단위의 단일 레코드(행)다. 원본 CUR의 한 행이 곧 하나의 Line Item이다.
+CUR에서 Line Item은 리소스 사용량, 약정 할인, 세금, 크레딧 등 비용이 발생하는 최소 단위의 단일 레코드(행). 원본 CUR의 한 행이 곧 하나의 Line Item
 
 | 컬럼 | 내용 |
 |---|---|
@@ -159,27 +157,27 @@ CUR에서 Line Item은 리소스 사용량, 약정 할인, 세금, 크레딧 등
 | `lineItem/ResourceId` | 비용을 유발한 리소스 식별자 |
 | `lineItem/UsageStartDate` / `UsageEndDate` | 비용 발생 시각 |
 
-`lineItem/LineItemDescription`은 해당 행이 어떤 작업·스펙·과금 항목으로 발생했는지 사람이 읽을 수 있는 문장으로 서술한 컬럼이다. 청구서 세부 내역의 텍스트와 동일하다.
+`lineItem/LineItemDescription`은 해당 행이 어떤 작업·스펙·과금 항목으로 발생했는지 사람이 읽을 수 있는 문장으로 서술한 컬럼. 청구서 세부 내역의 텍스트와 동일
 
 | 서비스 | LineItemDescription 예시 |
 |---|---|
-| EC2 | `$0.4160 per On Demand Linux t3.2xlarge Instance Hour` (서울 요율) |
-| EBS | `$0.0912 per GB-month of General Purpose SSD (gp3) provisioned storage - Asia Pacific (Seoul)` |
-| DTO | `$0.126 per GB - Asia Pacific (Seoul) data transfer to Internet` |
+| EC2 | `$0.416 per On Demand Linux t3.2xlarge Instance Hour` (서울 요율) |
+| EBS | `$0.0912 per GB-month of General Purpose (gp3) provisioned storage - Asia Pacific (Seoul)` |
+| Data Transfer Out(DTO) | `$0.126 per GB - first 10 TB / month data transfer out beyond the global free tier` (서울 요율 첫 구간) |
 
-Description은 앞단의 정형 식별자를 조합해 렌더링되고, 뒷단의 금액 컬럼으로 이어진다.
+Description은 앞단의 정형 식별자를 조합해 렌더링되고, 뒷단의 금액 컬럼으로 이어짐
 
 ```mermaid
 graph TB
     A["1. 정형 식별자 원인·행위 정의<br>lineItem/ProductCode = AmazonEC2<br>lineItem/Operation = RunInstances<br>lineItem/UsageType = APN2-BoxUsage:t3.xlarge"]
-    B["2. 자연어 조합 사람이 읽는 요약<br>lineItem/LineItemDescription<br>'$0.2080 per On Demand Linux t3.xlarge Instance Hour'"]
+    B["2. 자연어 조합 사람이 읽는 요약<br>lineItem/LineItemDescription<br>'$0.208 per On Demand Linux t3.xlarge Instance Hour'"]
     C["3. 정량 수치·재무 결과 금액 계산<br>UsageAmount × UnblendedRate = UnblendedCost<br>savingsPlan/ · reservation/ 약정 매핑 컬럼군"]
     A --> B --> C
 ```
 
-### 상각 비용은 단일 컬럼이 아니라 여러 컬럼에 분산된다
+### 상각 비용은 여러 컬럼에 분산
 
-CUR 1.0, 2.0(기본 스키마) 모두 `lineItem/amortized` 같은 단일 통합 상각 열은 존재하지 않는다. 상각 비용은 Line Item의 성격에 따라 서로 다른 컬럼에 분산 기록되며, 필요 시 SQL로 직접 합산해야 한다.
+CUR 1.0, 2.0(기본 스키마) 모두 `lineItem/amortized` 같은 단일 통합 상각 열은 존재하지 않음. 상각 비용은 Line Item의 성격에 따라 서로 다른 컬럼에 분산 기록되고, 필요하면 SQL로 직접 합산
 
 | Line Item 성격 | 상각 비용이 기록되는 컬럼 |
 |---|---|
@@ -189,7 +187,7 @@ CUR 1.0, 2.0(기본 스키마) 모두 `lineItem/amortized` 같은 단일 통합 
 | SP 미사용 약정 손실 | `SavingsPlanRecurringFee` 행에서 `TotalCommitmentToDate - UsedCommitment`로 계산 |
 | RI 미사용 손실 | `reservation/UnusedAmortizedUpfrontFeeForBillingPeriod` + `reservation/UnusedRecurringFee` |
 
-AWS가 상각 비용을 미리 계산된 컬럼 하나로 합쳐 주지 않는 이유는 다음과 같다.
+AWS가 상각 비용을 미리 계산된 컬럼 하나로 합쳐 주지 않는 이유는 셋
 
 | 이유 | 설명 |
 |---|---|
@@ -197,30 +195,30 @@ AWS가 상각 비용을 미리 계산된 컬럼 하나로 합쳐 주지 않는 �
 | 약정 메커니즘의 차이 | RI는 리소스 규격 기반, SP는 시간당 금액 기반으로 상각·배분 규칙이 완전히 달라 별도 네임스페이스로 분리 |
 | 실사용 상각과 미사용 손실의 분리 | 단일 열로 뭉개면 "효율적으로 사용된 상각액"인지 "약정을 못 채워 날린 손실"인지 구분 불가 |
 
-합쳐진 값 하나가 필요하면 SQL 뷰로 합산하거나, FOCUS 표준 내보내기의 `EffectiveCost`를 쓰면 된다.
+합쳐진 값 하나가 필요하면 SQL 뷰로 합산하거나 FOCUS 표준 내보내기의 `EffectiveCost`를 쓰면 됨
 
 ---
 
-## 3. 비용 배분 기초 Showback과 Chargeback
+## 비용 배분
 
-비용 데이터를 확보했다면 다음 레이어는 "누가 얼마를 썼는가"를 조직에 귀속시키는 배분이다. 같은 층위의 배분 방식 세 가지를 비교하면 다음과 같다.
+비용 데이터를 확보했다면 다음 레이어는 "누가 얼마를 썼는가"를 조직에 귀속시키는 배분. Showback과 Chargeback을 축으로 배분 방식 세 가지 비교
 
 | 구분 | Showback (비용 가시화) | Chargeback (내부 정산) | Shameback |
 |---|---|---|---|
 | 개념 | 팀별 사용 비용을 리포트/대시보드로 시각화 | 부서 예산/손익(P&L)에서 실제 차감 | 낭비가 심한 팀 목록을 전사 공개 |
 | 자금 이동 | 없음 (중앙이 일괄 결제) | 있음 (내부 회계 전표 처리) | 없음 |
-| 목적 | 비용 인식 제고, 낭비 식별, 자발적 최적화 | 부서별 손익 계산, 책임 경영, 리소스 남발 억제 | 압박을 통한 자발적 개선 유도 |
+| 목적 | 비용 인식 제고, 낭비 식별, 자발적 최적화 | 부서별 손익 계산, 책임 경영, 리소스 남발 억제 | 공개 압박으로 자발적 개선 유도 |
 | 장점 | 도입이 빠르고 회계 연동 부담 적음 | 팀이 낭비에 직접 재무 책임을 짐 | 강한 동기 부여 |
 | 단점 | 강제성이 없어 절감 동기 약함 | 정밀한 태깅·회계 프로세스 구축 난이도 높음 | 조직 문화 훼손 위험 (공식 용어라기보다 커뮤니티 속어) |
 
-일반적인 도입 순서는 다음과 같다.
+일반적인 도입 순서
 
 ```mermaid
 graph LR
     A["Showback 도입<br>태그 누락 정비<br>비용 데이터 신뢰 확보"] --> B["조직 성숙도 상승<br>배분 규칙 합의"] --> C["Chargeback 전환<br>부서 예산 실차감"]
 ```
 
-배분의 기반이 되는 용어들이다.
+배분의 기반이 되는 용어
 
 | 용어 | 설명 |
 |---|---|
@@ -231,9 +229,9 @@ graph LR
 
 ---
 
-## 4. 할인 수단 단가를 낮추는 방법들
+## 할인 수단
 
-Optimize 레이어의 첫 축은 단가다. AWS에서 단가를 낮추는 수단은 같은 층위에서 다음 네 가지로 비교된다.
+Optimize 레이어의 첫 축은 단가. AWS에서 단가를 낮추는 수단은 RI, SP, EDP/PPA, Spot 네 가지
 
 | 수단 | 약정 기준 | 대상 | 최대 할인 | 물리 용량 보장 | 특징 |
 |---|---|---|---|---|---|
@@ -242,41 +240,41 @@ Optimize 레이어의 첫 축은 단가다. AWS에서 단가를 낮추는 수단
 | EDP / PPA | 전사 또는 서비스별 지출 총액 | 전체 서비스 / 특정 서비스 | 계약별 협상 | 없음 | 비공개 프라이빗 계약. Shortfall(미달 위약금) 존재 |
 | Spot Instance | 없음 | EC2 (중단 허용 워크로드) | ~90% | 없음 (회수 위험) | 약정 없이 유휴 용량 활용. 언제든 회수될 수 있음 |
 
-단가 최적화(Rate)와 사용량 최적화(Usage)는 접근이 다르다.
+단가 최적화(Rate)와 사용량 최적화(Usage)는 접근이 다름
 
 | 구분 | Rate Optimization (단가 최적화) | Usage Optimization (사용량 최적화) |
 |---|---|---|
 | 접근 | 아키텍처는 그대로 두고 단가($/hr)만 낮춤 | 사용 시간·수량 자체를 줄임 |
 | 수단 | RI/SP 약정, Spot, EDP/PPA | 불필요 리소스 삭제, 스케줄링(Parking), 서버리스 전환 등 아키텍처 개선 |
 
-### RI 2축 조합으로 결정된다
+### RI의 2축 조합
 
-RI의 종류는 평면 나열이 아니라 오퍼링 클래스(Standard/Convertible) × 적용 범위(Regional/Zonal) 조합으로 결정된다.
+RI의 종류는 오퍼링 클래스(Standard/Convertible) × 적용 범위(Regional/Zonal) 2축 조합으로 결정됨
 
 | 구분 | Standard Zonal | Standard Regional | Convertible Zonal | Convertible Regional | 비-EC2 RI (RDS 등) |
 |---|---|---|---|---|---|
 | 최대 할인율 (3년) | ~72% | ~72% | ~66% | ~66% | 서비스별 상이 |
-| 물리 용량 보장 | O (자동) | X | O (자동) | X | X |
-| 크기 유연성 | X | O (Linux/공유 테넌시) | X | O (Linux/공유 테넌시) | 일부 엔진 지원 |
-| 패밀리/OS 변경 | X | X | O (Exchange) | O (Exchange) | X |
-| Marketplace 재판매 | O (수수료 12%) | O (수수료 12%) | X | X | X |
+| 물리 용량 보장 | 보장(자동) | 미보장 | 보장(자동) | 미보장 | 미보장 |
+| 크기 유연성 | 불가 | 가능(Linux·공유 테넌시) | 불가 | 가능(Linux·공유 테넌시) | 일부 엔진 지원 |
+| 패밀리/OS 변경 | 불가 | 불가 | 가능(Exchange) | 가능(Exchange) | 불가 |
+| Marketplace 재판매 | 가능(수수료 12%) | 가능(수수료 12%) | 불가 | 불가 | 불가 |
 | 지원 서비스 | EC2 | EC2 | EC2 | EC2 | RDS, ElastiCache, Redshift, OpenSearch 등 |
 
-> Regional RI의 크기 유연성은 Linux/UNIX + 공유(기본) 테넌시 조건에서만 적용되며, 일부 GPU/가속기 패밀리(G·P·Inf 등)는 Regional이어도 크기 유연성이 지원되지 않는다.
+참고: Regional RI의 크기 유연성은 Linux/UNIX + 공유(기본) 테넌시 조건에서만 적용되고, G·P·Inf 등 일부 GPU/가속기 패밀리는 Regional이어도 크기 유연성 미지원
 
 ### SP 4종 비교
 
-2025년 12월 Database Savings Plans가 추가되어 SP는 이제 4종이다.
+2025년 12월 Database Savings Plans가 추가되어 SP는 4종. Database SP의 OpenSearch·Neptune Analytics 지원은 2026년 3월에 별도로 추가됨
 
 | 항목 | Compute SP | EC2 Instance SP | SageMaker AI SP | Database SP |
 |---|---|---|---|---|
 | 지원 서비스 | EC2 + Fargate + Lambda | EC2 단독 | SageMaker AI 단독 | Aurora·RDS·DynamoDB·ElastiCache·DocumentDB·Neptune·Keyspaces·Timestream·DMS·OpenSearch |
 | 최대 할인율 | ~66% (3년) | ~72% (3년) | ~64% (3년) | ~35% (1년·No Upfront, 서버리스 기준) |
 | 리전/패밀리 유연성 | 전 리전·전 패밀리 자동 | 단일 리전·단일 패밀리 고정 | 모든 ML 인스턴스 자동 | 엔진·패밀리·리전 유연 |
-| 용량 예약 | X (ODCR 별도 연동) | X (ODCR 별도 연동) | X | X |
+| 용량 예약 | 미제공 (ODCR 별도 연동) | 미제공 (ODCR 별도 연동) | 미제공 | 미제공 |
 | 재판매 | 불가 | 불가 | 불가 | 불가 |
 
-재판매는 전부 불가지만, 시간당 약정 $100 이하 SP는 구매 후 7일 이내(동일 달력월)에 반품 가능하다(100% 환불, 관리 계정당 연 10회 한도).
+재판매는 전부 불가지만, 시간당 약정 $100 이하 SP는 구매 후 7일 이내(동일 달력월)에 반품 가능(100% 환불, 관리 계정당 연 10회 한도)
 
 ### RI vs SP 작동 방식
 
@@ -286,14 +284,14 @@ RI의 종류는 평면 나열이 아니라 오퍼링 클래스(Standard/Converti
 | 인프라 변경 시 | 패밀리·리전·컴퓨팅 형태(EC2→Fargate/Lambda)가 바뀌어도 할인 유지 | 인스턴스를 바꾸면 RI가 Unused로 방치 |
 | 크기 변경 | 자동 흡수 | 동일 패밀리 내 크기 변경만 정규화 팩터(Normalization Factor)로 자동 분할/병합 |
 
-!!! note "오개념 체크"
-    - "Compute SP가 무조건 좋다?" → 아니다. 유연성 최고지만 할인율 ~66%. EC2 Instance SP는 패밀리/리전 고정 대신 Standard RI급 ~72%.
-    - "SP로 RDS·Redis도 할인?" → 이제 가능. 2025-12 출시된 Database SP가 Aurora·RDS·DynamoDB·ElastiCache·DocumentDB·OpenSearch 등을 커버한다(최대 35%). 단 Redshift는 여전히 전용 RI(예약 노드)만 가능하며, 할인 폭이 더 필요하면 서비스 전용 RI와 비교해 선택한다.
-    - "Convertible RI vs Compute SP?" → 유연성은 유사하나 Convertible은 수동 교환(Exchange) 필요, SP는 완전 자동. 그래서 신규 EC2 약정에서 Convertible RI를 새로 살 유인은 크게 줄었다(AWS 공식 문서도 RI보다 SP를 권장한다).
+!!! notice "오개념 체크"
+    - Compute SP가 항상 유리한 것은 아님. 유연성은 최고지만 할인율 ~66%이고, EC2 Instance SP는 패밀리/리전 고정 대신 Standard RI급 ~72%
+    - RDS·ElastiCache 같은 DB 계열도 Database SP로 할인 가능(최대 35%). 단 Redshift는 여전히 전용 RI(예약 노드)만 가능하고, 할인 폭이 더 필요하면 서비스 전용 RI와 비교해 선택
+    - Convertible RI와 Compute SP는 유연성이 비슷하지만 Convertible은 수동 교환(Exchange)이 필요하고 SP는 완전 자동 → 신규 EC2 약정에서 Convertible RI를 새로 살 유인은 크게 줄었음(AWS 공식 문서도 RI보다 SP를 권장)
 
-### RI는 24×7 계약이다
+### RI는 24×7 계약
 
-RI는 인스턴스를 켰는지와 무관하게 계약 기간 내내 매시간(1년 8,760시간) 비용을 지불하는 조건이다. 안 쓴 시간의 혜택은 이월·환불 없이 매시간 소멸한다.
+RI는 인스턴스를 켰는지와 무관하게 계약 기간 내내 매시간(1년 8,760시간) 비용을 지불하는 조건. 안 쓴 시간의 혜택은 이월·환불 없이 매시간 소멸
 
 | 운영 방식 | 연간 가동률 | 비용 (온디맨드 $100 기준) | 결과 |
 |---|---|---|---|
@@ -301,7 +299,7 @@ RI는 인스턴스를 켰는지와 무관하게 계약 기간 내내 매시간(1
 | 평일 주간만 가동 + 온디맨드 | ~27% | $27 | RI보다 훨씬 저렴 |
 | 연 180일 24시간 + 온디맨드 | ~49% | $49 | RI($60)보다 저렴 |
 
-손익분기 기준: 할인율 40%라면 가동률 60% 이상일 때만 RI가 이득. 그 밑이면 스케줄링(끄고 켜기)이 정답이다.
+손익분기 기준: 할인율 40%라면 가동률 60% 이상일 때만 RI가 이득. 그 밑이면 스케줄링(끄고 켜기)이 정답
 
 ### 약정 변경·해지 규칙
 
@@ -312,11 +310,11 @@ RI는 인스턴스를 켰는지와 무관하게 계약 기간 내내 매시간(1
 | 리전 변경 | 불가 | 불가 (리전은 약정 기간 내내 고정) | |
 | 약정 수량 축소·중도 해지 | 불가 | 불가 | 환불 불가, 잔여 기간 100% 과금 |
 
-Convertible Exchange는 신규 약정 가치가 기존보다 크거나 같아야 승인되며, 더 저렴한 쪽으로 줄여 환불받는 것은 불가능하다.
+Convertible Exchange는 신규 약정 가치가 기존보다 크거나 같아야 승인되고, 더 저렴한 쪽으로 줄여 환불받는 것은 불가
 
 ### EDP와 PPA
 
-둘 다 일정 지출(Commitment)을 약정하고 추가 할인을 받는 프라이빗 계약이지만, 할인이 적용되는 범위(Scope)가 다르다.
+둘 다 일정 지출(Commitment)을 약정하고 추가 할인을 받는 프라이빗 계약이지만, 할인이 적용되는 범위(Scope)가 다름
 
 | 구분 | EDP (Enterprise Discount Program) | PPA (Private Pricing Agreement) |
 |---|---|---|
@@ -326,10 +324,10 @@ Convertible Exchange는 신규 약정 가치가 기존보다 크거나 같아야
 | 주요 대상 | 다방면 대규모 워크로드 엔터프라이즈 | 특정 리소스가 기형적으로 큰 기업 (대규모 CDN/스토리지) |
 | 위험 요소 | Shortfall(약정 미달 시 차액 위약금) | 사용량 감소·아키텍처 변경 시 약정 이행 문제 |
 
-참고로 최근에는 EDP가 PPA(Private Pricing Agreement)라는 상위 명칭으로 흡수·통용되는 추세이며, 하나의 PPA 계약 안에 '전사 기본 할인'과 '특정 서비스 전용 할인' 조항이 함께 들어간다. 다만 EDP/PPA는 비공개 사적 계약이라 AWS 공식 문서로 규정된 체계가 아니고, 세부 조건은 계약마다 다를 수 있다.
+참고: 최근에는 EDP가 PPA(Private Pricing Agreement)라는 상위 명칭으로 흡수·통용되는 추세이고, 하나의 PPA 계약 안에 '전사 기본 할인'과 '특정 서비스 전용 할인' 조항이 함께 들어감. 다만 EDP/PPA는 비공개 사적 계약이라 AWS 공식 문서로 규정된 체계가 아니고, 세부 조건은 계약마다 다를 수 있음
 
-!!! danger "동일 항목에 EDP + PPA 이중 할인(Stacking)은 불가"
-    동일한 Line Item에 EDP %를 깎고 그 위에 PPA %를 다시 곱하는 방식은 불가능하다. 특약 지정 서비스는 PPA 커스텀 단가가 배타적으로 적용되고, 그 외 서비스는 전사 기본 할인율이 적용되는 서비스별 분기(Hybrid) 구조다.
+!!! warning "동일 항목에 EDP + PPA 이중 할인(Stacking)은 불가"
+    동일한 Line Item에 EDP %를 깎고 그 위에 PPA %를 다시 곱하는 방식은 불가. 특약 지정 서비스는 PPA 커스텀 단가가 배타적으로 적용되고, 그 외 서비스는 전사 기본 할인율이 적용되는 서비스별 분기(Hybrid) 구조(계약별 세부는 상이할 수 있음)
 
 ```mermaid
 graph TB
@@ -341,8 +339,8 @@ graph TB
 | 조합 | 중첩 가능 | 작동 방식 |
 |---|---|---|
 | EDP(전사) + PPA(특정 서비스) | 불가 (배타적) | 특약 서비스는 PPA 단가 우선, 나머지는 EDP |
-| EDP/PPA + Savings Plans | 가능 | SP 할인가 적용 후 잔여 금액에 계약 % 할인 반영 |
-| EDP/PPA + Reserved Instances | 가능 | RI 적용 후 결제 금액에 계약 할인 반영 |
+| EDP/PPA + Savings Plans | 가능 | SP 할인가 적용 후 잔여 금액에 계약 할인 반영 (일반적으로 알려진 구조, 계약별 상이 가능) |
+| EDP/PPA + Reserved Instances | 가능 | RI 적용 후 결제 금액에 계약 할인 반영 (일반적으로 알려진 구조, 계약별 상이 가능) |
 
 ### 약정 관리 지표
 
@@ -354,24 +352,24 @@ graph TB
 | Coverage (약정 적용률) | 전체 워크로드 중 약정 할인을 받는 비율. 통상 70~80% 이상 목표 |
 | Utilization (약정 사용률) | 구매한 약정 중 실제 소진된 비율. 95% 이상이 건강한 상태 |
 | Commitment Expiration | 약정 만료 시점 추적. 만료 당일 온디맨드로 튕겨 비용 급증하는 것 방지 |
-| Unused Commitment | 약정을 맺고 리소스를 안 써서 허공에 날린 순수 손실 비용 |
+| Unused Commitment | 약정을 맺고 리소스를 안 써서 그대로 날린 순수 손실 비용 |
 
 ---
 
-## 5. 용량 예약 할인과 별개의 축
+## 용량 예약
 
-할인(단가)과 용량 보장(물리 자원)은 독립된 축이다. 용량을 확보하는 수단은 같은 층위에서 다음 네 가지로 비교된다.
+할인(단가)과 용량 보장(물리 자원)은 독립된 축. 용량을 확보하는 수단은 즉시형 ODCR, future-dated CR, Capacity Blocks, Zonal RI 네 가지
 
 | 수단 | 목적 | 기간 | 할인 | 취소 |
 |---|---|---|---|---|
-| 즉시형 ODCR | 지금 즉시 특정 AZ 용량 선점 | 오픈엔드 (원할 때 생성/삭제) | 없음 단 SP·Regional RI 할인이 자동 결합 | 언제든 위약금 없이 가능 |
+| 즉시형 ODCR | 지금 즉시 특정 AZ 용량 선점 | 기간 제한 없음 (원할 때 생성·삭제) | 없음. SP·Regional RI 할인은 자동 결합 | 언제든 위약금 없이 가능 |
 | future-dated CR | 미래 시작 시점 용량 확보 (2024-11 도입) | 최소 약정 기간(commitment duration) 존재 | 즉시형과 동일 | 기간 중 취소 시 수수료 가능 |
 | Capacity Blocks for ML | GPU/가속기 단기 확정 예약 | 1~14일 또는 7일 배수 최대 182일 | 동적 단가 (선불 일괄 결제) | 불가 |
 | Zonal RI | 용량 보장 + 할인 동시 해결 | 1년/3년 약정 | 최대 72% | 불가 (중도 해지 불가) |
 
 ### On-Demand Capacity Reservation (ODCR)
 
-특정 AZ에 원하는 사양의 EC2 자리(슬롯)를 물리적으로 선점해, 트래픽 급증·장애 조치 시 `InsufficientInstanceCapacity`(ICE) 오류를 방지하는 기능이다.
+특정 AZ에 원하는 사양의 EC2 자리(슬롯)를 물리적으로 선점해, 트래픽 급증·장애 조치 시 `InsufficientInstanceCapacity`(ICE) 오류를 방지하는 기능
 
 | 상태 | 과금 |
 |---|---|
@@ -385,9 +383,9 @@ graph TB
 | 종료일(End date) | 선택 사항: 수동 취소 방식 또는 특정 시각 자동 삭제 |
 | 소비 방식 | `open`(조건 일치 인스턴스가 자동 소비) / `targeted`(예약 ID를 지정한 인스턴스만 소비) |
 | 계정 공유 | AWS RAM으로 멀티 계정 공유 가능 |
-| future-dated CR | 2024-11부터 미래 시작 시점 지정 예약 지원. 단 assessment를 거쳐 `assessing → scheduled`로 전환되고, 최소 약정 기간(commitment duration)이 있으며 기간 중 취소 시 취소 수수료가 발생할 수 있어 즉시형과 규칙이 다름 |
+| future-dated CR | 2024-11부터 미래 시작 시점 지정 예약 지원. assessment를 거쳐 `assessing → scheduled`로 전환되고, 최소 약정 기간(commitment duration)이 있으며 기간 중 취소 시 수수료가 발생할 수 있어 즉시형과 규칙이 다름 |
 
-일반 EC2 기동과의 차이는 다음과 같다.
+일반 EC2 직접 기동과의 차이
 
 | 구분 | 일반 EC2 직접 기동 | ODCR |
 |---|---|---|
@@ -396,8 +394,8 @@ graph TB
 | Auto Scaling | AWS 재고 품절 시 스케일아웃 실패 | 예약 풀 내 무조건 성공 |
 | 용도 | 일상 가동 | 품절 방지, DR 페일오버, 이벤트 대비 |
 
-!!! note "Active 상태의 의미"
-    인스턴스를 띄우면 예약이 사라지는 게 아니라 내부의 AvailableInstanceCount만 감소한다. 인스턴스를 끄면 다시 증가하고, 예약 자체는 수동 취소하거나 종료일에 닿기 전까지 계속 `active`로 과금된다. 주차장의 '영업 중' 상태와 '빈 주차면 수'의 관계다.
+!!! notice "Active 상태의 의미"
+    인스턴스를 띄워도 예약은 그대로 있고 내부의 AvailableInstanceCount만 감소함. 인스턴스를 끄면 다시 증가하고, 예약 자체는 수동 취소하거나 종료일에 닿기 전까지 계속 active로 과금됨. 주차장의 '영업 중' 상태와 '빈 주차면 수'의 관계
 
 ### 대규모 이벤트에서의 ODCR 운영
 
@@ -411,40 +409,39 @@ graph TB
 | 주의사항 | 이유 |
 |---|---|
 | 너무 일찍 만들지 말 것 | 생성 시점부터 빈 슬롯 온디맨드 과금 시작 |
-| 단일 AZ 몰빵 금지 | 고가용성을 위해 2~3개 AZ 균등 분산 |
+| 단일 AZ 집중 금지 | 고가용성을 위해 2~3개 AZ 균등 분산 |
 | 초대형 이벤트는 사전 조율 | AWS IEM(Infrastructure Event Management)으로 리전 공급량 조율 |
 
-!!! tip "End date는 계약 기간이 아니라 안전장치다"
-    즉시형 ODCR은 언제든 위약금 없이 즉시 취소·수정 가능하다(future-dated 예약은 약정 기간·취소 수수료 규칙이 별도다). 이벤트가 조기 종료되면 인스턴스 정리 후 바로 예약을 삭제하면 그 시점부터 과금이 끊긴다. End date는 "삭제를 깜빡했을 때 무기한 과금을 막는 최대 안전선"으로 걸어두는 것이고, 이벤트가 연장되면 만료 전 End date를 늦추면 된다.
+!!! tip "End date는 안전장치"
+    즉시형 ODCR은 언제든 위약금 없이 즉시 취소·수정 가능(future-dated 예약은 약정 기간·취소 수수료 규칙이 별도). 이벤트가 조기 종료되면 인스턴스 정리 후 바로 예약을 삭제하면 그 시점부터 과금이 끊김. End date는 삭제를 깜빡했을 때 무기한 과금을 막는 최대 안전선이고, 이벤트가 연장되면 만료 전에 End date를 늦추면 됨
 
 ### EC2 Capacity Blocks for ML
 
-공급이 부족한 고성능 GPU/가속기 인스턴스(P6·P5·P4d·Trn 계열, UltraServer 등)를 미래 시점에 확정 예약하는 서비스다.
+공급이 부족한 고성능 GPU/가속기 인스턴스(P6·P5·P4d·Trn 계열, UltraServer 등)를 미래 시점에 확정 예약하는 서비스
 
 | 항목 | 내용 |
 |---|---|
-| 과금 방식 | 예약 수수료가 따로 붙는 게 아니라 예약 기간 전체 사용료를 선불 일괄 결제 |
+| 과금 방식 | 예약 수수료는 따로 없고, 예약 기간 전체 사용료를 선불 일괄 결제 |
 | 이중 과금 | 블록 기간 중 인스턴스 실행 시 온디맨드 비용 중복 발생 없음 |
 | 미사용 리스크 | 안 쓰거나 일찍 끝내도 전액 과금, 취소·환불 불가 |
-| 부가 리소스 | EBS·데이터 전송 등은 별도 청구 |
 | 단가 | 수요·공급에 따른 동적 단가 (구매 후 고정) |
-| 예약 기간 | 1일 단위 1~14일 또는 7일 배수로 최대 182일(약 6개월), 최대 8주 전 사전 예약·기간 연장(extend) 지원 출시 초기 1~14일 제한에서 확장 |
+| 예약 기간 | 1일 단위 1~14일 또는 7일 배수 최대 182일(약 6개월)<br>최대 8주 전 사전 예약, 기간 연장(extend) 지원 |
 
-### Zonal RI vs Regional RI 용량 보장은 자동이 아니다
+### Zonal RI vs Regional RI
 
-"RI면 용량이 보장된다"는 틀린 가정이다. Scope에 따라 갈린다.
+"RI면 용량이 보장된다"는 가정은 Scope에 따라 갈림
 
 | 항목 | Zonal RI | Regional RI | ODCR |
 |---|---|---|---|
-| 용량 보장 | O (약정 기간 내내 자동) | X (0%) | O (삭제 전까지) |
+| 용량 보장 | 보장 (약정 기간 내내 자동) | 미보장 | 보장 (삭제 전까지) |
 | 할인 | 최대 72% | 최대 72% | 없음 (온디맨드 단가) |
 | 약정 | 1/3년 고정 | 1/3년 고정 | 없음 |
-| 크기 유연성 | X | O | X |
+| 크기 유연성 | 불가 | 가능 | 불가 |
 | 위치 | 특정 AZ 고정 | 리전 내 전 AZ 커버 | 특정 AZ 고정 |
 
-### Regional RI + ODCR 조합 할인 자동 적용
+### Regional RI + ODCR 조합
 
-인스턴스 속성(인스턴스 타입·플랫폼(OS)·테넌시·AZ)이 일치하면, Regional RI(또는 SP)의 할인이 ODCR에 자동 매핑된다(크기 유연성이 적용되는 Linux/공유 테넌시 Regional RI는 패밀리 수준 매칭까지 커버). 슬롯이 비어 있을 때도 온디맨드 정가가 아닌 RI 할인 요율이 적용돼 손실이 최소화되며, 할인은 실행 중인 인스턴스에 우선 적용된 후 미사용 슬롯을 커버한다. 단, Zonal RI의 할인은 ODCR에 적용되지 않는다.
+인스턴스 속성(인스턴스 타입·플랫폼(OS)·테넌시·AZ)이 일치하면 Regional RI(또는 SP)의 할인이 ODCR에 자동 매핑됨(크기 유연성이 적용되는 Linux·공유 테넌시 Regional RI는 패밀리 수준 매칭까지 커버). 슬롯이 비어 있을 때도 온디맨드 정가가 아닌 RI 할인 요율이 적용돼 손실이 최소화되고, 할인은 실행 중인 인스턴스에 우선 적용된 후 미사용 슬롯을 커버. 단 Zonal RI의 할인은 ODCR에 적용되지 않음
 
 ```mermaid
 graph LR
@@ -452,7 +449,7 @@ graph LR
     B --> C["종료<br>ODCR 즉시 삭제<br>유연한 할인 체제로 복귀"]
 ```
 
-"그럼 RI 기간 내내 ODCR을 걸어두면 되지 않나?" 기술적으로 가능하지만 다음 문제가 있다.
+RI 기간 내내 ODCR을 걸어두는 것도 기술적으로 가능하지만 문제가 셋 있음
 
 | 문제 | 설명 |
 |---|---|
@@ -460,13 +457,13 @@ graph LR
 | 재배치 실패 리스크 | ODCR을 재배치하는 순간 새 AZ에 재고가 없으면 ICE로 실패 가능 |
 | 비용 누수 (휴먼 에러) | 인프라 변경 시 ODCR 정리를 깜빡하면 빈 슬롯 온디맨드 과금이 계속 발생 |
 
-IaC(Terraform)로 ODCR 라이프사이클을 완벽 자동화할 수 있다면 유효한 전략이지만, 실무 표준은 "평소 SP로 유연성 극대화 → 이벤트·핵심 DB에만 선별적으로 ODCR 일시 결합"이다.
+IaC(Terraform)로 ODCR 라이프사이클을 완전히 자동화할 수 있다면 유효한 전략이지만, 실무 표준은 '평소 SP로 유연성 극대화, 이벤트·핵심 DB에만 선별적으로 ODCR 일시 결합' 쪽
 
 ---
 
-## 6. 낭비 제거와 운영 지표
+## 낭비 제거와 운영 지표
 
-Optimize 레이어의 두 번째 축은 사용량이다. 낭비를 찾는 용어들이다.
+Optimize 레이어의 두 번째 축은 사용량. 낭비를 찾는 용어부터
 
 | 용어 | 설명 |
 |---|---|
@@ -477,7 +474,7 @@ Optimize 레이어의 두 번째 축은 사용량이다. 낭비를 찾는 용어
 | Unit Economics | 비용을 비즈니스 지표와 연계 (사용자 1명당 인프라 비용 등) |
 | Credit Burn-rate | 프로모션 크레딧의 월별 소진 속도·잔여 유효기간 추적 지표 |
 
-회계 관점의 용어들이다.
+회계 관점 용어
 
 | 용어 | 설명 |
 |---|---|
@@ -485,19 +482,19 @@ Optimize 레이어의 두 번째 축은 사용량이다. 낭비를 찾는 용어
 | OpEx | 클라우드 사용료처럼 일상 운영에서 지속 발생하는 비용 (당기 비용 처리) |
 | True-up | 예측 기반 선지급/가상 배분 비용을 마감 시점에 실사용량과 비교해 차액 보정 |
 
-네트워크·컨테이너처럼 배분이 까다로운 비용들이다.
+네트워크·컨테이너처럼 배분이 까다로운 비용
 
 | 용어 | 설명 |
 |---|---|
 | Container Cost Allocation | 공유 K8s 클러스터 비용을 Pod/Namespace의 Request·Usage 비율로 팀별 배분 (Kubecost/OpenCost, AWS Split Cost Allocation Data for EKS) |
-| Data Transfer Out (DTO) | 인터넷/타 리전으로 내보내는 트래픽 비용. 예측 어려운 대표적 변동 비용 |
+| DTO | 인터넷/타 리전으로 내보내는 트래픽 비용. 예측 어려운 대표적 변동 비용 |
 | Inter-AZ Transfer | 동일 리전 내 AZ 간 통신에 GB당 발생하는 내부 네트워크 비용 |
 
 ---
 
-## 7. Chargeback 실무 약정 비용 배분
+## Chargeback 실무
 
-중앙에서 약정을 일괄 구매했을 때, 어떤 금액 기준으로 각 부서에 배분할지가 실무의 핵심이다.
+중앙에서 약정을 일괄 구매했을 때 어떤 금액 기준으로 각 부서에 배분할지가 실무 쟁점
 
 | 모델 | 메커니즘 | 장점 | 단점 |
 |---|---|---|---|
@@ -512,7 +509,7 @@ Optimize 레이어의 두 번째 축은 사용량이다. 낭비를 찾는 용어
 | C. 이벤트용 ODCR | 사업부 요청으로 용량 예약 생성 | 미사용 슬롯 과금(예측 실패분)은 해당 사업부에 100% 직접 전가 → 용량 예약 남발(모럴 해저드) 차단 |
 | D. 독립 예산 부서 혼합 | R&D는 자체 예산, 일반 팀은 중앙 풀 | R&D 전용 약정은 해당 계정에 직접 귀속(할인 공유 OFF), 일반 서비스 부서는 Payer 공유 풀(할인 공유 ON)로 유연 배분 |
 
-미사용 약정·공통비 정산 모델은 다음과 같이 비교된다.
+미사용 약정·공통비 정산 모델 비교
 
 | 정산 모델 | 장점 | 단점 | 적용 대상 |
 |---|---|---|---|
@@ -522,11 +519,11 @@ Optimize 레이어의 두 번째 축은 사용량이다. 낭비를 찾는 용어
 
 ---
 
-## 8. 계정 거버넌스 Payer 구조
+## 계정 거버넌스
 
-### Payer는 Management Account다
+### Payer는 곧 Management Account
 
-랜딩존(AWS Organizations / Control Tower)에서 Management Account(관리 계정, 구 Master)가 곧 Payer(청구/결제) 계정이다. 같은 12자리 계정 하나를 거버넌스 관점에서 부르면 Management, 재무 관점에서 부르면 Payer일 뿐이며, 조직 내부에서 결제 기능만 하위 멤버 계정으로 분리·위임하는 것은 불가능하다(예외적으로 최근 도입된 Billing Transfer로 조직 외부의 별도 관리 계정에 청구 관리·지불을 이전하는 것은 가능하다).
+랜딩존(AWS Organizations / Control Tower)에서 Management Account(관리 계정, 구 Master)가 곧 Payer(청구/결제) 계정. 같은 12자리 계정 하나를 거버넌스 관점에서 부르면 Management, 재무 관점에서 부르면 Payer. 조직 내부에서 결제 기능만 하위 멤버 계정으로 분리·위임하는 것은 불가능(예외로 2025-11 도입된 Billing Transfer로 조직 외부의 별도 관리 계정에 청구 관리·지불을 이전하는 것은 가능)
 
 ```mermaid
 graph TB
@@ -541,7 +538,7 @@ graph TB
     W --> PR["Prod Account"]
 ```
 
-Management를 Payer로 잡고 워크로드를 0으로 비우는 이유는 다음과 같다.
+Management를 Payer로 잡고 워크로드를 0으로 비우는 이유
 
 | 이유 | 설명 |
 |---|---|
@@ -557,28 +554,28 @@ Management를 Payer로 잡고 워크로드를 0으로 비우는 이유는 다음
 | 액세스 | IAM User 금지, IAM Identity Center(SSO) 임시 자격 증명만 |
 | 역할 | Organizations·Control Tower 관리, 통합 청구, CUR 출력 |
 
-### Root는 계정이 아니다
+### Root는 계정이 아님
 
 | 용어 | 실체 | Payer 여부 |
 |---|---|---|
-| Organization Root (`r-xxxx`) | 조직 트리 최상위 논리적 컨테이너 (로그인 불가, 리소스 생성 불가) | X |
-| Management Account | 조직을 생성·소유한 실제 12자리 계정 | O |
-| Root User | 각 계정마다 1개 존재하는 이메일 기반 최고 관리자 자격 증명 | X |
+| Organization Root (`r-xxxx`) | 조직 트리 최상위 논리적 컨테이너 (로그인 불가, 리소스 생성 불가) | 아님 |
+| Management Account | 조직을 생성·소유한 실제 12자리 계정 | 해당 |
+| Root User | 각 계정마다 1개 존재하는 이메일 기반 최고 관리자 자격 증명 | 아님 |
 
-생성 순서도 "Root가 있어서 조직을 만드는" 게 아니라 그 반대다.
+생성 순서도 "Root가 있어서 조직을 만드는" 게 아니라 그 반대
 
 ```mermaid
 graph LR
     A["일반 AWS 계정<br>(결제 수단 등록)"] --> B["Create organization 실행"]
     B --> C["해당 계정이<br>Management(Payer)로 승격"]
-    B --> D["조직(o-xxxx)과 Root 컨테이너(r-xxxx)<br>자동 생성 새 계정은 생기지 않음"]
+    B --> D["조직(o-xxxx)과 Root 컨테이너(r-xxxx) 자동 생성<br>새 계정은 생기지 않음"]
 ```
 
-이때 총 계정 수는 1개로 유지되며, Management Account는 이후 다른 계정으로 교체할 수 없다(조직 트리 내 배치 위치는 옮길 수 있지만, 어디에 두든 SCP는 적용되지 않는다).
+이때 총 계정 수는 1개로 유지되고, Management Account는 이후 다른 계정으로 교체 불가(조직 트리 내 배치 위치는 옮길 수 있지만 어디에 두든 SCP는 미적용)
 
-### SCP는 어디에 적용하고, 어디서 관리하나
+### SCP 적용 위치와 관리 주체
 
-적용 위치(Attach 대상)는 Root, OU, 개별 멤버 계정 3곳이다.
+적용 위치(Attach 대상)는 Root, OU, 개별 멤버 계정 3곳
 
 | 적용 위치 | 권장 정책 예시 |
 |---|---|
@@ -588,16 +585,16 @@ graph LR
 | Sandbox OU | 온프레미스 연동 차단, Egress 제한 |
 | 개별 계정 | 특수 예외 격리 시에만 (개별 부착 남발은 안티패턴, OU 단위가 원칙) |
 
-관리 주체(생성·수정·부착 가능한 계정)는 Management Account 또는 Delegated Administrator(보안 계정 등에 정책 관리 위임) 두 곳뿐이다. 일반 멤버 계정은 자신에게 걸린 SCP를 보거나 해제할 수 없다.
+관리 주체(생성·수정·부착 가능한 계정)는 Management Account 또는 Delegated Administrator(보안 계정 등에 정책 관리 위임) 두 곳뿐. 일반 멤버 계정은 자신에게 걸린 SCP를 보거나 해제할 수 없음
 
 !!! warning "Management Account에는 SCP가 적용되지 않는다"
-    Root에 SCP를 걸어도 Management Account 자체는 100% 무효화(Bypass)된다. 잘못된 Deny로 조직 전체가 영구 잠기는 사태를 방지하기 위한 설계다. 따라서 Management 계정 보안은 SCP가 아닌 SSO 접근 통제 + 루트 잠금(MFA)으로 지켜야 한다.
+    Root에 SCP를 걸어도 Management Account 자체는 100% 무효화(Bypass)됨. 잘못된 Deny로 조직 전체가 영구 잠기는 사태를 방지하기 위한 설계. 따라서 Management 계정 보안은 SCP가 아닌 SSO 접근 통제 + 루트 잠금(MFA)으로 지켜야 함
 
-평가 규칙: 상위에서 Explicit Deny된 액션은 하위 IAM이 AdministratorAccess여도 절대 실행 불가. 반대로 Root부터 계정까지 전 계층에서 Allow 체인이 끊기지 않아야 권한이 유효하다.
+평가 규칙: 상위에서 Explicit Deny된 액션은 하위 IAM이 AdministratorAccess여도 절대 실행 불가. 반대로 Root부터 계정까지 전 계층에서 Allow 체인이 끊기지 않아야 권한이 유효
 
-### Account Factory는 어디서 실행하나
+### Account Factory 실행 위치
 
-Control Tower의 Account Factory는 표준 가드레일이 사전 적용된 신규 계정을 자동 프로비저닝한다.
+Control Tower의 Account Factory는 표준 가드레일이 사전 적용된 신규 계정을 자동 프로비저닝하는 장치
 
 | 구분 | 콘솔 (Control Tower GUI) | Service Catalog | AFT (Account Factory for Terraform) |
 |---|---|---|---|
@@ -606,7 +603,7 @@ Control Tower의 Account Factory는 표준 가드레일이 사전 적용된 신�
 | 커스터마이징 | 기본 베이스라인 수준 | 기본 수준 | 무제한 (커스텀 Terraform 전체 배포) |
 | 적합 환경 | 계정 10개 미만 초기 구축 | 중앙 IT의 셀프서비스 포털 | 수십~수백 계정 엔터프라이즈 |
 
-AFT는 Management Account의 권한 과밀을 피하려고 전용 멤버 계정에 파이프라인(CodePipeline, Step Functions 등)을 격리한다. 실행 흐름은 다음과 같다.
+AFT는 Management Account의 권한 과밀을 피하려고 전용 멤버 계정에 파이프라인(CodePipeline, Step Functions 등)을 격리한 구조. 실행 흐름은 아래와 같음
 
 ```mermaid
 graph TB
@@ -615,7 +612,7 @@ graph TB
     C --> D["신규 계정에 커스텀 Terraform 적용<br>회사 표준 IAM·VPC·보안 에이전트"]
 ```
 
-```hcl
+```terraform
 module "sandbox_account" {
   # AFT가 벤딩한 aft-account-request 리포지토리 내 로컬 모듈
   source = "./modules/aft-account-request"
@@ -637,7 +634,7 @@ module "sandbox_account" {
 
 ---
 
-## 9. 워크로드별 약정 선택 가이드
+## 워크로드별 약정 선택
 
 ```mermaid
 graph LR
@@ -655,10 +652,11 @@ graph LR
 
 ---
 
-## 마무리
+## 결론
 
-- Amortized Cost는 선급·약정 비용을 사용 기간에 걸쳐 상각한 발생주의 비용이며, CUR에는 전용 컬럼이 없어 여러 컬럼을 합산하거나 FOCUS의 `EffectiveCost`를 쓴다.
-- CUR 2.0과 FOCUS는 다르다. 멀티클라우드 표준 스키마가 필요하면 Data Exports에서 FOCUS를 선택해야 한다.
-- 약정은 RI(리소스 기반)와 SP(금액 기반)의 메커니즘 차이를 이해하고, 용량 보장이 필요하면 Zonal RI 또는 ODCR을 조합한다.
-- Showback에서 Chargeback으로 성숙도를 올리고, 미사용 약정 손실의 귀속 규칙을 미리 합의해 두는 것이 FinOps 운영의 핵심이다.
-- 랜딩존에서 Management Account가 곧 Payer이며, 워크로드 0대 유지·SCP 미적용 특성 이해가 거버넌스의 출발점이다.
+- Amortized Cost는 선급·약정 비용을 사용 기간에 걸쳐 상각한 발생주의 지표. CUR에는 전용 컬럼이 없어 여러 컬럼을 합산하거나 FOCUS의 `EffectiveCost`를 사용
+- CUR 2.0과 FOCUS는 별개. 멀티클라우드 표준 스키마가 필요하면 Data Exports에서 FOCUS를 선택
+- 약정은 RI(리소스 기반)와 SP(금액 기반)의 메커니즘 차이가 출발점이고, 용량 보장이 필요하면 Zonal RI 또는 ODCR을 별도 축으로 결합
+- 배분은 Showback에서 Chargeback으로 성숙도를 올리되, 미사용 약정 손실의 귀속 규칙을 미리 합의해 둘 것
+- 랜딩존에서는 Management Account가 곧 Payer. 워크로드 0대 유지와 SCP 미적용 특성이 거버넌스의 출발점
+- 지표 한 줄 요약: Unblended는 "언제 결제했나", Amortized는 "언제 사용했나"
