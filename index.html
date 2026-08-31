@@ -794,7 +794,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 28분
+              읽는시간 30분
             
           </li>
         
@@ -843,7 +843,7 @@
           
           <li class="md-meta__item">
             
-              읽는시간 14분
+              읽는시간 13분
             
           </li>
         
@@ -854,9 +854,7 @@
   </header>
   <div class="md-post__content md-typeset">
     <h2 id="langchain-langgraph-pydantic-ai-strands-bedrock-agentcore"><a class="toclink" href="2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/">LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교</a></h2>
-<p>에이전트 프레임워크를 고를 때 이름이 비슷하거나 서로 겹쳐 보여서 헷갈린다. LangChain과 LangGraph는 별개 제품처럼 보이지만 LangChain 1.x의 <code>create_agent</code>는 LangGraph 위에서 돌아가는 고수준 API이고, LangGraph는 그 아래의 런타임이다. LangSmith는 이 둘과 이름을 공유하지만 관측성과 배포를 파는 별도 상용 플랫폼이다. Pydantic AI와 Strands Agents는 각자 독립된 프레임워크로 위 셋과 경쟁한다.</p>
-<p>Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에이전트를 올려서 돌리는 관리형 실행 인프라다. Strands든 LangGraph든 Pydantic AI든 위에 올릴 수 있고, 프레임워크를 대체하지 않는다. 그런데 AWS 문서와 발표에 Strands와 나란히 등장하다 보니 같은 층의 선택지처럼 읽히기 쉽다.</p>
-<p>이 글은 다섯 개를 한 표에 놓고 30여 개 범주로 비교한 뒤, 상황별로 무엇을 쓸지와 섞어 쓰는 패턴, 흔한 오해를 정리했다. 수치와 버전은 2026년 8월 말 1차 출처 기준이다.</p>
+<p>이름이 겹쳐 헷갈리는 LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents와 프레임워크가 아닌 관리형 인프라 Bedrock AgentCore를 층 관계부터 정리하고 30여 개 범주 표로 비교한 뒤 상황별로 무엇을 쓸지 정리했다(수치와 버전은 2026년 8월 말 1차 출처 기준).</p>
 
     
       <nav class="md-post__action">
