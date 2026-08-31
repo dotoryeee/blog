@@ -20,7 +20,7 @@ description: "AWS Bedrock AgentCore와 Strands, Microsoft Foundry와 Agent Frame
 
 # 클라우드 3사 AI 에이전트 플랫폼 비교
 
-AWS(Bedrock AgentCore), Azure(Microsoft Foundry), GCP(Gemini Enterprise Agent Platform)가 각각 내놓은 오픈소스 에이전트 프레임워크와 관리형 실행 인프라를 같은 레이어끼리 표로 비교
+AWS(Bedrock), Azure(Microsoft Foundry), GCP(Gemini Enterprise Agent Platform)가 각각 내놓은 관리형 AI 에이전트 인프라와 오픈소스 프레임워크 비교
 
 <!-- more -->
 
