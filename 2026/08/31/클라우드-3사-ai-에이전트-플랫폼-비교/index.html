@@ -793,7 +793,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        서울 리전 요약
+        모델 카탈로그, 서울 관점
       
     </span>
   </a>
@@ -804,7 +804,7 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        모델 카탈로그, 서울 관점
+        프로토콜
       
     </span>
   </a>
@@ -815,7 +815,7 @@
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        프로토콜
+        검색 관심도
       
     </span>
   </a>
@@ -826,7 +826,7 @@
   <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       
-        검색 관심도
+        선택 기준
       
     </span>
   </a>
@@ -837,17 +837,6 @@
   <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       
-        선택 기준
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         결론
       
     </span>
@@ -856,7 +845,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       
         출처
@@ -944,7 +933,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 21분
+                              읽는시간 19분
                             
                           </span>
                         </div>
@@ -2176,82 +2165,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_4">서울 리전 요약</h2>
-<table>
-<thead>
-<tr>
-<th>구성 요소</th>
-<th>AWS 서울</th>
-<th>Azure Korea Central</th>
-<th>GCP asia northeast3</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>런타임</td>
-<td>지원<br>세션마다 microVM을 띄우는 기본 방식(Runtime microVM)은 서울에서 사용 가능<br>자체 EC2 인스턴스에서 돌리는 방식(Runtime Instances. 세션 최대 14일, GPU 가능)은 서울 미지원</td>
-<td>지원<br>지시문만 등록하는 Prompt agents와 컨테이너를 올리는 Hosted agents 모두 Korea Central에서 사용 가능</td>
-<td>지원<br>Agent Runtime을 서울 리전(asia northeast3)에서 사용 가능</td>
-</tr>
-<tr>
-<td>메모리</td>
-<td>지원</td>
-<td>지원(공개 프리뷰. Korea Central 요금 미터 존재 확인)</td>
-<td>지원</td>
-</tr>
-<tr>
-<td>도구 게이트웨이</td>
-<td>지원</td>
-<td>지원</td>
-<td>미지원</td>
-</tr>
-<tr>
-<td>아이덴티티</td>
-<td>지원</td>
-<td>테넌트 범위(리전 무관)</td>
-<td>리전별 지원 표 미제공</td>
-</tr>
-<tr>
-<td>정책과 가드레일</td>
-<td>지원</td>
-<td>리전 제한 명시 없음(에이전트 가드레일은 프리뷰)</td>
-<td>Model Armor 리전 목록에는 포함. 단 Gateway 미지원이라 게이트웨이 결합 집행은 불가</td>
-</tr>
-<tr>
-<td>평가</td>
-<td>지원</td>
-<td>리전 제한 명시 없음</td>
-<td>리전별 지원 표 미제공</td>
-</tr>
-<tr>
-<td>관측성</td>
-<td>지원</td>
-<td>지원</td>
-<td>리전별 지원 표 미제공</td>
-</tr>
-<tr>
-<td>레지스트리</td>
-<td>미지원</td>
-<td>테넌트 범위(Agent 365)</td>
-<td>리전별 지원 표 미제공</td>
-</tr>
-<tr>
-<td>내장 도구</td>
-<td>Browser, Code Interpreter 지원. Web Search Tool 미지원</td>
-<td>Code Interpreter 지원, Browser Automation 지원(프리뷰). Computer Use 미지원</td>
-<td>Code Execution은 미국 중부 리전만. Computer Use는 리전별 지원 미확인</td>
-</tr>
-<tr>
-<td>에이전트 결제(Payments)</td>
-<td>미지원(AgentCore Payments는 서울 제외)</td>
-<td>해당 구성 요소 없음</td>
-<td>해당 구성 요소 없음</td>
-</tr>
-</tbody>
-</table>
-<p>세 클라우드 모두 핵심 런타임과 메모리는 서울에 있고, 2026년에 추가된 신규 기능이 먼저 빠짐. 서울 미지원 목록은 AWS가 Runtime Instances, Payments, Agent Registry, Web Search Tool, Azure가 Computer Use, GCP가 Agent Gateway와 Code Execution. 도구 게이트웨이 자체는 AWS와 Azure 모두 서울에서 GA이지만, 게이트웨이에서 정책을 집행하는 기능은 AWS만 GA이고 Azure는 프리뷰, GCP는 Gateway가 없어 불가</p>
-<hr />
-<h2 id="_5">모델 카탈로그, 서울 관점</h2>
+<h2 id="_4">모델 카탈로그, 서울 관점</h2>
 <table>
 <thead>
 <tr>
@@ -2296,7 +2210,7 @@
 </ul>
 <p>리전 내 추론이 필수인 워크로드는 모델 선택지가 크게 줄어듦</p>
 <hr />
-<h2 id="_6">프로토콜</h2>
+<h2 id="_5">프로토콜</h2>
 <table>
 <thead>
 <tr>
@@ -2335,7 +2249,7 @@
 </table>
 <p>A2A 연혁. Google이 2025년 4월 9일 공개하고 2025년 6월 23일 Linux Foundation에 기부(창립 멤버는 AWS, Cisco, Google, Microsoft, Salesforce, SAP, ServiceNow). MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A도 AWS와 GCP는 GA, Azure만 프리뷰라 프로토콜 지원 여부로는 차이가 거의 없음</p>
 <hr />
-<h2 id="_7">검색 관심도</h2>
+<h2 id="_6">검색 관심도</h2>
 <p><img alt="프레임워크 검색 관심도, Google Trends 전 세계 지난 1년" src="../../../../AI/cloud_agent_platform_compare/google_trends_frameworks.png" /></p>
 <p>2026년 8월 기준 최근 12개월 전 세계 웹 검색. 최고값을 100으로 놓는 상대 지수의 평균값. 검색어별로 langchain 67, langgraph 38, aws bedrock 20, pydantic ai 4, strands agent 1, ms maf 0</p>
 <ul>
@@ -2349,7 +2263,7 @@
 <li>검색어 목록에 "ai agent"를 넣어 다시 그리면 지수가 재조정되어 ai agent 평균 53, langchain 12, langgraph 7 수준. 검색어 목록이 다르면 지수 기준이 달라지므로 두 그래프의 값을 직접 비교할 수 없음. 제품명보다 개념어 검색량이 훨씬 큰 단계라는 뜻</li>
 </ul>
 <hr />
-<h2 id="_8">선택 기준</h2>
+<h2 id="_7">선택 기준</h2>
 <table>
 <thead>
 <tr>
@@ -2397,7 +2311,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_9">결론</h2>
+<h2 id="_8">결론</h2>
 <ul>
 <li>3사 구도는 같음. 오픈소스 프레임워크(Strands, MAF, ADK) + 프레임워크 무관 관리형 런타임(AgentCore, Foundry Hosted agents, Agent Runtime). 종속은 런타임과 그 부속 관리형 서비스 레이어에서 생김</li>
 <li>프레임워크 차이는 실행 모델. Strands는 모델 주도 루프, MAF는 루프와 그래프 두 갈래에 자사 내구성 실행 엔진을 결합, ADK는 2.0부터 그래프 엔진</li>
@@ -2407,7 +2321,7 @@
 <li>MCP는 3사 공통 GA, A2A는 Azure만 프리뷰. 프로토콜은 더 이상 주요 선택 기준이 아님</li>
 <li>검색 관심은 여전히 LangChain과 LangGraph에 있음</li>
 </ul>
-<h2 id="_10">출처</h2>
+<h2 id="_9">출처</h2>
 <ul>
 <li>AWS: <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html">AgentCore 리전</a>, <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html">릴리스 노트</a>, <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html">Runtime 세션</a>, <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-service-contract.html">Runtime 서비스 계약</a>, <a href="https://aws.amazon.com/bedrock/agentcore/pricing/">요금</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-bedrock-agentcore-available/">GA 공지</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2026/03/policy-amazon-bedrock-agentcore-generally-available/">Policy GA</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2026/03/agentcore-evaluations-generally-available/">Evaluations GA</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-agentcore-harness-generally-available/">Harness GA</a>, <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html">Bedrock 모델 리전 호환</a>, <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html">AgentCore Runtime 프레임워크</a>, <a href="https://aws.amazon.com/blogs/developer/building-and-deploying-net-ai-agents-with-amazon-bedrock-agentcore/">.NET 에이전트를 AgentCore에 배포</a>, <a href="https://docs.aws.amazon.com/quicksuite/latest/userguide/regions.html">Quick Suite 리전</a>, <a href="https://github.com/strands-agents/harness-sdk">Strands 저장소</a>, <a href="https://strandsagents.com/docs/user-guide/deploy/operating-agents-in-production/">Strands 배포 가이드</a>, <a href="https://strandsagents.com/docs/user-guide/concepts/multi-agent/agent-to-agent/">Strands A2A</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-quick-suite-agentic-ai-powered-workspace/">Quick Suite 공지</a>, <a href="https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/">Q Developer 지원 종료</a>, <a href="https://github.com/awslabs/mcp">awslabs mcp</a></li>
 <li>Azure: <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-version-1-0/">MAF 1.0 발표</a>, <a href="https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview">MAF 개요</a>, <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/">MAF Build 2026</a>, <a href="https://learn.microsoft.com/en-us/azure/durable-task/sdks/durable-agents-microsoft-agent-framework">Durable agents</a>, <a href="https://devblogs.microsoft.com/foundry/foundry-agent-service-ga/">Foundry Agent Service GA</a>, <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview">Agent Service 개요</a>, <a href="https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/hosted-agents">Hosted agents</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions">한도와 리전</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview">Toolbox</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview">Guardrails</a>, <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/claude-models">Claude in Foundry</a>, <a href="https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler-billing">Durable Task Scheduler 과금</a>, <a href="https://azure.microsoft.com/en-us/pricing/details/foundry-agent-service/">Agent 요금</a>, <a href="https://techcommunity.microsoft.com/blog/microsoft-security-blog/microsoft-copilot-studio-vs-microsoft-foundry-building-ai-agents-and-apps/4483160">Copilot Studio vs Foundry</a></li>
