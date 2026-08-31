@@ -18,7 +18,7 @@ description: "LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents, Bed
 
 # LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교
 
-이름이 겹쳐 헷갈리는 LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents와 프레임워크가 아닌 관리형 인프라 Bedrock AgentCore를 층 관계부터 정리하고 30여 개 범주 표로 비교한 뒤 상황별로 무엇을 쓸지 정리했다(수치와 버전은 2026년 8월 말 1차 출처 기준).
+AI Agent 대표 개발 도구 비교
 
 <!-- more -->
 
