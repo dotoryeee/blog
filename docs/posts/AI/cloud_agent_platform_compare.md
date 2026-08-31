@@ -127,16 +127,16 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 
 | 항목 | AWS Bedrock | Microsoft Foundry | GCP Model Garden |
 |---|---|---|---|
-| 자사 모델 | Amazon Nova 2 계열(Pro, Lite, Omni, Sonic) | MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 실사용 주력은 Azure OpenAI in Foundry Models의 GPT 5.x | Gemini 3.x 계열, Gemini Embedding 2 |
+| 자사 모델 | Amazon Nova 2 계열(Lite, Sonic 등) | MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 실사용 주력은 Azure OpenAI in Microsoft Foundry models의 GPT 5.x | Gemini 3.x 계열, Gemini Embedding 2 |
 | Claude | Opus 5, Sonnet 5, Fable 5, Sonnet 4.6 | 2026년 6월 GA. Azure 호스팅 기준 Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5(Anthropic 인프라에 호스팅된 모델을 Foundry에서 호출하는 경로로는 Fable 5 등이 추가됨) | Sonnet 5, Opus 5, Fable 5, Opus 4.8 등 |
-| 오픈 모델 | Llama, Mistral, DeepSeek, gpt oss(서울 여부 미확인) | Llama 3.3과 4, Mistral, DeepSeek V3.x와 R1, Grok 4, gpt oss | Llama 4, Mistral Medium 3, Grok 4.20, gpt oss, Qwen3, GLM, DeepSeek |
-| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지역 단위 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포(global deployment) 방식의 과금 미터가 Korea Central에 등록돼 있음. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국에서 계약한 Enterprise 구독은 Claude 모델 사용 지원 대상에서 제외된다고 문서에 명시 | Gemini 2.5, 3.5, 3.6, 3.7의 Flash 계열은 서울 리전 엔드포인트로 직접 호출 가능. Claude 등 파트너 모델은 모델별 리전 표 확인 필요 |
+| 오픈 모델 | Llama, Mistral, DeepSeek, gpt oss(서울 여부 미확인) | Llama 3.3과 4, Mistral, DeepSeek V3.x와 R1, Grok 4, gpt oss | Llama 4, Mistral Medium 3, Grok 4.20, gpt oss, Qwen3, GLM |
+| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지역 단위 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포(global deployment) 방식의 과금 미터가 Korea Central에 등록돼 있음. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국에서 계약한 Enterprise 구독은 Claude 모델 사용 지원 대상에서 제외된다고 문서에 명시 | 서울 리전 엔드포인트로 직접 호출되는 Gemini는 2.5 Flash 등 일부. 3.5, 3.6, 3.7 Flash는 서울 미지원이라 글로벌 또는 us 엔드포인트 사용. Claude 등 파트너 모델도 모델별 리전 표 확인 필요 |
 
 서울에서 프론티어 모델을 쓸 때의 전제는 3사가 다름
 
 - AWS는 교차 리전 또는 글로벌 추론 프로필 사용이 전제라 데이터 상주 요건 검토 필요
 - Azure는 Claude처럼 Korea Central에 아예 배포할 수 없는 모델이 있음
-- GCP는 Gemini는 서울 리전 내 호출이 되지만 파트너 모델은 별도 확인 필요
+- GCP는 Gemini 2.5 Flash 등 일부만 서울 리전 내 호출이 되고 최신 Gemini와 파트너 모델은 글로벌 엔드포인트 또는 별도 확인 필요
 
 리전 내 추론이 필수인 워크로드는 모델 선택지가 크게 줄어듦
 
@@ -147,8 +147,8 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 | 프로토콜 | 역할 | 현황 | 3사 지원 |
 |---|---|---|---|
 | MCP | 에이전트와 도구, 데이터 연결 | 사실상 표준 | AWS AgentCore Gateway가 MCP 허브, awslabs mcp 저장소에 서버 62개. Azure Toolbox가 관리형 MCP 엔드포인트. GCP 원격 MCP 서버 GA와 MCP Toolbox for Databases |
-| A2A | 에이전트와 에이전트 연결 | Linux Foundation 산하 표준. v1.0은 2026년 3월 12일(서명된 Agent Card 도입), 150개 이상 조직 참여 | AWS AgentCore Runtime 네이티브(포트 9000, Agent Card). Microsoft Foundry와 Copilot Studio 통합(Hosted agents는 프리뷰). GCP Agent Registry가 v1.0 지원 |
-| AG UI | 에이전트와 프론트엔드 연결 | CopilotKit 주도 | AWS AgentCore Runtime 네이티브(2026년 3월). Azure와 GCP는 런타임이 아니라 프레임워크 레이어에서 대응 |
+| A2A | 에이전트와 에이전트 연결 | Linux Foundation 산하 표준. v1.0은 2026년 3월 12일, 150개 이상 조직 참여 | AWS AgentCore Runtime 네이티브(포트 9000, Agent Card). Microsoft Foundry와 Copilot Studio 통합(Hosted agents는 프리뷰). GCP Agent Registry가 v1.0 지원 |
+| AG UI | 에이전트와 프론트엔드 연결 | CopilotKit 파트너십에서 출발한 오픈 프로토콜(ag ui protocol 조직이 관리) | AWS AgentCore Runtime 네이티브(2026년 3월). Azure와 GCP는 런타임이 아니라 프레임워크 레이어에서 대응 |
 | AP2 | 에이전트 결제 | Google이 2025년 9월 공개(당시 파트너 60여 곳), 2026년 4월 29일 FIDO Alliance에 기부 | Google이 사양 주도. AWS는 AP2가 아니라 x402와 MPP를 AgentCore Payments에서 지원, Azure는 해당 없음 |
 
 A2A 연혁. Google이 2025년 4월 9일 공개하고 2025년 6월 23일 Linux Foundation에 기부(창립 멤버는 AWS, Cisco, Google, Microsoft, Salesforce, SAP, ServiceNow). MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A도 AWS와 GCP는 GA, Azure만 프리뷰라 프로토콜 지원 여부로는 차이가 거의 없음
@@ -179,7 +179,7 @@ A2A 연혁. Google이 2025년 4월 9일 공개하고 2025년 6월 23일 Linux Fo
 | 프레임워크 안에서 내구성 실행이 필요 | MAF와 Durable Task Scheduler | 상태 변화마다 체크포인트, 대기 비용 0. 세 프레임워크 중 자사 내구성 실행 엔진을 함께 제공하는 곳은 MAF뿐 |
 | Gemini 중심, 무료 구간으로 시작 | ADK와 Agent Runtime | 월 50 vCPU 시간 무료, 7일 장기 실행, 1초 미만 콜드 스타트. 단 서울에서 Gateway와 Code Execution 없음 |
 | 멀티 클라우드 또는 종속 회피 | LangGraph처럼 3사 런타임이 모두 명시 지원하는 프레임워크와 각 런타임 | 세 런타임 모두 프레임워크 무관. 런타임 계약(진입점, 프로토콜, 패키징)만 맞추면 이식 가능 |
-| 리전 내 모델 추론이 규제상 필수 | 3사 공통으로 요건 재검토 필요 | AWS는 교차 리전 추론이 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini만 서울 리전 내 호출 가능 |
+| 리전 내 모델 추론이 규제상 필수 | 3사 공통으로 요건 재검토 필요 | AWS는 교차 리전 추론이 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini 2.5 Flash 등 일부만 서울 리전 내 호출 가능 |
 | 코드 작성 없이 선언형으로 시작 | AgentCore Harness, Foundry Prompt agents, Agent Studio | 세 곳 모두 선언형 경로 제공. 커스텀 오케스트레이션이 필요해지면 코드 배포로 전환 |
 
 ---
@@ -190,7 +190,7 @@ A2A 연혁. Google이 2025년 4월 9일 공개하고 2025년 6월 23일 Linux Fo
 - 프레임워크 차이는 실행 모델. Strands는 모델 주도 루프, MAF는 루프와 그래프 두 갈래에 자사 내구성 실행 엔진을 결합, ADK는 2.0부터 그래프 엔진
 - 런타임 컴퓨트 단가는 vCPU 시간당 $0.085~$0.109로 비슷. 세션 수명(AWS 8시간, Azure 유휴 기준, GCP 7일), 무료 구간, 서울 지원 범위가 실질적 차이
 - 서울에는 3사 모두 런타임과 메모리가 있고 2026년 신규 기능이 빠짐. AWS는 Runtime Instances, Payments, Agent Registry, Web Search Tool. Azure는 Computer Use. GCP는 Gateway, Code Execution
-- 프론티어 모델은 AWS는 서울에서 교차 리전 추론 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini만 서울 리전 내 호출 가능. 데이터 상주 요건이 있으면 모델 선택을 먼저 확정해야 함
+- 프론티어 모델은 AWS는 서울에서 교차 리전 추론 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini 2.5 Flash 등 일부만 서울 리전 내 호출 가능. 데이터 상주 요건이 있으면 모델 선택을 먼저 확정해야 함
 - MCP는 3사 공통 GA, A2A는 Azure만 프리뷰. 프로토콜은 더 이상 주요 선택 기준이 아님
 - 검색 관심은 여전히 LangChain과 LangGraph에 있음
 
