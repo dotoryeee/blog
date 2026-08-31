@@ -33,8 +33,8 @@ AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와
 | 오픈소스 프레임워크 | Strands Agents | Microsoft Agent Framework(MAF) | Agent Development Kit(ADK) |
 | 관리형 런타임 | Bedrock AgentCore Runtime | Microsoft Foundry Agent Service의 Hosted agents | Agent Runtime(구 Vertex AI Agent Engine) |
 | 상위 플랫폼 이름 | Amazon Bedrock AgentCore | Microsoft Foundry(구 Azure AI Foundry) | Gemini Enterprise Agent Platform(구 Vertex AI, 2026년 4월 22일 개명) |
-| 최종 사용자용 에이전트 제품 | Amazon Quick Suite(2025년 10월) | Copilot Studio, Microsoft 365 Copilot | Gemini Enterprise 앱(2025년 10월, Agentspace 흡수) |
-| 개발자 IDE 에이전트 | Kiro(Q Developer는 2027년 4월 지원 종료) | GitHub Copilot | Antigravity, Gemini CLI |
+| 최종 사용자용 에이전트 제품 | Amazon Quick Suite(2025년 10월) | Copilot Studio, Microsoft 365 Copilot | Gemini Enterprise 앱(2025년 10월. Agentspace 브랜드는 여기로 통합) |
+| 개발자 IDE 에이전트 | Kiro(Q Developer는 2027년 4월 지원 종료) | GitHub Copilot | Antigravity(Gemini CLI는 2026년 6월 Antigravity CLI로 통합, 개인 등급 종료) |
 | 이전 세대 에이전트 서비스 | Bedrock Agents Classic(2026년 7월 30일부터 신규 불가) | Foundry Agents(classic), 2027년 3월 31일 폐지 | Vertex AI Agent Builder 명칭 계열 |
 
 프레임워크는 어느 클라우드에서든 돌아가고, 런타임은 자기 클라우드에 종속됨. 예를 들어 MAF 에이전트를 AgentCore Runtime에 올리거나 LangGraph 에이전트를 세 런타임 어디에나 올릴 수 있음. 그래서 비교는 프레임워크끼리, 런타임끼리 따로 해야 함
@@ -49,17 +49,17 @@ AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와
 | 언어와 최신 버전 | Python 1.54.0, TypeScript 1.15.0(2026년 8월 27일 동시 릴리스). 저장소는 harness sdk 모노레포로 통합 | .NET 1.19.0, Python 1.16.0(2026년 8월 28일), Go는 2026년 7월 공개 프리뷰 | Python 2.8.0(1.x도 1.39.1로 유지), Go 2.2.0, Java 1.8.0, TypeScript 2.0.0, Kotlin 0.8.0 |
 | 1.0 시점 | 2025년 7월 15일(공개는 2025년 5월) | 2026년 4월 3일 | Python 2025년 5월 20일, 2.0은 2026년 5월 19일 |
 | 출신 | AWS 내부 에이전트 개발에 쓰던 SDK | Semantic Kernel과 AutoGen을 합친 후속작. 둘은 유지보수 모드 | Google이 자사 에이전트 제품에 쓰던 프레임워크 |
-| 실행 모델 | 모델 주도 루프. 모델이 도구 선택과 종료 결정 | Agent(루프) + Workflow(그래프, 슈퍼스텝 체크포인트) 두 갈래 | 2.0부터 그래프 엔진. graph based, dynamic, collaborative 세 워크플로우 유형. Sequential, Parallel, Loop는 2.0에서 대체됨 |
+| 실행 모델 | 모델 주도 루프. 모델이 도구 선택과 종료 결정 | Agent(루프) + Workflow(그래프, 슈퍼스텝 체크포인트) 두 갈래 | 2.0(Python, Go)부터 그래프 엔진 중심. graph based, dynamic, collaborative 워크플로우가 추가되고 Sequential, Parallel, Loop 템플릿 워크플로우는 권장에서 밀려남(클래스와 문서는 유지) |
 | 멀티에이전트 | Agents as Tools, Handoffs, Swarm, Graph, Workflow | sequential, concurrent, handoff, group chat, Magentic One(1.0에서 모두 안정) | 코디네이터와 하위 에이전트 위임(transfer), 그래프 워크플로우 |
 | 상태와 세션 | SessionManager File, S3, AgentCore Memory. 슬라이딩 윈도우와 요약 대화 관리자 | AgentSession, 컨텍스트 프로바이더(메모리), Workflow 체크포인트 저장소 InMemory, File, Cosmos | SessionService in memory, database, sqlite, Vertex AI. MemoryService Memory Bank, RAG |
 | 크래시 후 재개 | 세션 복원. 내구 실행 엔진 없음 | Workflow 체크포인트 ID로 재개. Durable Task 확장을 붙이면 상태 변화마다 체크포인트, 대기 중 비용 0 | `ResumabilityConfig`(Python 1.16+)로 Invocation ID 기준 재개. 도구는 두 번 실행될 수 있음 |
 | HITL | Interrupts(hook 또는 도구에서 발생) | 승인 흐름이 모든 오케스트레이션 패턴에 내장. 일시정지와 재개 | Tool Confirmation(Python 1.14+, 실험 단계). 불리언 또는 구조화 응답 |
 | MCP | 1급. 공식 Strands MCP 서버 별도 제공 | 지원. hosted MCP 도구 | 양방향. 외부 MCP 소비와 ADK 도구를 MCP로 노출(FastMCP) |
-| A2A | 서버와 클라이언트 양방향(Python, TypeScript). Swarm 안에서는 미지원 | 지원(1.0 시점 문서는 완전 지원을 곧 제공 예정으로 표기) | 서버와 클라이언트(Python, Go, Java). 실험 단계 표기 |
+| A2A | 서버와 클라이언트 양방향(Python, TypeScript). Swarm 안에서는 미지원 | 부분 지원(1.0 발표 시점에 A2A 1.0 완전 지원은 곧 제공 예정으로 표기) | 서버와 클라이언트(Python, Go, Java). 실험 단계 표기 |
 | 모델 제공자 | Bedrock 기본. Anthropic, Gemini, OpenAI, LiteLLM, Ollama, vLLM, SageMaker 등. 커뮤니티에 CLOVA Studio | Foundry, Azure OpenAI, OpenAI, Anthropic, Bedrock, Gemini, Ollama | Gemini, Claude, Model Garden 직접. LiteLlm, Apigee, Ollama, vLLM 커넥터. 모델 라우팅과 자동 페일오버 |
 | 관측성 | OpenTelemetry 내장 | OpenTelemetry 네이티브 | OpenTelemetry GenAI 시맨틱 컨벤션, Cloud Trace |
 | 평가 | 별도(AgentCore Evaluations) | Foundry 평가 대시보드 연동 | 내장 평가(궤적과 최종 응답, Python) |
-| 특기 사항 | AgentCore Harness가 Strands 코드로 내보내기 지원 | 2026년 6월 Agent Harness GA, CodeAct(Hyperlight microVM에서 Python 실행) | 모델 컨텍스트 캐싱, 컨텍스트 압축, Skills 내장 |
+| 특기 사항 | AWS 관리형 AgentCore Harness가 Strands 코드로 내보내기 지원 | 2026년 6월 MAF 내장 Agent Harness GA(AWS의 AgentCore Harness와는 별개), CodeAct(Hyperlight microVM에서 Python 실행) | 모델 컨텍스트 캐싱, 컨텍스트 압축, Skills 내장 |
 | 배포 대상 | AgentCore, Lambda, Fargate, App Runner, EKS, EC2, Docker | Foundry Hosted agents, Container Apps, AKS, Functions, 아무 런타임 | Agent Runtime, Cloud Run, GKE, 아무 컨테이너 |
 
 세 프레임워크 모두 다른 클라우드 모델과 런타임을 지원한다고 문서에 명시. 종속은 프레임워크가 아니라 아래 런타임 레이어에서 생김
@@ -70,7 +70,7 @@ AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와
 
 | 항목 | AgentCore Runtime | Foundry Hosted agents | Agent Runtime |
 |---|---|---|---|
-| GA | 2025년 10월 13일(9개 리전, 서울은 이후 추가) | 차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents GA 2026년 7월 | 개편판 GA 2026년 4월 22일 |
+| GA | 2025년 10월 13일(9개 리전, 서울은 이후 추가) | 차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents는 2026년 6월 Build 전후 GA(3월 GA 발표 시점에는 프리뷰) | 2026년 4월 22일 개편 및 개명(7일 장기 실행, BYOC 추가) |
 | 격리 단위 | 세션당 전용 microVM. 종료 시 메모리 삭제 | 세션당 VM 격리 샌드박스. 영속 홈 디렉터리 | 컨테이너 기반. 세션 ID 호출자 지정 |
 | 세션 수명 | 최대 8시간(유휴 15분 정지 후 재개는 새 컴퓨트). Runtime Instances는 14일 | 유휴 5~60분(기본 15분) 후 scale to zero, 상태 보존 재개. 30일 미사용 시 삭제. 벽시계 한도 문서 없음 | 장기 실행 작업 최대 7일. 서브초 콜드 스타트 |
 | 프레임워크 무관 | 예. Strands, LangGraph, CrewAI, LlamaIndex, ADK, OpenAI Agents SDK, Claude Agent SDK, 커스텀 | 예. MAF, LangGraph, OpenAI Agents SDK, Anthropic Agent SDK, GitHub Copilot SDK, Semantic Kernel, 커스텀(Python, C#) | 예. ADK, LangChain, LangGraph, LlamaIndex, AG2, A2A 에이전트, 커스텀 컨테이너 |
@@ -78,7 +78,7 @@ AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와
 | 프로토콜 | HTTP, MCP, A2A, AG UI 네 가지 네이티브 | Responses, Invocations(JSON, WebSocket), Activity(Teams), A2A(프리뷰) | Agent Registry가 A2A v1.0, 원격 MCP 서버 GA |
 | 컴퓨트 요금 | vCPU 시간당 $0.0895 + GB 시간당 $0.00945, 초 단위, 유휴와 I/O 대기 무료 | Korea Central 기준 vCPU 시간당 $0.109 + GiB 시간당 $0.013(East US $0.099 + $0.012) | vCPU 시간당 $0.085 + GiB 시간당 $0.009, 턴 사이 유휴 무과금. 월 50 vCPU 시간과 100 GiB 시간 무료 |
 | 서울 리전 | Runtime microVM 지원. Runtime Instances 미지원 | Korea Central 지원(Hosted agents 포함) | asia northeast3 지원 |
-| 프라이빗 네트워크 | VPC 배치(2025년 10월), PrivateLink 컨트롤 플레인(2026년 3월), VPC egress(2026년 4월) | 30개 에이전트 리전 전부 프라이빗 VNet과 Class A 지원. Hosted agents는 BYO VNet, 공용 egress 없음 | Private Service Connect 인터페이스. Agent Gateway로 통제된 egress |
+| 프라이빗 네트워크 | VPC 배치(2025년 10월), PrivateLink 컨트롤 플레인(2026년 3월), VPC egress(2026년 4월) | 에이전트 지원 리전 전반(Korea Central 포함)에서 프라이빗 VNet과 Class A 지원. Hosted agents는 BYO VNet, 공용 egress 없음 | Private Service Connect 인터페이스. Agent Gateway로 통제된 egress |
 | 배포 단위 | 컨테이너 이미지 또는 코드 | 컨테이너 이미지 또는 zip(Foundry가 빌드). 불변 버전, 트래픽 분할 없음 | 컨테이너(BYOC) 또는 코드 |
 
 세 런타임의 컴퓨트 단가는 vCPU 시간당 $0.085~$0.109로 좁은 범위. 차이는 단가보다 세션 수명(8시간 vs 7일), 무료 구간(GCP만 월 무료 할당), 서울에서 빠진 구성 요소에서 생김
@@ -127,10 +127,10 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 
 | 항목 | AWS Bedrock | Microsoft Foundry | GCP Model Garden |
 |---|---|---|---|
-| 자사 모델 | Amazon Nova 2 계열 | 없음(Azure OpenAI 경유 GPT 5.x 계열) | Gemini 3.x 계열, Gemini Embedding 2 |
-| Claude | Opus 5, Sonnet 5, Fable 5, Sonnet 4.6 | 2026년 7월 GA. Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5 | Sonnet 5, Opus 5, Fable 5, Opus 4.8 등 |
+| 자사 모델 | Amazon Nova 2 계열 | MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 주력은 Azure OpenAI GPT 5.x | Gemini 3.x 계열, Gemini Embedding 2 |
+| Claude | Opus 5, Sonnet 5, Fable 5, Sonnet 4.6 | 2026년 7월 GA. Azure 호스팅 기준 Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5(Anthropic 인프라 호스팅으로 Fable 5 등 추가) | Sonnet 5, Opus 5, Fable 5, Opus 4.8 등 |
 | 오픈 모델 | Llama, Mistral, DeepSeek, gpt oss(서울 여부 미확인) | Llama 3.3과 4, Mistral, DeepSeek V3.x와 R1, Grok 4, gpt oss | Llama 4, Mistral Medium 3, Grok 4.2, gpt oss, Qwen3, GLM, DeepSeek |
-| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지오 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude는 프로젝트가 East US 2 또는 Sweden Central이어야 하므로 Korea Central 불가 | 서울은 서빙 리전 목록에 있으나 모델별 표가 스크립트 렌더링이라 정적 확인 불가. 글로벌 또는 us 엔드포인트 사용이 일반적 |
+| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지오 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국 소재 Enterprise Account는 미지원 구독 유형으로 명시 | 서울은 서빙 리전 목록에 있으나 모델별 표가 스크립트 렌더링이라 정적 확인 불가. 글로벌 또는 us 엔드포인트 사용이 일반적 |
 
 세 곳 모두 서울에서 프론티어 모델을 쓰려면 교차 리전 또는 글로벌 엔드포인트를 전제로 데이터 상주 요건을 검토해야 함. 리전 내 추론이 필수인 워크로드는 모델 선택지가 크게 줄어듦
 
@@ -143,7 +143,7 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 | MCP | 에이전트와 도구, 데이터 연결 | 사실상 표준 | AWS Gateway가 MCP 허브, awslabs mcp 저장소에 서버 62개. Azure Toolbox가 관리형 MCP 엔드포인트. GCP 원격 MCP 서버 GA와 MCP Toolbox for Databases |
 | A2A | 에이전트와 에이전트 연결 | Google이 2025년 4월 9일 공개, 2025년 6월 23일 Linux Foundation 기부(창립 AWS, Cisco, Google, Microsoft, Salesforce, SAP, ServiceNow). v1.0은 2026년 3월 12일, 서명된 Agent Card 도입. 150개 이상 조직 참여 | AWS AgentCore Runtime 네이티브(포트 9000, Agent Card). Azure Foundry와 Copilot Studio 통합(Hosted agents는 프리뷰). GCP Agent Registry가 v1.0 지원 |
 | AG UI | 에이전트와 프론트엔드 연결 | CopilotKit 주도 | AWS AgentCore Runtime 네이티브(2026년 3월). Azure, GCP는 프레임워크 레벨 |
-| AP2 | 에이전트 결제 | Google 주도, 60개 이상 결제 기관 | AWS는 AgentCore payments가 x402와 MPP 지원 |
+| AP2 | 에이전트 결제 | Google이 2025년 9월 공개(당시 파트너 60여 곳), 이후 FIDO Alliance로 거버넌스 이관 | AWS는 AgentCore payments가 x402와 MPP 지원 |
 
 MCP와 A2A는 경쟁이 아니라 보완 관계. 3사 모두 두 프로토콜을 런타임이나 게이트웨이 레벨에서 받아들였으므로 프로토콜은 이제 선택 기준이 아님
 
