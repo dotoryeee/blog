@@ -996,6 +996,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
@@ -1772,33 +1799,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../07/22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GPU 서버 기초 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -1921,7 +1921,7 @@
 <li>Pending deletion 상태에서는 암호화 작업 불가. 키 재료 자동 회전도 멈춤</li>
 <li>예약 시점과 실제 삭제 시점이 각각 CloudTrail에 기록됨</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">kms</span><span class="w"> </span><span class="n">schedule</span><span class="o">-</span><span class="n">key</span><span class="o">-</span><span class="n">deletion</span><span class="w"> </span><span class="o">--</span><span class="n">key</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="m">1234</span><span class="n">abcd</span><span class="m">-12</span><span class="n">ab</span><span class="m">-34</span><span class="n">cd</span><span class="m">-56</span><span class="n">ef</span><span class="m">-1234567890</span><span class="n">ab</span><span class="w"> </span><span class="o">--</span><span class="n">pending</span><span class="o">-</span><span class="n">window</span><span class="o">-</span><span class="kr">in</span><span class="o">-</span><span class="n">days</span><span class="w"> </span><span class="m">7</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">aws</span><span class="w"> </span><span class="n">kms</span><span class="w"> </span><span class="n">schedule</span><span class="o">-</span><span class="n">key</span><span class="o">-</span><span class="n">deletion</span><span class="w"> </span><span class="o">--</span><span class="n">key</span><span class="o">-</span><span class="n">id</span><span class="w"> </span><span class="m">1234</span><span class="n">abcd</span><span class="m">-12</span><span class="n">ab</span><span class="m">-34</span><span class="n">cd</span><span class="m">-56</span><span class="n">ef</span><span class="m">-1234567890</span><span class="n">ab</span><span class="w"> </span><span class="o">--</span><span class="n">pending</span><span class="o">-</span><span class="n">window</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">days</span><span class="w"> </span><span class="m">7</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&quot;KeyId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:kms:ap-northeast-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab&quot;</span><span class="p">,</span>

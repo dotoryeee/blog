@@ -985,6 +985,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../08/24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
@@ -1761,33 +1788,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../22/gpu-%EC%84%9C%EB%B2%84-%EA%B8%B0%EC%B4%88-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    GPU 서버 기초 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -1959,17 +1959,17 @@
 <span class="normal"><a href="#__codelineno-2-86">86</a></span>
 <span class="normal"><a href="#__codelineno-2-87">87</a></span>
 <span class="normal"><a href="#__codelineno-2-88">88</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;dotoryeee-tools MCP 서버. mcp[cli] 1.28.1의 FastMCP로 작성.&quot;&quot;&quot;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Literal</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">FastMCP</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mcp.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolAnnotations</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="kn">from</span> <span class="nn">mcp.server.fastmcp</span> <span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">FastMCP</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="kn">from</span> <span class="nn">mcp.types</span> <span class="kn">import</span> <span class="n">ToolAnnotations</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7"></a>
 <a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span><span class="s2">&quot;dotoryeee-tools&quot;</span><span class="p">)</span>                                     <span class="c1">#서버 이름이 Inspector 사이드바에 그대로 노출</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9"></a>
 <a id="__codelineno-2-10" name="__codelineno-2-10"></a>
 <a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="n">annotations</span><span class="o">=</span><span class="n">ToolAnnotations</span><span class="p">(</span><span class="n">readOnlyHint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idempotentHint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="k">def</span><span class="w"> </span><span class="nf">dotoryeee_order_lookup</span><span class="p">(</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="k">def</span> <span class="nf">dotoryeee_order_lookup</span><span class="p">(</span>
 <a id="__codelineno-2-13" name="__codelineno-2-13"></a>    <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>                                                   <span class="c1">#필수 문자열 인자</span>
 <a id="__codelineno-2-14" name="__codelineno-2-14"></a>    <span class="n">status</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;placed&quot;</span><span class="p">,</span> <span class="s2">&quot;paid&quot;</span><span class="p">,</span> <span class="s2">&quot;shipped&quot;</span><span class="p">,</span> <span class="s2">&quot;delivered&quot;</span><span class="p">,</span> <span class="s2">&quot;cancelled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;paid&quot;</span><span class="p">,</span>  <span class="c1">#enum, 기본값 paid</span>
 <a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1977,14 +1977,14 @@
 <a id="__codelineno-2-17" name="__codelineno-2-17"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;order </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">&quot;</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18"></a>
 <a id="__codelineno-2-19" name="__codelineno-2-19"></a>
-<a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="k">class</span><span class="w"> </span><span class="nc">StockResult</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>                                        <span class="c1">#반환 타입을 모델로 선언하면 outputSchema가 자동 생성됨</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="k">class</span> <span class="nc">StockResult</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>                                        <span class="c1">#반환 타입을 모델로 선언하면 outputSchema가 자동 생성됨</span>
 <a id="__codelineno-2-21" name="__codelineno-2-21"></a>    <span class="n">product_id</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-2-22" name="__codelineno-2-22"></a>    <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span>
 <a id="__codelineno-2-23" name="__codelineno-2-23"></a>    <span class="n">in_stock</span><span class="p">:</span> <span class="nb">bool</span>
 <a id="__codelineno-2-24" name="__codelineno-2-24"></a>
 <a id="__codelineno-2-25" name="__codelineno-2-25"></a>
 <a id="__codelineno-2-26" name="__codelineno-2-26"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="n">annotations</span><span class="o">=</span><span class="n">ToolAnnotations</span><span class="p">(</span><span class="n">readOnlyHint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="k">def</span><span class="w"> </span><span class="nf">dotoryeee_stock_check</span><span class="p">(</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="k">def</span> <span class="nf">dotoryeee_stock_check</span><span class="p">(</span>
 <a id="__codelineno-2-28" name="__codelineno-2-28"></a>    <span class="n">product_id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;dotoryeee-mug&quot;</span><span class="p">,</span> <span class="s2">&quot;dotoryeee-tshirt&quot;</span><span class="p">,</span> <span class="s2">&quot;dotoryeee-hoodie&quot;</span><span class="p">],</span>
 <a id="__codelineno-2-29" name="__codelineno-2-29"></a><span class="hll">    <span class="n">quantity</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;확인할 수량&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1">#값 제약. 101 이상을 넣으면 실행 단계에서 걸림</span>
 </span><a id="__codelineno-2-30" name="__codelineno-2-30"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StockResult</span><span class="p">:</span>
@@ -1992,14 +1992,14 @@
 <a id="__codelineno-2-32" name="__codelineno-2-32"></a>    <span class="k">return</span> <span class="n">StockResult</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">product_id</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">quantity</span><span class="p">,</span> <span class="n">in_stock</span><span class="o">=</span><span class="n">quantity</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">)</span>
 <a id="__codelineno-2-33" name="__codelineno-2-33"></a>
 <a id="__codelineno-2-34" name="__codelineno-2-34"></a>
-<a id="__codelineno-2-35" name="__codelineno-2-35"></a><span class="k">class</span><span class="w"> </span><span class="nc">ShopReport</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35"></a><span class="k">class</span> <span class="nc">ShopReport</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <a id="__codelineno-2-36" name="__codelineno-2-36"></a>    <span class="n">total_orders</span><span class="p">:</span> <span class="nb">int</span>
 <a id="__codelineno-2-37" name="__codelineno-2-37"></a>    <span class="n">total_revenue_krw</span><span class="p">:</span> <span class="nb">int</span>
 <a id="__codelineno-2-38" name="__codelineno-2-38"></a>    <span class="n">top_product</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-2-39" name="__codelineno-2-39"></a>
 <a id="__codelineno-2-40" name="__codelineno-2-40"></a>
 <a id="__codelineno-2-41" name="__codelineno-2-41"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="n">annotations</span><span class="o">=</span><span class="n">ToolAnnotations</span><span class="p">(</span><span class="n">readOnlyHint</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<a id="__codelineno-2-42" name="__codelineno-2-42"></a><span class="k">def</span><span class="w"> </span><span class="nf">dotoryeee_shop_report</span><span class="p">(</span><span class="n">period</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;today&quot;</span><span class="p">,</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;today&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShopReport</span><span class="p">:</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42"></a><span class="k">def</span> <span class="nf">dotoryeee_shop_report</span><span class="p">(</span><span class="n">period</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;today&quot;</span><span class="p">,</span> <span class="s2">&quot;week&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;today&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ShopReport</span><span class="p">:</span>
 <a id="__codelineno-2-43" name="__codelineno-2-43"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;dotoryeee 상점의 기간별 집계 리포트를 반환한다&quot;&quot;&quot;</span>
 <a id="__codelineno-2-44" name="__codelineno-2-44"></a>    <span class="n">totals</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;today&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">288000</span><span class="p">),</span> <span class="s2">&quot;week&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">81</span><span class="p">,</span> <span class="mi">1944000</span><span class="p">),</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">340</span><span class="p">,</span> <span class="mi">8160000</span><span class="p">)}</span>
 <a id="__codelineno-2-45" name="__codelineno-2-45"></a>    <span class="n">orders</span><span class="p">,</span> <span class="n">revenue</span> <span class="o">=</span> <span class="n">totals</span><span class="p">[</span><span class="n">period</span><span class="p">]</span>
@@ -2007,7 +2007,7 @@
 <a id="__codelineno-2-47" name="__codelineno-2-47"></a>
 <a id="__codelineno-2-48" name="__codelineno-2-48"></a>
 <a id="__codelineno-2-49" name="__codelineno-2-49"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s2">&quot;dotoryeee://shop/catalog&quot;</span><span class="p">,</span> <span class="n">mime_type</span><span class="o">=</span><span class="s2">&quot;text/plain&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-50" name="__codelineno-2-50"></a><span class="k">def</span><span class="w"> </span><span class="nf">catalog</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50"></a><span class="k">def</span> <span class="nf">catalog</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <a id="__codelineno-2-51" name="__codelineno-2-51"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;dotoryeee 상점 카탈로그&quot;&quot;&quot;</span>
 <a id="__codelineno-2-52" name="__codelineno-2-52"></a>    <span class="k">return</span> <span class="p">(</span>
 <a id="__codelineno-2-53" name="__codelineno-2-53"></a>        <span class="s2">&quot;product_id,name,price_krw</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -2018,7 +2018,7 @@
 <a id="__codelineno-2-58" name="__codelineno-2-58"></a>
 <a id="__codelineno-2-59" name="__codelineno-2-59"></a>
 <a id="__codelineno-2-60" name="__codelineno-2-60"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">prompt</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;dotoryeee-order-triage&quot;</span><span class="p">)</span>
-<a id="__codelineno-2-61" name="__codelineno-2-61"></a><span class="k">def</span><span class="w"> </span><span class="nf">order_triage</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-2-61" name="__codelineno-2-61"></a><span class="k">def</span> <span class="nf">order_triage</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <a id="__codelineno-2-62" name="__codelineno-2-62"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;주문 문제를 분류하는 프롬프트 템플릿&quot;&quot;&quot;</span>
 <a id="__codelineno-2-63" name="__codelineno-2-63"></a>    <span class="k">return</span> <span class="p">(</span>
 <a id="__codelineno-2-64" name="__codelineno-2-64"></a>        <span class="sa">f</span><span class="s2">&quot;dotoryeee 상점 주문 </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2">에 문제가 접수됐다. &quot;</span>
@@ -2027,13 +2027,13 @@
 <a id="__codelineno-2-67" name="__codelineno-2-67"></a>    <span class="p">)</span>
 <a id="__codelineno-2-68" name="__codelineno-2-68"></a>
 <a id="__codelineno-2-69" name="__codelineno-2-69"></a>
-<a id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="k">def</span><span class="w"> </span><span class="nf">_priority_support</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>                          <span class="c1">#데코레이터가 없어 아직 도구 목록에는 없음</span>
+<a id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="k">def</span> <span class="nf">_priority_support</span><span class="p">(</span><span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>                          <span class="c1">#데코레이터가 없어 아직 도구 목록에는 없음</span>
 <a id="__codelineno-2-71" name="__codelineno-2-71"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;런타임에 추가되는 우선 지원 도구&quot;&quot;&quot;</span>
 <a id="__codelineno-2-72" name="__codelineno-2-72"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;dotoryeee priority ticket opened for order </span><span class="si">{</span><span class="n">order_id</span><span class="si">}</span><span class="s2">&quot;</span>
 <a id="__codelineno-2-73" name="__codelineno-2-73"></a>
 <a id="__codelineno-2-74" name="__codelineno-2-74"></a>
 <a id="__codelineno-2-75" name="__codelineno-2-75"></a><span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">(</span><span class="n">annotations</span><span class="o">=</span><span class="n">ToolAnnotations</span><span class="p">(</span><span class="n">readOnlyHint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">idempotentHint</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<a id="__codelineno-2-76" name="__codelineno-2-76"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dotoryeee_enable_priority_support</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-2-76" name="__codelineno-2-76"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">dotoryeee_enable_priority_support</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <a id="__codelineno-2-77" name="__codelineno-2-77"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;dotoryeee_priority_support 도구를 런타임에 추가하고 tools/list_changed 알림을 보낸다&quot;&quot;&quot;</span>
 <a id="__codelineno-2-78" name="__codelineno-2-78"></a>    <span class="n">mcp</span><span class="o">.</span><span class="n">add_tool</span><span class="p">(</span>                                                     <span class="c1">#실행 중에 도구를 새로 등록</span>
 <a id="__codelineno-2-79" name="__codelineno-2-79"></a>        <span class="n">_priority_support</span><span class="p">,</span>
@@ -2161,7 +2161,7 @@
 <p>claude mcp get으로 서버 하나만 자세히 볼 수도 있다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">claude</span><span class="w"> </span><span class="n">mcp</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">dotoryeee</span><span class="o">-</span><span class="n">tools</span><span class="o">:</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="n">Scope</span><span class="o">:</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="nf">config </span><span class="p">(</span><span class="n">private</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">project</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="n">Scope</span><span class="o">:</span><span class="w"> </span><span class="n">Local</span><span class="w"> </span><span class="nf">config </span><span class="p">(</span><span class="n">private</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">project</span><span class="p">)</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="n">Status</span><span class="o">:</span><span class="w"> </span>✔<span class="w"> </span><span class="n">Connected</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="n">stdio</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="n">Command</span><span class="o">:</span><span class="w"> </span><span class="n">python</span>
@@ -2172,7 +2172,7 @@
 </code></pre></div>
 <p>대화형 세션에서는 /mcp를 치면 연결 상태 패널이 뜬다. 비대화형(-p) 모드에서는 패널 대신 요약 문장 한 줄로 갈음한다.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">claude</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="s">&quot;/mcp&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="m">2</span><span class="w"> </span><span class="n">MCP</span><span class="w"> </span><span class="nf">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="n">connected</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">connected</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="n">disabled.</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">`/mcp`</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">terminal</span><span class="w"> </span><span class="kr">for</span><span class="w"> </span><span class="n">details.</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="m">2</span><span class="w"> </span><span class="n">MCP</span><span class="w"> </span><span class="nf">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="n">connected</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">connected</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="n">disabled.</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">`/mcp`</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">terminal</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">details.</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">Usage</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">mcp</span><span class="w"> </span><span class="p">[</span><span class="n">reconnect</span><span class="o">|</span><span class="n">enable</span><span class="o">|</span><span class="n">disable</span><span class="w"> </span><span class="p">[</span><span class="o">&lt;</span><span class="n">server</span><span class="o">&gt;|</span><span class="n">all</span><span class="p">]]</span><span class="n">.</span><span class="w"> </span><span class="n">With</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">applies</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">all.</span>
 </code></pre></div>
 <p>이제 실제로 도구를 호출해 본다.</p>
