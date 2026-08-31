@@ -2168,10 +2168,10 @@
 <td>Code Execution(미국 중부 us central1 리전만), Computer Use(2026년 5월), Google Search grounding</td>
 </tr>
 <tr>
-<td>결제</td>
-<td>Payments 프리뷰(x402, MPP 등 에이전트 결제 프로토콜 지원). 서울 미지원</td>
-<td>해당 없음</td>
-<td>AP2 프로토콜 주도. 플랫폼 내장 결제 기능은 없음</td>
+<td>에이전트 결제(Payments)</td>
+<td>Payments 프리뷰. 에이전트가 유료 API나 외부 서비스를 호출할 때 x402(HTTP 402 응답 기반), MPP(Machine Payments Protocol) 프로토콜로 자동 결제. 서울 미지원</td>
+<td>해당 구성 요소 없음</td>
+<td>결제 프로토콜 AP2를 Google이 주도했으나 플랫폼 내장 결제 기능은 없음</td>
 </tr>
 </tbody>
 </table>
@@ -2189,9 +2189,9 @@
 <tbody>
 <tr>
 <td>런타임</td>
-<td>지원(microVM). Runtime Instances 미지원</td>
-<td>지원(Hosted agents 포함)</td>
-<td>지원</td>
+<td>지원<br>세션마다 microVM을 띄우는 기본 방식(Runtime microVM)은 서울에서 사용 가능<br>자체 EC2 인스턴스에서 돌리는 방식(Runtime Instances. 세션 최대 14일, GPU 가능)은 서울 미지원</td>
+<td>지원<br>지시문만 등록하는 Prompt agents와 컨테이너를 올리는 Hosted agents 모두 Korea Central에서 사용 가능</td>
+<td>지원<br>Agent Runtime을 서울 리전(asia northeast3)에서 사용 가능</td>
 </tr>
 <tr>
 <td>메모리</td>
@@ -2242,10 +2242,10 @@
 <td>Code Execution은 미국 중부 리전만. Computer Use는 리전별 지원 미확인</td>
 </tr>
 <tr>
-<td>결제</td>
-<td>미지원</td>
-<td>해당 없음</td>
-<td>해당 없음</td>
+<td>에이전트 결제(Payments)</td>
+<td>미지원(AgentCore Payments는 서울 제외)</td>
+<td>해당 구성 요소 없음</td>
+<td>해당 구성 요소 없음</td>
 </tr>
 </tbody>
 </table>
