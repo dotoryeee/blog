@@ -762,7 +762,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        관계 먼저
+        기능 비교표
       
     </span>
   </a>
@@ -773,7 +773,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        기능 비교표
+        언제 무엇을 쓰나
       
     </span>
   </a>
@@ -784,7 +784,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        언제 무엇을 쓰나
+        흔한 오해
       
     </span>
   </a>
@@ -795,17 +795,6 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        흔한 오해
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
         결론
       
     </span>
@@ -814,7 +803,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         출처
@@ -1808,7 +1797,6 @@
 <p>AI Agent 대표 개발 도구 비교</p>
 <!-- more -->
 
-<h2 id="_1">관계 먼저</h2>
 <table>
 <thead>
 <tr>
@@ -1852,7 +1840,7 @@
 </table>
 <p>AgentCore의 구성 요소와 Bedrock Agents Classic 유지보수 모드는 <a href="../../19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/">AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교</a> 글에 있으므로 여기서는 반복하지 않음</p>
 <hr />
-<h2 id="_2">기능 비교표</h2>
+<h2 id="_1">기능 비교표</h2>
 <p>각 셀은 1차 출처(문서, PyPI, 릴리스 노트)로 확인한 내용. 정성 평가인 행은 셀 안에 표시</p>
 <table>
 <thead>
@@ -2141,7 +2129,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_3">언제 무엇을 쓰나</h2>
+<h2 id="_2">언제 무엇을 쓰나</h2>
 <p>단일 툴콜 에이전트를 빠르게 만들 때. LangChain 1.x <code>create_agent</code>가 가장 짧음. 모델, 도구, 시스템 프롬프트, 미들웨어만 넘기면 컴파일된 그래프가 나오고 <code>.invoke</code>로 끝. 요약, PII 마스킹, 재시도, 모델 폴백, 호출 상한 같은 운영 기능이 내장 미들웨어로 있어 초기 비용이 낮음. Bedrock에서 Nova를 쓸 계획이면 포럼에 보고된 스트리밍 이슈를 먼저 재현해 볼 것</p>
 <p>커스텀 상태와 그래프 오케스트레이션이 필요할 때. LangGraph 직접 사용. 조건 분기, 병렬 브랜치, 서브그래프, 슈퍼스텝 체크포인트, <code>interrupt</code> 기반 HITL을 코드로 명시. <code>create_agent</code>로 만든 에이전트를 노드로 넣어 상위 그래프를 짜는 조합이 자연스러움. 셀프호스트 Agent Server가 필요해지는 시점에 라이선스와 Postgres, Redis 인프라를 감안</p>
 <p>타입 계약과 검증이 중심일 때. Pydantic AI. <code>Agent[Deps, Output]</code>으로 입력 의존성과 출력 스키마를 타입으로 고정하고, 검증 실패 시 자동 재시도와 <code>ModelRetry</code>로 모델이 스스로 고치게 함. 내구 실행이 필요하면 Temporal, DBOS, Prefect capability를 붙이되 스트리밍 버퍼링과 직렬화 크기 제약을 확인. <code>TestModel</code>, <code>FunctionModel</code>로 LLM 없이 단위 테스트가 되는 점이 CI에서 큼</p>
@@ -2190,7 +2178,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_4">흔한 오해</h2>
+<h2 id="_3">흔한 오해</h2>
 <table>
 <thead>
 <tr>
@@ -2222,7 +2210,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_5">결론</h2>
+<h2 id="_4">결론</h2>
 <ul>
 <li>LangChain은 LangGraph 위의 고수준 API, LangGraph는 런타임, LangSmith는 상용 플랫폼. 셋을 층으로 보면 혼란이 사라짐</li>
 <li>Pydantic AI는 타입 계약, Strands는 AWS 네이티브 멀티에이전트, LangGraph는 세밀한 그래프 제어가 강점</li>
@@ -2230,7 +2218,7 @@
 <li>라이선스는 라이브러리(MIT, Apache 2.0)와 서버 컴포넌트(Elastic License, 상용 서비스)를 분리해서 볼 것</li>
 <li>서울 리전은 AgentCore 핵심 서비스는 지원하지만 Instances, Web Search, payments, Agent Registry는 아직 없음</li>
 </ul>
-<h2 id="_6">출처</h2>
+<h2 id="_5">출처</h2>
 <ul>
 <li>Pydantic AI: <a href="https://pydantic.dev/docs/ai/integrations/durable_execution/overview/">내구 실행 개요</a>, <a href="https://pydantic.dev/docs/ai/capabilities/durable_execution/dbos/">DBOS capability</a>, <a href="https://pydantic.dev/articles/pydantic-ai-v2">v2 발표</a>, <a href="https://pypi.org/pypi/pydantic-ai/json">PyPI</a></li>
 <li>LangGraph: <a href="https://pypi.org/pypi/langgraph/json">PyPI langgraph</a>, <a href="https://pypi.org/pypi/langgraph-api/json">PyPI langgraph api</a>, <a href="https://docs.langchain.com/langsmith/deploy-standalone-server">Standalone Server 배포</a>, <a href="https://changelog.langchain.com/announcements/product-naming-changes-langsmith-deployment-and-langsmith-studio">제품명 변경 공지</a>, <a href="http://rvernica.github.io/2026/03/langchain-license">라이선스 분석 글</a></li>
