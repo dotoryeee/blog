@@ -102,25 +102,6 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 
 ---
 
-## 서울 리전 요약
-
-| 구성 요소 | AWS 서울 | Azure Korea Central | GCP asia northeast3 |
-|---|---|---|---|
-| 런타임 | 지원<br>세션마다 microVM을 띄우는 기본 방식(Runtime microVM)은 서울에서 사용 가능<br>자체 EC2 인스턴스에서 돌리는 방식(Runtime Instances. 세션 최대 14일, GPU 가능)은 서울 미지원 | 지원<br>지시문만 등록하는 Prompt agents와 컨테이너를 올리는 Hosted agents 모두 Korea Central에서 사용 가능 | 지원<br>Agent Runtime을 서울 리전(asia northeast3)에서 사용 가능 |
-| 메모리 | 지원 | 지원(공개 프리뷰. Korea Central 요금 미터 존재 확인) | 지원 |
-| 도구 게이트웨이 | 지원 | 지원 | 미지원 |
-| 아이덴티티 | 지원 | 테넌트 범위(리전 무관) | 리전별 지원 표 미제공 |
-| 정책과 가드레일 | 지원 | 리전 제한 명시 없음(에이전트 가드레일은 프리뷰) | Model Armor 리전 목록에는 포함. 단 Gateway 미지원이라 게이트웨이 결합 집행은 불가 |
-| 평가 | 지원 | 리전 제한 명시 없음 | 리전별 지원 표 미제공 |
-| 관측성 | 지원 | 지원 | 리전별 지원 표 미제공 |
-| 레지스트리 | 미지원 | 테넌트 범위(Agent 365) | 리전별 지원 표 미제공 |
-| 내장 도구 | Browser, Code Interpreter 지원. Web Search Tool 미지원 | Code Interpreter 지원, Browser Automation 지원(프리뷰). Computer Use 미지원 | Code Execution은 미국 중부 리전만. Computer Use는 리전별 지원 미확인 |
-| 에이전트 결제(Payments) | 미지원(AgentCore Payments는 서울 제외) | 해당 구성 요소 없음 | 해당 구성 요소 없음 |
-
-세 클라우드 모두 핵심 런타임과 메모리는 서울에 있고, 2026년에 추가된 신규 기능이 먼저 빠짐. 서울 미지원 목록은 AWS가 Runtime Instances, Payments, Agent Registry, Web Search Tool, Azure가 Computer Use, GCP가 Agent Gateway와 Code Execution. 도구 게이트웨이 자체는 AWS와 Azure 모두 서울에서 GA이지만, 게이트웨이에서 정책을 집행하는 기능은 AWS만 GA이고 Azure는 프리뷰, GCP는 Gateway가 없어 불가
-
----
-
 ## 모델 카탈로그, 서울 관점
 
 | 항목 | AWS Bedrock | Microsoft Foundry | GCP Model Garden |
