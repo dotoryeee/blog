@@ -24,8 +24,6 @@ AWS(Bedrock), Azure(Microsoft Foundry), GCP(Gemini Enterprise Agent Platform)가
 
 <!-- more -->
 
-## 이름 대응
-
 세 클라우드 모두 오픈소스 프레임워크 하나와 관리형 런타임 하나를 쌍으로 내놓았고, 2026년 들어 제품명이 여러 번 바뀜. 이 글은 제목과 본문 모두 현재 공식 명칭을 쓰고, 검색에 익숙한 구 명칭은 아래 표에 함께 적음
 
 | 구분 | AWS | Azure | GCP |
