@@ -955,7 +955,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 16분
+                              읽는시간 17분
                             
                           </span>
                         </div>
@@ -1909,13 +1909,13 @@
 <td>최종 사용자용 에이전트 제품</td>
 <td>Amazon Quick Suite(2025년 10월)</td>
 <td>Copilot Studio, Microsoft 365 Copilot</td>
-<td>Gemini Enterprise 앱(2025년 10월, Agentspace 흡수)</td>
+<td>Gemini Enterprise 앱(2025년 10월. Agentspace 브랜드는 여기로 통합)</td>
 </tr>
 <tr>
 <td>개발자 IDE 에이전트</td>
 <td>Kiro(Q Developer는 2027년 4월 지원 종료)</td>
 <td>GitHub Copilot</td>
-<td>Antigravity, Gemini CLI</td>
+<td>Antigravity(Gemini CLI는 2026년 6월 Antigravity CLI로 통합, 개인 등급 종료)</td>
 </tr>
 <tr>
 <td>이전 세대 에이전트 서비스</td>
@@ -1966,7 +1966,7 @@
 <td>실행 모델</td>
 <td>모델 주도 루프. 모델이 도구 선택과 종료 결정</td>
 <td>Agent(루프) + Workflow(그래프, 슈퍼스텝 체크포인트) 두 갈래</td>
-<td>2.0부터 그래프 엔진. graph based, dynamic, collaborative 세 워크플로우 유형. Sequential, Parallel, Loop는 2.0에서 대체됨</td>
+<td>2.0(Python, Go)부터 그래프 엔진 중심. graph based, dynamic, collaborative 워크플로우가 추가되고 Sequential, Parallel, Loop 템플릿 워크플로우는 권장에서 밀려남(클래스와 문서는 유지)</td>
 </tr>
 <tr>
 <td>멀티에이전트</td>
@@ -2001,7 +2001,7 @@
 <tr>
 <td>A2A</td>
 <td>서버와 클라이언트 양방향(Python, TypeScript). Swarm 안에서는 미지원</td>
-<td>지원(1.0 시점 문서는 완전 지원을 곧 제공 예정으로 표기)</td>
+<td>부분 지원(1.0 발표 시점에 A2A 1.0 완전 지원은 곧 제공 예정으로 표기)</td>
 <td>서버와 클라이언트(Python, Go, Java). 실험 단계 표기</td>
 </tr>
 <tr>
@@ -2024,8 +2024,8 @@
 </tr>
 <tr>
 <td>특기 사항</td>
-<td>AgentCore Harness가 Strands 코드로 내보내기 지원</td>
-<td>2026년 6월 Agent Harness GA, CodeAct(Hyperlight microVM에서 Python 실행)</td>
+<td>AWS 관리형 AgentCore Harness가 Strands 코드로 내보내기 지원</td>
+<td>2026년 6월 MAF 내장 Agent Harness GA(AWS의 AgentCore Harness와는 별개), CodeAct(Hyperlight microVM에서 Python 실행)</td>
 <td>모델 컨텍스트 캐싱, 컨텍스트 압축, Skills 내장</td>
 </tr>
 <tr>
@@ -2052,8 +2052,8 @@
 <tr>
 <td>GA</td>
 <td>2025년 10월 13일(9개 리전, 서울은 이후 추가)</td>
-<td>차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents GA 2026년 7월</td>
-<td>개편판 GA 2026년 4월 22일</td>
+<td>차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents는 2026년 6월 Build 전후 GA(3월 GA 발표 시점에는 프리뷰)</td>
+<td>2026년 4월 22일 개편 및 개명(7일 장기 실행, BYOC 추가)</td>
 </tr>
 <tr>
 <td>격리 단위</td>
@@ -2100,7 +2100,7 @@
 <tr>
 <td>프라이빗 네트워크</td>
 <td>VPC 배치(2025년 10월), PrivateLink 컨트롤 플레인(2026년 3월), VPC egress(2026년 4월)</td>
-<td>30개 에이전트 리전 전부 프라이빗 VNet과 Class A 지원. Hosted agents는 BYO VNet, 공용 egress 없음</td>
+<td>에이전트 지원 리전 전반(Korea Central 포함)에서 프라이빗 VNet과 Class A 지원. Hosted agents는 BYO VNet, 공용 egress 없음</td>
 <td>Private Service Connect 인터페이스. Agent Gateway로 통제된 egress</td>
 </tr>
 <tr>
@@ -2277,13 +2277,13 @@
 <tr>
 <td>자사 모델</td>
 <td>Amazon Nova 2 계열</td>
-<td>없음(Azure OpenAI 경유 GPT 5.x 계열)</td>
+<td>MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 주력은 Azure OpenAI GPT 5.x</td>
 <td>Gemini 3.x 계열, Gemini Embedding 2</td>
 </tr>
 <tr>
 <td>Claude</td>
 <td>Opus 5, Sonnet 5, Fable 5, Sonnet 4.6</td>
-<td>2026년 7월 GA. Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5</td>
+<td>2026년 7월 GA. Azure 호스팅 기준 Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5(Anthropic 인프라 호스팅으로 Fable 5 등 추가)</td>
 <td>Sonnet 5, Opus 5, Fable 5, Opus 4.8 등</td>
 </tr>
 <tr>
@@ -2295,7 +2295,7 @@
 <tr>
 <td>서울에서의 접근 방식</td>
 <td>리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지오 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근</td>
-<td>GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude는 프로젝트가 East US 2 또는 Sweden Central이어야 하므로 Korea Central 불가</td>
+<td>GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국 소재 Enterprise Account는 미지원 구독 유형으로 명시</td>
 <td>서울은 서빙 리전 목록에 있으나 모델별 표가 스크립트 렌더링이라 정적 확인 불가. 글로벌 또는 us 엔드포인트 사용이 일반적</td>
 </tr>
 </tbody>
@@ -2334,7 +2334,7 @@
 <tr>
 <td>AP2</td>
 <td>에이전트 결제</td>
-<td>Google 주도, 60개 이상 결제 기관</td>
+<td>Google이 2025년 9월 공개(당시 파트너 60여 곳), 이후 FIDO Alliance로 거버넌스 이관</td>
 <td>AWS는 AgentCore payments가 x402와 MPP 지원</td>
 </tr>
 </tbody>
