@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="net.core.somaxconn과 fs.file-max의 역할 차이를 파일 디스크립터 관점에서 비교하고 OS별 기본값·ulimit -n 관계까지 정리">
+        <meta name="description" content="LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents, Bedrock AgentCore를 라이선스, 실행 모델, 내구 실행, HITL, 멀티에이전트, MCP, Bedrock 지원, 관측성, 배포, 비용, 서울 리전까지 30여 개 범주 표로 비교하고 상황별로 무엇을 쓸지 정리">
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/2025/03/11/netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/">
       
       
-        <link rel="prev" href="../swap-%EC%A0%95%EB%A6%AC/">
+        <link rel="prev" href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="next" href="../%EC%83%A4%EB%94%A9%EC%9D%B4%EB%9E%80/">
+        <link rel="next" href="../ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/">
       
       
         
@@ -30,7 +30,7 @@
     
     
       
-        <title>net.core.somaxconn vs fs.file-max 파라미터 - dotoryeee's blog</title>
+        <title>LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교 - dotoryeee's blog</title>
       
     
     
@@ -88,17 +88,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="net.core.somaxconn vs fs.file-max 파라미터 - dotoryeee's blog" />
-<meta property="og:description" content="net.core.somaxconn과 fs.file-max의 역할 차이를 파일 디스크립터 관점에서 비교하고 OS별 기본값·ulimit -n 관계까지 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2025/03/11/netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0.png" />
+<meta property="og:title" content="LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교 - dotoryeee's blog" />
+<meta property="og:description" content="LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents, Bedrock AgentCore를 라이선스, 실행 모델, 내구 실행, HITL, 멀티에이전트, MCP, Bedrock 지원, 관측성, 배포, 비용, 서울 리전까지 30여 개 범주 표로 비교하고 상황별로 무엇을 쓸지 정리" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/2025/03/11/netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="net.core.somaxconn vs fs.file-max 파라미터 - dotoryeee's blog" />
-<meta property="twitter:description" content="net.core.somaxconn과 fs.file-max의 역할 차이를 파일 디스크립터 관점에서 비교하고 OS별 기본값·ulimit -n 관계까지 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2025/03/11/netcoresomaxconn-vs-fsfile-max-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0.png" />
+<meta property="twitter:title" content="LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교 - dotoryeee's blog" />
+<meta property="twitter:description" content="LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents, Bedrock AgentCore를 라이선스, 실행 모델, 내구 실행, HITL, 멀티에이전트, MCP, Bedrock 지원, 관측성, 배포, 비용, 서울 리전까지 30여 개 범주 표로 비교하고 상황별로 무엇을 쓸지 정리" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90.png" />
 </head>
   
   
@@ -116,7 +116,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#netcoresomaxconn-vs-fsfile-max" class="md-skip">
+        <a href="#langchain-langgraph-pydantic-ai-strands-bedrock-agentcore" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -151,7 +151,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              net.core.somaxconn vs fs.file-max 파라미터
+              LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교
             
           </span>
         </div>
@@ -762,238 +762,65 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        위 파라미터가 왜 중요할까
+        관계 먼저
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="위 파라미터가 왜 중요할까">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tcp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TCP 소켓이 파일로 취급되는 이유
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#netcoresomaxconn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        net.core.somaxconn란?
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="net.core.somaxconn란?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        개념
+        기능 비교표
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        현재 설정 확인
+        언제 무엇을 쓰나
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        변경 방법
+        흔한 오해
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#fsfile-max" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fs.file-max란?
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="fs.file-max란?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        개념
+        결론
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        현재 설정 확인
+        출처
       
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        변경 방법
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#netcoresomaxconn-fsfile-max" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        net.core.somaxconn, fs.file-max 차이점
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        사용 예시
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="사용 예시">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#netcoresomaxconn_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        net.core.somaxconn을 조정해야 하는 경우
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fsfile-max_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fs.file-max를 조정해야 하는 경우
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        최적화 예시
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fsfile-max-ulimit-nopen-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fs.file-max와 ulimit -n(open files)의 차이점
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        시스템 기본값
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="시스템 기본값">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#netcoresomaxconn_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        net.core.somaxconn 기본값
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fsfile-max_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        fs.file-max 기본값
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1053,7 +880,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2025-03-11 00:00:00+00:00" class="md-ellipsis">2025. 3. 11.</time>
+                        <time datetime="2026-08-31 00:00:00+00:00" class="md-ellipsis">2026. 8. 31.</time>
                       </div>
                     </li>
                     
@@ -1064,7 +891,7 @@
                           <span class="md-ellipsis">
                             카테고리
                             
-                              <a href="../../../../category/linux/">Linux</a></span>
+                              <a href="../../../../category/ai/">AI</a></span>
                         </div>
                       </li>
                     
@@ -1075,7 +902,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              읽는시간 5분
+                              읽는시간 14분
                             
                           </span>
                         </div>
@@ -1103,7 +930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/31/langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="./" class="md-nav__link">
         
   
   
@@ -1130,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" class="md-nav__link">
+      <a href="../ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" class="md-nav__link">
         
   
   
@@ -1157,7 +984,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1184,7 +1011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="../../19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
   
@@ -1211,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1238,7 +1065,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+      <a href="../../16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
         
   
   
@@ -1265,7 +1092,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+      <a href="../../12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
         
   
   
@@ -1292,7 +1119,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+      <a href="../../11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
         
   
   
@@ -1319,7 +1146,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+      <a href="../../02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
         
   
   
@@ -1346,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1373,7 +1200,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1400,7 +1227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1427,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1454,7 +1281,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1481,7 +1308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1508,7 +1335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1535,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1562,7 +1389,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1589,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1616,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1643,7 +1470,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1670,7 +1497,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1697,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+      <a href="../../../07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
         
   
   
@@ -1724,7 +1551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1751,7 +1578,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1778,7 +1605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1805,7 +1632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1832,7 +1659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
+      <a href="../../../07/22/mlx%EB%A1%9C-lora-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%8B%A4%EC%8A%B5/" class="md-nav__link">
         
   
   
@@ -1859,7 +1686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/llm-%ED%8C%8C%EC%9D%B8%ED%8A%9C%EB%8B%9D-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1886,7 +1713,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../2026/07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1928,276 +1755,495 @@
       
       
       
-        <a href="../../../../tags/#tag:kernel" class="md-tag">Kernel</a>
+        <a href="../../../../tags/#tag:ai-agent" class="md-tag">AI Agent</a>
       
     
       
       
       
       
-        <a href="../../../../tags/#tag:tuning" class="md-tag">Tuning</a>
+        <a href="../../../../tags/#tag:bedrock" class="md-tag">Bedrock</a>
       
     
       
       
       
       
-        <a href="../../../../tags/#tag:sysctl" class="md-tag">sysctl</a>
+        <a href="../../../../tags/#tag:bedrock-agentcore" class="md-tag">Bedrock AgentCore</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:langchain" class="md-tag">LangChain</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:langgraph" class="md-tag">LangGraph</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:pydanticai" class="md-tag">PydanticAI</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:strands-agents" class="md-tag">Strands Agents</a>
       
     
   </nav>
 
 
 
-<h1 id="netcoresomaxconn-vs-fsfile-max">net.core.somaxconn vs fs.file-max 파라미터</h1>
+<h1 id="langchain-langgraph-pydantic-ai-strands-bedrock-agentcore">LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교</h1>
+<p>에이전트 프레임워크를 고를 때 이름이 비슷하거나 서로 겹쳐 보여서 헷갈린다. LangChain과 LangGraph는 별개 제품처럼 보이지만 LangChain 1.x의 <code>create_agent</code>는 LangGraph 위에서 돌아가는 고수준 API이고, LangGraph는 그 아래의 런타임이다. LangSmith는 이 둘과 이름을 공유하지만 관측성과 배포를 파는 별도 상용 플랫폼이다. Pydantic AI와 Strands Agents는 각자 독립된 프레임워크로 위 셋과 경쟁한다.</p>
+<p>Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에이전트를 올려서 돌리는 관리형 실행 인프라다. Strands든 LangGraph든 Pydantic AI든 위에 올릴 수 있고, 프레임워크를 대체하지 않는다. 그런데 AWS 문서와 발표에 Strands와 나란히 등장하다 보니 같은 층의 선택지처럼 읽히기 쉽다.</p>
+<p>이 글은 다섯 개를 한 표에 놓고 30여 개 범주로 비교한 뒤, 상황별로 무엇을 쓸지와 섞어 쓰는 패턴, 흔한 오해를 정리했다. 수치와 버전은 2026년 8월 말 1차 출처 기준이다.</p>
 <!-- more -->
 
-<h2 id="_1">위 파라미터가 왜 중요할까</h2>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>리눅스에서는 "모든 것은 파일이다" 라는 철학을 따르기 때문에, 파일, 소켓, 파이프, 디바이스 등도 파일 디스크립터(File Descriptor, FD)를 사용</p>
-</div>
-<p><strong>HTTP/1.1을 이용해 6개의 TCP 세션을 열면, 리눅스에서는 6개의 파일 디스크립터(FD)가 생성</strong></p>
-<h3 id="tcp">TCP 소켓이 파일로 취급되는 이유</h3>
-<ul>
-<li>리눅스에서 파일 디스크립터(FD)란?<br>
-파일 디스크립터는 리눅스 커널에서 파일, 소켓, 파이프, 디바이스 등 다양한 리소스를 핸들링하는 식별자<br>
-프로세스가 무언가를 읽거나 쓸 때, FD를 통해 접근</li>
-<li>TCP 소켓도 FD를 사용<br>
-네트워크 소켓(TCP/UDP)은 socket() 시스템 호출을 통해 생성되며, 내부적으로 파일 디스크립터를 할당받음<br>
-즉, 소켓이 생성될 때 파일처럼 다뤄지며 FD가 할당됨<br>
-소켓 FD는 일반 파일처럼 read(), write(), close() 등의 시스템 호출을 사용할 수 있음</li>
-</ul>
-<h2 id="netcoresomaxconn"><code>net.core.somaxconn</code>란?</h2>
-<p>네트워크 서버가 클라이언트 연결을 받을 때, 큐(대기열)의 크기를 결정하는 파라미터.</p>
-<h3 id="_2">개념</h3>
-<ul>
-<li>서버가 동시에 받을 수 있는 연결 요청 개수(대기 큐 크기)를 조절.</li>
-<li>리눅스 시스템에서는 <code>listen()</code> 시스템 호출을 사용하여 대기 큐를 설정하는데, 이때 최대 큐 크기가 <code>net.core.somaxconn</code> 값에 의해 제한됨.</li>
-</ul>
-<h3 id="_3">현재 설정 확인</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sysctl<span class="w"> </span>net.core.somaxconn
-</code></pre></div>
-<h3 id="_4">변경 방법</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.somaxconn<span class="o">=</span><span class="m">1024</span>
-</code></pre></div>
-<p><code>/etc/sysctl.conf</code>에 영구 적용:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;net.core.somaxconn=1024&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-</code></pre></div></p>
-<hr />
-<h2 id="fsfile-max"><code>fs.file-max</code>란?</h2>
-<p>리눅스 시스템이 동시에 열 수 있는 최대 파일 개수(파일 디스크립터 개수)를 제한하는 파라미터.</p>
-<h3 id="_5">개념</h3>
-<ul>
-<li>서버에서 실행되는 모든 프로세스는 파일 디스크립터(File Descriptor, FD) 를 사용함.</li>
-<li>파일뿐만 아니라 소켓(socket), 파이프(pipe), 장치(device) 등도 파일 디스크립터를 사용.</li>
-<li><code>fs.file-max</code>는 시스템 전체에서 열 수 있는 최대 FD 개수를 제한하는 역할을 함.</li>
-<li>기본값은 보통 2097152 (2M, 시스템에 따라 다름).</li>
-</ul>
-<h3 id="_6">현재 설정 확인</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sysctl<span class="w"> </span>fs.file-max
-</code></pre></div>
-<h3 id="_7">변경 방법</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>fs.file-max<span class="o">=</span><span class="m">2097152</span>
-</code></pre></div>
-<p><code>/etc/sysctl.conf</code>에 영구 적용:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;fs.file-max=2097152&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-</code></pre></div></p>
-<hr />
-<h2 id="netcoresomaxconn-fsfile-max"><code>net.core.somaxconn</code>, <code>fs.file-max</code> 차이점</h2>
+<h2 id="_1">관계 먼저</h2>
 <table>
 <thead>
 <tr>
-<th>항목</th>
-<th>net.core.somaxconn</th>
-<th>fs.file-max</th>
+<th>이름</th>
+<th>층</th>
+<th>한 줄 정의</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>역할</td>
-<td>서버가 수신할 수 있는 연결 대기 큐 크기 설정</td>
-<td>시스템 전체에서 열 수 있는 최대 파일 디스크립터 개수 제한</td>
+<td>LangChain 1.x</td>
+<td>고수준 프레임워크</td>
+<td><code>create_agent</code>로 도구 호출 루프를 만드는 라이브러리. 내부적으로 LangGraph 그래프를 컴파일해 반환</td>
 </tr>
 <tr>
-<td>대상</td>
-<td>네트워크 요청(TCP/UDP 소켓)</td>
-<td>파일, 소켓, 파이프 등 모든 FD</td>
+<td>LangGraph 1.2</td>
+<td>저수준 런타임</td>
+<td>상태 그래프로 제어 흐름을 직접 짜는 라이브러리. LangChain 없이 단독 사용 가능</td>
 </tr>
 <tr>
-<td>기본값</td>
-<td>128</td>
-<td>2097152</td>
+<td>LangSmith</td>
+<td>상용 플랫폼</td>
+<td>트레이싱, 평가, 배포(구 LangGraph Platform), Studio. 프레임워크가 아님</td>
 </tr>
 <tr>
-<td>최적화 목적</td>
-<td>동시 접속 요청이 많은 웹서버(Nginx, Apache, Redis 등)의 성능 향상</td>
-<td>다중 프로세스를 실행하는 서버의 파일 핸들 제한 해제</td>
+<td>Pydantic AI 2.x</td>
+<td>프레임워크</td>
+<td>타입 계약 중심 에이전트 라이브러리. Pydantic 팀</td>
 </tr>
 <tr>
-<td>설정 위치</td>
-<td><code>sysctl net.core.somaxconn</code></td>
-<td><code>sysctl fs.file-max</code></td>
+<td>Strands Agents</td>
+<td>프레임워크</td>
+<td>모델 주도 루프 중심 에이전트 SDK. AWS 오픈소스</td>
 </tr>
 <tr>
-<td>변경 효과</td>
-<td>- <code>listen()</code> 호출에서 허용하는 대기 큐 크기 증가<br>- 동시 연결 요청을 더 많이 수용 가능</td>
-<td>- 서버에서 열 수 있는 파일 개수 증가<br>- 많은 소켓, 로그 파일을 사용하는 애플리케이션 최적화</td>
-</tr>
-<tr>
-<td>적용 사례</td>
-<td>웹 서버, DB 서버, 메시지 큐 서버</td>
-<td>DB 서버, 로그 분석 서버, 대량 파일 처리 서버</td>
+<td>Bedrock AgentCore</td>
+<td>관리형 인프라</td>
+<td>세션 격리 런타임, 메모리, 게이트웨이, 아이덴티티, 관측성 등. 프레임워크 무관</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_8">사용 예시</h2>
-<h3 id="netcoresomaxconn_1"><code>net.core.somaxconn</code>을 조정해야 하는 경우</h3>
-<ul>
-<li>웹 서버(Nginx, Apache, Tomcat 등)에서 많은 동시 접속을 처리해야 할 때</li>
-<li>DB 서버(MySQL, PostgreSQL, Redis, MongoDB)에서 많은 클라이언트 요청을 받을 때</li>
-<li><code>dmesg</code> 로그에서 "TCP: drop request" 또는 "listen queue overflow" 오류가 발생할 때</li>
-</ul>
-<h3 id="fsfile-max_1"><code>fs.file-max</code>를 조정해야 하는 경우</h3>
-<ul>
-<li>DB 서버에서 많은 커넥션을 처리해야 할 때</li>
-<li>로그 서버(ELK, Prometheus 등)에서 대량의 파일을 다룰 때</li>
-<li>Node.js 같은 이벤트 기반 서버에서 많은 소켓 핸들을 유지해야 할 때</li>
-<li><code>ulimit -n</code> 명령어를 실행했을 때 파일 핸들 제한이 너무 낮은 경우</li>
-</ul>
+<h2 id="_2">기능 비교표</h2>
+<p>각 셀은 1차 출처(문서, PyPI, 릴리스 노트)로 확인한 내용. 정성 평가인 행은 셀 안에 표시</p>
+<table>
+<thead>
+<tr>
+<th>범주</th>
+<th>LangChain 1.x</th>
+<th>LangGraph 1.2</th>
+<th>Pydantic AI 2.x</th>
+<th>Strands Agents</th>
+<th>Bedrock AgentCore(관리형 인프라, 프레임워크 아님)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>라이선스</td>
+<td>MIT</td>
+<td>MIT(라이브러리)</td>
+<td>MIT</td>
+<td>Apache 2.0(AWS)</td>
+<td>상용 AWS 서비스. 종량 과금</td>
+</tr>
+<tr>
+<td>상업 이용 시 주의</td>
+<td>라이브러리 자체는 제약 없음</td>
+<td>라이브러리는 MIT지만 Agent Server 패키지 langgraph api(0.13.2)는 Elastic License 2.0(OSI 비승인). 셀프호스트 프로덕션 서버는 라이선스 키 필수(Enterprise)</td>
+<td>제약 없음</td>
+<td>제약 없음</td>
+<td>AWS 이용 약관</td>
+</tr>
+<tr>
+<td>최신 버전</td>
+<td>PyPI 1.3.18</td>
+<td>PyPI 1.2.11</td>
+<td>PyPI 2.36.0</td>
+<td>GitHub 릴리스 python/v1.54.0</td>
+<td>서비스라 버전 없음</td>
+</tr>
+<tr>
+<td>주요 날짜</td>
+<td>1.0 출시 2025년 10월</td>
+<td>1.0 출시 2025년 10월(LangChain과 동시)</td>
+<td>v2.0 출시 2026년 6월 23일</td>
+<td>오픈소스 2025년 5월, 1.0 2025년 7월 15일. 최신 릴리스 2026년 8월 27일</td>
+<td>GA 2025년 10월. 관리형 Harness GA 2026년 7월</td>
+</tr>
+<tr>
+<td>패키지, 의존관계</td>
+<td><code>langchain</code>이 langchain core(1.6 이상 2 미만)와 langgraph(1.2.11 이상 1.3 미만)에 필수 의존. 레거시(체인, 리트리버, 인덱싱, 허브, community)는 langchain classic으로 분리</td>
+<td>langchain core, langgraph checkpoint, langgraph prebuilt, langgraph sdk, pydantic, xxhash에 의존. <code>langchain</code> 패키지에는 의존하지 않음</td>
+<td>코어 경량화. Bedrock 등 제공자는 선택 설치 extra. 별도 Harness 라이브러리</td>
+<td>strands agents와 strands agents tools 두 패키지. TypeScript SDK 별도. 저장소명은 harness sdk로 개명</td>
+<td>boto3 SDK와 AgentCore 스타터 툴킷. 프레임워크 무관</td>
+</tr>
+<tr>
+<td>추상화 수준</td>
+<td>고수준. 에이전트 하나를 함수 호출 하나로</td>
+<td>저수준. 노드, 엣지, 상태를 직접 설계</td>
+<td>중간. 에이전트 클래스 + 타입 계약. 그래프가 필요하면 pydantic graph</td>
+<td>중간. 에이전트 클래스 + 모델 주도 루프</td>
+<td>해당 없음. 코드가 아니라 실행 환경</td>
+</tr>
+<tr>
+<td>성격</td>
+<td>라이브러리</td>
+<td>라이브러리(런타임). 별도로 상용 Agent Server</td>
+<td>라이브러리</td>
+<td>라이브러리. 프로세스 내 실행, 호스팅 컨트롤플레인 없음</td>
+<td>관리형 서비스 묶음</td>
+</tr>
+<tr>
+<td>실행 모델</td>
+<td>모델 호출 → tool_calls 파싱 → 도구 실행 → 메시지 추가 → 도구 호출이 없을 때까지 반복 → <code>response_format</code> 검증</td>
+<td>StateGraph. 파이썬 함수 노드, 엣지, 조건 분기, 서브그래프, 병렬 브랜치</td>
+<td>에이전트 실행 루프. 출력 스키마 검증 실패 시 자동 재시도, <code>ModelRetry</code>로 모델 자기수정</td>
+<td>모델 주도 루프. 모델이 도구 선택과 종료를 결정</td>
+<td>Runtime이 세션별 격리 microVM에서 코드를 실행. 루프는 올린 프레임워크가 담당</td>
+</tr>
+<tr>
+<td>상태 저장</td>
+<td><code>checkpointer</code>, <code>store</code>, <code>state_schema</code> 인자로 LangGraph 영속화를 그대로 사용</td>
+<td>체크포인터 Memory, SQLite, Postgres. 슈퍼스텝 단위 스냅샷</td>
+<td><code>RunContext</code> 의존성 주입. 실행 상태 영속화는 내구 실행 capability에 위임</td>
+<td>SessionManager File, S3, AgentCore Memory. 대화 관리자(슬라이딩 윈도우, 요약)</td>
+<td>Memory 서비스(단기, 장기). 프레임워크 세션 백엔드로 연결</td>
+</tr>
+<tr>
+<td>내구 실행(크래시 후 재개)</td>
+<td>LangGraph 체크포인터 의존</td>
+<td>체크포인터로 재개와 타임 트래블. 자동 재개 감독은 없음. Temporal LangGraph 플러그인 존재</td>
+<td>Temporal, DBOS, Prefect가 1<sup>st</sup> party capability. Restate, Kitaru, Airflow 통합 추가</td>
+<td>세션 매니저로 대화 복원. 내구 실행 엔진은 내장하지 않음</td>
+<td>Runtime 세션은 최대 8시간. 장기 실행은 Instances(EC2 기반, 서울 미지원). 내구 실행 엔진은 아님</td>
+</tr>
+<tr>
+<td>체크포인트 단위와 제약</td>
+<td>LangGraph와 동일</td>
+<td>슈퍼스텝 단위 저장이라 노드 내부 부작용은 멱등해야 함</td>
+<td>DBOS 기준: 별도 서버 없이 프로세스 내, 저장소 Postgres 또는 SQLite. 실행 중 스트리밍 버퍼링, pickle 직렬화 약 2MB, 모델 인스턴스는 문자열 ID로, CancellationToken 불가, MCP 툴셋은 생성 시 고정</td>
+<td>세션 단위</td>
+<td>세션 단위</td>
+</tr>
+<tr>
+<td>HITL(사람 개입)</td>
+<td>내장 미들웨어 HumanInTheLoop</td>
+<td><code>interrupt</code>로 연결을 끊고 대기했다가 재개</td>
+<td><code>DeferredToolRequests</code>, <code>DeferredToolResults</code></td>
+<td>Interrupts(hook 또는 도구에서 발생)</td>
+<td>프레임워크 기능에 의존. Policy 서비스로 도구 호출 정책 제어</td>
+</tr>
+<tr>
+<td>스트리밍</td>
+<td>LangGraph 스트리밍 이벤트 사용</td>
+<td>스트리밍 이벤트(토큰, 상태 업데이트)</td>
+<td><code>iter()</code>, <code>run_stream()</code></td>
+<td>스트리밍 응답 지원</td>
+<td>Runtime이 스트리밍 응답 전달</td>
+</tr>
+<tr>
+<td>멀티에이전트 패턴</td>
+<td><code>create_agent</code> 결과를 LangGraph 노드로 배치</td>
+<td>서브그래프, 병렬 브랜치, 조건 분기로 직접 구성</td>
+<td>기본은 에이전트를 도구로 감싸는 위임. 그래프는 pydantic graph</td>
+<td>Agents as Tools, Handoffs, Swarm, Graph, Workflow, A2A</td>
+<td>관리형 Harness는 에이전트를 도구로 감싸는 위임만. 커스텀 오케스트레이터는 Runtime에 코드 배포</td>
+</tr>
+<tr>
+<td>구조화 출력</td>
+<td><code>response_format</code> → <code>structured_response</code></td>
+<td>상태 스키마(pydantic, TypedDict)</td>
+<td><code>Agent[Deps, Output]</code> 제네릭. 출력 스키마가 계약</td>
+<td>Pydantic 기반 구조화 출력</td>
+<td>해당 없음</td>
+</tr>
+<tr>
+<td>타입 안전</td>
+<td>중간. 미들웨어와 상태는 타입 지정 가능</td>
+<td>상태 스키마 수준</td>
+<td>가장 강함. 제네릭으로 의존성과 출력 타입 고정, 검증 실패 자동 재시도</td>
+<td>Pydantic 모델 수준</td>
+<td>해당 없음</td>
+</tr>
+<tr>
+<td>도구 정의</td>
+<td><code>@tool</code>, <code>init_chat_model</code>, <code>trim_messages</code>, <code>init_embeddings</code> 유틸</td>
+<td><code>langgraph.prebuilt</code>의 ToolNode, tools_condition(구 create_react_agent는 <code>create_agent</code>로 대체 중)</td>
+<td>데코레이터 도구, <code>UsageLimits</code>로 호출 상한</td>
+<td>데코레이터 도구, strands agents tools 패키지, steering handler, guardrails</td>
+<td>Gateway가 REST와 Lambda를 MCP 도구로 노출. 내장 도구 Browser, Code Interpreter</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>지원(어댑터)</td>
+<td>지원(어댑터)</td>
+<td>지원</td>
+<td>1급 지원</td>
+<td>Gateway가 MCP 서버 역할</td>
+</tr>
+<tr>
+<td>A2A</td>
+<td>별도</td>
+<td>별도</td>
+<td>별도</td>
+<td>지원</td>
+<td>Agent Registry는 서울 미지원</td>
+</tr>
+<tr>
+<td>모델 제공자</td>
+<td>제공자 패키지 방식(langchain aws 등)</td>
+<td>모델 중립. LangChain 채팅 모델 사용</td>
+<td>제공자 중립. 제공자별 선택 설치</td>
+<td>Bedrock Converse 기본 제공자. 다른 제공자도 지원</td>
+<td>프레임워크가 호출. Bedrock 외 모델도 Runtime에서 호출 가능</td>
+</tr>
+<tr>
+<td>Bedrock, Amazon Nova</td>
+<td>langchain aws의 <code>ChatBedrockConverse</code>가 Nova 지원. 프롬프트 캐싱 미들웨어 있음(Nova는 TTL 5분만). 단 <code>create_agent</code> + Nova(Llama4, GPT OSS 포함)에서 스트리밍 토큰과 도구 실행 오류가 공식 포럼에 보고됨(2025년 11월 등록, 2026년 7월 재보고, 해결 게시 없음). 미해결로 보임</td>
+<td>LangChain 모델을 그대로 사용하므로 좌측과 동일</td>
+<td><code>BedrockConverseModel</code> + <code>BedrockProvider</code>(boto3 클라이언트 주입 가능)</td>
+<td>기본 제공자. 기본 모델 ID는 Claude이므로 Nova는 model_id 지정</td>
+<td>Bedrock과 같은 계정, IAM으로 자연스럽게 결합</td>
+</tr>
+<tr>
+<td>관측성</td>
+<td>LangSmith(상용) 또는 OpenTelemetry</td>
+<td>LangSmith 또는 OpenTelemetry</td>
+<td>Logfire 또는 OpenTelemetry</td>
+<td>OpenTelemetry 내장</td>
+<td>Observability 서비스(CloudWatch 기반, CloudWatch 요금)</td>
+</tr>
+<tr>
+<td>테스트 더블</td>
+<td>가짜 채팅 모델(langchain core)</td>
+<td>노드 단위 함수 테스트</td>
+<td><code>TestModel</code>, <code>FunctionModel</code></td>
+<td>모의 모델 제공자</td>
+<td>로컬 스타터 툴킷으로 실행</td>
+</tr>
+<tr>
+<td>배포 형태</td>
+<td>아무 파이썬 런타임. Agent Server를 쓰면 LangSmith Deployment</td>
+<td>라이브러리는 어디서나. Agent Server 셀프호스트는 langgraph api 이미지 + PostgreSQL + Redis, k8s Helm 권장</td>
+<td>아무 파이썬 런타임. AgentCore Runtime 포함</td>
+<td>AgentCore, Lambda, Fargate, EKS, Docker</td>
+<td>Runtime 자체가 배포 대상</td>
+</tr>
+<tr>
+<td>상용 컴포넌트</td>
+<td>LangSmith(선택)</td>
+<td>LangSmith Deployment, Studio(선택). <code>langgraph dev</code> 로컬 개발은 무료 계정으로 가능</td>
+<td>Logfire(선택)</td>
+<td>없음</td>
+<td>서비스 전체가 상용</td>
+</tr>
+<tr>
+<td>비용</td>
+<td>라이브러리 무료. LangSmith Developer $0(1좌석, 월 5k 트레이스), Plus $39/좌석(월 10k 트레이스, 소형 서버리스 배포 1개 포함), Enterprise 견적. 배포 종량 LCU $1.50, LSU $1.00</td>
+<td>좌측과 동일</td>
+<td>라이브러리 무료</td>
+<td>라이브러리 무료</td>
+<td>Runtime vCPU 시간당 $0.0895 + GB 시간당 $0.00945, 초 단위(유휴와 I/O 대기 무료). Memory 단기 1k 이벤트당 $0.25, 장기 1k 레코드당 월 $0.75 + 1k 검색당 $0.50. Gateway 1k 호출당 $0.005. Harness 별도 요금 없음</td>
+</tr>
+<tr>
+<td>리전(서울 기준)</td>
+<td>라이브러리라 무관</td>
+<td>무관</td>
+<td>무관</td>
+<td>무관</td>
+<td>서울 지원: Runtime microVM, Memory, Gateway, Identity, 내장 도구, Observability, Policy, Evaluations, Harness. 미지원: Runtime Instances, Web Search, payments, Agent Registry</td>
+</tr>
+<tr>
+<td>VPC, PrivateLink</td>
+<td>무관</td>
+<td>무관</td>
+<td>무관</td>
+<td>무관</td>
+<td>Runtime VPC 2025년 9월, Gateway와 Identity VPC egress 2026년 4월 지원</td>
+</tr>
+<tr>
+<td>실행 시간 한도</td>
+<td>런타임에 따름</td>
+<td>런타임에 따름</td>
+<td>런타임에 따름</td>
+<td>런타임에 따름</td>
+<td>Runtime 세션 최대 8시간. 장기형은 Instances</td>
+</tr>
+<tr>
+<td>학습 곡선(정성 평가)</td>
+<td>낮음. 함수 하나로 시작</td>
+<td>높음. 그래프 설계와 상태 관리 필요</td>
+<td>중간. 타입과 Pydantic에 익숙하면 낮음</td>
+<td>낮음에서 중간. 모델 주도 루프라 코드 적음</td>
+<td>중간. IAM, 서비스 조합 이해 필요</td>
+</tr>
+<tr>
+<td>커뮤니티, 성숙도(정성 평가)</td>
+<td>가장 큰 생태계, 1.0으로 API 안정화</td>
+<td>넓은 채택, 1.x 안정</td>
+<td>빠르게 성장, v2로 구조 재편 직후</td>
+<td>AWS 주도, 1년 남짓, 릴리스 빈번</td>
+<td>GA 1년 미만, 기능 추가 빠름</td>
+</tr>
+<tr>
+<td>대표 적합 사례</td>
+<td>도구 몇 개 붙은 단일 에이전트를 빠르게</td>
+<td>커스텀 상태와 분기가 많은 오케스트레이션</td>
+<td>출력 계약과 검증이 중요한 백엔드 통합</td>
+<td>AWS 네이티브 스택에서 멀티에이전트</td>
+<td>프레임워크는 정했고 세션 격리, 메모리, 도구 게이트웨이, 관측성 인프라만 필요할 때</td>
+</tr>
+<tr>
+<td>부적합 사례</td>
+<td>그래프 수준의 세밀한 제어</td>
+<td>단순 도구 호출 봇(과설계)</td>
+<td>그래프 중심 복잡 오케스트레이션 단독</td>
+<td>AWS 밖 환경 우선, 상용 컨트롤플레인 기대</td>
+<td>프레임워크 대체 기대, 서울에서 Instances나 Registry 필요</td>
+</tr>
+<tr>
+<td>알려진 주의점</td>
+<td>Nova 스트리밍 이슈(위), 레거시는 langchain classic</td>
+<td>Agent Server 라이선스와 인프라 요구</td>
+<td>v1.100 이상에서 deprecation 정리 후 v2로 올리는 업그레이드 경로</td>
+<td>저장소 개명으로 문서 링크 혼선 가능</td>
+<td>Bedrock Agents Classic(2023년 11월 출시)은 2026년 7월 30일부터 신규 고객 불가(최근 12개월 사용 계정만, 모델 카탈로그 동결)</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2 id="_9">최적화 예시</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># TCP 연결 대기 큐 크기 증가</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.somaxconn<span class="o">=</span><span class="m">1024</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># 시스템 전체에서 열 수 있는 파일 개수 증가</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>fs.file-max<span class="o">=</span><span class="m">2097152</span>
-</code></pre></div>
-<p>부팅 후에도 유지하려면 <code>/etc/sysctl.conf</code>에 추가
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;net.core.somaxconn=1024&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;fs.file-max=2097152&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-</code></pre></div></p>
-<h2 id="fsfile-max-ulimit-nopen-files">fs.file-max와 ulimit -n(open files)의 차이점</h2>
+<h2 id="_3">언제 무엇을 쓰나</h2>
+<p>단일 툴콜 에이전트를 빠르게 만들 때. LangChain 1.x <code>create_agent</code>가 가장 짧음. 모델, 도구, 시스템 프롬프트, 미들웨어만 넘기면 컴파일된 그래프가 나오고 <code>.invoke</code>로 끝. 요약, PII 마스킹, 재시도, 모델 폴백, 호출 상한 같은 운영 기능이 내장 미들웨어로 있어 초기 비용이 낮음. Bedrock에서 Nova를 쓸 계획이면 포럼에 보고된 스트리밍 이슈를 먼저 재현해 볼 것</p>
+<p>커스텀 상태와 그래프 오케스트레이션이 필요할 때. LangGraph 직접 사용. 조건 분기, 병렬 브랜치, 서브그래프, 슈퍼스텝 체크포인트, <code>interrupt</code> 기반 HITL을 코드로 명시. <code>create_agent</code>로 만든 에이전트를 노드로 넣어 상위 그래프를 짜는 조합이 자연스러움. 셀프호스트 Agent Server가 필요해지는 시점에 라이선스와 Postgres, Redis 인프라를 감안</p>
+<p>타입 계약과 검증이 중심일 때. Pydantic AI. <code>Agent[Deps, Output]</code>으로 입력 의존성과 출력 스키마를 타입으로 고정하고, 검증 실패 시 자동 재시도와 <code>ModelRetry</code>로 모델이 스스로 고치게 함. 내구 실행이 필요하면 Temporal, DBOS, Prefect capability를 붙이되 스트리밍 버퍼링과 직렬화 크기 제약을 확인. <code>TestModel</code>, <code>FunctionModel</code>로 LLM 없이 단위 테스트가 되는 점이 CI에서 큼</p>
+<p>AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 기본 제공자이고 SessionManager가 S3와 AgentCore Memory를 바로 지원. Swarm, Graph, Workflow, A2A까지 멀티에이전트 패턴이 내장. OpenTelemetry가 기본이라 CloudWatch로 바로 연결. 배포는 AgentCore, Lambda, Fargate, EKS 어디든</p>
+<p>실행 인프라만 필요할 때. Bedrock AgentCore. 프레임워크는 이미 정했고 세션 격리, 8시간 세션, 메모리, REST를 MCP 도구로 바꾸는 Gateway, Identity, 관측성이 필요하면 Runtime에 올림. 코드 변경 없이 Strands, LangGraph, Pydantic AI, OpenAI Agents SDK, Claude Agent SDK를 모두 수용. 서울에서 Instances와 Agent Registry가 아직 없다는 점만 확인</p>
+<p>섞어 쓰는 패턴</p>
 <table>
 <thead>
 <tr>
-<th>항목</th>
-<th>fs.file-max</th>
-<th>ulimit -n (open files)</th>
+<th>조합</th>
+<th>형태</th>
+<th>이유</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>역할</td>
-<td>시스템 전체에서 열 수 있는 파일 개수 제한</td>
-<td>각 프로세스가 열 수 있는 파일 개수 제한</td>
+<td>LangGraph 상위 그래프 + <code>create_agent</code> 워커</td>
+<td>라우팅과 상태는 그래프가, 각 노드의 도구 호출 루프는 <code>create_agent</code>가</td>
+<td>저수준 제어와 고수준 편의를 동시에</td>
 </tr>
 <tr>
-<td>적용 범위</td>
-<td>커널 전역 설정 (시스템 전체)</td>
-<td>각 사용자 또는 특정 프로세스에 적용</td>
+<td>Pydantic AI 앱 + AgentCore Runtime</td>
+<td>타입 계약은 앱이, 세션 격리와 메모리, 게이트웨이는 AgentCore가</td>
+<td>프레임워크와 인프라 분리</td>
 </tr>
 <tr>
-<td>확인 방법</td>
-<td>sysctl fs.file-max</td>
-<td>ulimit -n 또는 ulimit -a</td>
+<td>Strands + AgentCore Memory + Gateway</td>
+<td>SessionManager를 AgentCore Memory로, 사내 REST를 Gateway로 MCP 도구화</td>
+<td>같은 AWS 계정 안에서 IAM 하나로</td>
 </tr>
 <tr>
-<td>설정 방법</td>
-<td>sysctl -w fs.file-max=값</td>
-<td>ulimit -n 값 또는 /etc/security/limits.conf</td>
+<td>Pydantic AI + DBOS 또는 Temporal</td>
+<td>에이전트 실행을 내구 실행 엔진으로 감쌈</td>
+<td>크래시 후 재개, 장시간 HITL 대기</td>
 </tr>
 <tr>
-<td>기본값 예시 (Ubuntu 22.04)</td>
-<td>9223372036854775807 (이론적 최대)</td>
-<td>1024 (Soft Limit) / 1048576 (Hard Limit)</td>
+<td>LangGraph + Temporal 플러그인</td>
+<td>노드를 Activity로 실행</td>
+<td>체크포인터 대신 엔진이 재개 감독</td>
+</tr>
+<tr>
+<td>아무 프레임워크 + OpenTelemetry + 원하는 백엔드</td>
+<td>LangSmith, Logfire, CloudWatch 중 선택</td>
+<td>프레임워크와 관측성 백엔드 결합 해제</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>file-max와 ulimit open files 파라미터 모두 값이 부족할 때 Too many open files 에러 발생하는 점은 동일</p>
-</div>
-<h2 id="_10">시스템 기본값</h2>
-<h3 id="netcoresomaxconn_2">net.core.somaxconn 기본값</h3>
+<hr />
+<h2 id="_4">흔한 오해</h2>
 <table>
 <thead>
 <tr>
-<th>운영체제</th>
-<th>기본값</th>
+<th>오해</th>
+<th>실제</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>CentOS 7</td>
-<td>128</td>
+<td>LangGraph = LangChain + LangSmith</td>
+<td>LangGraph는 독립 런타임 라이브러리. <code>langchain</code> 패키지에 의존하지 않고, LangSmith는 별도 상용 플랫폼</td>
 </tr>
 <tr>
-<td>Amazon Linux 2</td>
-<td>128</td>
+<td>LangGraph를 쓰려면 LangSmith가 필수</td>
+<td>라이브러리는 MIT이고 어디서나 실행. LangSmith는 트레이싱과 배포를 원할 때만. <code>langgraph dev</code> 로컬 개발도 무료 계정으로 가능</td>
 </tr>
 <tr>
-<td>Amazon Linux 2023</td>
-<td>4096</td>
+<td>MIT니까 서버도 자유롭게 셀프호스트</td>
+<td>라이브러리는 MIT지만 Agent Server 패키지 langgraph api는 Elastic License 2.0. 프로덕션 셀프호스트는 Enterprise 라이선스 키 필요</td>
 </tr>
 <tr>
-<td>Ubuntu 20.04</td>
-<td>4096</td>
+<td>AgentCore가 Strands나 LangGraph를 대체한다</td>
+<td>AgentCore는 실행 인프라. 루프와 오케스트레이션은 여전히 프레임워크 몫. 관리형 Harness는 설정형 에이전트이고 멀티에이전트는 위임 패턴만</td>
 </tr>
 <tr>
-<td>Ubuntu 22.04</td>
-<td>4096</td>
+<td>LangGraph Platform이라는 제품이 따로 있다</td>
+<td>2025년 10월에 LangSmith Deployment로, LangGraph Studio는 LangSmith Studio로 개명</td>
 </tr>
 <tr>
-<td>RHEL 8</td>
-<td>128</td>
-</tr>
-<tr>
-<td>RHEL 9</td>
-<td>4096</td>
+<td>Bedrock Agents(Classic)를 새로 시작하면 된다</td>
+<td>2026년 7월 30일부터 신규 고객 불가. 신규는 AgentCore로</td>
 </tr>
 </tbody>
 </table>
-<h3 id="fsfile-max_2">fs.file-max 기본값</h3>
-<table>
-<thead>
-<tr>
-<th>운영체제</th>
-<th>기본값</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CentOS 7</td>
-<td>798004</td>
-</tr>
-<tr>
-<td>Amazon Linux 2</td>
-<td>524288</td>
-</tr>
-<tr>
-<td>Amazon Linux 2023</td>
-<td>9223372036854775807</td>
-</tr>
-<tr>
-<td>Ubuntu 20.04</td>
-<td>9223372036854775807</td>
-</tr>
-<tr>
-<td>Ubuntu 22.04</td>
-<td>9223372036854775807</td>
-</tr>
-<tr>
-<td>RHEL 8</td>
-<td>524288</td>
-</tr>
-<tr>
-<td>RHEL 9</td>
-<td>9223372036854775807</td>
-</tr>
-</tbody>
-</table>
+<hr />
+<h2 id="_5">결론</h2>
+<ul>
+<li>LangChain은 LangGraph 위의 고수준 API, LangGraph는 런타임, LangSmith는 상용 플랫폼. 셋을 층으로 보면 혼란이 사라짐</li>
+<li>Pydantic AI는 타입 계약, Strands는 AWS 네이티브 멀티에이전트, LangGraph는 세밀한 그래프 제어가 강점</li>
+<li>AgentCore는 프레임워크가 아니라 실행 인프라. 다섯 개 중 하나를 고르는 문제가 아니라 프레임워크 하나 + 인프라 여부로 나눠 결정</li>
+<li>라이선스는 라이브러리(MIT, Apache 2.0)와 서버 컴포넌트(Elastic License, 상용 서비스)를 분리해서 볼 것</li>
+<li>서울 리전은 AgentCore 핵심 서비스는 지원하지만 Instances, Web Search, payments, Agent Registry는 아직 없음</li>
+</ul>
+<h2 id="_6">출처</h2>
+<ul>
+<li>Pydantic AI: <a href="https://pydantic.dev/docs/ai/integrations/durable_execution/overview/">내구 실행 개요</a>, <a href="https://pydantic.dev/docs/ai/capabilities/durable_execution/dbos/">DBOS capability</a>, <a href="https://pydantic.dev/articles/pydantic-ai-v2">v2 발표</a>, <a href="https://pypi.org/pypi/pydantic-ai/json">PyPI</a></li>
+<li>LangGraph: <a href="https://pypi.org/pypi/langgraph/json">PyPI langgraph</a>, <a href="https://pypi.org/pypi/langgraph-api/json">PyPI langgraph api</a>, <a href="https://docs.langchain.com/langsmith/deploy-standalone-server">Standalone Server 배포</a>, <a href="https://changelog.langchain.com/announcements/product-naming-changes-langsmith-deployment-and-langsmith-studio">제품명 변경 공지</a>, <a href="http://rvernica.github.io/2026/03/langchain-license">라이선스 분석 글</a></li>
+<li>LangChain: <a href="https://pypi.org/pypi/langchain/json">PyPI</a>, <a href="https://docs.langchain.com/oss/python/releases/langchain-v1">v1 릴리스 노트</a>, <a href="https://docs.langchain.com/oss/python/langchain/agents">Agents</a>, <a href="https://docs.langchain.com/oss/python/langchain/middleware">Middleware</a>, <a href="https://docs.langchain.com/oss/python/langchain/middleware/custom">Custom middleware</a>, <a href="https://www.langchain.com/blog/langchain-langgraph-1dot0">1.0 블로그</a>, <a href="https://forum.langchain.com/t/langchain-v1-agentic-flow-on-bedrock-fails-for-non-claude-models-available-in-bedrock-llama4-nova-gpt-oss/2251">Bedrock Nova 이슈 포럼</a></li>
+<li>LangSmith: <a href="https://www.langchain.com/pricing">요금</a>, <a href="https://docs.langchain.com/langsmith/trace-with-opentelemetry">OpenTelemetry 트레이싱</a></li>
+<li>Strands: <a href="https://aws.amazon.com/blogs/opensource/introducing-strands-agents-1-0-production-ready-multi-agent-orchestration-made-simple/">1.0 발표</a>, <a href="https://strandsagents.com/">공식 사이트</a>, <a href="https://github.com/strands-agents/harness-sdk">GitHub</a>, <a href="https://strandsagents.com/docs/user-guide/concepts/interrupts/">Interrupts</a>, <a href="https://api.github.com/repos/strands-agents/harness-sdk/releases/latest">최신 릴리스</a></li>
+<li>AgentCore: <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html">리전</a>, <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html">릴리스 노트</a>, <a href="https://aws.amazon.com/bedrock/agentcore/pricing/">요금</a>, <a href="https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-bedrock-agentcore-available">GA 공지</a>, <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-classic-maintenance-mode.html">Agents Classic 유지보수 모드</a></li>
+</ul>
 
 
 
@@ -2244,7 +2290,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../swap-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: Swap 정리">
+          <a href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS FinOps 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2254,20 +2300,20 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                Swap 정리
+                AWS FinOps 정리
               </div>
             </div>
           </a>
         
         
           
-          <a href="../%EC%83%A4%EB%94%A9%EC%9D%B4%EB%9E%80/" class="md-footer__link md-footer__link--next" aria-label="다음: 샤딩이란">
+          <a href="../ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" class="md-footer__link md-footer__link--next" aria-label="다음: AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 다음
               </span>
               <div class="md-ellipsis">
-                샤딩이란
+                AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)
               </div>
             </div>
             <div class="md-footer__button md-icon">
