@@ -18,11 +18,7 @@ description: "LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents, Bed
 
 # LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교
 
-에이전트 프레임워크를 고를 때 이름이 비슷하거나 서로 겹쳐 보여서 헷갈린다. LangChain과 LangGraph는 별개 제품처럼 보이지만 LangChain 1.x의 `create_agent`는 LangGraph 위에서 돌아가는 고수준 API이고, LangGraph는 그 아래의 런타임이다. LangSmith는 이 둘과 이름을 공유하지만 관측성과 배포를 파는 별도 상용 플랫폼이다. Pydantic AI와 Strands Agents는 각자 독립된 프레임워크로 위 셋과 경쟁한다.
-
-Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에이전트를 올려서 돌리는 관리형 실행 인프라다. Strands든 LangGraph든 Pydantic AI든 위에 올릴 수 있고, 프레임워크를 대체하지 않는다. 그런데 AWS 문서와 발표에 Strands와 나란히 등장하다 보니 같은 층의 선택지처럼 읽히기 쉽다.
-
-이 글은 다섯 개를 한 표에 놓고 30여 개 범주로 비교한 뒤, 상황별로 무엇을 쓸지와 섞어 쓰는 패턴, 흔한 오해를 정리했다. 수치와 버전은 2026년 8월 말 1차 출처 기준이다.
+이름이 겹쳐 헷갈리는 LangChain 1.x, LangGraph 1.2, Pydantic AI 2.x, Strands Agents와 프레임워크가 아닌 관리형 인프라 Bedrock AgentCore를 층 관계부터 정리하고 30여 개 범주 표로 비교한 뒤 상황별로 무엇을 쓸지 정리했다(수치와 버전은 2026년 8월 말 1차 출처 기준).
 
 <!-- more -->
 
@@ -36,6 +32,8 @@ Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에�
 | Pydantic AI 2.x | 프레임워크 | 타입 계약 중심 에이전트 라이브러리. Pydantic 팀 |
 | Strands Agents | 프레임워크 | 모델 주도 루프 중심 에이전트 SDK. AWS 오픈소스 |
 | Bedrock AgentCore | 관리형 인프라 | 세션 격리 런타임, 메모리, 게이트웨이, 아이덴티티, 관측성 등. 프레임워크 무관 |
+
+AgentCore의 구성 요소와 Bedrock Agents Classic 유지보수 모드는 [AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교](ai_agent_stack_compare.md) 글에 있으므로 여기서는 반복하지 않음
 
 ---
 
@@ -78,7 +76,7 @@ Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에�
 | 커뮤니티, 성숙도(정성 평가) | 가장 큰 생태계, 1.0으로 API 안정화 | 넓은 채택, 1.x 안정 | 빠르게 성장, v2로 구조 재편 직후 | AWS 주도, 1년 남짓, 릴리스 빈번 | GA 1년 미만, 기능 추가 빠름 |
 | 대표 적합 사례 | 도구 몇 개 붙은 단일 에이전트를 빠르게 | 커스텀 상태와 분기가 많은 오케스트레이션 | 출력 계약과 검증이 중요한 백엔드 통합 | AWS 네이티브 스택에서 멀티에이전트 | 프레임워크는 정했고 세션 격리, 메모리, 도구 게이트웨이, 관측성 인프라만 필요할 때 |
 | 부적합 사례 | 그래프 수준의 세밀한 제어 | 단순 도구 호출 봇(과설계) | 그래프 중심 복잡 오케스트레이션 단독 | AWS 밖 환경 우선, 상용 컨트롤플레인 기대 | 프레임워크 대체 기대, 서울에서 Instances나 Registry 필요 |
-| 알려진 주의점 | Nova 스트리밍 이슈(위), 레거시는 langchain classic | Agent Server 라이선스와 인프라 요구 | v1.100 이상에서 deprecation 정리 후 v2로 올리는 업그레이드 경로 | 저장소 개명으로 문서 링크 혼선 가능 | Bedrock Agents Classic(2023년 11월 출시)은 2026년 7월 30일부터 신규 고객 불가(최근 12개월 사용 계정만, 모델 카탈로그 동결) |
+| 알려진 주의점 | Nova 스트리밍 이슈(위), 레거시는 langchain classic | Agent Server 라이선스와 인프라 요구 | v1.100 이상에서 deprecation 정리 후 v2로 올리는 업그레이드 경로 | 저장소 개명으로 문서 링크 혼선 가능 | Bedrock Agents Classic은 유지보수 모드. 신규는 AgentCore로(상세는 스택 생태계 글) |
 
 ---
 
@@ -92,7 +90,7 @@ Bedrock AgentCore는 아예 층이 다르다. 프레임워크가 아니라 에�
 
 AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 기본 제공자이고 SessionManager가 S3와 AgentCore Memory를 바로 지원. Swarm, Graph, Workflow, A2A까지 멀티에이전트 패턴이 내장. OpenTelemetry가 기본이라 CloudWatch로 바로 연결. 배포는 AgentCore, Lambda, Fargate, EKS 어디든
 
-실행 인프라만 필요할 때. Bedrock AgentCore. 프레임워크는 이미 정했고 세션 격리, 8시간 세션, 메모리, REST를 MCP 도구로 바꾸는 Gateway, Identity, 관측성이 필요하면 Runtime에 올림. 코드 변경 없이 Strands, LangGraph, Pydantic AI, OpenAI Agents SDK, Claude Agent SDK를 모두 수용. 서울에서 Instances와 Agent Registry가 아직 없다는 점만 확인
+실행 인프라만 필요할 때. Bedrock AgentCore. 프레임워크는 이미 정했고 세션 격리, 8시간 세션, 메모리, REST를 MCP 도구로 바꾸는 Gateway, Identity, 관측성이 필요하면 Runtime에 올림. 프레임워크 무관이므로 코드 변경 없이 올라감. 서울에서 Instances와 Agent Registry가 아직 없다는 점만 확인
 
 섞어 쓰는 패턴
 
@@ -116,7 +114,6 @@ AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 �
 | MIT니까 서버도 자유롭게 셀프호스트 | 라이브러리는 MIT지만 Agent Server 패키지 langgraph api는 Elastic License 2.0. 프로덕션 셀프호스트는 Enterprise 라이선스 키 필요 |
 | AgentCore가 Strands나 LangGraph를 대체한다 | AgentCore는 실행 인프라. 루프와 오케스트레이션은 여전히 프레임워크 몫. 관리형 Harness는 설정형 에이전트이고 멀티에이전트는 위임 패턴만 |
 | LangGraph Platform이라는 제품이 따로 있다 | 2025년 10월에 LangSmith Deployment로, LangGraph Studio는 LangSmith Studio로 개명 |
-| Bedrock Agents(Classic)를 새로 시작하면 된다 | 2026년 7월 30일부터 신규 고객 불가. 신규는 AgentCore로 |
 
 ---
 
@@ -124,7 +121,7 @@ AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 �
 
 - LangChain은 LangGraph 위의 고수준 API, LangGraph는 런타임, LangSmith는 상용 플랫폼. 셋을 층으로 보면 혼란이 사라짐
 - Pydantic AI는 타입 계약, Strands는 AWS 네이티브 멀티에이전트, LangGraph는 세밀한 그래프 제어가 강점
-- AgentCore는 프레임워크가 아니라 실행 인프라. 다섯 개 중 하나를 고르는 문제가 아니라 프레임워크 하나 + 인프라 여부로 나눠 결정
+- 다섯 개 중 하나를 고르는 문제가 아니라 프레임워크 하나 + AgentCore 인프라 사용 여부로 나눠 결정
 - 라이선스는 라이브러리(MIT, Apache 2.0)와 서버 컴포넌트(Elastic License, 상용 서비스)를 분리해서 볼 것
 - 서울 리전은 AgentCore 핵심 서비스는 지원하지만 Instances, Web Search, payments, Agent Registry는 아직 없음
 
@@ -135,4 +132,4 @@ AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 �
 - LangChain: [PyPI](https://pypi.org/pypi/langchain/json), [v1 릴리스 노트](https://docs.langchain.com/oss/python/releases/langchain-v1), [Agents](https://docs.langchain.com/oss/python/langchain/agents), [Middleware](https://docs.langchain.com/oss/python/langchain/middleware), [Custom middleware](https://docs.langchain.com/oss/python/langchain/middleware/custom), [1.0 블로그](https://www.langchain.com/blog/langchain-langgraph-1dot0), [Bedrock Nova 이슈 포럼](https://forum.langchain.com/t/langchain-v1-agentic-flow-on-bedrock-fails-for-non-claude-models-available-in-bedrock-llama4-nova-gpt-oss/2251)
 - LangSmith: [요금](https://www.langchain.com/pricing), [OpenTelemetry 트레이싱](https://docs.langchain.com/langsmith/trace-with-opentelemetry)
 - Strands: [1.0 발표](https://aws.amazon.com/blogs/opensource/introducing-strands-agents-1-0-production-ready-multi-agent-orchestration-made-simple/), [공식 사이트](https://strandsagents.com/), [GitHub](https://github.com/strands-agents/harness-sdk), [Interrupts](https://strandsagents.com/docs/user-guide/concepts/interrupts/), [최신 릴리스](https://api.github.com/repos/strands-agents/harness-sdk/releases/latest)
-- AgentCore: [리전](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html), [릴리스 노트](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html), [요금](https://aws.amazon.com/bedrock/agentcore/pricing/), [GA 공지](https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-bedrock-agentcore-available), [Agents Classic 유지보수 모드](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-classic-maintenance-mode.html)
+- AgentCore: [리전](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html), [릴리스 노트](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html), [요금](https://aws.amazon.com/bedrock/agentcore/pricing/), [GA 공지](https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-bedrock-agentcore-available)
