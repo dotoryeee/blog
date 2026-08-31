@@ -22,7 +22,7 @@ AI Agent 대표 개발 도구 비교
 
 <!-- more -->
 
-| 이름 | 층 | 한 줄 정의 |
+| 이름 | 레이어 | 한 줄 정의 |
 |---|---|---|
 | LangChain 1.x | 고수준 프레임워크 | `create_agent`로 도구 호출 루프를 만드는 라이브러리. 내부적으로 LangGraph 그래프를 컴파일해 반환 |
 | LangGraph 1.2 | 저수준 런타임 | 상태 그래프로 제어 흐름을 직접 짜는 라이브러리. LangChain 없이 단독 사용 가능 |
@@ -117,7 +117,7 @@ AWS 네이티브에 Bedrock 최적일 때. Strands Agents. Bedrock Converse가 �
 
 ## 결론
 
-- LangChain은 LangGraph 위의 고수준 API, LangGraph는 런타임, LangSmith는 상용 플랫폼. 셋을 층으로 보면 혼란이 사라짐
+- LangChain은 LangGraph 위의 고수준 API, LangGraph는 런타임, LangSmith는 상용 플랫폼. 셋을 레이어로 보면 혼란이 사라짐
 - Pydantic AI는 타입 계약, Strands는 AWS 네이티브 멀티에이전트, LangGraph는 세밀한 그래프 제어가 강점
 - 다섯 개 중 하나를 고르는 문제가 아니라 프레임워크 하나 + AgentCore 인프라 사용 여부로 나눠 결정
 - 라이선스는 라이브러리(MIT, Apache 2.0)와 서버 컴포넌트(Elastic License, 상용 서비스)를 분리해서 볼 것
