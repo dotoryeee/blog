@@ -18,9 +18,9 @@ tags:
 description: "AWS Bedrock AgentCore와 Strands, Microsoft Foundry와 Agent Framework, Google Agent Runtime과 ADK를 프레임워크, 관리형 런타임, 메모리, 게이트웨이, 아이덴티티, 정책, 평가, 관측성, 프로토콜, 서울 리전, 요금 축으로 비교하고 상황별 선택 기준 정리"
 ---
 
-# 클라우드 3사 AI 에이전트 플랫폼 비교: Bedrock AgentCore, Microsoft Foundry, Gemini Enterprise Agent Platform
+# 클라우드 3사 AI 에이전트 플랫폼 비교
 
-AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와 관리형 실행 인프라를 같은 레이어끼리 표로 비교
+AWS(Bedrock AgentCore), Azure(Microsoft Foundry), GCP(Gemini Enterprise Agent Platform)가 각각 내놓은 오픈소스 에이전트 프레임워크와 관리형 실행 인프라를 같은 레이어끼리 표로 비교
 
 <!-- more -->
 
