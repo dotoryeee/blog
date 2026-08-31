@@ -10,10 +10,10 @@
       
       
       
-        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/">
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
       
       
-        <link rel="prev" href="../langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/">
+        <link rel="prev" href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/">
       
       
       
@@ -28,7 +28,7 @@
     
     
       
-        <title>AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph) - dotoryeee's blog</title>
+        <title>AI 에이전트 체크포인트 정리 - dotoryeee's blog</title>
       
     
     
@@ -86,17 +86,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph) - dotoryeee's blog" />
+<meta property="og:title" content="AI 에이전트 체크포인트 정리 - dotoryeee's blog" />
 <meta property="og:description" content="AI 에이전트와 LLM 개발에서 체크포인트가 왜 필요한지, Temporal, Restate, DBOS, Airflow, Prefect, LangGraph가 각각 무엇을 어떻게 저장해 복구하는지, 모델 학습 체크포인트와 서빙 캐시는 어떻게 다른지 상황별 선택 기준까지 정리" />
-<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph.png" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph/" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph) - dotoryeee's blog" />
+<meta property="twitter:title" content="AI 에이전트 체크포인트 정리 - dotoryeee's blog" />
 <meta property="twitter:description" content="AI 에이전트와 LLM 개발에서 체크포인트가 왜 필요한지, Temporal, Restate, DBOS, Airflow, Prefect, LangGraph가 각각 무엇을 어떻게 저장해 복구하는지, 모델 학습 체크포인트와 서빙 캐시는 어떻게 다른지 상황별 선택 기준까지 정리" />
-<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%ACtemporal-restate-dbos-airflow-prefect-langgraph.png" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/08/31/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC.png" />
 </head>
   
   
@@ -114,7 +114,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ai-temporal-restate-dbos-airflow-prefect-langgraph" class="md-skip">
+        <a href="#ai" class="md-skip">
           콘텐츠로 이동
         </a>
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)
+              AI 에이전트 체크포인트 정리
             
           </span>
         </div>
@@ -1122,33 +1122,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="./" class="md-nav__link">
         
   
@@ -1156,7 +1129,7 @@
   <span class="md-ellipsis">
     
   
-    AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)
+    AI 에이전트 체크포인트 정리
   
 
     
@@ -1925,6 +1898,33 @@
   
 
                       
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/infiniband-vs-rocev2-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    InfiniBand vs RoCEv2 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
                     </ul>
                   </nav>
                 </li>
@@ -2010,8 +2010,8 @@
 
 
 
-<h1 id="ai-temporal-restate-dbos-airflow-prefect-langgraph">AI 에이전트 체크포인트 정리(Temporal, Restate, DBOS, Airflow, Prefect, LangGraph)</h1>
-<p>에이전트를 만들다 보면 LLM 호출 도중 프로세스가 죽거나, 사람 승인을 며칠 기다려야 하거나, 서버리스 타임아웃에 걸리는 상황을 만난다. 학습의 모델 체크포인트, 서빙의 캐시와 구분되는 에이전트용 실행 상태 체크포인트가 무엇이고 도구마다 어떻게 다르며 언제 무엇을 써야 하는지 표로 정리했다.</p>
+<h1 id="ai">AI 에이전트 체크포인트 정리</h1>
+<p>에이전트를 만들다 보면 LLM 호출 도중 프로세스가 죽거나, 사람 승인을 며칠 기다려야 하거나, 서버리스 타임아웃에 걸리는 상황을 만난다. 학습의 모델 체크포인트, 서빙의 캐시와 구분되는 에이전트용 실행 상태 체크포인트가 무엇이고 도구마다 어떻게 다르며 언제 무엇을 써야 하는지 표로 정리</p>
 <!-- more -->
 
 <h2 id="_1">체크포인트 정확한 용어 정리</h2>
@@ -2952,7 +2952,7 @@
       <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
         
           
-          <a href="../langchain-langgraph-pydantic-ai-strands-bedrock-agentcore-%EB%B9%84%EA%B5%90/" class="md-footer__link md-footer__link--prev" aria-label="이전: LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교">
+          <a href="../../24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--prev" aria-label="이전: AWS FinOps 정리">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2962,7 +2962,7 @@
                 이전
               </span>
               <div class="md-ellipsis">
-                LangChain, LangGraph, Pydantic AI, Strands, Bedrock AgentCore 비교
+                AWS FinOps 정리
               </div>
             </div>
           </a>
