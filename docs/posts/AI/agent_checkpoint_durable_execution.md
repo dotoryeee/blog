@@ -98,14 +98,14 @@ flowchart TB
 | 스텝3 이전에 만든 로컬 변수 | 함수를 다시 실행하므로 복원됨 | 함수를 다시 실행하므로 복원됨 | 유실. 노드 출력으로 저장한 값만 다음 노드 입력으로 받음 |
 | 스텝3 도중 이미 나간 부수효과 | 한 번 더 나갈 수 있음. 스텝은 최소 1회 실행 | 동일 | 동일. 노드 처음부터 다시 돌기 때문 |
 | 코드에 요구되는 것 | 첫 줄부터 스텝3까지 매번 같은 명령 순서를 만들어야 함. 시계 조회, 난수 생성, 네트워크 호출은 워크플로우 밖(Activity)으로 | 스텝 사이 제어 흐름이 같은 스텝 ID를 같은 순서로 만나야 함. 비결정적 작업은 스텝 안으로 | 노드 안 부수효과는 멱등하게. 노드 사이 상태는 입출력으로만 전달 |
-| 이 방식의 대가 | 결정론 규율, 코드 변경 시 버전 관리, 히스토리 크기 상한 | 저장소가 스텝 수에 비례해 증가 | 노드보다 작은 단위로는 재개 불가. LLM이 다음 노드를 고르는 루프를 그래프에 맞춰야 함 |
+| 이 방식의 대가 | 결정론 규율, 코드 변경 시 버전 관리, 히스토리 크기 상한 | 저장소가 스텝 수에 비례해 증가. 스텝 순서를 바꾸는 배포는 여전히 위험 | 노드보다 작은 단위로는 재개 불가. LLM이 다음 노드를 고르는 루프를 그래프에 맞춰야 함 |
 
 각 계열의 속성을 한 번 더 요약하면
 
 | 계열 | 저장하는 것 | 복구 방식 | 코드 제약 | 크래시 시 로컬 변수 | 대표 |
 |---|---|---|---|---|---|
 | 재생(Replay), 이벤트 소싱 | 오케스트레이터가 내린 명령과 그 결과가 모두 기록된 이벤트 히스토리(추가 전용 로그) | 워크플로우 함수를 첫 줄부터 다시 실행. 기록된 결과를 실제 호출 대신 주입해 중단 지점까지 빨리 감기 | 워크플로우 코드는 결정론적이어야 함. 시계 조회, 난수 생성, 네트워크 호출 금지, 명령 순서 변경 금지 | 재생으로 재구성됨 | Temporal, Azure Durable Functions, Vercel Workflows |
-| 저널, 스텝 메모이제이션 | 스텝 ID → 결과 쌍. 결과를 함수에 돌려주기 전에 먼저 영속화 | 함수에 다시 진입하되 완료된 스텝은 본문을 실행하지 않고 기록된 결과를 즉시 반환 | 스텝 사이 제어 흐름은 재현 가능해야 하지만 명령 순서 동일성 검사는 없음. 코드 변경에 상대적으로 관대 | 재진입으로 재구성됨 | Restate, DBOS, Inngest, Cloudflare Workflows |
+| 저널, 스텝 메모이제이션 | 스텝 ID → 결과 쌍. 결과를 함수에 돌려주기 전에 먼저 영속화 | 함수에 다시 진입하되 완료된 스텝은 본문을 실행하지 않고 기록된 결과를 즉시 반환 | 스텝 사이 제어 흐름은 재현 가능해야 함. 저널 순서와 어긋나는 코드 변경은 위험(Restate 문서도 SDK 호출 추가, 삭제, 순서 변경을 안전하지 않은 변경으로 분류). 재생 계열보다 규율이 가볍다는 것은 벤더 주장에 가까움 | 재진입으로 재구성됨 | Restate, DBOS, Inngest, Cloudflare Workflows |
 | 노드/태스크 상태 | 선언된 그래프의 노드별 상태 행 + 외부에 저장된 결과 | 실패, 미시작 노드부터 다시 스케줄. 성공한 노드는 저장된 결과를 재사용 | 태스크는 멱등해야 함. 태스크 안에서 죽으면 태스크 처음부터 | 유실됨(Airflow deferral 문서 기준: 로컬 변수, self 속성은 보존되지 않음. LangGraph도 노드 처음부터 재실행) | Airflow, Prefect, Dagster(DAG), LangGraph 체크포인터(순환 그래프) |
 
 재생 계열과 저널 계열은 실제로는 둘 다 함수에 재진입해 빨리 감기하므로 경계가 벤더 주장만큼 뚜렷하지는 않음. 실질적 차이는 내구성의 단위가 명령 스트림이냐 스텝 결과냐, 그리고 히스토리 크기 상한이 있느냐 저장소 증가만 있느냐
@@ -127,7 +127,7 @@ flowchart TB
 | 계열 | 재생(이벤트 히스토리) | 저널 | 저널(Postgres 체크포인트) |
 | 저장하는 것 | Workflow Execution별 Event History | 호출(invocation)별 저널. 스텝 결과를 함수에 돌려주기 전에 기록 | 워크플로우 입력, 스텝 출력, 워크플로우 결과. 스텝당 DB 쓰기 1회 + 워크플로우당 2회 |
 | 비결정적 코드 위치 | Activity. 문서에 LLM/AI 호출을 Activity에 두라고 명시 | `ctx.run()`. 결과가 저널에 기록돼 재생 시 재실행되지 않음 | `@DBOS.step()`. DB 작업은 `@DBOS.transaction()` |
-| 결정론 제약 | 엄격. 명령 순서가 히스토리와 다르면 비결정론 에러 | 저널을 재생하므로 스텝 사이 제어 흐름은 재현 가능해야 함. 명령 순서 검사는 없음 | 입력 인자와 스텝 반환값이 같다면 워크플로우가 같은 스텝을 같은 순서로 호출해야 함. 순서가 달라지면 재개 불가 |
+| 결정론 제약 | 엄격. 명령 순서가 히스토리와 다르면 비결정론 에러 | 저널을 재생하므로 스텝 사이 제어 흐름은 재현 가능해야 함. 문서상 SDK 호출 추가, 삭제, 순서 변경은 안전하지 않은 변경 | 입력 인자와 스텝 반환값이 같다면 워크플로우가 같은 스텝을 같은 순서로 호출해야 함. 순서가 달라지면 재개 불가 |
 | 긴 실행의 한도와 관리 | Event History 51,200개 또는 50MB(경고 10,240개, 10MB). ContinueAsNew로 새 히스토리 시작 | 공개된 저널 상한 없음. 긴 대기는 한 핸들러 안에서 sleep하지 말고, 핸들러를 끝낸 뒤 지연 호출로 다음 핸들러를 예약해 대기 구간이 호출과 호출 사이에 오게 하라는 권고(장기 실행 중에는 코드 버전 교체가 어려워지기 때문) | 개수 상한 없음. 보존 정책으로 관리(시간 또는 행 수. DBOS Cloud 기준 기본 100만 행) |
 | 사람 대기 | Signal, Update, Query, 내구성 Timer | Awakeable, 이름 있는 Signal, 내구성 Promise, 내구성 Sleep. 대기 중에는 핸들러가 중단(suspend)됨 | `DBOS.send/recv`, `set_event/get_event`(`recv`와 `get_event`의 기본 타임아웃 60초), 내구성 Sleep, 워크플로우 타임아웃 |
 | 보장 수준 | Activity 본문은 최소 1회 실행되지만 히스토리에 남는 결과는 하나. Update는 워크플로우 Start와 한 원자 단위로 묶이지 않는다고 문서가 경고 | 스텝 본문은 최소 1회, 결과 기록은 정확히 1회. 호출 멱등성 키 제공(같은 키로 24시간 안에 재호출하면 저장된 응답을 반환) | 워크플로우 완료 보장, 스텝 최소 1회(완료 후 재실행 없음), `@DBOS.transaction`은 정확히 1회 커밋 |
@@ -135,7 +135,7 @@ flowchart TB
 | SDK | Go, Java, TypeScript, Python, .NET, PHP, Ruby, Rust | TypeScript, Python, Java, Kotlin, Go, Rust, Ruby | Python, TypeScript, Go, Java |
 | 라이선스, 버전 | MIT. 서버 v1.31.2(2026년 7월) | BSL 1.1(4년 후 Apache 2.0). 자체 호스팅은 가능, 관리형 재판매 금지. v1.7.8(2026년 8월) | MIT. dbos 2.31.0 |
 | 공식 AI 통합 | OpenAI Agents SDK 플러그인(모델 호출이 Activity로), Vercel AI SDK, LangGraph 플러그인, AI Cookbook | Vercel AI SDK `durableCalls()` 미들웨어, OpenAI Agents SDK, Google ADK, Pydantic AI, LangChain | OpenAI Agents SDK `DBOSRunner`(도구, 가드레일을 `@DBOS.step`으로), Pydantic AI, LangGraph는 `PostgresSaver` 병용 패턴 |
-| 알려진 사용처 | Snap(모든 Story 처리 경로에 사용), Netflix(Plato 미디어 워크플로우, 하루 수백만 건의 워크플로우 이벤트), Datadog, Stripe | KPMG, Unkey, Fortis, Cinder(Restate 홈페이지에 사용처로만 표기. 상세 케이스 스터디는 없음) | Dosu(Celery에서 이전, 시간당 2만 워크플로우), Supabase, FlowGen Labs(폐쇄망) |
+| 알려진 사용처 | Snap(모든 Story 처리 경로에 사용), Netflix(Plato 미디어 워크플로우, 하루 수백만 건의 워크플로우 이벤트. Temporal 웨비나 자료 기준), Datadog, Stripe | KPMG, Unkey, Fortis, Cinder(Restate 홈페이지에 사용처로만 표기. 상세 케이스 스터디는 없음) | Dosu(Celery에서 이전, 시간당 2만 워크플로우), Supabase |
 
 DBOS의 주의점. 처리되지 않은 예외가 나면 워크플로우가 영구 종료 상태로 기록됨. 일시적 실패는 스텝 재시도 정책에 맡길 것. 워크플로우 본문에서 예외를 잡아 그냥 넘기면 재시도 기회를 잃고 잘못된 상태로 완료됨
 
@@ -155,8 +155,8 @@ DBOS의 주의점. 처리되지 않은 예외가 나면 워크플로우가 영�
 | 항목 | Apache Airflow 3.3 | Prefect 3.8 | Dagster |
 |---|---|---|---|
 | 상태 저장 | 메타데이터 DB(Postgres/MySQL)에 태스크 인스턴스 상태 14종. 태스크 간 데이터는 XCom(작은 값 전용, 큰 값은 오브젝트 스토리지 백엔드) | 태스크 실행 하나하나를 트랜잭션 단위로 관리. 캐시 키가 가리키는 위치에 결과 레코드 저장. 결과 영속화는 기본 꺼짐 | 실행 이벤트 로그 + I/O 매니저가 저장한 출력 |
-| 복구 단위 | 태스크 전체. 태스크 중간에 죽으면 태스크 처음부터(공식 가이드: 태스크를 DB 트랜잭션처럼 원자적, 멱등하게) | 플로우 함수를 다시 실행하되 캐시 히트한 태스크는 코드 실행 없이 Completed 상태로 처리 | 기본 `FROM_FAILURE`. 성공한 op(Dagster의 태스크 단위)은 건너뛰고 출력 재사용. 이전 실행의 출력을 읽을 수 있는 I/O 매니저 필요(S3는 가능, K8s의 파일시스템 매니저는 불가) |
-| 크래시 처리 | 좀비 태스크를 주기적으로 회수해 실패 처리 또는 재시도. 스케줄러가 재시작하면 주인 없는 태스크를 다시 맡음. Celery 실행기에서 이중 큐잉이 보고된 이슈 있음(공식 보장 문서는 아님, 최소 1회로 봐야 함) | Crashed 상태로 표시하고 응답이 끊긴 실행은 좀비 플로우 실행으로 분류. UI 재시도 또는 CLI의 flow run resume 명령 | 실행 재시도 정책 |
+| 복구 단위 | 태스크 전체. 태스크 중간에 죽으면 태스크 처음부터(공식 가이드: 태스크를 DB 트랜잭션처럼 원자적, 멱등하게) | 플로우 함수를 다시 실행하되 캐시 히트한 태스크는 코드 실행 없이 Cached 상태(Completed의 하위 상태)로 처리 | 기본 `FROM_FAILURE`. 성공한 op(Dagster의 태스크 단위)은 건너뛰고 출력 재사용. 이전 실행의 출력을 읽을 수 있는 I/O 매니저 필요(S3는 가능, K8s의 파일시스템 매니저는 불가) |
+| 크래시 처리 | 좀비 태스크를 주기적으로 회수해 실패 처리 또는 재시도. 스케줄러가 재시작하면 주인 없는 태스크를 다시 맡음. Celery 실행기에서 이중 큐잉이 보고된 이슈 있음(공식 보장 문서는 아님, 최소 1회로 봐야 함) | Crashed 상태로 표시하고 응답이 끊긴 실행은 좀비 플로우 실행으로 분류. UI에서 재시도(Retry) | 실행 재시도 정책 |
 | 긴 대기 | Deferrable 오퍼레이터가 triggerer로 이동해 워커 슬롯 반납. 단 로컬 변수, self 속성은 보존되지 않고 새 인스턴스로 재개. 직렬화 가능한 kwargs를 직접 넘겨야 함 | `pause_flow_run`, `suspend_flow_run`, `resume_flow_run`. 타입 지정 폼으로 사람 입력 | 센서 |
 | 에이전트 이야기 | Apache 공식 common AI provider 패키지(2026년 4월 발표, 0.x). `@task.agent`에 `durable=True`를 주면 실행 중 모델 응답과 도구 결과를 ObjectStorage에 캐시해 재시도 시 재지불 없음. Astronomer의 기존 Airflow AI SDK 저장소는 아카이브 | 에이전트용 오케스트레이터를 표방. 사전 컴파일 그래프 없음, 캐시된 LLM 응답 재사용. Pydantic AI `PrefectDurability`로 모델 요청, 도구 호출, MCP 통신을 Prefect 태스크로 | AI/ML 파이프라인 오케스트레이션 포지션. 에이전트 런타임 아님 |
 | 참고 | 2.x 문서: 유한 배치 워크플로우용, 무한 실행 이벤트 워크플로우용이 아님. 3.x는 Asset Watcher, REST push로 이벤트 기반 트리거 보강 | Prefect가 2026년 7월 Dagster Labs 인수 발표. 양쪽 제품 독립 유지 | Prefect 산하 |
@@ -214,7 +214,7 @@ Temporal의 LangGraph 플러그인 문서가 이 차이를 명확히 정리함. 
 | 조합 | 형태 | 체크포인터 처리 | 출처 |
 |---|---|---|---|
 | Temporal + LangGraph | `temporalio[langgraph]` 플러그인(temporalio 1.27+). 노드별 `execute_in`으로 Activity 여부 지정 | `InMemorySaver` 사용. Temporal이 내구성 담당 | Temporal 공식 문서 |
-| Temporal + OpenAI Agents SDK | `OpenAIAgentsPlugin`, `TemporalOpenAIRunner`. 루프는 Workflow, 모델 호출은 Activity | SDK Session은 대화 기억용으로 그대로 사용 | Temporal 문서, 2026년 3월 GA |
+| Temporal + OpenAI Agents SDK | `OpenAIAgentsPlugin`(Python. TypeScript는 `TemporalOpenAIRunner`). 루프는 Workflow, 모델 호출은 Activity | SDK Session(SQLiteSession)은 미지원. 대화 기록은 Workflow 상태에 두고 매 턴 `to_input_list()`로 재구성 | Temporal 문서, 2026년 3월 GA |
 | DBOS + LangGraph | 도구, 진입점을 `@DBOS.workflow`로, LangGraph `PostgresSaver`를 같은 Postgres에 | 병용. 그래프 상태는 PostgresSaver, 실행 내구성은 DBOS | DBOS 예제, 블로그 |
 | DBOS + OpenAI Agents SDK | `DBOSRunner.run`이 `Runner` 대체. 도구, 가드레일에 `@DBOS.step` | 해당 없음 | DBOS 문서 |
 | Restate + Vercel AI SDK / OpenAI Agents / ADK / Pydantic AI | `durableCalls()` 미들웨어 등으로 모델 호출을 저널 스텝화 | 해당 없음 | Restate 문서 |
@@ -309,7 +309,7 @@ LiteLLM Router 기준(배포는 LiteLLM에서 모델 하나를 가리키는 라�
 | 도구 | 체크포인트 방식 |
 |---|---|
 | Anthropic Message Batches | 배치당 최대 100,000건 또는 256MB. 요청별 독립 처리. 요청별 결과 상태는 `succeeded`, `errored`, `canceled`, `expired`. 24시간 내 미완료 시 만료(미과금). 결과 순서가 입력과 다를 수 있어 `custom_id`로 매칭. 결과 29일 보관 |
-| Ray Data 체크포인트 | `id_column`과 체크포인트 경로를 지정하면 재실행 시 처리된 레코드를 건너뜀. 단 Anyscale 런타임 기능이며 OSS Ray Data는 태스크 재시도만 지원. 대상은 읽기로 시작해 쓰기로 끝나는 map 계열 파이프라인뿐. 셔플, 조인, 집계는 불가. 일부 재시도에서 중복 출력이 나는 알려진 이슈가 있어 뒷단 처리에서 멱등성을 보장해야 함 |
+| Ray Data 체크포인트 | `id_column`과 체크포인트 경로를 지정하면 재실행 시 처리된 레코드를 건너뜀. Anyscale 런타임에서 먼저 제공됐고 2026년 1월부터 오픈소스 Ray Data에도 `CheckpointConfig`로 포함(Anyscale 문서 일부는 아직 OSS 미지원으로 표기). 대상은 읽기로 시작해 쓰기로 끝나는 map 계열 파이프라인뿐. 셔플, 조인, 집계는 불가. 일부 재시도에서 중복 출력이 나는 알려진 이슈가 있어 뒷단 처리에서 멱등성을 보장해야 함 |
 | Airflow, Prefect | 100만 프롬프트를 샤드로 나눠 샤드 하나를 태스크로. 실패한 샤드만 재실행. Airflow AI provider의 `@task.agent`는 태스크 안에서도 모델 응답을 캐시 |
 
 ---
