@@ -14,9 +14,9 @@ tags:
 description: "AgentCore Memory 세밀 접근 제어(2026년 8월)와 AWS Agent Registry GA(2026년 8월 31일)를 계기로 Identity, Gateway, Policy, Memory 접근 제어, Registry 다섯 구성 요소의 역할, 동작 흐름, 서울 지원, 요금, 도입 순서와 Azure, GCP 대응을 정리"
 ---
 
-# AgentCore 거버넌스 레이어 정리
+# AgentCore Memory 접근 제어와 AWS Agent Registry 정리
 
-누가(Identity), 어디로(Gateway), 무엇을(Policy), 누구의 기억을(Memory 접근 제어), 무엇이 존재하는지(Registry)를 한 표로 정리
+AgentCore Memory 세밀 접근 제어(2026년 8월 28일)와 AWS Agent Registry GA(2026년 8월 31일)로 AgentCore 거버넌스 레이어 정리
 
 <!-- more -->
 
