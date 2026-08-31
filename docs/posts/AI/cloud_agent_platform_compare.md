@@ -70,10 +70,10 @@ AWS, Azure, GCP가 각각 내놓은 오픈소스 에이전트 프레임워크와
 
 | 항목 | AgentCore Runtime | Foundry Hosted agents | Agent Runtime |
 |---|---|---|---|
-| GA | 2025년 10월 13일(9개 리전, 서울은 이후 추가) | 차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents는 2026년 6월 Build 전후 GA(3월 GA 발표 시점에는 프리뷰) | Agent Runtime GA 2026년 4월 22일(동시에 개명, 7일 장기 실행과 BYOC 추가) |
+| GA | 2025년 10월 13일(9개 리전, 서울은 이후 추가) | 차세대 Foundry Agent Service GA 2026년 3월 16일, Hosted agents는 2026년 7월 초 GA(Build 2026에서 30일 내 GA 예고, 3월 시점에는 프리뷰) | Agent Runtime GA 2026년 4월 22일(동시에 개명, 7일 장기 실행과 BYOC 추가) |
 | 격리 단위 | 세션당 전용 microVM. 종료 시 메모리 삭제 | 세션당 VM 격리 샌드박스. 영속 홈 디렉터리 | 컨테이너 기반. 호출자가 세션 ID 지정 |
 | 세션 수명 | 최대 8시간(유휴 15분 정지 후 재개는 새 컴퓨트). Runtime Instances는 14일 | 유휴 5~60분(기본 15분) 후 scale to zero, 상태 보존 재개. 30일 미사용 시 삭제. 총 실행 시간 한도는 문서에 없음 | 장기 실행 작업 최대 7일. 1초 미만 콜드 스타트 |
-| 프레임워크 무관 | 예. 공식 목록은 Strands, LangGraph, OpenAI Agents, LlamaIndex, Google ADK, Claude Agent SDK. 그 외 커스텀 컨테이너 | 예. MAF, LangGraph, OpenAI Agents SDK, Claude Agent SDK(문서 표기는 Anthropic Agent SDK), GitHub Copilot SDK, Semantic Kernel, 커스텀(Python, C#) | 예. ADK, LangChain, LangGraph, LlamaIndex, AG2, A2A 에이전트, 커스텀 컨테이너 |
+| 프레임워크 무관 | 예. 공식 목록은 Strands, LangGraph, OpenAI Agents SDK, LlamaIndex, Google ADK, Claude Agent SDK(다른 문서에는 CrewAI도 포함). 그 외 커스텀 컨테이너 | 예. MAF, LangGraph, OpenAI Agents SDK, Claude Agent SDK(문서 표기는 Anthropic Agent SDK), GitHub Copilot SDK, Semantic Kernel, 커스텀(Python, C#) | 예. ADK, LangChain, LangGraph, LlamaIndex, AG2, A2A 에이전트, 커스텀 컨테이너 |
 | 선언형 대안 | AgentCore Harness(2026년 6월 GA, 설정형) | Prompt agents(지시문 + 모델 + 도구, 인프라 없음) | Agent Studio(Gemini Enterprise 앱 쪽은 Agent Designer) |
 | 프로토콜 | HTTP, MCP, A2A, AG UI 네 가지를 네이티브 지원 | Responses, Invocations(JSON, WebSocket), Activity(Teams), A2A(프리뷰) | Agent Registry가 A2A v1.0과 0.3 지원, 원격 MCP 서버 GA |
 | 컴퓨트 요금 | vCPU 시간당 $0.0895 + GB 시간당 $0.00945, 초 단위, 유휴와 I/O 대기 무료 | Korea Central 기준 vCPU 시간당 $0.109 + GiB 시간당 $0.013(East US $0.099 + $0.012) | vCPU 시간당 $0.085 + GiB 시간당 $0.009, 턴 사이 유휴 무과금. 월 50 vCPU 시간과 100 GiB 시간 무료 |
@@ -92,13 +92,13 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 | 구성 요소 | AWS AgentCore | Microsoft Foundry | GCP Agent Platform |
 |---|---|---|---|
 | 런타임 | Runtime microVM GA. Runtime Instances(EC2 기반, GPU 가능) 2026년 8월 6일 GA | Hosted agents GA | Agent Runtime GA |
-| 메모리 | Memory GA. 단기 이벤트 저장과 전략 기반 장기 메모리 | Memory 공개 프리뷰(단기 세션 메모리와 장기 요약 메모리) | Memory Bank GA. 글로벌과 멀티리전 엔드포인트 2026년 6월 17일, 메모리 프로필 2026년 7월 15일 |
+| 메모리 | Memory GA. 단기 이벤트 저장과 전략 기반 장기 메모리 | Memory 공개 프리뷰(사용자, 세션, 절차 메모리 세 종류) | Memory Bank GA. 글로벌과 멀티리전 엔드포인트 2026년 6월 17일, 메모리 프로필 2026년 7월 15일 |
 | 도구 게이트웨이 | Gateway GA. REST, OpenAPI, Lambda를 MCP 도구로 변환. 외부 MCP 서버와 A2A 에이전트는 패스스루 타깃으로 연결 | Toolbox GA. 도구를 한 번 등록해 관리형 MCP 엔드포인트로 노출. 도구 검색과 Skills 프리뷰 | Agent Gateway GA(2026년 6월 18일). 사용자, 에이전트, 도구 사이 정책 집행점. 별도로 Apigee, MCP Toolbox for Databases(베타) |
 | 아이덴티티 | Identity GA. 워크로드 아이덴티티, 토큰 볼트, OBO 교환(2026년 4월) | Entra Agent ID GA. 배포 시 에이전트별 Entra 아이덴티티 자동 생성. Agent 365 레지스트리(2026년 5월 GA, 사용자당 월 $15) | Agent Identity GA(2026년 4월 22일). 에이전트 자신 또는 사용자를 대신해 인증 |
 | 정책과 가드레일 | Policy GA(2026년 3월 3일). 자연어를 Cedar로 컴파일해 Gateway에서 도구 호출 차단. Guardrails 결합(2026년 6월), 시간 기반 정책과 속도 제한(2026년 8월). Bedrock Guardrails는 모델과 독립된 ApplyGuardrail API | Foundry Guardrails GA(Content Safety, Prompt Shields). 에이전트 가드레일과 도구 호출 개입은 프리뷰 | Model Armor GA(Gateway 결합 2026년 6월). Semantic Governance Policies 공개 프리뷰. IAM 거버넌스 정책 비공개 프리뷰 |
-| 평가 | Evaluations GA(2026년 3월 31일). 내장 평가자 13종, 온라인과 온디맨드. optimization, A/B 테스트 | Foundry evaluations GA(2026년 3월 16일). 지속 평가, Agent optimizer 프리뷰 | Gen AI evals(기능별 GA와 프리뷰 혼재). 오프라인 평가, 온라인 모니터, 시뮬레이션, 실패 군집화 |
+| 평가 | Evaluations GA(2026년 3월 31일). 내장 평가자 13종, 온라인과 온디맨드. Optimization(프리뷰)에서 Gateway 트래픽 분할로 A/B 테스트 | Foundry evaluations GA(2026년 3월 16일). 지속 평가, Agent optimizer 프리뷰 | Gen AI evals(기능별 GA와 프리뷰 혼재). 오프라인 평가, 온라인 모니터, 시뮬레이션, 실패 군집화 |
 | 관측성 | Observability GA. CloudWatch 기반 | Application Insights 자동 주입, OpenTelemetry, 에이전트 추적과 대시보드 GA | Agent Observability GA(2026년 6월 18일). 2026년 6월 18일 이후 Agent Runtime에 새로 배포한 ADK 에이전트는 OTel 기본 활성 |
-| 레지스트리 | AWS Agent Registry(서울 미지원) | Agent 365와 Entra Agent ID | Agent Registry GA(2026년 6월 18일). 에이전트, 도구, MCP 서버 카탈로그 |
+| 레지스트리 | AWS Agent Registry 프리뷰(서울 미지원) | Agent 365와 Entra Agent ID | Agent Registry GA(2026년 6월 18일). 에이전트, 도구, MCP 서버 카탈로그 |
 | 내장 도구 | Browser, Code Interpreter GA(Runtime과 같은 요금). Web Search Tool(서울 미지원) | Code Interpreter GA, Browser Automation Tool 프리뷰, Web Search, Bing grounding, Computer Use(Korea Central 미지원) | Code Execution(미국 중부 us central1 리전만), Computer Use(2026년 5월), Google Search grounding |
 | 결제 | Payments 프리뷰(x402, MPP). 서울 미지원 | 해당 없음 | AP2 프로토콜 주도. 플랫폼 내장 결제 기능은 없음 |
 
@@ -128,12 +128,12 @@ AgentCore 구성 요소를 기준으로 Azure와 GCP의 대응 제품과 상태�
 
 | 항목 | AWS Bedrock | Microsoft Foundry | GCP Model Garden |
 |---|---|---|---|
-| 자사 모델 | Amazon Nova 2 계열 | MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 실사용 주력은 Azure OpenAI의 GPT 5.x | Gemini 3.x 계열, Gemini Embedding 2 |
-| Claude | Opus 5, Sonnet 5, Fable 5, Sonnet 4.6 | 2026년 7월 GA. Azure 호스팅 기준 Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5(Anthropic 인프라에서 호스팅되는 경로로 Fable 5 등 추가) | Sonnet 5, Opus 5, Fable 5, Opus 4.8 등 |
+| 자사 모델 | Amazon Nova 2 계열(Pro, Lite, Omni, Sonic) | MAI 계열(MAI Thinking 1, MAI Image 2.5, MAI Voice, MAI Transcribe)과 Phi. 실사용 주력은 Azure OpenAI in Foundry Models의 GPT 5.x | Gemini 3.x 계열, Gemini Embedding 2 |
+| Claude | Opus 5, Sonnet 5, Fable 5, Sonnet 4.6 | 2026년 6월 GA. Azure 호스팅 기준 Opus 5, Opus 4.8, Sonnet 5, Haiku 4.5(Anthropic 인프라에서 호스팅되는 경로로 Fable 5 등 추가) | Sonnet 5, Opus 5, Fable 5, Opus 4.8 등 |
 | 오픈 모델 | Llama, Mistral, DeepSeek, gpt oss(서울 여부 미확인) | Llama 3.3과 4, Mistral, DeepSeek V3.x와 R1, Grok 4, gpt oss | Llama 4, Mistral Medium 3, Grok 4.20, gpt oss, Qwen3, GLM, DeepSeek |
-| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지역 단위 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국에서 계약한 Enterprise 구독은 지원 대상에서 제외된다고 문서에 명시 | 서울은 서빙 리전 목록에 있으나 모델별 지원 표는 동적으로 그려져 문서만으로는 확인 불가. 글로벌 또는 us 엔드포인트 사용이 일반적 |
+| 서울에서의 접근 방식 | 리전 내 온디맨드 목록에 현행 모델 없음. Nova는 APAC 지역 단위 교차 리전 추론, Claude는 글로벌 교차 리전 추론 프로필로 접근 | GPT 5.x는 글로벌 배포 미터가 Korea Central에 존재. Claude 배포 리전은 미국 여러 리전과 Sweden Central뿐이라 Korea Central 불가. 한국에서 계약한 Enterprise 구독은 지원 대상에서 제외된다고 문서에 명시 | Gemini 2.5, 3.5, 3.6, 3.7 Flash 계열은 서울 리전 엔드포인트로 직접 호출 가능. Claude 등 파트너 모델은 모델별 리전 표 확인 필요 |
 
-AWS와 GCP는 서울에서 프론티어 모델을 쓰려면 교차 리전 또는 글로벌 엔드포인트 사용을 전제로 데이터 상주 요건을 검토해야 하고, Azure는 Claude처럼 Korea Central에서 아예 배포할 수 없는 모델이 있음. 리전 내 추론이 필수인 워크로드는 모델 선택지가 크게 줄어듦
+AWS는 서울에서 프론티어 모델을 쓰려면 교차 리전 또는 글로벌 추론 프로필 사용을 전제로 데이터 상주 요건을 검토해야 하고, GCP는 Gemini는 서울 리전 내 호출이 되지만 파트너 모델은 별도 확인이 필요하며, Azure는 Claude처럼 Korea Central에서 아예 배포할 수 없는 모델이 있음. 리전 내 추론이 필수인 워크로드는 모델 선택지가 크게 줄어듦
 
 ---
 
@@ -144,7 +144,7 @@ AWS와 GCP는 서울에서 프론티어 모델을 쓰려면 교차 리전 또는
 | MCP | 에이전트와 도구, 데이터 연결 | 사실상 표준 | AWS AgentCore Gateway가 MCP 허브, awslabs mcp 저장소에 서버 62개. Azure Toolbox가 관리형 MCP 엔드포인트. GCP 원격 MCP 서버 GA와 MCP Toolbox for Databases |
 | A2A | 에이전트와 에이전트 연결 | Google이 2025년 4월 9일 공개, 2025년 6월 23일 Linux Foundation 기부(창립 멤버는 AWS, Cisco, Google, Microsoft, Salesforce, SAP, ServiceNow). v1.0은 2026년 3월 12일, 서명된 Agent Card 도입. 150개 이상 조직 참여 | AWS AgentCore Runtime 네이티브(포트 9000, Agent Card). Azure Foundry와 Copilot Studio 통합(Hosted agents는 프리뷰). GCP Agent Registry가 v1.0 지원 |
 | AG UI | 에이전트와 프론트엔드 연결 | CopilotKit 주도 | AWS AgentCore Runtime 네이티브(2026년 3월). Azure, GCP는 프레임워크 레이어 |
-| AP2 | 에이전트 결제 | Google이 2025년 9월 공개(당시 파트너 60여 곳), 이후 FIDO Alliance로 거버넌스 이관 | Google이 사양 주도, AWS는 AgentCore Payments에서 x402와 MPP 지원, Azure는 해당 없음 |
+| AP2 | 에이전트 결제 | Google이 2025년 9월 공개(당시 파트너 60여 곳), 2026년 4월 29일 FIDO Alliance에 기부 | Google이 사양 주도, AWS는 AgentCore Payments에서 x402와 MPP 지원, Azure는 해당 없음 |
 
 MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A는 Azure만 프리뷰 단계라 프로토콜의 변별력은 크게 줄어듦
 
@@ -174,7 +174,7 @@ MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A
 | 프레임워크 안에서 내구 실행이 필요 | MAF와 Durable Task Scheduler | 상태 변화마다 체크포인트, 대기 비용 0. 세 프레임워크 중 유일하게 자사 제공 내구 실행 엔진 |
 | Gemini 중심, 무료 구간으로 시작 | ADK와 Agent Runtime | 월 50 vCPU 시간 무료, 7일 장기 실행, 1초 미만 콜드 스타트. 단 서울에서 Gateway와 Code Execution 없음 |
 | 멀티 클라우드 또는 종속 회피 | LangGraph처럼 3사 런타임이 모두 명시 지원하는 프레임워크와 각 런타임 | 세 런타임 모두 프레임워크 무관. 런타임 계약(진입점, 프로토콜, 패키징)만 맞추면 이식 가능 |
-| 리전 내 모델 추론이 규제상 필수 | 3사 공통으로 요건 재검토 필요 | 서울에서 프론티어 모델은 교차 리전 또는 글로벌 엔드포인트가 전제 |
+| 리전 내 모델 추론이 규제상 필수 | 3사 공통으로 요건 재검토 필요 | AWS는 교차 리전 추론이 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini만 서울 리전 내 호출 가능 |
 | 코드 작성 없이 선언형으로 시작 | AgentCore Harness, Foundry Prompt agents, Agent Designer | 세 곳 모두 선언형 경로 제공. 커스텀 오케스트레이션이 필요해지면 코드 배포로 전환 |
 
 ---
@@ -185,7 +185,7 @@ MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A
 - 프레임워크 차이는 실행 모델. Strands는 모델 주도 루프, MAF는 루프와 그래프 두 갈래에 자사 내구 실행 엔진을 결합, ADK는 2.0부터 그래프 엔진
 - 런타임 컴퓨트 단가는 vCPU 시간당 $0.085~$0.109로 비슷. 세션 수명(AWS 8시간, Azure 유휴 기준, GCP 7일), 무료 구간, 서울 지원 범위가 실질적 차이
 - 서울에는 3사 모두 런타임과 메모리가 있고 2026년 신규 기능이 빠짐. AWS는 Instances, payments, Registry, Web Search. Azure는 Computer Use. GCP는 Gateway, Code Execution
-- 프론티어 모델은 AWS와 GCP는 서울에서 교차 리전 또는 글로벌 엔드포인트 전제, Azure는 모델에 따라 Korea Central 배포 불가. 데이터 상주 요건이 있으면 모델 선택을 먼저 확정해야 함
+- 프론티어 모델은 AWS는 서울에서 교차 리전 추론 전제, Azure는 모델에 따라 Korea Central 배포 불가, GCP는 Gemini만 서울 리전 내 호출 가능. 데이터 상주 요건이 있으면 모델 선택을 먼저 확정해야 함
 - MCP는 3사 공통 GA, A2A는 Azure만 프리뷰. 프로토콜은 더 이상 주요 선택 기준이 아님
 - 검색 관심은 여전히 LangChain과 LangGraph에 있음
 
@@ -194,4 +194,4 @@ MCP와 A2A는 경쟁이 아니라 보완 관계. MCP는 3사 공통 GA이고 A2A
 - AWS: [AgentCore 리전](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-regions.html), [릴리스 노트](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/release-notes.html), [Runtime 세션](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html), [Runtime 서비스 계약](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-service-contract.html), [요금](https://aws.amazon.com/bedrock/agentcore/pricing/), [GA 공지](https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-bedrock-agentcore-available/), [Policy GA](https://aws.amazon.com/about-aws/whats-new/2026/03/policy-amazon-bedrock-agentcore-generally-available/), [Evaluations GA](https://aws.amazon.com/about-aws/whats-new/2026/03/agentcore-evaluations-generally-available/), [Harness GA](https://aws.amazon.com/about-aws/whats-new/2026/06/amazon-bedrock-agentcore-harness-generally-available/), [Bedrock 모델 리전 호환](https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html), [AgentCore 지원 프레임워크](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/supported-frameworks.html), [.NET 에이전트를 AgentCore에 배포](https://aws.amazon.com/blogs/developer/building-and-deploying-net-ai-agents-with-amazon-bedrock-agentcore/), [Quick Suite 리전](https://docs.aws.amazon.com/quicksuite/latest/userguide/regions.html), [Strands 저장소](https://github.com/strands-agents/harness-sdk), [Strands 배포 가이드](https://strandsagents.com/docs/user-guide/deploy/operating-agents-in-production/), [Strands A2A](https://strandsagents.com/docs/user-guide/concepts/multi-agent/agent-to-agent/), [Quick Suite 공지](https://aws.amazon.com/about-aws/whats-new/2025/10/amazon-quick-suite-agentic-ai-powered-workspace/), [Q Developer 지원 종료](https://aws.amazon.com/blogs/devops/amazon-q-developer-end-of-support-announcement/), [awslabs mcp](https://github.com/awslabs/mcp)
 - Azure: [MAF 1.0 발표](https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-version-1-0/), [MAF 개요](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview), [MAF Build 2026](https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/), [Durable agents](https://learn.microsoft.com/en-us/azure/durable-task/sdks/durable-agents-microsoft-agent-framework), [Foundry Agent Service GA](https://devblogs.microsoft.com/foundry/foundry-agent-service-ga/), [Agent Service 개요](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview), [Hosted agents](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/hosted-agents), [한도와 리전](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/limits-quotas-regions), [Toolbox](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview), [Guardrails](https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview), [Claude in Foundry](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/claude-models), [Durable Task Scheduler 과금](https://learn.microsoft.com/en-us/azure/durable-task/scheduler/durable-task-scheduler-billing), [Agent 요금](https://azure.microsoft.com/en-us/pricing/details/foundry-agent-service/), [Copilot Studio vs Foundry](https://techcommunity.microsoft.com/blog/microsoft-security-blog/microsoft-copilot-studio-vs-microsoft-foundry-building-ai-agents-and-apps/4483160)
 - GCP: [Vertex AI 명칭 변경](https://docs.cloud.google.com/gemini-enterprise-agent-platform/vertex-ai-name-changes), [Agent Platform 릴리스 노트](https://docs.cloud.google.com/gemini-enterprise-agent-platform/release-notes), [에이전트 리전](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/agent-locations), [요금](https://cloud.google.com/vertex-ai/pricing), [Agent Platform 소개](https://cloud.google.com/blog/products/ai-machine-learning/introducing-gemini-enterprise-agent-platform), [ADK 2.0](https://adk.dev/2.0/), [ADK 릴리스 노트](https://adk.dev/release-notes/), [ADK 재개](https://adk.dev/runtime/resume/), [ADK Tool Confirmation](https://adk.dev/tools-custom/confirmation/), [ADK A2A](https://adk.dev/a2a/), [ADK 배포](https://adk.dev/deploy/), [Model Armor 리전](https://docs.cloud.google.com/model-armor/locations), [모델 리전](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/locations), [Gemini Enterprise](https://cloud.google.com/gemini-enterprise)
-- 프로토콜: [A2A Linux Foundation 기부](https://developers.googleblog.com/en/google-cloud-donates-a2a-to-linux-foundation/), [A2A 150개 조직](https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year), [A2A 릴리스](https://github.com/a2aproject/A2A/releases), [AG UI](https://github.com/ag-ui-protocol/ag-ui)
+- 프로토콜: [A2A Linux Foundation 기부](https://developers.googleblog.com/en/google-cloud-donates-a2a-to-linux-foundation/), [A2A 150개 조직](https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year), [A2A 릴리스](https://github.com/a2aproject/A2A/releases), [AG UI](https://github.com/ag-ui-protocol/ag-ui), [AP2 FIDO Alliance 기부](https://fidoalliance.org/google-donates-agent-payments-protocol-to-fido-alliance/), [Foundry Claude GA(2026년 6월 소식)](https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-june-2026/)
