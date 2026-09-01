@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 date: 2026-09-01
 authors:
   - dotoryeee
@@ -41,7 +41,7 @@ Memory 세밀 접근 제어는 기존 구성 요소(Gateway, Policy)를 연결�
 |---|---|---|---|---|---|
 | 누가 호출하나 | AgentCore Identity | 에이전트를 워크로드 아이덴티티로 다룸. 인바운드 인증은 JWT 또는 IAM SigV4(AWS 요청 서명 방식). 아웃바운드는 OAuth 2LO/3LO(서비스 계정 방식과 사용자 동의 방식) 자격 증명과 API 키를 토큰 볼트에 보관. OBO(On Behalf Of, 사용자 대신 호출) 토큰 교환은 2026년 4월, Secrets Manager 연동은 2026년 6월 추가 | 2025년 10월 13일 GA | 지원 | 비 AWS 리소스 대상 1,000 요청당 $0.010. Runtime이나 Gateway 경유 시 무료 |
 | 어디로 나가나 | AgentCore Gateway | REST, OpenAPI, Lambda를 MCP 도구로 변환하고 외부 MCP 서버와 A2A 에이전트를 패스스루로 연결. 도구 호출을 Gateway로 모으면 정책 집행 지점이 한 곳으로 모임 | 2025년 10월 13일 GA | 지원 | 1,000 호출당 $0.005. 검색 API 1,000건당 $0.025. 도구 인덱싱 100개당 월 $0.02 |
-| 무엇을 해도 되나 | Policy in AgentCore | 자연어로 쓴 정책을 Cedar(AWS 오픈소스 정책 언어)로 컴파일해 정책 엔진에 저장. Gateway에 붙여 도구 호출마다 허용 여부 평가. 기본 거부, forbid가 permit보다 우선. Guardrails 결합(2026년 6월), 세션 이력 기반 정책(temporal policy)과 속도 제한(2026년 8월) | 2026년 3월 3일 GA(프리뷰 2025년 12월) | 지원 | 인가 요청당 $0.000025(엔진당 세션 이력 기반 정책 100개까지는 인가 요금 무료). 자연어 정책 작성 1,000 토큰당 $0.13 |
+| 무엇을 해도 되나 | Policy in AgentCore | 자연어로 쓴 정책을 Cedar(AWS 오픈소스 정책 언어)로 변환해 정책 엔진에 저장(세션 이력 기반 정책은 Cedar 호환 언어 Dogwood로 작성). Gateway에 붙여 도구 호출마다 허용 여부 평가. 기본 거부, forbid가 permit보다 우선. Guardrails 결합(2026년 6월), 세션 이력 기반 정책(temporal policy)과 속도 제한(2026년 8월) | 2026년 3월 3일 GA(프리뷰 2025년 12월) | 지원 | 인가 요청당 $0.000025(엔진당 세션 이력 기반 정책 100개까지는 인가 요금 무료). 자연어 정책 작성 1,000 토큰당 $0.13 |
 | 누구의 기억에 접근하나 | Memory 세밀 접근 제어 | Memory 앞에 Gateway를 두고 Memory 커넥터로 12개 Memory 연산을 Cedar 액션으로 노출. JWT 클레임으로 정한 actorId와 네임스페이스 안으로 접근 범위 제한 | 2026년 8월 28일 발표 | 구성 요소(Memory, Gateway, Policy)는 모두 서울 지원. 기능 전용 리전 표기는 문서에 없음 | 별도 요금 없음. Memory, Gateway, Policy 기존 요금 적용 |
 | 무엇이 존재하나 | AWS Agent Registry | 에이전트, 도구, 스킬, MCP 서버, 커스텀 리소스의 프라이빗 카탈로그. 검색, 승인 워크플로우, 자동 탐지, 크로스 계정 공유 | 2026년 8월 31일 GA | 미지원(버지니아 북부, 오레곤, 아일랜드, 도쿄, 시드니만 지원) | 월 5,000 레코드 무료, 이후 1,000건당 $0.40. 검색 API 월 100만 건 무료, 이후 1,000건당 $0.02. List와 Get 월 200만 건 무료, 이후 1,000건당 $0.004 |
 
@@ -95,7 +95,7 @@ sequenceDiagram
 | 라이프사이클 | DRAFT → PENDING_APPROVAL → APPROVED 또는 REJECTED → DEPRECATED. 자동 승인 플래그, EventBridge로 보안 스캔이나 중복 검사 같은 승인 자동화, 검토와 승인을 맡는 Curator 역할 |
 | 자동 탐지 | 연결한 계정과 OU(AWS Organizations 조직 단위)의 AgentCore Runtime 에이전트와 Gateway 리소스를 자동 탐지해 Detected Endpoints 화면에 DRAFT 레코드로 표시. 에이전트를 만든 팀이 직접 등록하지 않아도 새 배포가 목록에 나타남 |
 | 통합 | Amazon Bedrock AgentCore, Amazon Quick(Quick Suite. 승인된 리소스가 Integrations 화면에 노출), Kiro IDE, 콘솔, CLI, SDK, PrivateLink, IAM Identity Center |
-| 거버넌스 | CloudTrail 감사 추적, 태그 기반 분류와 비용 할당, 커스텀 메타데이터 스키마(비용 센터, 데이터 등급, SLA 등) |
+| 거버넌스 | CloudTrail 감사 추적, 태그 기반 분류와 비용 할당, 커스텀 메타데이터 스키마(비용 센터, 데이터 등급, SLA 등. 블로그는 이 중 일부를 로드맵 기능으로 표시) |
 | 멀티 계정 | AWS RAM(Resource Access Manager)으로 계정 간 공유. 조직 전체 레지스트리 하나 또는 규제, 사업부, 데이터 상주 기준으로 여러 인스턴스 |
 | IaC(Infrastructure as Code) | CloudFormation, Terraform, CDK |
 | 리전 | 버지니아 북부, 오레곤, 아일랜드, 도쿄, 시드니. 서울 미지원 |
@@ -110,12 +110,12 @@ Registry가 없을 때 흔한 상황. 같은 사내 API를 감싼 MCP 서버가 
 | 역할 | AWS | Azure(Microsoft Foundry) | GCP(Gemini Enterprise Agent Platform) |
 |---|---|---|---|
 | 아이덴티티 | AgentCore Identity | Entra Agent ID. 배포 시 에이전트별 Entra 아이덴티티 자동 생성 | Agent Identity(2026년 4월 GA) |
-| 도구 관문 | AgentCore Gateway | Toolbox(관리형 MCP 엔드포인트, GA) | Agent Gateway(2026년 6월 GA, 서울 미지원) |
+| 도구 관문 | AgentCore Gateway | Toolbox(관리형 MCP 엔드포인트. 인증과 버전 관리 중앙화, 도구 검색 등 일부 기능은 프리뷰) | Agent Gateway(2026년 6월 GA, 서울 미지원) |
 | 정책 | Policy in AgentCore(Cedar) | Foundry Guardrails(에이전트 가드레일과 도구 호출 개입은 프리뷰) | Model Armor(Agent Gateway 연동 GA), Semantic Governance Policies(공개 프리뷰), IAM 거버넌스 정책(비공개 프리뷰) |
-| 메모리 접근 제어 | Memory FGAC(Gateway + Cedar) | Memory는 공개 프리뷰. 메모리 전용 세밀 접근 제어는 확인되지 않음 | Memory Bank에 IAM Conditions로 세션, 메모리 단위 접근 제어 |
+| 메모리 접근 제어 | Memory FGAC(Gateway + Cedar) | Memory는 공개 프리뷰. scope 파라미터로 사용자별 격리 제공(`{{$userId}}` 지정 시 토큰 클레임으로 자동 해석). 정책 언어 기반의 세밀 접근 제어는 없음 | Memory Bank에 IAM Conditions로 세션, 메모리 단위 접근 제어 |
 | 레지스트리 | AWS Agent Registry | Microsoft Agent 365(2026년 5월 GA) + Entra Agent ID 인벤토리 | Agent Registry(2026년 6월 GA, A2A v1.0과 0.3) |
 
-세 클라우드 모두 아이덴티티, 관문, 정책, 레지스트리 네 축은 갖췄고, 메모리 접근 제어를 도구 정책과 같은 Cedar 언어로 묶은 사례는 현재 AWS뿐. 리전 공백은 AWS가 Registry, GCP가 Agent Gateway에 있음
+세 클라우드 모두 아이덴티티, 관문, 정책, 레지스트리 네 축은 갖췄고, 메모리 접근 제어를 도구 정책과 같은 정책 언어로 묶은 곳은 AWS와 GCP. AWS는 Gateway의 Cedar 정책 엔진이 도구 호출과 Memory 연산을 함께 평가하고, GCP는 Agent Gateway와 Memory Bank를 IAM Conditions의 CEL 표현식으로 통제. Azure는 메모리 격리를 scope 파라미터로, 도구 통제를 Guardrails로 각각 처리. 리전 공백은 AWS가 Registry, GCP가 Agent Gateway에 있음
 
 ---
 
@@ -138,4 +138,4 @@ Registry가 없을 때 흔한 상황. 같은 사내 API를 감싼 MCP 서버가 
 - 12개 Memory 연산이 Cedar 액션으로 노출되며 배치 연산 3개는 제외. 대표 패턴은 actorId와 JWT sub 일치
 - AWS Agent Registry는 카탈로그에 자동 탐지와 승인 워크플로우를 더한 것. 미등록 에이전트를 발견해 DRAFT로 올리고 Curator가 승인하는 흐름
 - 서울 리전은 Identity, Gateway, Policy, Memory가 모두 지원되어 접근 제어 스택은 바로 쓸 수 있고, Registry만 5개 리전 한정
-- 도입은 Identity → Gateway → Policy → Memory 접근 제어 → Registry 순서. 관문을 우회하는 호출 경로가 남아 있으면 정책이 무의미해짐
+- 도입은 Identity → Gateway → Policy → Memory 접근 제어 → Registry 순서. AWS가 공개한 성숙도 경로(Connect, Control, Catalog, Harden)와 큰 틀에서 겹치고 Memory 접근 제어 단계를 더한 것. 관문을 우회하는 호출 경로가 남아 있으면 정책이 무의미해짐
