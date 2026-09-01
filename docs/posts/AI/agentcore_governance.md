@@ -41,11 +41,11 @@ Memory 세밀 접근 제어는 기존 구성 요소(Gateway, Policy)를 연결�
 |---|---|---|---|---|---|
 | 누가 호출하나 | AgentCore Identity | 에이전트를 워크로드 아이덴티티로 다룸. 인바운드 인증은 JWT 또는 IAM SigV4(AWS 요청 서명 방식). 아웃바운드는 OAuth 2LO/3LO(서비스 계정 방식과 사용자 동의 방식) 자격 증명과 API 키를 토큰 볼트에 보관. OBO(On Behalf Of, 사용자 대신 호출) 토큰 교환은 2026년 4월, Secrets Manager 연동은 2026년 6월 추가 | 2025년 10월 13일 GA | 지원 | 비 AWS 리소스 대상 1,000 요청당 $0.010. Runtime이나 Gateway 경유 시 무료 |
 | 어디로 나가나 | AgentCore Gateway | REST, OpenAPI, Lambda를 MCP 도구로 변환하고 외부 MCP 서버와 A2A 에이전트를 패스스루로 연결. 도구 호출을 Gateway로 모으면 정책 집행 지점이 한 곳으로 모임 | 2025년 10월 13일 GA | 지원 | 1,000 호출당 $0.005. 검색 API 1,000건당 $0.025. 도구 인덱싱 100개당 월 $0.02 |
-| 무엇을 해도 되나 | Policy in AgentCore | 자연어로 쓴 정책을 Cedar(AWS 오픈소스 정책 언어)로 컴파일해 정책 엔진에 저장. Gateway에 붙여 도구 호출마다 허용 여부 평가. 기본 거부, forbid가 permit보다 우선. Guardrails 결합(2026년 6월), 시간 기반 정책(2026년 8월) | 2026년 3월 3일 GA(프리뷰 2025년 12월) | 지원 | 인가 요청당 $0.000025(엔진당 시간 기반 정책 100개까지 무료). 자연어 정책 작성 1,000 토큰당 $0.13 |
+| 무엇을 해도 되나 | Policy in AgentCore | 자연어로 쓴 정책을 Cedar(AWS 오픈소스 정책 언어)로 컴파일해 정책 엔진에 저장. Gateway에 붙여 도구 호출마다 허용 여부 평가. 기본 거부, forbid가 permit보다 우선. Guardrails 결합(2026년 6월), 세션 이력 기반 정책(temporal policy)과 속도 제한(2026년 8월) | 2026년 3월 3일 GA(프리뷰 2025년 12월) | 지원 | 인가 요청당 $0.000025(엔진당 세션 이력 기반 정책 100개까지는 인가 요금 무료). 자연어 정책 작성 1,000 토큰당 $0.13 |
 | 누구의 기억에 접근하나 | Memory 세밀 접근 제어 | Memory 앞에 Gateway를 두고 Memory 커넥터로 12개 Memory 연산을 Cedar 액션으로 노출. JWT 클레임으로 정한 actorId와 네임스페이스 안으로 접근 범위 제한 | 2026년 8월 28일 발표 | 구성 요소(Memory, Gateway, Policy)는 모두 서울 지원. 기능 전용 리전 표기는 문서에 없음 | 별도 요금 없음. Memory, Gateway, Policy 기존 요금 적용 |
 | 무엇이 존재하나 | AWS Agent Registry | 에이전트, 도구, 스킬, MCP 서버, 커스텀 리소스의 프라이빗 카탈로그. 검색, 승인 워크플로우, 자동 탐지, 크로스 계정 공유 | 2026년 8월 31일 GA | 미지원(버지니아 북부, 오레곤, 아일랜드, 도쿄, 시드니만 지원) | 월 5,000 레코드 무료, 이후 1,000건당 $0.40. 검색 API 월 100만 건 무료, 이후 1,000건당 $0.02. List와 Get 월 200만 건 무료, 이후 1,000건당 $0.004 |
 
-Registry만 이름이 "Amazon Bedrock AgentCore"가 아니라 "AWS Agent Registry"이고 문서 공간도 별도. AgentCore와 깊게 통합돼 있지만 AgentCore 밖의 MCP 서버와 A2A 에이전트까지 담는 조직 단위 카탈로그에 해당
+Registry만 이름이 "Amazon Bedrock AgentCore"가 아니라 "AWS Agent Registry"이고 API 레퍼런스도 별도 네임스페이스에 있음(개발자 가이드는 AgentCore 가이드 안에 포함). AgentCore와 깊게 통합돼 있지만 AgentCore 밖의 MCP 서버와 A2A 에이전트까지 담는 조직 단위 카탈로그에 해당
 
 ---
 
@@ -82,7 +82,7 @@ sequenceDiagram
 | 적용 모드 | ENFORCE와 LOG_ONLY. LOG_ONLY로 먼저 돌려 차단될 요청을 확인한 뒤 ENFORCE로 전환 |
 | 애플리케이션 코드 영향 | 인가 로직을 코드에 넣지 않음. 코드로 작성하는 Gateway 요청 인터셉터와는 다른 경로 |
 
-멀티 테넌트 관점에서 정리하면 다음과 같음. 기존 방식은 에이전트 코드가 조회 범위를 스스로 제한했고, 프롬프트 인젝션으로 다른 actorId가 들어가면 코드 외에 막을 지점이 없었음. 모든 Memory 호출이 Gateway를 지나고 ENFORCE 모드라면, 에이전트가 다른 actorId를 넣어도 정책 단계에서 차단됨
+멀티 테넌트 관점에서 정리하면 다음과 같음. 기존 방식은 에이전트 코드가 요청마다 올바른 actorId와 네임스페이스를 넣어 조회 범위를 스스로 제한했고, Memory 쪽에는 백엔드의 IAM 롤만 보여 어떤 최종 사용자의 요청인지 인프라에서 확인할 지점이 없었음. 모든 Memory 호출이 Gateway를 지나고 ENFORCE 모드라면, 에이전트가 다른 actorId를 넣어도 정책 단계에서 차단됨
 
 ---
 
