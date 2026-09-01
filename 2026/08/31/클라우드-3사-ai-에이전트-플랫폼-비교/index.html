@@ -16,6 +16,8 @@
         <link rel="prev" href="../../30/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/">
       
       
+        <link rel="next" href="../../../09/01/agentcore-memory-%EC%A0%91%EA%B7%BC-%EC%A0%9C%EC%96%B4%EC%99%80-aws-agent-registry-%EC%A0%95%EB%A6%AC/">
+      
       
         
       
@@ -928,6 +930,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../09/01/agentcore-memory-%EC%A0%91%EA%B7%BC-%EC%A0%9C%EC%96%B4%EC%99%80-aws-agent-registry-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AgentCore Memory 접근 제어와 AWS Agent Registry 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="./" class="md-nav__link">
         
   
@@ -1704,33 +1733,6 @@
   
 
                       
-                        
-                        
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../07/22/llm-%EC%B6%94%EB%A1%A0-%EC%84%9C%EB%B9%99-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    LLM 추론 서빙 정리
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-                      
                     </ul>
                   </nav>
                 </li>
@@ -2084,7 +2086,7 @@
 <tr>
 <td>도구 게이트웨이</td>
 <td>Gateway GA. REST, OpenAPI, Lambda를 MCP 도구로 변환. 외부 MCP 서버와 A2A 에이전트는 변환 없이 그대로 연결(패스스루)</td>
-<td>Toolbox GA. 도구를 한 번 등록해 관리형 MCP 엔드포인트로 노출. 도구 검색과 Skills 프리뷰</td>
+<td>Toolbox. 도구를 한 번 등록해 관리형 MCP 엔드포인트로 노출. 도구 검색과 Skills 프리뷰</td>
 <td>Agent Gateway GA(2026년 6월 18일). 사용자, 에이전트, 도구 사이에서 정책을 적용하는 지점. 별도로 Apigee, MCP Toolbox for Databases</td>
 </tr>
 <tr>
@@ -2095,7 +2097,7 @@
 </tr>
 <tr>
 <td>정책과 가드레일</td>
-<td>Policy GA(2026년 3월 3일). 자연어로 쓴 정책을 Cedar(AWS 정책 언어)로 컴파일해 Gateway에서 도구 호출 차단. Guardrails 결합(2026년 6월), 시간 기반 정책(2026년 8월). AI 트래픽 속도 제한은 Gateway 쪽 기능. Bedrock Guardrails는 모델과 독립된 ApplyGuardrail API</td>
+<td>Policy GA(2026년 3월 3일). 자연어로 쓴 정책을 Cedar(AWS 정책 언어)로 컴파일해 Gateway에서 도구 호출 차단. Guardrails 결합(2026년 6월), 세션 이력 기반 정책(temporal policy)과 속도 제한(2026년 8월). Bedrock Guardrails는 모델과 독립된 ApplyGuardrail API</td>
 <td>Foundry Guardrails GA(Content Safety, Prompt Shields). 에이전트 가드레일과 도구 호출 단계에서 차단하거나 승인받는 기능은 프리뷰</td>
 <td>Model Armor GA(Gateway 결합 2026년 6월). Semantic Governance Policies 공개 프리뷰. IAM 거버넌스 정책 비공개 프리뷰</td>
 </tr>
@@ -2283,6 +2285,22 @@
             </div>
           </a>
         
+        
+          
+          <a href="../../../09/01/agentcore-memory-%EC%A0%91%EA%B7%BC-%EC%A0%9C%EC%96%B4%EC%99%80-aws-agent-registry-%EC%A0%95%EB%A6%AC/" class="md-footer__link md-footer__link--next" aria-label="다음: AgentCore Memory 접근 제어와 AWS Agent Registry 정리">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                AgentCore Memory 접근 제어와 AWS Agent Registry 정리
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
         
       </nav>
     
