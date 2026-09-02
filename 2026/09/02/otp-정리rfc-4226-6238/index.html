@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 동적 절단, 실제 공격 경로, 서버 정책까지 다룸">
+        <meta name="description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 Dynamic Truncation, 실제 공격 경로, 서버 정책까지 다룸">
       
       
       
@@ -87,7 +87,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="OTP 정리(RFC 4226, 6238) - dotoryeee's blog" />
-<meta property="og:description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 동적 절단, 실제 공격 경로, 서버 정책까지 다룸" />
+<meta property="og:description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 Dynamic Truncation, 실제 공격 경로, 서버 정책까지 다룸" />
 <meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/09/02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -95,7 +95,7 @@
 <meta property="og:url" content="https://dotoryeee.github.io/blog/2026/09/02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="OTP 정리(RFC 4226, 6238) - dotoryeee's blog" />
-<meta property="twitter:description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 동적 절단, 실제 공격 경로, 서버 정책까지 다룸" />
+<meta property="twitter:description" content="인증 앱의 6자리 OTP를 유닉스 시간과 비밀키에서 만드는 과정 정리. RFC 4226, 6238 테스트 벡터로 검증하고 Dynamic Truncation, 실제 공격 경로, 서버 정책까지 다룸" />
 <meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/09/02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238.png" />
 </head>
   
@@ -790,10 +790,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#dynamic-truncation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        동적 절단이 하는 일
+        Dynamic Truncation이 하는 일
       
     </span>
   </a>
@@ -801,7 +801,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         미래 값을 미리 계산할 수 있는데 왜 안전한가
@@ -812,7 +812,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         실제로 뚫리는 경로
@@ -823,7 +823,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         구현과 운영 체크리스트
@@ -834,7 +834,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         결론
@@ -1853,12 +1853,12 @@
 </tr>
 </tbody>
 </table>
-<p>전송형은 이름만 OTP이고 시간 기반 계산과 무관. NIST SP 800-63B 4판은 전화망(PSTN)을 통한 대역외 인증을 제한된 인증 수단(restricted authenticator)으로 분류함. 사용 금지가 아니라 위험 고지와 대체 수단 제공을 요구하는 등급이고, 이메일로 보내는 코드는 대역외 인증에 쓰지 말라고 규정함(비밀번호만으로 접근할 수 있고 전송 중 가로채기와 경로 변경 공격에 노출되기 때문)</p>
+<p>전송형은 이름만 OTP이고 시간 기반 계산과 무관. NIST SP 800-63B 4판은 문자나 전화로 코드를 받는 방식을 제한 등급으로 둠. 쓰지 말라는 것은 아니고, 위험하다는 사실을 사용자에게 알리고 다른 인증 방법도 같이 제공하라는 조건이 붙음. 이메일로 코드를 보내는 방식은 아예 쓰지 말라고 함. 비밀번호 하나만 알면 어디서든 메일함을 열 수 있고, 가는 길에 가로채거나 다른 곳으로 돌리기도 쉽기 때문</p>
 <hr />
 <h2 id="totp">TOTP 계산 과정</h2>
 <p>HMAC은 비밀키를 함께 넣어 해시를 계산하는 함수. 키를 모르면 같은 출력을 만들 수 없음</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>T = (현재 유닉스 시간 - T0) / X      ← 내림. T0는 계산 기준 시각(기본 0, 유닉스 에폭), X는 시간 스텝(기본 30초)
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>OTP = Truncate(HMAC-SHA-1(K, T))    ← Truncate = 동적 절단 + mod 10^6
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>OTP = Truncate(HMAC-SHA-1(K, T))    ← Truncate = Dynamic Truncation + mod 10^6
 </code></pre></div>
 <table>
 <thead>
@@ -1880,8 +1880,8 @@
 <td>20바이트(160비트)</td>
 </tr>
 <tr>
-<td>3. 동적 절단</td>
-<td>20바이트 중 4바이트를 골라 31비트 정수로 만듦(아래 동적 절단 절에서 설명)</td>
+<td>3. Dynamic Truncation</td>
+<td>20바이트 중 4바이트를 골라 31비트 정수로 만듦(아래 Dynamic Truncation 절에서 설명)</td>
 <td>31비트</td>
 </tr>
 <tr>
@@ -1895,7 +1895,7 @@
     A["유닉스 시간"] --&gt; B["30초 단위 카운터 T"]
     K["비밀키 K&lt;br&gt;(등록 시 QR 코드로 전달)"] --&gt; C
     B --&gt; C["HMAC-SHA-1(K, T)&lt;br&gt;20바이트"]
-    C --&gt; D["동적 절단&lt;br&gt;4바이트 → 31비트"]
+    C --&gt; D["Dynamic Truncation&lt;br&gt;4바이트 → 31비트"]
     D --&gt; E["mod 10^6&lt;br&gt;6자리, 앞자리 0 채움"]</code></pre>
 <p>시간은 공개 값, 비밀은 K 하나. 아래 "미래 값" 절의 출발점</p>
 <hr />
@@ -1996,7 +1996,7 @@
 </table>
 <p>RFC 6238 참조 코드의 비밀키는 해시별로 길이가 다름(SHA-1 20바이트, SHA-256 32바이트, SHA-512 64바이트). 부록 B 본문은 키가 하나인 것처럼 적혀 있는데 정오표 2866으로 정정된 오류. 다른 구현체와 값이 안 맞을 때 가장 먼저 의심할 지점</p>
 <hr />
-<h2 id="_1">동적 절단이 하는 일</h2>
+<h2 id="dynamic-truncation">Dynamic Truncation이 하는 일</h2>
 <p>HMAC-SHA-1 결과는 160비트. 사람이 입력할 수 있는 6자리로 줄이는 것이 목적이고, 관건은 어디를 자르느냐</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. H = HMAC-SHA-1(K, T)            20바이트
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. offset = H[len-1] &amp; 0x0F        마지막 바이트의 하위 4비트(0~15). SHA-1이면 H[19]
@@ -2027,12 +2027,12 @@
 </tr>
 <tr>
 <td>SHA-256, SHA-512를 쓰면</td>
-<td>RFC 6238은 허용하지만 절단 로직은 그대로 "마지막 바이트 &amp; 0x0F". SHA-512 출력은 64바이트. 오프셋이 0에서 15 사이라 값은 앞 19바이트에서만 나옴. 오프셋을 정하는 마지막 바이트를 빼면 남는 44바이트는 쓰이지 않음. 참조 구현도 세 해시에 같은 코드를 씀. 알려진 취약점은 없지만 자체 구현을 검증할 때 알아 둘 것</td>
+<td>RFC 6238은 허용하지만 Dynamic Truncation 로직은 그대로 "마지막 바이트 &amp; 0x0F". SHA-512 출력은 64바이트. 오프셋이 0에서 15 사이라 값은 앞 19바이트에서만 나옴. 오프셋을 정하는 마지막 바이트를 빼면 남는 44바이트는 쓰이지 않음. 참조 구현도 세 해시에 같은 코드를 씀. 알려진 취약점은 없지만 자체 구현을 검증할 때 알아 둘 것</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_2">미래 값을 미리 계산할 수 있는데 왜 안전한가</h2>
+<h2 id="_1">미래 값을 미리 계산할 수 있는데 왜 안전한가</h2>
 <p>계산식의 입력은 시간 T와 비밀키 K 둘. T는 완전히 공개된 값이고 보안을 지탱하는 것은 K 하나</p>
 <table>
 <thead>
@@ -2055,12 +2055,12 @@
 <p>관측한 OTP를 모아 K를 역추적하는 것도 안 됨. 두 가지 장벽</p>
 <ul>
 <li>RFC 4226은 HMAC이 안전한 PRF라고 가정함(부록 A.5). PRF는 의사난수함수. 키를 모르는 쪽에서 보면 입력과 출력 쌍이 진짜 난수 함수와 구별되지 않는 함수. 이 가정 아래에서는 출력만 모아 키를 복원할 수 없음</li>
-<li>동적 절단이 160비트 중 31비트만 뽑고 다시 10^6으로 나눈 나머지만 내놓음. 관측자는 매번 정보의 극히 일부만 보므로 코드를 아무리 모아도 키 후보를 줄이지 못함</li>
+<li>Dynamic Truncation이 160비트 중 31비트만 뽑고 다시 10^6으로 나눈 나머지만 내놓음. 관측자는 매번 정보의 극히 일부만 보므로 코드를 아무리 모아도 키 후보를 줄이지 못함</li>
 </ul>
-<p>RFC 4226은 무차별 대입 성공 확률을 s × v / 10^Digit로 씀. s는 서버가 함께 시도하는 룩어헤드 창의 크기, v는 허용 시도 횟수. TOTP에서 s는 앞뒤로 허용하는 시간 스텝 개수에 해당하고, 앞뒤 1스텝 정책이면 s는 3. 즉 6자리의 안전성은 알고리즘이 아니라 서버가 s와 v를 얼마나 작게 두느냐에 달림</p>
+<p>RFC 4226은 무차별 대입 성공 확률을 s × v / 10^Digit로 씀. s는 서버가 한 번에 정답으로 인정하는 코드의 개수. HOTP는 사용자가 버튼을 헛눌러 토큰의 카운터가 서버보다 앞서 갈 수 있어서, 서버가 자기 카운터의 다음 값 몇 개까지 미리 계산해 두고 그중 하나가 맞으면 통과시킴. RFC는 이것을 룩어헤드 창이라 부르고, 그 개수가 s. v는 허용 시도 횟수. TOTP에서 s는 앞뒤로 허용하는 시간 스텝 개수에 해당하고, 앞뒤 1스텝 정책이면 s는 3. 즉 6자리의 안전성은 알고리즘이 아니라 서버가 s와 v를 얼마나 작게 두느냐에 달림</p>
 <hr />
-<h2 id="_3">실제로 뚫리는 경로</h2>
-<p>TOTP가 뚫리는 경로는 크게 둘. 하나는 K 유출(서버 저장소 또는 QR 코드), 다른 하나는 정상 코드의 실시간 중계. 예측이 아님</p>
+<h2 id="_2">실제로 뚫리는 경로</h2>
+<p>TOTP가 뚫리는 경로는 크게 둘. 하나는 K 유출(서버 저장소 또는 QR 코드), 다른 하나는 사용자가 방금 입력한 진짜 코드를 공격자가 가로채 30초 안에 대신 쓰는 것. 둘 다 코드를 미리 알아맞히는 방식이 아님</p>
 <table>
 <thead>
 <tr>
@@ -2087,9 +2087,9 @@
 </tr>
 </tbody>
 </table>
-<p>NIST SP 800-63B 4판(2025년 7월)은 OTP를 피싱 저항이 없는 인증 수단으로 분류함. 이유는 수동으로 입력한 OTP 값이 지금 인증 중인 세션에 묶이지 않기 때문. AAL은 인증 보증 수준(1에서 3). 가장 높은 AAL3에서는 피싱 저항이 필수이고, 중간 수준 AAL2에서도 검증자는 피싱 저항 옵션을 하나 이상 제공해야 함</p>
+<p>NIST SP 800-63B 4판(2025년 7월)은 OTP를 피싱에 약한 인증 수단으로 봄. 코드 자체에는 어느 사이트의 어느 로그인에 쓰는 값인지가 담겨 있지 않아서, 사용자가 가짜 사이트에 입력한 코드를 공격자가 진짜 사이트에 그대로 넣어도 통하기 때문. NIST는 로그인 보증 수준(AAL)을 1에서 3까지 세 단계로 나눔. 가장 엄격한 AAL3는 피싱에 강한 방식만 허용하고, 중간인 AAL2도 피싱에 강한 방식을 최소 하나는 선택지로 제공해야 함</p>
 <hr />
-<h2 id="_4">구현과 운영 체크리스트</h2>
+<h2 id="_3">구현과 운영 체크리스트</h2>
 <table>
 <thead>
 <tr>
@@ -2137,11 +2137,11 @@
 </tbody>
 </table>
 <hr />
-<h2 id="_5">결론</h2>
+<h2 id="_4">결론</h2>
 <ul>
 <li>인증 앱의 6자리는 시간 카운터와 비밀키로 HMAC을 계산해 31비트를 뽑고 10^6으로 나눈 나머지. 시간은 공개 값이고 비밀은 키 하나</li>
-<li>미래 값을 미리 계산할 수 있는 것은 설계상 당연한 성질. 키를 아는 쪽만 계산할 수 있고, 관측한 코드로 키를 되찾는 것은 HMAC의 성질과 31비트 절단 때문에 현실적으로 불가능</li>
-<li>동적 절단의 최상위 비트 제거는 보안이 아니라 환경 간 나머지 연산 차이를 없애기 위한 것. 잘라 낼 위치를 바꾸는 것도 보안 효과는 미미</li>
+<li>미래 값을 미리 계산할 수 있는 것은 설계상 당연한 성질. 키를 아는 쪽만 계산할 수 있고, 관측한 코드로 키를 되찾는 것은 HMAC의 성질과 31비트만 남기는 Dynamic Truncation 때문에 현실적으로 불가능</li>
+<li>Dynamic Truncation의 최상위 비트 제거는 보안이 아니라 환경 간 나머지 연산 차이를 없애기 위한 것. 잘라 낼 위치를 바꾸는 것도 보안 효과는 미미</li>
 <li>6자리의 안전성은 알고리즘이 아니라 서버 정책이 결정. 시간 창은 최소로, 성공한 코드는 재사용 금지, 시도 횟수 제한</li>
 <li>실제 위협은 예측이 아니라 비밀키 유출과 실시간 피싱. 후자는 OTP로 못 막으므로 FIDO2, 패스키로 이전하는 것이 해법</li>
 <li>자체 구현 시 앞자리 0, 상수 시간 비교, 해시별 키 길이, 인증 앱의 파라미터 무시를 확인할 것</li>
