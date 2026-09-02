@@ -1,0 +1,2394 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="운영 AI 채팅이 반복 호출과 자릿수 오류로 깨진 하루를 정리한 회고. 가드 3종과 검증기를 넣고 Bedrock 모델 4종을 같은 코드로 실측 비교해 기본 모델을 Nova 2 Lite에서 GPT-5.6 Terra로 바꾼 과정과 그 과정에서 배운 것">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/09/03/ai-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%B3%B8-%EB%AA%A8%EB%8D%B8%EC%9D%84-nova%EC%97%90%EC%84%9C-gpt-56%EC%9C%BC%EB%A1%9C-%EB%B0%94%EA%BE%BC-%EC%9D%B4%EC%9C%A0/">
+      
+      
+        <link rel="prev" href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/">
+      
+      
+      
+        
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Dodum:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Dodum";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유 - dotoryeee's blog" />
+<meta property="og:description" content="운영 AI 채팅이 반복 호출과 자릿수 오류로 깨진 하루를 정리한 회고. 가드 3종과 검증기를 넣고 Bedrock 모델 4종을 같은 코드로 실측 비교해 기본 모델을 Nova 2 Lite에서 GPT-5.6 Terra로 바꾼 과정과 그 과정에서 배운 것" />
+<meta property="og:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/09/03/ai-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%B3%B8-%EB%AA%A8%EB%8D%B8%EC%9D%84-nova%EC%97%90%EC%84%9C-gpt-56%EC%9C%BC%EB%A1%9C-%EB%B0%94%EA%BE%BC-%EC%9D%B4%EC%9C%A0.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://dotoryeee.github.io/blog/2026/09/03/ai-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%B3%B8-%EB%AA%A8%EB%8D%B8%EC%9D%84-nova%EC%97%90%EC%84%9C-gpt-56%EC%9C%BC%EB%A1%9C-%EB%B0%94%EA%BE%BC-%EC%9D%B4%EC%9C%A0/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유 - dotoryeee's blog" />
+<meta property="twitter:description" content="운영 AI 채팅이 반복 호출과 자릿수 오류로 깨진 하루를 정리한 회고. 가드 3종과 검증기를 넣고 Bedrock 모델 4종을 같은 코드로 실측 비교해 기본 모델을 Nova 2 Lite에서 GPT-5.6 Terra로 바꾼 과정과 그 과정에서 배운 것" />
+<meta property="twitter:image" content="https://dotoryeee.github.io/blog/assets/images/social/2026/09/03/ai-%EC%B1%84%ED%8C%85-%EA%B8%B0%EB%B3%B8-%EB%AA%A8%EB%8D%B8%EC%9D%84-nova%EC%97%90%EC%84%9C-gpt-56%EC%9C%BC%EB%A1%9C-%EB%B0%94%EA%BE%BC-%EC%9D%B4%EC%9C%A0.png" />
+</head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-nova-gpt-56" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../../../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    전체 글
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    카테고리
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    카테고리
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        시작은 실패 두 건
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        고치려는 배포가 더 나빴음
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        원인은 부탁과 관측 공백
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        가드 3종을 넣음
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        빨라진 만큼 빨리 틀렸음
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        측정 조건
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        호출 제약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        응답 시간
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        입력 토큰
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        반복 호출과 자릿수 오류
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        정성 비교
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        그래서 이렇게 정했음
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        바꾼 뒤에 드러난 버그
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        배운 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        다음에 다르게 할 것
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        이 결과의 한계
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-09-03 00:00:00+00:00" class="md-ellipsis">2026. 9. 3.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/ai/">AI</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 15분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OTP 정리(RFC 4226, 6238)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01/agentcore-memory-%EC%A0%91%EA%B7%BC-%EC%A0%9C%EC%96%B4%EC%99%80-aws-agent-registry-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AgentCore Memory 접근 제어와 AWS Agent Registry 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/31/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C-3%EC%82%AC-ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%ED%94%8C%EB%9E%AB%ED%8F%BC-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    클라우드 3사 AI 에이전트 플랫폼 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/30/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 에이전트 체크포인트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWS FinOps 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pingora 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upstage Studio 문서 Agent PoC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 선택 가이드
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 암호화 방식 비교
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    KMS 키 삭제 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    로컬 모델로 RAG 파이프라인 구축하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RAG 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    k6로 부하 걸어 SLO 지표 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP 서버 만들어 Claude Code에 붙이기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MoE 추론 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Mesh 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP vs API 차이점 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CloudTrail 네트워크 활동 이벤트 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    partial 인덱스 seq scan 인시던트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    쿠버네티스 GPU 스케줄링 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    분산 학습 병렬화와 집합 통신 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NVLink와 노드 내 GPU 연결 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NIC 가상화와 커널 바이패스 정리
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:ai-agent" class="md-tag">AI Agent</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:amazon-nova" class="md-tag">Amazon Nova</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:bedrock" class="md-tag">Bedrock</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:finops" class="md-tag">FinOps</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:gpt-56" class="md-tag">GPT-5.6</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../../../tags/#tag:pydantic-ai" class="md-tag">pydantic-ai</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="ai-nova-gpt-56">AI 채팅 기본 모델을 Nova에서 GPT-5.6으로 바꾼 이유</h1>
+<p>프롬프트의 부탁은 통하지 않았고 루프를 막자 이번에는 자릿수가 틀렸음</p>
+<!-- more -->
+
+<p>사내 클라우드 비용 분석 서비스의 AI 채팅을 고치다가 기본 모델까지 바꾼 하루의 기록. 결론부터 적으면 모델 교체는 맨 나중에 온 조치였고, 그 전에 앱 쪽에서 고칠 것이 훨씬 많았음</p>
+<hr />
+<h2 id="_1">시작은 실패 두 건</h2>
+<p>전날 밤 운영 로그에서 실패 두 건을 발견함</p>
+<ul>
+<li>원인 분석 도구가 호출 예산을 넘긴 뒤 재시도까지 소진해 중단</li>
+<li>원화 환산 도구를 같은 인자로 28회 반복하다 사용자가 취소</li>
+</ul>
+<p>둘 다 도구 호출이 한도를 넘겨 끝난 경우. 하나는 호출 예산, 하나는 같은 인자 반복이었음. 답을 못 만든 것이 아니라 답을 만들 차례가 오지 않았음</p>
+<h2 id="_2">고치려는 배포가 더 나빴음</h2>
+<p>반복 차단 코드를 넣고 배포함. 결과는 같은 질문이 2분 19초 동안 같은 도구 3개를 9회 돌다 사용자가 취소. 두 번째 배포 뒤에는 최종 답변 검증 재시도가 소진되며 실패. 사용자 요청으로 전날 버전으로 롤백함</p>
+<p>롤백한 버전이 안전한지 확인하려고, 질문을 대신 보내고 응답을 끝까지 받아 기록하는 자동 실행 스크립트로 다시 재봤더니 3회 중 1회만 성공했고 소요는 44초에서 103초. 돌아갈 곳도 안정적이지 않았음. 같은 실패가 8월 19일에도 있었다는 사실을 로그에서 확인함</p>
+<p>이 시점에서 감으로 고치는 것을 멈추고 원인부터 정리함. 이후로는 고칠 때마다 자동 실행으로 다시 재기로 함</p>
+<h2 id="_3">원인은 부탁과 관측 공백</h2>
+<p>정리하면 원인은 두 가지였음</p>
+<ul>
+<li>프롬프트에 적어 둔 "그만 부르세요" 같은 안내는 부탁일 뿐. 모델이 무시하면 아무도 끊을 수 없음. 게다가 에이전트가 매 스텝에서 도구 호출만 내놓도록 출력 형식이 잡혀 있어, 반드시 도구를 하나 골라야 하는 구조가 반복을 부추김</li>
+<li>최종 답변 검증 재시도 한도가 2회로 짧았고, 어떤 검증이 왜 실패했는지 남는 로그가 없어 사후 확인이 불가능했음</li>
+</ul>
+<h2 id="3">가드 3종을 넣음</h2>
+<ul>
+<li>같은 인자로 같은 도구를 반복하거나 호출 예산을 넘기면 모델에게 주던 도구 목록을 빼고 최종 답변을 강제</li>
+<li>재시도 한도 상향</li>
+<li>재시도 사유 로깅</li>
+</ul>
+<p>같은 질문 6회가 모두 27초 안에 끝남. 이 6회는 가드를 넣은 직후 확인 실행이고, 아래 표의 8회는 모델 비교용으로 다시 잰 값</p>
+<p><img alt="가드 적용 전후 Nova 2 Lite 소요 시간" src="../../../../AI/bedrock_model_e2e_compare/04-guard-effect-light.png#only-light" />
+<img alt="가드 적용 전후 Nova 2 Lite 소요 시간" src="../../../../AI/bedrock_model_e2e_compare/04-guard-effect-dark.png#only-dark" /></p>
+<table>
+<thead>
+<tr>
+<th>조건</th>
+<th>실행</th>
+<th>성공</th>
+<th>소요</th>
+<th>실패 양상</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>가드 없음</td>
+<td>3</td>
+<td>&#8531;</td>
+<td>44초에서 103초</td>
+<td>원인 분석 도구가 호출 예산을 넘긴 뒤 재시도까지 소진해 중단, 원화 환산 도구를 같은 인자로 33회 반복해 요청 한도 소진</td>
+</tr>
+<tr>
+<td>가드 적용</td>
+<td>8</td>
+<td>8/8</td>
+<td>16초에서 40초</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<p>표의 33회는 롤백 버전을 자동 실행으로 다시 돌려 본 실행에서 나온 값. 앞에서 적은 28회는 전날 밤 운영에서 사용자가 취소한 건으로 서로 다른 실행</p>
+<p>가드 적용 후 8회의 소요는 질문에 따라 갈림. 도구를 4회만 부른 계정 기여도 질문이 16초에서 17초, 도구를 17회에서 18회 부른 EC2 분해 질문이 38초에서 40초</p>
+<h2 id="_4">빨라진 만큼 빨리 틀렸음</h2>
+<p>답이 빨라지자 틀린 답도 빨리 왔음. 답변에 나온 숫자를 실제 데이터와 대조해 보니 6회 중 3회에서 4회가 USD 값을 1,000배 해 원화로 적고 있었음</p>
+<p>원인을 찾아보니 모델이 아니라 서버였음</p>
+<ul>
+<li>대시보드 요약 도구 결과에 통화 표기가 없어 모델이 단위를 추측함</li>
+<li>"이번 달"을 달력월인 9월로 주입해, 데이터가 아직 없는 달을 분석하게 만듦</li>
+<li>데이터가 없는 달을 원인 분석 도구가 거부하지 않고 100% 감소로 계산함</li>
+</ul>
+<p>조치는 네 가지. 도구 결과에 통화 명시, 데이터가 들어 있는 최신 월을 기준월로 주입, 빈 월 거부, 답변의 자릿수를 도구 계산과 대조하는 교차검증기 추가. 자릿수 오류 답변은 대시보드 통화를 명시한 뒤 6회 중 2회, 자릿수 교차검증을 넣은 뒤 8회 중 0회로 줄었음</p>
+<p>검증기가 정당한 값을 오탐한 사례도 하나 있었음. 정상 환산값 41,423,290원을 무관한 값 414.16 USD의 10만 배로 판정한 건. 검증기 쪽을 고침</p>
+<p>여기까지가 모델을 바꾸기 전에 앱에서 한 일. 지금부터가 모델 비교</p>
+<hr />
+<h2 id="_5">측정 조건</h2>
+<p>모델을 고르기 전에 계정 제약부터 걸림. AWS MSP channel program 계정이라 Anthropic 모델 전체가 정책으로 차단됨(<code>Access to this model is not available for channel program accounts</code>). 남은 선택지가 Amazon Nova 계열과 OpenAI GPT-5.6 계열이라 이 4종을 비교함</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>대상 시스템</td>
+<td>사내 클라우드 비용 분석 서비스의 AI 채팅(FastAPI, pydantic-ai 1.107.2, Bedrock Converse)</td>
+</tr>
+<tr>
+<td>측정 방식</td>
+<td>실제 서비스와 같은 경로(<code>/api/v1/ai/chat</code>)로 질문을 보내고 스트리밍 응답을 끝까지 받아 기록하는 자동 실행 스크립트. 임시 계정으로 호출</td>
+</tr>
+<tr>
+<td>질문 3종</td>
+<td>이번 달 EC2 비용의 전월 대비 변화와 사용 유형별 분해, 특정 계정 그룹의 7월과 6월 EC2 비교, 전월 대비 증가액 기준 계정 기여도</td>
+</tr>
+<tr>
+<td>실행 조건</td>
+<td>빠른 답변(단일 에이전트) 모드, 동일 데이터 그룹, 모델만 교체</td>
+</tr>
+<tr>
+<td>판정 방법</td>
+<td>답변에 나온 수치를 실제 데이터와 자동 대조. USD 값을 1,000배 또는 100만 배로 부풀려 원화로 적은 자릿수 오류는 따로 판정</td>
+</tr>
+<tr>
+<td>측정 시점</td>
+<td>2026년 9월 2일 하루</td>
+</tr>
+</tbody>
+</table>
+<p>측정 대상은 모델 단독 성능이 아니라 질문 하나에 답을 마칠 때까지의 한 턴 전체. 프롬프트, 도구 세트, 가드 코드를 고정하고 모델만 바꿈</p>
+<p>로그를 읽을 때 주의할 점이 하나 있음. 화면에서 고른 모델 이름이 백엔드 매핑을 거쳐 호출되기 때문에 로그에 남는 키와 실제 호출 모델이 다를 수 있음. 이 측정에서도 Nova Pro가 앱 내부 레거시 키인 <code>sonnet_4_6</code>으로 기록됐고, 실제 호출은 <code>apac.amazon.nova-pro-v1:0</code>. Anthropic 모델은 계정 정책으로 차단돼 있어 실행 자체가 불가능함</p>
+<pre class="mermaid"><code>flowchart LR
+    Q["질문 3종"] --&gt; API["실제 서비스와 같은 경로&lt;br&gt;/api/v1/ai/chat"]
+    API --&gt; AG["단일 에이전트&lt;br&gt;모델만 교체"]
+    AG --&gt; T["비용 조회 도구,&lt;br&gt;원화 환산 도구,&lt;br&gt;원인 분석 도구"]
+    T --&gt; AG
+    AG --&gt; V["서버 검증기&lt;br&gt;자릿수 교차검증"]
+    V --&gt; R["답변"]
+    R --&gt; C["실제 데이터와&lt;br&gt;자동 대조"]</code></pre>
+<h2 id="_6">호출 제약</h2>
+<p>토큰 하나만 만들게 하는 최소 요청과 도구 하나만 부르게 하는 최소 요청으로 확인한 제약</p>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>계정 호출</th>
+<th>도구 호출</th>
+<th>도구 사용 강제 옵션(toolChoice)</th>
+<th>temperature</th>
+<th>최소 요청 지연</th>
+<th>단가(100만 토큰)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nova 2 Lite</td>
+<td>가능</td>
+<td>정상</td>
+<td>지원</td>
+<td>지원</td>
+<td>0.64초</td>
+<td>입력 $0.18에서 $0.36 사이, 출력 $1.48에서 $2.96 사이</td>
+</tr>
+<tr>
+<td>Nova Pro</td>
+<td>가능</td>
+<td>정상</td>
+<td>지원</td>
+<td>지원</td>
+<td>0.59초</td>
+<td>입력 $0.95, 출력 $3.80</td>
+</tr>
+<tr>
+<td>GPT-5.6 Luna</td>
+<td>가능</td>
+<td>정상</td>
+<td>지원</td>
+<td>거부(400)</td>
+<td>2.6초에서 11.7초 사이</td>
+<td>Pricing API 미등록</td>
+</tr>
+<tr>
+<td>GPT-5.6 Terra</td>
+<td>가능</td>
+<td>정상</td>
+<td>지원</td>
+<td>거부(400)</td>
+<td>2.5초에서 10.8초 사이</td>
+<td>Pricing API 미등록</td>
+</tr>
+<tr>
+<td>Claude 전 모델</td>
+<td>차단</td>
+<td>확인 불가</td>
+<td>확인 불가</td>
+<td>확인 불가</td>
+<td>확인 불가</td>
+<td>확인 불가</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>temperature를 넣으면 400 응답과 함께 "This model doesn't support the temperature field" 메시지가 옴. 기존 코드가 temperature를 넣고 있으면 그대로 실패</li>
+<li>GPT-5.6에는 제약 두 가지와 특성 하나가 더 있음. 추론에 얼마나 힘을 쓸지 지정하는 <code>reasoning_effort</code> 필드는 모르는 파라미터라며 거부, <code>maxTokens=1</code>은 최소값 미만 오류. 특성은 모델이 생각한 내용(reasoningContent)이 응답에 함께 담겨 오는 것</li>
+<li>Nova 단가는 Pricing API 조회값. Nova 2 Lite는 리전 교차 요금 기준이라 구간으로 조회됐고, Nova Pro는 서울 리전 온디맨드 기준</li>
+<li>GPT-5.6 단가는 2026년 9월 2일 기준 Pricing API에 없음. us-east-1 상품 1,032개를 전수 확인해도 나오지 않음</li>
+</ul>
+<h2 id="_7">응답 시간</h2>
+<p><img alt="평균 응답 시간과 중앙값" src="../../../../AI/bedrock_model_e2e_compare/01-latency-light.png#only-light" />
+<img alt="평균 응답 시간과 중앙값" src="../../../../AI/bedrock_model_e2e_compare/01-latency-dark.png#only-dark" /></p>
+<table>
+<thead>
+<tr>
+<th>모델</th>
+<th>실행 수</th>
+<th>응답 성공</th>
+<th>평균 소요(초)</th>
+<th>중앙값(초)</th>
+<th>도구 호출 수 평균</th>
+<th>입력 토큰 중앙값</th>
+<th>출력 토큰 중앙값</th>
+<th>1회 추정 비용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nova 2 Lite</td>
+<td>8</td>
+<td>8/8</td>
+<td>28.5</td>
+<td>28.4</td>
+<td>10.2</td>
+<td>89,301</td>
+<td>1,090</td>
+<td>$0.018에서 $0.035 사이</td>
+</tr>
+<tr>
+<td>Nova Pro</td>
+<td>3</td>
+<td>3/3</td>
+<td>12.9</td>
+<td>13.3</td>
+<td>7.7</td>
+<td>69,549</td>
+<td>905</td>
+<td>약 $0.07</td>
+</tr>
+<tr>
+<td>GPT-5.6 Luna</td>
+<td>3</td>
+<td>3/3</td>
+<td>20.2</td>
+<td>12.6</td>
+<td>4.0</td>
+<td>23,366</td>
+<td>872</td>
+<td>단가 미확정</td>
+</tr>
+<tr>
+<td>GPT-5.6 Terra</td>
+<td>2(참고 3회 별도)</td>
+<td>2/2</td>
+<td>22.4</td>
+<td>22.4</td>
+<td>4.5</td>
+<td>27,727</td>
+<td>1,155</td>
+<td>단가 미확정</td>
+</tr>
+</tbody>
+</table>
+<p>호출 하나의 지연은 Nova가 0.6초 안팎, GPT-5.6이 2.5초에서 11.7초 사이. 네 배에서 스무 배 가까운 차이. 그런데 턴 전체로 보면 순서가 뒤집힘. Nova 2 Lite 28.5초, Terra 22.4초, Luna 20.2초로 GPT 쪽이 6초에서 8초 빠름. Nova 2 Lite가 도구를 평균 10.2회 부르는 동안 GPT-5.6은 4회에서 4.5회만 부르기 때문</p>
+<p>가장 빠른 것은 12.9초의 Nova Pro. 다만 3회 모두 반복 호출 가드에 걸려 중단됐고 그중 1회는 기준월 한 줄만 돌려준 빈 답변. 빨리 끝난 이유에 강제 중단이 섞여 있음</p>
+<p>Luna는 3회가 39.1초, 12.6초, 9.0초로 갈림. 39초 한 번이 평균을 끌어올림. 표본이 작아 평균이 실행 하나에 끌려감</p>
+<h2 id="_8">입력 토큰</h2>
+<p><img alt="모델별 입력 토큰 중앙값" src="../../../../AI/bedrock_model_e2e_compare/02-input-tokens-light.png#only-light" />
+<img alt="모델별 입력 토큰 중앙값" src="../../../../AI/bedrock_model_e2e_compare/02-input-tokens-dark.png#only-dark" /></p>
+<p>같은 질문인데 Nova 2 Lite와 GPT 사이에서 입력 토큰이 세 배 넘게 차이 남. 도구 호출이 평균 10.2회인 Nova 2 Lite가 89,301, 4.0회인 Luna가 23,366. 도구 호출 횟수와 입력 토큰이 같은 방향으로 움직임. 도구를 한 번 부를 때마다 그때까지의 대화와 도구 결과가 다시 프롬프트에 실리는 구조라 이렇게 되는 것으로 보임. 반복 호출이 지연과 비용을 동시에 밀어 올린다는 뜻</p>
+<h2 id="_9">반복 호출과 자릿수 오류</h2>
+<p><img alt="반복 호출 가드 발동 비율과 자릿수 오류 비율" src="../../../../AI/bedrock_model_e2e_compare/03-guard-and-magnitude-light.png#only-light" />
+<img alt="반복 호출 가드 발동 비율과 자릿수 오류 비율" src="../../../../AI/bedrock_model_e2e_compare/03-guard-and-magnitude-dark.png#only-dark" /></p>
+<ul>
+<li>반복 호출 가드 발동은 같은 인자로 같은 도구를 3회 호출해 서버가 강제로 중단한 경우. Nova 2 Lite 8회 중 5회, Nova Pro 3회 중 3회 발동. GPT-5.6은 두 모델 모두 0회</li>
+<li>자릿수 오류는 네 모델 모두 0. 다만 이 0은 모델만의 성과가 아님. 서버에 자릿수 교차검증을 넣은 뒤의 숫자</li>
+<li>Nova Pro는 앱 정책상 원화 환산 도구가 비활성이라 원화 표기 자체가 없음. 오류 0이라는 결과에 이 조건이 작용함</li>
+</ul>
+<p>가드를 넣기 전 Nova 2 Lite가 만든 오류는 다음과 같았음. USD 총액 58,291.13을 58,291,129원으로 적었고, 다른 값 4,013.74는 약 4,013,737,106원으로 적음. USD 숫자를 1,000배 또는 100만 배로 부풀려 원화로 옮긴 것. 지금은 서버 검증기가 잡아냄</p>
+<h2 id="_10">정성 비교</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Nova 2 Lite</th>
+<th>Nova Pro</th>
+<th>GPT-5.6 Luna</th>
+<th>GPT-5.6 Terra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>같은 인자 반복 호출</td>
+<td>강함</td>
+<td>강함</td>
+<td>없음</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>USD를 원화로 옮길 때 자릿수</td>
+<td>오류 있었음, 서버 검증기로 차단</td>
+<td>환산 자체가 없어 관찰 불가</td>
+<td>오류 없음, 도구값 그대로 인용</td>
+<td>오류 없음, 환산값이 도구 계산과 일치</td>
+</tr>
+<tr>
+<td>총액과 EC2 혼동, 증감 서술 모순</td>
+<td>있음</td>
+<td>일부</td>
+<td>없음</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>근거 없는 항목 처리</td>
+<td>추정해서 서술하는 경향</td>
+<td>짧게 생략</td>
+<td>확인된 근거가 없으면 제시할 수 없다고 명시</td>
+<td>동일하게 명시</td>
+</tr>
+<tr>
+<td>응답 형식 안정성</td>
+<td>최종 답변을 정해진 형식에 맞추지 못해 재시도 잦음</td>
+<td>재시도 있음</td>
+<td>형식 재시도 1회에서 2회</td>
+<td>안정</td>
+</tr>
+<tr>
+<td>빈 답변</td>
+<td>없음</td>
+<td>3회 중 1회, 기준월 한 줄만 반환</td>
+<td>없음</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<p>숫자를 다루는 서비스에서 가장 곤란한 것은 느린 답이 아니라 그럴듯하게 틀린 답. 모르는 값을 추정해서 채우는 경향과 근거가 없으면 없다고 말하는 태도의 차이가 이번 관찰에서 가장 눈에 띄게 갈린 지점</p>
+<hr />
+<h2 id="_11">그래서 이렇게 정했음</h2>
+<ul>
+<li>Nova 2 Lite와 Nova Pro를 앱에서 제거하고 GPT-5.6 Terra를 기본값, Luna를 선택 옵션으로 채택. 채팅, 전문가 에이전트, 리포트와 명세서 생성까지 포함</li>
+<li>근거는 네 가지. 서버 검증기가 걸러 주기 전에도 모델이 내놓은 환산값 자체가 도구 계산과 일치, 반복 호출 0회, 근거 없는 서술을 피하는 태도, Nova 2 Lite 대비 입력 토큰 3분의 1 수준</li>
+<li>비용 비교는 보류. GPT-5.6 단가가 확인되지 않아 지금은 임시 단가로 운영 중</li>
+<li>하루 동안 쓴 테스트 비용은 상한 $20 안에서 $6 이하. GPT 단가가 미확정이라 보수적인 상한으로 계산한 값</li>
+</ul>
+<h2 id="_12">바꾼 뒤에 드러난 버그</h2>
+<p>전환 직후 자세한 분석 모드에서 실패가 하나 났음. 앞의 측정은 빠른 답변 모드에서 한 것이고 이 실패는 자세한 분석 모드에서 나옴. 더 정확해진 모델이 프롬프트에 예시로 넣어 둔 SQL의 바인드 파라미터 <code>:gid</code>를 문자 그대로 따라 보냈고, 쿼리를 대신 실행해 주는 샌드박스는 값이 박힌 SQL만 받도록 돼 있어 거부함</p>
+<p>프롬프트와 실행 환경의 계약이 어긋나 있었던 것. 이전 모델은 예시를 무시하고 리터럴을 채워 넣어서 드러나지 않았을 뿐, 서버 쪽 버그였음. 수정 중</p>
+<h2 id="_13">배운 것</h2>
+<ul>
+<li>모델 교체보다 앱 쪽 가드와 검증기가 먼저. 같은 모델이 가드 전에는 3회 중 1회 성공, 가드 후에는 8회 모두 성공</li>
+<li>부탁과 차단은 다름. 프롬프트의 안내 문구로는 루프를 못 끊음. 코드로 도구를 치워야 끊김</li>
+<li>관측 공백이 원인 분석을 막음. 재시도 사유를 로깅하자마자 실패 유형이 보이기 시작함</li>
+<li>모델 탓으로 보이던 오류의 상당수가 서버 쪽 계약 결함이었음. 통화 표기 없음, 기준월 주입, 빈 월 미거부, 프롬프트 예시와 샌드박스 불일치가 전부 여기에 해당</li>
+<li>더 정확한 모델은 프롬프트를 더 문자 그대로 따르므로 숨어 있던 계약 불일치를 드러냄</li>
+<li>실제 데이터와 자동 대조하는 판정기가 없었다면 빠르게 틀린 답을 성공으로 셌을 것</li>
+</ul>
+<h2 id="_14">다음에 다르게 할 것</h2>
+<ul>
+<li>질문을 끝까지 자동으로 돌려 보는 하네스와 답변 수치 판정기를 먼저 만들고 코드를 바꿈</li>
+<li>재시도 사유 로깅을 기본으로 둠</li>
+<li>프롬프트와 도구 계약을 테스트로 고정</li>
+</ul>
+<h2 id="_15">이 결과의 한계</h2>
+<ul>
+<li>표본이 작음. 질문 3종, 모델당 2회에서 8회, 하루치. 통계적 유의성을 주장할 수 있는 규모가 아님</li>
+<li>같은 코드에서 비교했지만 Nova Pro만 원화 환산 도구가 비활성인 상태였음. 자릿수 오류 0을 다른 모델과 같은 조건에서 얻은 값으로 볼 수 없음</li>
+<li>GPT-5.6의 서울 리전 단가가 확인되지 않음. 비용은 토큰 수로만 비교 가능</li>
+<li>Luna 실행 중 권한 문제로 도구를 한 번도 부르지 못한 3회는 표에서 제외</li>
+<li>Terra의 참고 실행 3회는 데이터가 들어 있는 최신 월이 아니라 달력상 9월을 기준월로 넣던 결함이 남아 있을 때 측정한 값. 단위는 정확했지만 기준월을 9월로 잡아 데이터 없음으로 답함. 결함을 고친 뒤 2회를 본 표에 실음</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/" class="md-footer__link md-footer__link--prev" aria-label="이전: OTP 정리(RFC 4226, 6238)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                OTP 정리(RFC 4226, 6238)
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["content.code.copy", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
