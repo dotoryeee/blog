@@ -1,0 +1,2984 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Amazon Linux 2027 Public Preview의 커널 7.1, SELinux Enforcing, AWS-LC, DNF5, RPM 6.0 변경점을 AL2023과 표로 비교하고 Rocky Linux 10과의 차이, 제거된 기능, 마이그레이션 체크리스트까지 정리">
+      
+      
+      
+        <link rel="canonical" href="https://dotoryeee.github.io/blog/2026/09/07/amazon-linux-2027-%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="prev" href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/">
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 생성완료" href="../../../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS 피드 업데이트완료" href="../../../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
+    
+    
+      
+        <title>Amazon Linux 2027 정리 - dotoryeee's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gowun+Dodum:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gowun Dodum";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-22LC2P5RV5"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-22LC2P5RV5",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-22LC2P5RV5",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Amazon Linux 2027 정리 - dotoryeee's blog" >
+      
+        <meta  property="og:description"  content="Amazon Linux 2027 Public Preview의 커널 7.1, SELinux Enforcing, AWS-LC, DNF5, RPM 6.0 변경점을 AL2023과 표로 비교하고 Rocky Linux 10과의 차이, 제거된 기능, 마이그레이션 체크리스트까지 정리" >
+      
+        <meta  property="og:image"  content="https://dotoryeee.github.io/blog/assets/images/social/posts/Cloud Infra/al2027.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://dotoryeee.github.io/blog/2026/09/07/amazon-linux-2027-%EC%A0%95%EB%A6%AC/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Amazon Linux 2027 정리 - dotoryeee's blog" >
+      
+        <meta  name="twitter:description"  content="Amazon Linux 2027 Public Preview의 커널 7.1, SELinux Enforcing, AWS-LC, DNF5, RPM 6.0 변경점을 AL2023과 표로 비교하고 Rocky Linux 10과의 차이, 제거된 기능, 마이그레이션 체크리스트까지 정리" >
+      
+        <meta  name="twitter:image"  content="https://dotoryeee.github.io/blog/assets/images/social/posts/Cloud Infra/al2027.png" >
+      
+    
+    
+  <!-- Search engine ownership verification — DO NOT REMOVE -->
+  <meta name="google-site-verification" content="IEGMUjEQ7nIx7fNyPTBr6VaQsZnIJuXINr3q5j-I9jY" />
+  <meta name="naver-site-verification" content="7e3ed3d5dad815c08e0dae65e43e62d7dd24c0f2" />
+
+  <!-- Open Graph — complementary tags.
+       og:title / og:description / og:image (+ dimensions) / og:url and the
+       twitter:card / twitter:title / twitter:description / twitter:image tags are
+       auto-injected per page by the built-in Material "social" plugin, so they are
+       intentionally NOT repeated here to avoid duplicate meta tags. -->
+  <meta property="og:site_name" content="dotoryeee's blog" />
+  <meta property="og:locale" content="ko_KR" />
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#amazon-linux-2027" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="../../../.." title="dotoryeee&#39;s blog" class="md-header__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            dotoryeee's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Amazon Linux 2027 정리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="dotoryeee&#39;s blog" class="md-nav__button md-logo" aria-label="dotoryeee's blog" data-md-component="logo">
+      
+  <img src="../../../../logo.svg" alt="logo">
+
+    </a>
+    dotoryeee's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../all/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    전체 글
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tags/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tags
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    카테고리
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            카테고리
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/ai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/database/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/devops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/network/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/sre/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../category/terraform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Terraform
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#al2027" class="md-nav__link">
+    <span class="md-ellipsis">
+      AL2027이란
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      세대별 비교
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      컴포넌트 변화
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rocky-linux-102" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rocky Linux 10.2와 비교
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      보안 기본값
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      암호화 라이브러리
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      패키지 관리와 업데이트 모델
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      커널, 아키텍처, 런타임
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ami" class="md-nav__link">
+    <span class="md-ellipsis">
+      AMI와 컨테이너 이미지
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      제거된 기능과 마이그레이션 체크리스트
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      결론
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../../.." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Index로 돌아가기
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/72431058?s=400&u=f24c5489036c2b6433ab58fb98da82a31d09cbec&v=4" alt="Jeongwon Lee">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Jeongwon Lee
+                        
+                      </strong>
+                      <br>
+                      Cloud Architect
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    메타데이터
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2026-09-07 00:00:00+00:00" class="md-ellipsis">2026. 9. 7.</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"/></svg>
+                          <span class="md-ellipsis">
+                            카테고리
+                            
+                              <a href="../../../../category/linux/">Linux</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              읽는시간 28분
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      최근 글
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Amazon Linux 2027 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OTP 정리(RFC 4226, 6238)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01/agentcore-memory-%EC%A0%91%EA%B7%BC-%EC%A0%9C%EC%96%B4%EC%99%80-aws-agent-registry-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AgentCore Memory 접근 제어와 AWS Agent Registry 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/31/%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C-3%EC%82%AC-ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%ED%94%8C%EB%9E%AB%ED%8F%BC-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    클라우드 3사 AI 에이전트 플랫폼 비교
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/30/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI 에이전트 체크포인트 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/24/aws-finops-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS FinOps 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/19/ai-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8-%EA%B0%9C%EB%B0%9C-%EC%8A%A4%ED%83%9D-oss-%EC%83%9D%ED%83%9C%EA%B3%84%EC%99%80-aws-bedrock-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI 에이전트 개발 스택 OSS 생태계와 AWS Bedrock 비교
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/17/pingora-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pingora 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/16/upstage-studio-%EB%AC%B8%EC%84%9C-agent-poc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upstage Studio 문서 Agent PoC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/12/claude%EB%A7%8C-%EC%93%B0%EB%8B%A4%EA%B0%80-solar%EC%99%80-glm%EC%9D%84-%EB%8F%8C%EB%A0%A4%EB%B4%A4%EB%8B%A4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Claude만 쓰다가 Solar와 GLM을 돌려봤다
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/11/rag-%EC%84%A0%ED%83%9D-%EA%B0%80%EC%9D%B4%EB%93%9C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RAG 선택 가이드
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/s3-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EC%8B%9D-%EB%B9%84%EA%B5%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    S3 암호화 방식 비교
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../08/02/kms-%ED%82%A4-%EC%82%AD%EC%A0%9C-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KMS 키 삭제 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/30/%EB%A1%9C%EC%BB%AC-mac%EC%97%90%EC%84%9C-video-llm-%EB%AA%A8%EB%8D%B8-%EC%B6%94%EB%A1%A0%EC%9C%BC%EB%A1%9C-%EC%98%81%EC%83%81-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    로컬 Mac에서 Video LLM 모델 추론으로 영상 생성하기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/%EB%A1%9C%EC%BB%AC-%EB%AA%A8%EB%8D%B8%EB%A1%9C-rag-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    로컬 모델로 RAG 파이프라인 구축하기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/29/rag-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RAG 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/k6%EB%A1%9C-%EB%B6%80%ED%95%98-%EA%B1%B8%EC%96%B4-slo-%EC%A7%80%ED%91%9C-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    k6로 부하 걸어 SLO 지표 확인하기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/28/mcp-%EC%84%9C%EB%B2%84-%EB%A7%8C%EB%93%A4%EC%96%B4-claude-code%EC%97%90-%EB%B6%99%EC%9D%B4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCP 서버 만들어 Claude Code에 붙이기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/llamacpp%EB%A1%9C-moe%EC%99%80-dense-%EC%B6%94%EB%A1%A0-%EC%84%B1%EB%8A%A5-%EB%B9%84%EA%B5%90%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    llama.cpp로 MoE와 Dense 추론 성능 비교하기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/27/moe-%EC%B6%94%EB%A1%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MoE 추론 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/kind%EC%97%90-istio-%EC%95%B0%EB%B9%84%EC%96%B8%ED%8A%B8-%EC%98%AC%EB%A0%A4-mtls-%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    kind에 Istio 앰비언트 올려 mTLS 확인하기
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/26/service-mesh-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service Mesh 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/%EC%82%AC%EB%82%B4-claude-code-%EA%B2%8C%EC%9D%B4%ED%8A%B8%EC%9B%A8%EC%9D%B4-claude-apps-gateway-%EA%B5%AC%EC%B6%95-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    사내 Claude Code 게이트웨이 Claude Apps Gateway 구축 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/mcp-vs-api-%EC%B0%A8%EC%9D%B4%EC%A0%90-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MCP vs API 차이점 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/25/cloudtrail-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%99%9C%EB%8F%99-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CloudTrail 네트워크 활동 이벤트 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/24/partial-%EC%9D%B8%EB%8D%B1%EC%8A%A4-seq-scan-%EC%9D%B8%EC%8B%9C%EB%8D%98%ED%8A%B8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    partial 인덱스 seq scan 인시던트
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-gpu-%EC%8A%A4%EC%BC%80%EC%A4%84%EB%A7%81-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    쿠버네티스 GPU 스케줄링 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/%EB%B6%84%EC%82%B0-%ED%95%99%EC%8A%B5-%EB%B3%91%EB%A0%AC%ED%99%94%EC%99%80-%EC%A7%91%ED%95%A9-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    분산 학습 병렬화와 집합 통신 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nvlink%EC%99%80-%EB%85%B8%EB%93%9C-%EB%82%B4-gpu-%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NVLink와 노드 내 GPU 연결 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                        
+                        
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../07/22/nic-%EA%B0%80%EC%83%81%ED%99%94%EC%99%80-%EC%BB%A4%EB%84%90-%EB%B0%94%EC%9D%B4%ED%8C%A8%EC%8A%A4-%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NIC 가상화와 커널 바이패스 정리
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+                      
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:al2023" class="md-tag">AL2023</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:al2027" class="md-tag">AL2027</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:aws-lc" class="md-tag">AWS-LC</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:amazon-linux" class="md-tag">Amazon Linux</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:dnf5" class="md-tag">DNF5</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:rocky-linux" class="md-tag">Rocky Linux</a>
+      
+    
+      
+      
+      
+        <a href="../../../../tags/#tag:selinux" class="md-tag">SELinux</a>
+      
+    
+  </nav>
+
+
+
+<h1 id="amazon-linux-2027">Amazon Linux 2027 정리</h1>
+<p>AL2, AL2023, Rocky Linux 10.2와 함께 비교</p>
+<!-- more -->
+
+<h2 id="al2027">AL2027이란</h2>
+<p>2026년 9월 3일 Public Preview로 공개된 Amazon Linux의 다음 메이저 버전. AL2023 baseline 위에 커널 7.1, SELinux Enforcing 기본, OpenSSL 3.5와 AWS-LC 병행, DNF5, RPM 6.0을 올린 구성</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>상태</td>
+<td>Public Preview. 평가와 테스트 용도이며 프로덕션 워크로드에는 권장하지 않음. AWS Support 계약이 프리뷰를 다루지 않으므로 지원이 필요한 프로덕션은 GA까지 AL2023 유지</td>
+</tr>
+<tr>
+<td>프리뷰 기간</td>
+<td>2027년 초까지. 릴리스 노트의 프리뷰 패키지 지원 종료일은 2027년 3월 31일. 확인 가능한 공식 문서에 GA 날짜 표기 없음. 2027년 1월 이후 제기된 이슈는 GA 전에 해결되지 않을 수 있고, GA 시점에 프리뷰 AMI는 deprecated 처리되어 패치가 중단됨</td>
+</tr>
+<tr>
+<td>프리뷰 단계</td>
+<td>Phase 1(공개 시점): 코어 패키지, 커널 7.1, SELinux Enforcing, DNF5, 최신 툴체인과 런타임, OpenSSL과 병행하는 AWS-LC, Trainium과 Inferentia용 Neuron 드라이버, GNOME Desktop. Phase 2(2026년 11월): SPAL 패키지, DCV 지원, EKS-optimized AMI 레시피</td>
+</tr>
+<tr>
+<td>프리뷰 제약</td>
+<td>인스턴스가 기본으로 어떤 업데이트도 자동 수신하지 않음(중요 보안 업데이트 포함). 프리뷰 아티팩트의 open CVE 패치는 보장되지 않음. SSM Patch Manager 패치 작업 실패. NVIDIA 드라이버, 온프레미스용 VM 이미지(Hyper-V, KVM, VMware), FIPS 검증 커널과 암호 모듈은 초기 프리뷰에 없음</td>
+</tr>
+<tr>
+<td>GA 이후 지원</td>
+<td>제품 페이지 FAQ 기준 표준 지원 5년. 사용자 가이드 release cadence 문서는 2032년까지 지원으로 표기하며 두 표기가 maintenance 기간을 어떻게 나누는지는 문서에 없음. 표준 지원 중에는 3개월마다 마이너 릴리스, 이후 maintenance 단계에서는 보안 업데이트와 치명적 버그 수정만 제공. 다음 메이저 버전이 나오면 maintenance 진입</td>
+</tr>
+<tr>
+<td>요금</td>
+<td>라이선스 비용 없음. 프리뷰 중에도 EC2 인스턴스 요금만 발생</td>
+</tr>
+<tr>
+<td>아키텍처</td>
+<td>x86-64(x86-64-v3 이상)와 aarch64(Graviton2 이상). 32비트 x86과 32비트 ARM 바이너리 없음</td>
+</tr>
+<tr>
+<td>리전</td>
+<td>모든 상용 AWS 리전에 Preview AMI 제공. AWS Management Console에서 바로 기동 가능</td>
+</tr>
+<tr>
+<td>업스트림</td>
+<td>Fedora 44와 45에 부분 기반. Fedora derivative나 remix는 아니며 릴리스와 지원 주기는 독립. 커널은 kernel.org 릴리스에서 Fedora와 무관하게 선택</td>
+</tr>
+<tr>
+<td>버전 표기</td>
+<td>2027.0.20260903처럼 메이저, 마이너, 날짜 순. 표준 지원 중 3개월마다 마이너가 올라가고 같은 마이너 안에서는 날짜로 AMI 재발행을 구분. 버전 확인용 CPE 문자열은 /etc/system-release-cpe에 있고 Amazon Linux 전용 식별 파일은 /etc/amazon-linux-release와 /etc/amazon-linux-release-cpe. 새 코드는 /etc/os-release 사용 권장</td>
+</tr>
+<tr>
+<td>피드백 채널</td>
+<td>GitHub amazonlinux/amazon-linux-2027 issues에 "AL2027 Public Preview" 태그로 등록. AWS re:Post, 담당 AWS 대표도 가능. 보안 이슈는 issue 대신 보안팀 연락</td>
+</tr>
+</tbody>
+</table>
+<p>프리뷰 기간에는 패키지별 지원 기간이 프리뷰 종료 시점까지만 표시됨. 실제 지원 일정은 정식 릴리스와 함께 공개 예정</p>
+<p>첫 프리뷰 릴리스 2027.0.20260903의 패키지 규모. 릴리스 노트 요약표 기준</p>
+<table>
+<thead>
+<tr>
+<th>비교</th>
+<th>소스 RPM</th>
+<th>바이너리 RPM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AL2023.12 대비 새로 추가</td>
+<td>178</td>
+<td>614</td>
+</tr>
+<tr>
+<td>AL2023.12에서 업그레이드</td>
+<td>2408</td>
+<td>8078</td>
+</tr>
+<tr>
+<td>AL2023.12에 있고 AL2027에 없음</td>
+<td>307</td>
+<td>8049</td>
+</tr>
+<tr>
+<td>AL2027 전체</td>
+<td>2548</td>
+<td>11633</td>
+</tr>
+<tr>
+<td>AL2023.12 전체</td>
+<td>2726</td>
+<td>18756</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_1">세대별 비교</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>AL2</th>
+<th>AL2023</th>
+<th>AL2027</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>출시</td>
+<td>2017년 12월 LTS 후보 공개</td>
+<td>2023년 3월 15일 GA</td>
+<td>2026년 9월 3일 Preview</td>
+</tr>
+<tr>
+<td>지원 종료</td>
+<td>2026년 6월 30일. 이미 종료되어 보안 업데이트 중단</td>
+<td>표준 지원 2027년 6월 30일, maintenance 2029년 6월 30일</td>
+<td>제품 페이지 FAQ 기준 GA 후 표준 지원 5년. 사용자 가이드 기준 2032년</td>
+</tr>
+<tr>
+<td>기본 커널</td>
+<td>5.10(최초 출하 4.14)</td>
+<td>6.18(AL2023 kernel-update 문서 기준 2026년 8월 17일부터. AL2027 비교 문서는 아직 6.1 기본으로 표기. 6.1, 6.12 선택 가능)</td>
+<td>7.1</td>
+</tr>
+<tr>
+<td>패키지 관리자</td>
+<td>yum 3.4.3</td>
+<td>DNF 4.14. yum은 dnf 포인터</td>
+<td>DNF5 5.4. yum과 dnf 모두 DNF5</td>
+</tr>
+<tr>
+<td>SELinux 기본값</td>
+<td>disabled</td>
+<td>enabled, permissive</td>
+<td>enabled, enforcing</td>
+</tr>
+<tr>
+<td>네트워크 서비스</td>
+<td>ISC dhclient</td>
+<td>systemd-networkd</td>
+<td>systemd-networkd</td>
+</tr>
+<tr>
+<td>init, cgroup</td>
+<td>systemd 219, cgroup v1</td>
+<td>systemd 252, cgroup v2</td>
+<td>systemd 260, cgroup v2 전용</td>
+</tr>
+<tr>
+<td>업데이트 모델</td>
+<td>릴리스 버전 고정 없음(deterministic upgrades 도입 전)</td>
+<td>deterministic upgrades. 릴리스 버전에 잠긴 저장소</td>
+<td>AL2023과 동일</td>
+</tr>
+<tr>
+<td>x86-64 baseline</td>
+<td>문서에 명시 없음</td>
+<td>x86-64-v2</td>
+<td>x86-64-v3</td>
+</tr>
+<tr>
+<td>32비트</td>
+<td>x86-64 호스트에서 32비트 바이너리 실행만 제한적으로 지원</td>
+<td>userspace 패키지 없음</td>
+<td>i686 패키지 없고 32비트 userspace 실행도 미지원</td>
+</tr>
+<tr>
+<td>컨테이너 이미지</td>
+<td>amazonlinux:2</td>
+<td>amazonlinux:2023, 2023-minimal</td>
+<td>amazonlinux:2027, 2027-minimal</td>
+</tr>
+<tr>
+<td>ECS, EKS optimized AMI</td>
+<td>EKS용 AL2 AMI는 2025년 11월 26일 발행 중단</td>
+<td>둘 다 제공. AWS Containers 블로그 기준 EKS 1.30 이상 관리형 노드 그룹의 기본 OS</td>
+<td>EKS 레시피는 Phase 2 예정. ECS는 언급 없음</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">컴포넌트 변화</h2>
+<p>AWS 문서의 AL2023 대 AL2027 비교표. 문서는 GCC 11에서 16으로 가는 것을 툴체인 변화 중 가장 큰 것으로 꼽고, RPM은 4.16에서 6.0으로 메이저가 바뀌어 spec 파일 재검증이 필요</p>
+<table>
+<thead>
+<tr>
+<th>컴포넌트</th>
+<th>AL2023</th>
+<th>AL2027</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SELinux</td>
+<td>Permissive</td>
+<td>Enforcing</td>
+<td>기본값이 Enforcing으로 바뀜</td>
+</tr>
+<tr>
+<td>Kernel</td>
+<td>6.1 기본. 6.12, 6.18 제공</td>
+<td>7.1</td>
+<td>패키지 이름에 버전이 붙음(kernel7.1). AL2023처럼 시간이 지나면 새 커널 추가. AL2023 열은 문서 표 기준이고 2026년 8월 17일부터 AL2023 기본 AMI는 6.18로 부팅</td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>11.5</td>
+<td>16.1</td>
+<td>툴체인 대규모 업그레이드. 기본값이 엄격해져 재컴파일 시 새 경고나 오류 가능</td>
+</tr>
+<tr>
+<td>glibc</td>
+<td>2.34</td>
+<td>2.44</td>
+<td></td>
+</tr>
+<tr>
+<td>binutils</td>
+<td>2.41</td>
+<td>2.46</td>
+<td></td>
+</tr>
+<tr>
+<td>LLVM/Clang</td>
+<td>15, 18, 19(SRPM 분리)</td>
+<td>22(단일 SRPM)</td>
+<td>clang, lld, lldb, libomp를 하나의 소스 패키지에서 빌드</td>
+</tr>
+<tr>
+<td>systemd</td>
+<td>252</td>
+<td>260</td>
+<td>System V 서비스 스크립트 지원 제거</td>
+</tr>
+<tr>
+<td>RPM</td>
+<td>4.16</td>
+<td>6.0</td>
+<td>OpenPGP 서명 검증이 rpm-sequoia 구현으로 바뀜. 자체 spec 파일은 테스트 필요</td>
+</tr>
+<tr>
+<td>DNF</td>
+<td>DNF 4.14</td>
+<td>DNF5 5.4</td>
+<td>dnf와 yum 명령 모두 DNF5 실행. DNF 4 Python API(python3-dnf) 없음</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>3.9</td>
+<td>3.14</td>
+<td>기본 python3가 3.14</td>
+</tr>
+<tr>
+<td>zlib</td>
+<td>1.2.11</td>
+<td>zlib-ng 2.3</td>
+<td>zlib-ng-compat 패키지로 drop-in 대체</td>
+</tr>
+<tr>
+<td>PCRE</td>
+<td>PCRE 8.x + PCRE2</td>
+<td>PCRE2만</td>
+<td>PCRE1 제거</td>
+</tr>
+</tbody>
+</table>
+<p>GCC 버전은 AWS 자료 안에서도 어긋남. 사용자 가이드는 네 페이지 모두 16.1이고 제품 페이지 FAQ도 16.1인데, 같은 제품 페이지의 Preview Features 카드만 16.2. 프리뷰 중 갱신되는 값이므로 설치 후 gcc --version으로 확인</p>
+<p>비교표 밖의 주요 버전. AL2023 열은 2023.12 릴리스 기준으로 확인된 값만 적음</p>
+<table>
+<thead>
+<tr>
+<th>패키지</th>
+<th>AL2023</th>
+<th>AL2027</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenSSL</td>
+<td>3.5.7(AL2023.12 기준. GA 당시 3.0)</td>
+<td>3.5.7. AWS-LC 병행</td>
+</tr>
+<tr>
+<td>OpenSSH</td>
+<td>9.9p1(AL2023.12 기준. GA 당시 8.7)</td>
+<td>9.9p1. DSA 서명 제거, 2048비트 미만 RSA 키 기본 거부</td>
+</tr>
+<tr>
+<td>cloud-init</td>
+<td></td>
+<td>26.1</td>
+</tr>
+<tr>
+<td>bash</td>
+<td></td>
+<td>5.3</td>
+</tr>
+<tr>
+<td>curl</td>
+<td></td>
+<td>8.18</td>
+</tr>
+<tr>
+<td>GnuTLS</td>
+<td>3.8.10</td>
+<td>3.8.10. ML-KEM 하이브리드 키 교환과 ML-DSA 서명 지원</td>
+</tr>
+<tr>
+<td>aws-lc-libs</td>
+<td>없음</td>
+<td>5.2.0. 표준과 minimal AMI에 기본 설치, 컨테이너 이미지에는 없음</td>
+</tr>
+<tr>
+<td>selinux-policy</td>
+<td></td>
+<td>44.5</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="rocky-linux-102">Rocky Linux 10.2와 비교</h2>
+<p>2026년 9월 기준 Rocky Linux 최신 안정 버전은 2026년 5월 말 공개된 10.2(문서 릴리스 표는 5월 29일, 뉴스 글은 5월 28일). RHEL 10.2를 재빌드한 배포판이라 AL2027과는 계보가 다르지만, x86-64-v3 baseline과 SELinux Enforcing 기본, 32비트 제거, PCRE2 단일화, zlib-ng 채택처럼 같은 방향으로 움직인 항목이 많음</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Rocky Linux 10.2</th>
+<th>AL2027 Preview</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>계보</td>
+<td>RHEL 10.2 재빌드. CentOS Stream과 RHEL 릴리스를 최대한 추종</td>
+<td>Fedora 44와 45에 부분 기반. 특정 Fedora 릴리스와 직접 비교 불가</td>
+</tr>
+<tr>
+<td>운영 주체</td>
+<td>Rocky Enterprise Software Foundation 커뮤니티</td>
+<td>AWS</td>
+</tr>
+<tr>
+<td>메이저 최초 공개</td>
+<td>10.0 GA 2025년 6월 11일</td>
+<td>Preview 2026년 9월 3일. GA 미정</td>
+</tr>
+<tr>
+<td>수명</td>
+<td>10년. Active Support 2030년 5월 31일, Security Support 2035년 5월 31일까지</td>
+<td>GA 후 표준 지원 5년. 문서상 2032년까지</td>
+</tr>
+<tr>
+<td>마이너 릴리스</td>
+<td>6개월마다(대체로 5~6월, 11월). 최신 마이너만 지원</td>
+<td>표준 지원 중 3개월마다</td>
+</tr>
+<tr>
+<td>메이저 간 업그레이드</td>
+<td>미지원. 재설치 권장</td>
+<td>in-place 메이저 업그레이드 절차 문서 없음. 런타임 선행 업그레이드와 애플리케이션 검증 후 새 AMI로 이동</td>
+</tr>
+<tr>
+<td>업데이트 모델</td>
+<td>롤링. releasever가 메이저 버전이고 별도 updates 저장소 없이 같은 저장소에 반영. 마이너 수명 동안 이전 빌드가 공존해 다운그레이드 가능. 옛 릴리스는 vault로 이동하며 미지원</td>
+<td>deterministic upgrades. AMI가 릴리스 버전 저장소에 잠기고 dnf upgrade --releasever로 이동. 공개된 릴리스는 불변</td>
+</tr>
+<tr>
+<td>요금, 라이선스</td>
+<td>무료. 프로젝트 기여분은 BSD 3-Clause</td>
+<td>무료. EC2 요금만</td>
+</tr>
+<tr>
+<td>아키텍처</td>
+<td>x86_64(v3), aarch64(ARMv8.0-A), ppc64le, s390x, riscv64 5종</td>
+<td>x86_64(v3), aarch64(ARMv8.2와 Crypto Extension) 2종</td>
+</tr>
+<tr>
+<td>32비트</td>
+<td>x86_64 32비트 호환 제거. 10.2 저장소 어디에도 i686 패키지 없음</td>
+<td>없음</td>
+</tr>
+</tbody>
+</table>
+<p>컴포넌트 버전. Rocky 값은 10.2 GA 저장소 실물 패키지 기준</p>
+<table>
+<thead>
+<tr>
+<th>컴포넌트</th>
+<th>Rocky Linux 10.2</th>
+<th>AL2027 Preview</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>커널</td>
+<td>6.12(6.12.0-211 계열)</td>
+<td>7.1</td>
+</tr>
+<tr>
+<td>glibc</td>
+<td>2.39</td>
+<td>2.44</td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>14.3 시스템. GCC Toolset 15로 15.2 추가 제공</td>
+<td>16.1 단일</td>
+</tr>
+<tr>
+<td>binutils</td>
+<td>2.41</td>
+<td>2.46</td>
+</tr>
+<tr>
+<td>LLVM/Clang</td>
+<td>21.1</td>
+<td>22</td>
+</tr>
+<tr>
+<td>systemd</td>
+<td>257</td>
+<td>260</td>
+</tr>
+<tr>
+<td>RPM</td>
+<td>4.19</td>
+<td>6.0</td>
+</tr>
+<tr>
+<td>DNF</td>
+<td>DNF 4.20. 릴리스 노트가 dnf5를 언급하지만 저장소에 dnf5 패키지는 없음</td>
+<td>DNF5 5.4</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>3.12 시스템. 3.14는 별도 패키지</td>
+<td>3.14 시스템</td>
+</tr>
+<tr>
+<td>OpenSSL</td>
+<td>3.5</td>
+<td>3.5. AWS-LC 병행</td>
+</tr>
+<tr>
+<td>zlib</td>
+<td>zlib-ng-compat 2.2</td>
+<td>zlib-ng 2.3</td>
+</tr>
+<tr>
+<td>PCRE</td>
+<td>PCRE2 10.44만</td>
+<td>PCRE2만</td>
+</tr>
+<tr>
+<td>SELinux 기본</td>
+<td>enforcing, targeted</td>
+<td>enforcing, targeted</td>
+</tr>
+<tr>
+<td>cloud-init</td>
+<td>24.4</td>
+<td>26.1</td>
+</tr>
+</tbody>
+</table>
+<p>운영과 생태계</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>Rocky Linux 10.2</th>
+<th>AL2027 Preview</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SysV init 스크립트</td>
+<td>systemd 257의 sysv-generator로 동작. initscripts와 chkconfig 제공</td>
+<td>제거</td>
+</tr>
+<tr>
+<td>FIPS 140</td>
+<td>Rocky 10용 CMVP 인증서 없음. 8과 9는 CIQ가 벤더로 인증. fips-mode-setup 제거. 상류 RHEL 10 문서는 설치 시에만 FIPS 활성화를 지원한다고 안내</td>
+<td>검증 모듈은 GA 전 제공 예정. fips-mode-setup 제거, 커널 인자 fips=1</td>
+</tr>
+<tr>
+<td>CIS 벤치마크</td>
+<td>Rocky Linux 10 Benchmark v1.0.0</td>
+<td>언급 없음</td>
+</tr>
+<tr>
+<td>EPEL</td>
+<td>사용 가능. extras의 epel-release 설치와 CRB 활성화 필요</td>
+<td>언급 없음. AL2027용으로 만든 저장소만 추가하라고 안내</td>
+</tr>
+<tr>
+<td>AWS AMI</td>
+<td>Marketplace 공식 AMI. 무료. 기본 사용자 rocky</td>
+<td>Preview AMI. 기본 사용자 ec2-user</td>
+</tr>
+<tr>
+<td>컨테이너</td>
+<td>quay.io와 Docker Hub의 rockylinux/rockylinux. 10.2, 10.2-minimal, 10-ubi-micro 등. Docker 공식 이미지 library/rockylinux에는 10 태그가 없음</td>
+<td>ECR Public의 amazonlinux:2027, 2027-minimal</td>
+</tr>
+<tr>
+<td>네트워크</td>
+<td>NetworkManager 필수. ifcfg 스크립트와 ifup, ifdown 제거. ISC DHCP는 Kea로 교체</td>
+<td>systemd-networkd</td>
+</tr>
+<tr>
+<td>눈에 띄는 제거</td>
+<td>redis(valkey로), sendmail(Postfix 권장), TigerVNC, X.Org Server(Wayland로), NIC teaming, GFS2, dnf module</td>
+<td>ksh, opensmtpd, libdb, aspell-en. aspell 본체는 GA 전 제거 예정이라 프리뷰에는 있고, cron은 deprecated이지만 저장소에 존재</td>
+</tr>
+<tr>
+<td>PQC</td>
+<td>FUTURE 정책의 그룹 목록이 하이브리드 ML-KEM만 허용</td>
+<td>DEFAULT 정책에 PQC 기본 활성</td>
+</tr>
+</tbody>
+</table>
+<p>시스템 기본 패키지 기준으로 AL2027이 커널 한 세대, GCC 두 세대 앞서 있고 RPM은 4에서 6으로 건너뜀. Rocky는 GCC Toolset 15와 LLVM Toolset 21을 별도 제공. 대신 Rocky는 수명 10년, 아키텍처 5종, RHEL 호환, EPEL과 CIS 같은 생태계가 강점. 선택 기준은 버전 숫자보다 RHEL 호환이 필요한지, 그리고 EC2 밖에서도 같은 이미지를 써야 하는지</p>
+<hr />
+<h2 id="_3">보안 기본값</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>AL2023</th>
+<th>AL2027</th>
+<th>달라지는 점</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SELinux</td>
+<td>enabled, permissive. 위반을 로그로만 기록</td>
+<td>enabled, enforcing. 위반을 실제로 차단. 정책은 targeted</td>
+<td>permissive 동작에 기대던 애플리케이션은 정책 조정 필요. 문서는 잘못 라벨링되거나 라벨 없는 파일이 enforcing에서 문제를 일으킨다고만 설명. 일반적으로 사용자 정의 경로의 서비스 바이너리, 홈 디렉터리 아래 웹 루트, 컨테이너 볼륨 마운트처럼 라벨이 표준을 벗어난 구성이 먼저 걸림</td>
+</tr>
+<tr>
+<td>컴파일러 하드닝</td>
+<td></td>
+<td>제품 페이지 FAQ 기준, 메모리 초기화 관련 취약점을 컴파일 시점에 막는 compiler hardening으로 패키지 빌드</td>
+<td>배포판 패키지 전체의 공격 표면 축소</td>
+</tr>
+<tr>
+<td>암호화 라이브러리</td>
+<td>OpenSSL 3.5(2023.12 기준)</td>
+<td>OpenSSL 3.5 기본. AWS-LC 병행 제공</td>
+<td>아래 암호화 라이브러리 절</td>
+</tr>
+<tr>
+<td>암호 정책</td>
+<td></td>
+<td>시스템 전역 crypto policy가 post-quantum cryptography 기본 활성</td>
+<td>해제는 update-crypto-policies --set DEFAULT:NO-PQ</td>
+</tr>
+<tr>
+<td>FIPS</td>
+<td>fips-mode-setup 유틸</td>
+<td>fips-mode-setup 제거. 커널 인자 fips=1만 켜면 재부팅 후 시스템 전역 FIPS 정책 자동 적용</td>
+<td>프리뷰에는 FIPS 검증 커널과 모듈이 없고 GA 전 제공 예정. FIPS 모드에서 ED25519 SSH 사용자 키 미지원</td>
+</tr>
+<tr>
+<td>서명 검증</td>
+<td>RPM 4.16</td>
+<td>RPM 6.0, rpm-sequoia</td>
+<td>OpenPGP 구현 교체</td>
+</tr>
+</tbody>
+</table>
+<p>Enforcing에서 막히는지 확인하고 임시로 풀어 보는 순서</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>getenforce<span class="w">                              </span><span class="c1"># Enforcing 확인</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sestatus<span class="w">                                </span><span class="c1"># 정책 이름 targeted 확인</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>ausearch<span class="w"> </span>-m<span class="w"> </span>AVC<span class="w"> </span>-ts<span class="w"> </span>recent<span class="w">         </span><span class="c1"># 최근 차단 기록</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>sudo<span class="w"> </span>setenforce<span class="w"> </span><span class="m">0</span><span class="w">                       </span><span class="c1"># 재부팅 전까지 Permissive</span>
+</code></pre></div>
+<p>getenforce와 sestatus는 문서가 안내하는 명령이고 ausearch와 setenforce는 일반 SELinux 절차. audit 패키지는 AMI에 기본 설치되지만 컨테이너 이미지에는 없음</p>
+<p>영구 전환은 /etc/selinux/config의 SELINUX 값을 permissive로 바꾸고 재부팅. 기동 시점에 바꾸려면 user data로 cloud-config 전달</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">#cloud-config</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">selinux</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">permissive</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">selinux_no_reboot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">   </span><span class="c1"># 생략하면 기본으로 재부팅</span>
+</code></pre></div>
+<p>완전 비활성화는 grubby로 커널 명령줄에 selinux=0을 추가하는 방식인데, AWS는 비활성화 대신 permissive를 권장. Permissive는 원인 파악용. AWS 문서에는 없는 절차이지만 서비스 경로를 표준 위치로 옮기거나 semanage fcontext와 restorecon으로 라벨을 맞추는 것이 일반적인 해결 경로</p>
+<hr />
+<h2 id="_4">암호화 라이브러리</h2>
+<p>AWS-LC가 OpenSSL을 대체한다는 오해가 많은데, AL2027에서 기본 시스템 암호화 라이브러리는 여전히 OpenSSL 3.5. AWS-LC는 옆에 같이 설치되고, 선택한 패키지만 AWS-LC로 빌드됨</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>OpenSSL 3.5</th>
+<th>AWS-LC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>역할</td>
+<td>기본 시스템 암호화 라이브러리. 대부분의 패키지가 링크</td>
+<td>선택적으로 빌드하거나 링크하는 병행 라이브러리</td>
+</tr>
+<tr>
+<td>출처</td>
+<td>OpenSSL 프로젝트</td>
+<td>AWS가 유지. Google BoringSSL과 OpenSSL 코드에서 파생</td>
+</tr>
+<tr>
+<td>검증</td>
+<td></td>
+<td>핵심 알고리즘 일부를 formal proofs로 기계 검증. AWS-LC 자체는 FIPS 140 validated 암호를 제공하지만 AL2027 프리뷰에는 검증된 커널과 모듈이 없음</td>
+</tr>
+<tr>
+<td>성능</td>
+<td></td>
+<td>AWS 플랫폼과 워크로드에 맞춰 암호 연산 최적화</td>
+</tr>
+<tr>
+<td>ABI</td>
+<td></td>
+<td>stable shared library ABI 최근 추가. 시스템 라이브러리로 배포하고 독립 갱신 가능</td>
+</tr>
+<tr>
+<td>패키지</td>
+<td>openssl, openssl-libs</td>
+<td>aws-lc, aws-lc-libs, aws-lc-devel. 순서대로 명령행 도구, libcrypto와 libssl 공유 라이브러리, 헤더와 개발 파일</td>
+</tr>
+<tr>
+<td>기능 차이</td>
+<td>AWS-LC에 없는 기능 있음</td>
+<td>OpenSSL에 없는 기능 있음. 양방향 gap이 존재하고 AWS는 그중 고객 워크로드에 중요한 AWS-LC 쪽 gap을 줄여 가는 중</td>
+</tr>
+</tbody>
+</table>
+<p>프리뷰 시점에 AWS-LC로 빌드된 패키지. 프리뷰 중 계속 늘어날 예정</p>
+<table>
+<thead>
+<tr>
+<th>분류</th>
+<th>패키지</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>웹 서버, 프록시</td>
+<td>httpd, mod_http2, nginx-awslc, haproxy</td>
+</tr>
+<tr>
+<td>언어, 런타임</td>
+<td>python3.14, python-cryptography, python3-awscrt</td>
+</tr>
+<tr>
+<td>네트워크 도구</td>
+<td>rsync, socat, wget1, elinks</td>
+</tr>
+<tr>
+<td>시스템 라이브러리</td>
+<td>coreutils(sort), libpq, libmemcached-awesome</td>
+</tr>
+<tr>
+<td>TPM</td>
+<td>tpm2-tools, tpm2-tss, trousers</td>
+</tr>
+</tbody>
+</table>
+<p>nginx는 별도 패키지 이름을 씀. nginx 대신 nginx-awslc를 설치하면 AWS-LC 링크 빌드가 들어감</p>
+<hr />
+<h2 id="_5">패키지 관리와 업데이트 모델</h2>
+<p>DNF5로 바뀌었지만 일상 명령은 그대로. dnf와 yum 명령 모두 DNF5를 실행하고, DNF 4 철자의 명령과 옵션은 호환 별칭으로 계속 동작. 별칭은 임시 조치가 아니라 AL2027의 표준 구성</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>AL2023(DNF 4.14)</th>
+<th>AL2027(DNF5 5.4)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>일상 명령</td>
+<td>dnf install, search, remove, upgrade</td>
+<td>동일</td>
+</tr>
+<tr>
+<td>호환 별칭</td>
+<td></td>
+<td>dnf check-update, dnf updateinfo, dnf list installed, dnf groupinstall, dnf erase 유지</td>
+</tr>
+<tr>
+<td>check-update</td>
+<td>업데이트 있으면 종료 코드 100</td>
+<td>dnf check-upgrade의 별칭. 종료 코드 100 동일</td>
+</tr>
+<tr>
+<td>옵션</td>
+<td>--sec-severity, --skip-broken, --downloaddir</td>
+<td>동일하게 동작. DNF5가 모르는 --setopt은 중단 대신 경고</td>
+</tr>
+<tr>
+<td>이름 바뀐 옵션</td>
+<td>--advisory</td>
+<td>--advisories. 옛 철자는 별칭으로 유지</td>
+</tr>
+<tr>
+<td>Python API</td>
+<td>python3-dnf</td>
+<td>python3-libdnf5</td>
+</tr>
+<tr>
+<td>yum-utils 도구</td>
+<td>yum-utils 패키지</td>
+<td>dnf5-plugins 패키지. yum-utils나 dnf-utils 이름으로 설치해도 여기로 해석. repoquery, yumdownloader, yum-builddep, needs-restarting, reposync, repoclosure, package-cleanup, debuginfo-install 등 제공</td>
+</tr>
+<tr>
+<td>리포 추가</td>
+<td>yum-config-manager --add-repo</td>
+<td>dnf config-manager addrepo --from-repofile=URL(.repo 파일 주소). 순수 URL은 --id와 --set=baseurl 조합. yum-config-manager 제공 여부는 문서 간 서술이 엇갈림(package-management 페이지는 제공, manage-updates 페이지는 미제공)</td>
+</tr>
+<tr>
+<td>설정 파일</td>
+<td>/etc/dnf/dnf.conf, /etc/yum.repos.d/</td>
+<td>동일 경로. dnf.conf는 비어 있는 상태로 시작하고 Amazon Linux 기본값은 별도 vendor 파일. 사용자가 추가한 설정은 그대로 적용</td>
+</tr>
+<tr>
+<td>사용자 별칭</td>
+<td></td>
+<td>/etc/dnf/dnf5-aliases.d/ 아래 drop-in 파일</td>
+</tr>
+<tr>
+<td>로그</td>
+<td>/var/log/dnf.log</td>
+<td>/var/log/dnf5.log</td>
+</tr>
+<tr>
+<td>rpm DB</td>
+<td>Berkeley DB 형식 읽기 가능</td>
+<td>SQLite 형식만. libdb 제거</td>
+</tr>
+<tr>
+<td>출력 형식</td>
+<td></td>
+<td>다름. 출력을 파싱하는 스크립트는 --json으로 교체</td>
+</tr>
+<tr>
+<td>성능</td>
+<td></td>
+<td>더 빠르고 메모리 사용이 적음. 업스트림 개발이 DNF5에서 진행</td>
+</tr>
+</tbody>
+</table>
+<p>DNF 4 철자와 DNF5 고유 명령의 대응. 왼쪽은 별칭으로 계속 동작</p>
+<table>
+<thead>
+<tr>
+<th>DNF 4</th>
+<th>DNF5 고유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dnf erase</td>
+<td>dnf remove</td>
+</tr>
+<tr>
+<td>dnf localinstall</td>
+<td>dnf install</td>
+</tr>
+<tr>
+<td>dnf groupinstall, groupremove, grouplist</td>
+<td>dnf group install, group remove, group list</td>
+</tr>
+<tr>
+<td>dnf list installed</td>
+<td>dnf list --installed</td>
+</tr>
+<tr>
+<td>dnf whatprovides</td>
+<td>dnf provides</td>
+</tr>
+<tr>
+<td>dnf deplist</td>
+<td>dnf repoquery --providers-of=requires</td>
+</tr>
+<tr>
+<td>dnf updateinfo list</td>
+<td>dnf advisory list</td>
+</tr>
+<tr>
+<td>dnf repolist enabled</td>
+<td>dnf repolist --enabled</td>
+</tr>
+<tr>
+<td>dnf history userinstalled</td>
+<td>dnf repoquery --userinstalled</td>
+</tr>
+<tr>
+<td>dnf update-minimal</td>
+<td>dnf upgrade-minimal</td>
+</tr>
+</tbody>
+</table>
+<p>문서가 안내하는 스크립트 이전 절차. 11단계 중 마지막 참조 안내를 뺀 10단계</p>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>최신 프리뷰 AMI에서 기존 스크립트를 그대로 실행해 차이 확인</td>
+</tr>
+<tr>
+<td>2</td>
+<td>비대화형 명령에 -y 추가</td>
+</tr>
+<tr>
+<td>3</td>
+<td>종료 코드는 0과 0이 아닌 값으로만 판정</td>
+</tr>
+<tr>
+<td>4</td>
+<td>출력 파싱은 --json으로 교체</td>
+</tr>
+<tr>
+<td>5</td>
+<td>--queryformat 끝에 개행 문자 추가</td>
+</tr>
+<tr>
+<td>6</td>
+<td>그룹은 이름보다 ID로 지정</td>
+</tr>
+<tr>
+<td>7</td>
+<td>로그 수집 경로를 /var/log/dnf5.log로</td>
+</tr>
+<tr>
+<td>8</td>
+<td>import dnf를 python3-libdnf5로</td>
+</tr>
+<tr>
+<td>9</td>
+<td>자체 DNF 4 플러그인 포팅</td>
+</tr>
+<tr>
+<td>10</td>
+<td>dnf --version이 dnf5를 보고하는지 확인</td>
+</tr>
+</tbody>
+</table>
+<p>업데이트 모델은 AL2023의 deterministic upgrades를 그대로 씀. AMI와 컨테이너 이미지는 빌드된 릴리스 버전의 저장소에 잠기고, 기동 시 보안 업데이트를 자동으로 받지 않음. 릴리스는 공개 후 불변이라 배포 도중 새 릴리스가 나와도 영향 없음</p>
+<pre class="mermaid"><code>flowchart LR
+    A["AMI 기동&lt;br&gt;빌드 시점 릴리스에 잠김"] --&gt; B["dnf check-release-update&lt;br&gt;새 릴리스 확인"]
+    B --&gt; C["dnf upgrade --releasever=버전&lt;br&gt;선택한 릴리스로 이동"]
+    C --&gt; D["이후 dnf 작업 기본 버전이&lt;br&gt;새 릴리스로 고정"]
+    A --&gt; E["새 AMI로 인스턴스 교체"]</code></pre>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>메이저 업그레이드</td>
+<td>AL2023에서 AL2027처럼 패키지 추가, 제거, 변경이 큼. 애플리케이션 테스트 후 이동</td>
+</tr>
+<tr>
+<td>마이너 업그레이드</td>
+<td>기능과 보안 업데이트. Linux 기능과 시스템 라이브러리 API 유지. 단계적 배포 권장</td>
+</tr>
+<tr>
+<td>업데이트 주기</td>
+<td>제품 페이지 FAQ 기준 프리뷰 기간에는 CVE와 버그 수정을 격주로 배포. GA 이후 표준 지원 중에는 3개월마다 마이너 릴리스</td>
+</tr>
+<tr>
+<td>저장소</td>
+<td>amazonlinux(enabled), amazonlinux-debuginfo(disabled), amazonlinux-source(disabled). 코어 저장소는 amazonlinux 하나</td>
+</tr>
+<tr>
+<td>릴리스 확인 명령</td>
+<td>dnf check-release-update는 dnf-plugin-release-notification 패키지가 제공. AMI에는 기본 설치, 컨테이너 이미지에는 없음</td>
+</tr>
+<tr>
+<td>서비스 재시작</td>
+<td>smart-restart 패키지가 DNF 트랜잭션 후 영향받는 systemd 서비스를 자동 재시작. 재부팅이 필요하면 /run/smart-restart/reboot-hint-marker 생성</td>
+</tr>
+<tr>
+<td>프리뷰 저장소</td>
+<td>옛 프리뷰 릴리스는 저장소에서 제거될 수 있음. 특정 버전에 고정한 시스템은 그 버전이 사라지면 resolve 실패</td>
+</tr>
+<tr>
+<td>지원 정보 조회</td>
+<td>dnf supportinfo --pkg 패키지명, dnf supportinfo --show installed</td>
+</tr>
+<tr>
+<td>핵심 패키지</td>
+<td>glibc, OpenSSL, OpenSSH, DNF5는 메이저 버전 수명 내내 지원. 목록은 프리뷰 중 확정</td>
+</tr>
+<tr>
+<td>자동화</td>
+<td>파생 AMI는 EC2 Image Builder. 플릿 패치용 SSM Patch Manager는 프리뷰에서 동작하지 않음</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_6">커널, 아키텍처, 런타임</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>커널</td>
+<td>7.1 단일 메이저 버전으로 출시. 패키지 이름은 kernel7.1. 표준 지원 중 매년 새 메이저 커널 추가. 제품 페이지 FAQ는 GA 시점에 그때의 최신 LTS 커널을 싣고 각 커널을 4년 지원한다고 설명. 제품 페이지 FAQ는 AL2023과 겹치는 커널 버전으로 마이그레이션이 쉬워진다고 설명하지만 프리뷰 시점 실제 구성은 AL2023 6.1, 6.12, 6.18과 AL2027 7.1로 겹치는 버전이 없음</td>
+</tr>
+<tr>
+<td>커널 기능</td>
+<td>MGLRU는 CONFIG_LRU_GEN으로 컴파일돼 있으나 기본 비활성이고 /sys/kernel/mm/lru_gen/enabled로 제어. ENA와 EFA 최신 드라이버 탑재</td>
+</tr>
+<tr>
+<td>x86-64 baseline</td>
+<td>x86-64-v3. v2 위에 AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, MOVBE, XSAVE 요구. 대략 2015년 이후 CPU. 인스턴스 패밀리 c1, c3, i2, m1, m2, m3, r3, t1 미지원</td>
+</tr>
+<tr>
+<td>aarch64 baseline</td>
+<td>ARMv8.2와 Cryptography Extension. Graviton2 이상이라 a1 미지원. Raspberry Pi는 5부터 요건 충족</td>
+</tr>
+<tr>
+<td>빌드 옵션</td>
+<td>-O2, LTO, -ftree-vectorize. aarch64는 glibc malloc 힙 아레나에 2MB transparent huge pages 기본 활성</td>
+</tr>
+<tr>
+<td>최소 메모리</td>
+<td>512MB(t3.nano, t3a.nano, t4g.nano). 800MB 미만이면 zram 스왑 기본 활성</td>
+</tr>
+<tr>
+<td>가속기</td>
+<td>발표문은 AWS Neuron 드라이버 지원을, 제품 페이지는 Trainium과 Inferentia용 Neuron 드라이버를 명시. 사용자 가이드에는 Neuron 서술이 없음. NVIDIA 드라이버는 초기 프리뷰 미제공</td>
+</tr>
+<tr>
+<td>툴체인</td>
+<td>현재 GCC는 16.1 하나이고 기본 표준은 C23, C++20. glibc 2.44, binutils 2.46, LLVM 22, Rust 1.97 이상, Go 1.25</td>
+</tr>
+</tbody>
+</table>
+<p>언어 런타임. 오른쪽 열의 버전은 AL2023에는 있었지만 AL2027에 없으므로 마이그레이션 전에 올려야 함</p>
+<table>
+<thead>
+<tr>
+<th>언어</th>
+<th>AL2027 제공</th>
+<th>AL2023에 있었지만 제거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>3.14(system python), 3.15 beta</td>
+<td>3.9, 3.10, 3.11, 3.12, 3.13</td>
+</tr>
+<tr>
+<td>PHP</td>
+<td>8.5</td>
+<td>8.1, 8.2, 8.3, 8.4</td>
+</tr>
+<tr>
+<td>Node.js</td>
+<td>24</td>
+<td>18, 20, 22</td>
+</tr>
+<tr>
+<td>Ruby</td>
+<td>3.4</td>
+<td>3.2</td>
+</tr>
+<tr>
+<td>Java(Corretto)</td>
+<td>8, 11, 17, 21, 25</td>
+<td>22, 23, 24, 26</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>10.0</td>
+<td>6.0, 8.0, 9.0</td>
+</tr>
+<tr>
+<td>Rust</td>
+<td>1.97 이상</td>
+<td></td>
+</tr>
+<tr>
+<td>Go</td>
+<td>1.25</td>
+<td></td>
+</tr>
+<tr>
+<td>Swift</td>
+<td>6.3 신규</td>
+<td></td>
+</tr>
+<tr>
+<td>Perl</td>
+<td>5.42</td>
+<td>5.32</td>
+</tr>
+</tbody>
+</table>
+<p>가이드의 런타임 표는 Python 3.10을 빠뜨렸지만 Python 페이지는 3.10도 제거 목록에 포함. 제품 페이지 FAQ는 언어별로 최소 하나의 공통 런타임 버전을 유지한다고 설명하지만 위 표 기준으로 Python, PHP, Node.js, Ruby, .NET은 공통 버전이 없음. system python은 AL2027 수명 내내 3.14 유지. 데이터베이스는 MariaDB 10.11, 11.4, 11.8과 PostgreSQL 16, 17, 18, Memcached 1.6 제공</p>
+<hr />
+<h2 id="ami">AMI와 컨테이너 이미지</h2>
+<table>
+<thead>
+<tr>
+<th>형태</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMI 이름</td>
+<td>al2027-preview-ami-2027.0.20260903.0-kernel-7.1-x86_64 형식. minimal은 al2027-preview-ami-minimal로 시작. 콘솔에서 al2027-preview-ami로 검색하고 소유자는 amazon</td>
+</tr>
+<tr>
+<td>SSM parameter</td>
+<td>/aws/service/ami-amazon-linux-latest/ 아래 al2027-preview-ami-kernel-default-x86_64, al2027-preview-ami-kernel-default-arm64, al2027-preview-ami-minimal-kernel-default-x86_64, al2027-preview-ami-minimal-kernel-default-arm64</td>
+</tr>
+<tr>
+<td>CLI 기동</td>
+<td>--image-id에 resolve:ssm: 접두어와 위 parameter 경로를 주면 기동 시점의 최신 AMI ID로 해석. 기본 사용자는 ec2-user</td>
+</tr>
+<tr>
+<td>AMI 제공 범위</td>
+<td>모든 상용 리전, x86_64와 arm64. 별도 등록 절차 없음</td>
+</tr>
+<tr>
+<td>디스크 사용량</td>
+<td>표준 AMI 1715MiB에서 1142MiB로 33.4% 감소. minimal 1246MiB에서 893MiB로 28.3% 감소. aarch64 이미지에서 df -m으로 측정한 값</td>
+</tr>
+<tr>
+<td>컨테이너 리포지토리</td>
+<td>public.ecr.aws/amazonlinux/amazonlinux. AL2023과 같은 리포지토리이고 태그로 구분. 비인증 pull 가능</td>
+</tr>
+<tr>
+<td>컨테이너 태그</td>
+<td>2027, 2027-minimal, 2027.0.20260903.0, 2027.0.20260903.0-minimal</td>
+</tr>
+<tr>
+<td>컨테이너 특징</td>
+<td>DNF5 사용. 패키지 구성은 minimal AMI에 가까움. dnf-plugin-release-notification 미포함. scratch에서 직접 쌓는 bare-bones 방식도 문서화</td>
+</tr>
+<tr>
+<td>ECS optimized AMI</td>
+<td>AL2027 사용자 가이드, 릴리스 노트, 제품 페이지 FAQ, 발표문에 언급 없음</td>
+</tr>
+<tr>
+<td>EKS optimized AMI</td>
+<td>Phase 2(2026년 11월)에 레시피 제공 예정</td>
+</tr>
+<tr>
+<td>온프레미스 이미지</td>
+<td>Hyper-V, KVM, VMware용 이미지는 초기 프리뷰 미제공. GitHub 이슈에 따르면 릴리스 직전에 버그가 발견됐고 프리뷰가 임박해 부팅 초기 과정을 손대지 않기로 하면서 제외. 수정본은 테스트 중</td>
+</tr>
+</tbody>
+</table>
+<p>사용자 가이드의 컨테이너 이미지 크기 표. 표준 이미지는 AL2023보다 작아졌지만 minimal은 오히려 조금 큼</p>
+<table>
+<thead>
+<tr>
+<th>태그</th>
+<th>AL2023</th>
+<th>AL2027</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>표준</td>
+<td>54.6MB</td>
+<td>44.8MB</td>
+</tr>
+<tr>
+<td>minimal</td>
+<td>37.4MB</td>
+<td>38.9MB</td>
+</tr>
+</tbody>
+</table>
+<p>프리뷰 공개 당일 GitHub에 올라온 알려진 이슈. 5건 중 4건은 Amazon Linux 팀 소속 계정이 직접 등록한 것</p>
+<table>
+<thead>
+<tr>
+<th>이슈</th>
+<th>내용</th>
+<th>임시 대응</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minimal 컨테이너 크기</td>
+<td>AL2023 minimal보다 큼</td>
+<td>없음. AWS가 개선 추적 중</td>
+</tr>
+<tr>
+<td>/etc/image-id 누락</td>
+<td>컨테이너 이미지에 파일 없음</td>
+<td>이슈에 대응 없음. 이 파일로 이미지를 식별하는 스크립트는 /etc/os-release로 대체 검토</td>
+</tr>
+<tr>
+<td>GPG 키 미임포트</td>
+<td>컨테이너 이미지에 키 파일은 있으나 RPM DB에 없음. 대화형 dnf가 키 임포트를 묻고 보안 스캐너가 지적</td>
+<td>rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2027</td>
+</tr>
+<tr>
+<td>cracklib 사전 누락</td>
+<td>EC2에서 passwd 실행 시 사전 검사 경고. 변경 자체는 성공</td>
+<td>이슈 제안은 사전 파일 동봉. 당장은 sudo dnf install cracklib-dicts</td>
+</tr>
+<tr>
+<td>온프레미스 이미지</td>
+<td>프리뷰에 미포함</td>
+<td>수정본 대기</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">제거된 기능과 마이그레이션 체크리스트</h2>
+<p>AL2023에 있었지만 AL2027에서 사라진 것. 문서는 deprecated 기능 대부분이 프리뷰 시점에 이미 제거됐고 일부는 GA 전에 추가로 제거된다고 설명</p>
+<table>
+<thead>
+<tr>
+<th>제거 항목</th>
+<th>대체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DNF 4와 Python API(python3-dnf)</td>
+<td>DNF5, python3-libdnf5</td>
+</tr>
+<tr>
+<td>System V init 스크립트</td>
+<td>systemd unit 파일. systemd 260이 SysV 스크립트를 실행하지 않음</td>
+</tr>
+<tr>
+<td>cgroup v1</td>
+<td>cgroup v2만 지원. systemd 258에서 v1 지원이 빠졌고 AL2027은 그보다 새 systemd</td>
+</tr>
+<tr>
+<td>32비트 x86(i686) 런타임</td>
+<td>없음. i686 패키지도 없고 32비트 userspace 실행 미지원</td>
+</tr>
+<tr>
+<td>Berkeley DB(libdb)</td>
+<td>rpm DB는 SQLite 형식. BDB 형식 읽기 지원도 제거</td>
+</tr>
+<tr>
+<td>PCRE1</td>
+<td>PCRE2</td>
+</tr>
+<tr>
+<td>ksh</td>
+<td>bash</td>
+</tr>
+<tr>
+<td>opensmtpd</td>
+<td>postfix 또는 sendmail</td>
+</tr>
+<tr>
+<td>ftp 클라이언트</td>
+<td>AL2023에서 이미 제거. AL2027에도 없음</td>
+</tr>
+<tr>
+<td>aspell</td>
+<td>프리뷰에는 남아 있으나 GA 전 제거 예정</td>
+</tr>
+<tr>
+<td>clang, lld, lldb 개별 소스 패키지</td>
+<td>LLVM 22 단일 SRPM. 설치 명령과 바이너리 패키지 이름은 그대로</td>
+</tr>
+<tr>
+<td>zlib 1.2</td>
+<td>zlib-ng 2.3. zlib-ng-compat이 drop-in 대체</td>
+</tr>
+<tr>
+<td>fips-mode-setup</td>
+<td>커널 인자 fips=1</td>
+</tr>
+<tr>
+<td>compat- 접두어 라이브러리 패키지</td>
+<td>이전 메이저 버전의 compat- 패키지는 넘어오지 않고 새로 추가되는 것도 처음부터 deprecated. 현재 라이브러리 버전으로 재빌드</td>
+</tr>
+<tr>
+<td>지원 종료 패키지</td>
+<td>메이저 버전 종료 전에 지원이 끝나는 패키지는 deprecated로 간주</td>
+</tr>
+</tbody>
+</table>
+<p>cron(cronie)은 제거 항목이 아님. AL2023부터 기본 미설치이고 AL2027 저장소에도 있으며, 문서는 향후 버전에서 빠질 수 있다고 예고하며 systemd timer를 권장</p>
+<p>AL2023에서 옮기기 전에 볼 것</p>
+<table>
+<thead>
+<tr>
+<th>점검 항목</th>
+<th>확인 방법</th>
+<th>걸리는 이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SELinux 라벨</td>
+<td>getenforce, ausearch -m AVC</td>
+<td>permissive에서 enforcing으로 바뀌어 로그만 남던 위반이 차단으로 바뀜</td>
+</tr>
+<tr>
+<td>언어 런타임</td>
+<td>위 런타임 표</td>
+<td>Python 3.9에서 3.13, PHP 8.1에서 8.4, Node.js 18에서 22, .NET 6, 8, 9가 제거됨</td>
+</tr>
+<tr>
+<td>재컴파일</td>
+<td>GCC 16으로 빌드</td>
+<td>기본값이 엄격해져 새 경고와 오류 발생 가능. AL2023 바이너리는 대체로 그대로 실행</td>
+</tr>
+<tr>
+<td>자체 RPM</td>
+<td>rpmbuild, rpm -K</td>
+<td>RPM 6.0과 rpm-sequoia 서명 검증. rpm DB는 SQLite</td>
+</tr>
+<tr>
+<td>DNF 스크립트</td>
+<td>옵션 철자와 출력 파싱</td>
+<td>출력 형식과 종료 코드 변경. 옵션과 명령 이름 일부 변경. 로그 경로 변경. DNF 4 플러그인은 동작하지 않음</td>
+</tr>
+<tr>
+<td>DNF Python API</td>
+<td>import dnf 사용처</td>
+<td>python3-dnf 없음</td>
+</tr>
+<tr>
+<td>init 스크립트</td>
+<td>/etc/init.d 아래 파일</td>
+<td>systemd 260이 SysV 스크립트를 실행하지 않음</td>
+</tr>
+<tr>
+<td>cgroup v1 의존</td>
+<td>컨테이너 런타임과 모니터링 에이전트 설정</td>
+<td>v2 전용</td>
+</tr>
+<tr>
+<td>cron</td>
+<td>crontab 사용처</td>
+<td>cronie 기본 미설치. 필요하면 설치하되 문서는 systemd timer 권장</td>
+</tr>
+<tr>
+<td>IMDSv1</td>
+<td>메타데이터 호출 방식</td>
+<td>AL2023부터 IMDSv2 전용이 기본이고 문서는 향후 버전에서 IMDSv2 강제 가능성을 언급</td>
+</tr>
+<tr>
+<td>인스턴스 타입</td>
+<td>구세대 패밀리와 a1 사용 여부</td>
+<td>x86-64-v3 미만 CPU와 Graviton1 미지원</td>
+</tr>
+<tr>
+<td>업데이트 절차</td>
+<td>dnf check-release-update</td>
+<td>기동 시 자동 업데이트 없음. 릴리스 잠금 전제로 패치 절차 설계. 프리뷰에서는 SSM Patch Manager 실패</td>
+</tr>
+<tr>
+<td>FIPS</td>
+<td>/proc/sys/crypto/fips_enabled</td>
+<td>프리뷰에는 검증된 모듈 없음. GA 전 제공</td>
+</tr>
+<tr>
+<td>지원 정책</td>
+<td>dnf supportinfo</td>
+<td>프리뷰 중에는 지원 기간이 2027년 3월 31일까지만 표시</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_8">결론</h2>
+<ul>
+<li>AL2027은 새 배포판이 아니라 AL2023 모델 위의 세대 교체. 릴리스 주기, deterministic upgrades, systemd-networkd, Fedora 기반 구조는 그대로이고 커널, 툴체인, 패키지 도구, 보안 기본값을 올림</li>
+<li>운영 관점에서 가장 먼저 걸리는 것은 SELinux Enforcing. 표준 경로를 벗어난 구성은 라벨 점검이 필요</li>
+<li>AWS-LC는 OpenSSL 대체가 아님. 기본은 OpenSSL 3.5이고 httpd, nginx-awslc, haproxy, python3.14 등 선택된 패키지만 AWS-LC 빌드</li>
+<li>DNF5 전환은 일상 명령과 호환 별칭 덕에 체감이 작지만, 출력 파싱 스크립트, 종료 코드 판정, DNF 4 플러그인, python3-dnf 사용처는 손봐야 함</li>
+<li>언어 런타임 정리가 큼. Python 3.9에서 3.13, PHP 8.1에서 8.4, Node.js 18에서 22, .NET 6과 8, 9가 빠졌으므로 애플리케이션 쪽 업그레이드가 먼저</li>
+<li>문서가 가장 큰 툴체인 변화로 꼽는 GCC 11에서 16과 RPM 4.16에서 6.0이 빌드 파이프라인에 주는 영향이 커널 변경보다 클 수 있음</li>
+<li>Rocky Linux 10.2와 견주면 AL2027은 시스템 기본 툴체인과 패키지 도구가 한두 세대 앞서고, Rocky는 수명 10년과 아키텍처 5종, RHEL 호환이 강점</li>
+<li>프리뷰 패키지 지원은 2027년 3월 31일까지이고 GA 날짜는 미공개. 프리뷰 인스턴스는 업데이트를 자동으로 받지 않으므로 오래 켜 두는 용도가 아니라 AL2027 AMI나 컨테이너 이미지에서 기존 애플리케이션 호환성을 미리 확인하는 용도</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="../../02/otp-%EC%A0%95%EB%A6%ACrfc-4226-6238/" class="md-footer__link md-footer__link--prev" aria-label="이전: OTP 정리(RFC 4226, 6238)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                OTP 정리(RFC 4226, 6238)
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Jeongwon(Aaron) Lee
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/gardengarden/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/dotoryeee" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.copy", "navigation.top", "navigation.footer", "content.tabs.link"], "search": "../../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
